@@ -1,0 +1,39 @@
+
+ion-searchbar {
+  --border-radius: 10px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+}
+
+.favCard {
+  // width: 300px;
+  height: 200px;
+  border-radius: 10px;
+  box-shadow: 1px 01px 3px 1px rgba(0,0,0,0.19);
+  margin: auto;
+  margin-top: 30px;
+  // margin-bottom: 30px;
+}
+
+.ion-card-button {
+  display: flex;
+  justify-content: flex-end;
+  ion-button {
+    --border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+}
+
+.uom {
+  padding-left: 75px;
+}
+
+.icon {
+  // filter: invert(47%) sepia(93%) saturate(555%) hue-rotate(150deg) brightness(90%) contrast(107%);
+  // filter: invert(37%) sepia(67%) saturate(1424%) hue-rotate(200deg) brightness(103%) contrast(101%);
+  filter: invert(68%) sepia(10%) saturate(5695%) hue-rotate(171deg) brightness(101%) contrast(104%);
+}

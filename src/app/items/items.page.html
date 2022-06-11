@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-buttons slot="end">
+      <!-- <ion-menu-button auto-hide="false"></ion-menu-button> -->
+      <ion-button>
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar #itemSearchBar></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger" (click)="onAddItem()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <div class="spinner">
+    <ion-spinner color="secondary" *ngIf="isFetching"></ion-spinner>
+  </div>
+
+  <ion-grid *ngIf="itemLists.length>0">
+    <ion-row>
+      <ion-col size-xs="12" size-sm="6" size-lg="4" size-xl="3" *ngFor="let item of itemLists">
+
+        <ion-card class="favCard" >
+          <ion-card-header>
+            <ion-item>
+              <ion-avatar slot="start">
+                <img src="../../assets/icons/items.svg" class="icon"/>
+              </ion-avatar>
+              <ion-card-title>{{ item.itemName }}</ion-card-title>
+            </ion-item>
+            <ion-card-subtitle class="uom">UOM: {{ item.uom.uomName }}</ion-card-subtitle>
+            <div class="ion-card-button">
+              <!-- <ion-button size="large" color="danger" fill="clear" slot="icon-only"><ion-icon name="trash-outline"></ion-icon></ion-button> -->
+              <ion-button size="large" color="secondary" fill="clear" slot="icon-only" (click)="onEditItem(item.itemId.toString())"><ion-icon name="create-outline"></ion-icon></ion-button>
+            </div>
+          </ion-card-header>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-infinite-scroll #infiniteScroll threshold="5%" (ionInfinite)="loadMoreItems($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more items...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
