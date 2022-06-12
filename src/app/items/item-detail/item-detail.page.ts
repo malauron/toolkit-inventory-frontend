@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { ItemUom } from 'src/app/classes/item-uom';
+import { ItemUom } from 'src/app/classes/item-uom.model';
 import { Item } from 'src/app/classes/item.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemsService } from 'src/app/services/items.service';
@@ -187,7 +187,6 @@ export class ItemDetailPage implements OnInit {
     const itemUom = new ItemUom(itemUomId,quantity,uom);
     this.itemService.deleteItemUoms(itemUom).subscribe(
       res => {
-        console.log(res);
         this.getItemUoms(this.itemId);
       }
     );

@@ -2,9 +2,8 @@
 /* eslint-disable id-blacklist */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { ItemUom } from '../classes/item-uom';
+import { Observable, Subject } from 'rxjs';
+import { ItemUom } from '../classes/item-uom.model';
 import { Item } from '../classes/item.model';
 import { ConfigParam } from '../ConfigParam';
 
@@ -30,7 +29,7 @@ interface ResponseItemUoms {
   providedIn: 'root',
 })
 export class ItemsService {
-  apiUrl: string;
+  private apiUrl: string;
 
   private _item = new Subject<Item>();
 

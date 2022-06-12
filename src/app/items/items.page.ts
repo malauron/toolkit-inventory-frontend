@@ -7,7 +7,6 @@ import {
   map,
   debounceTime,
   distinctUntilChanged,
-  catchError,
 } from 'rxjs/operators';
 import { Item } from '../classes/item.model';
 import { ConfigParam } from '../ConfigParam';

@@ -9,7 +9,10 @@ export class ConfigParam {
   urlItemSearch: any;
   urlItemUoms: any;
   urlItemUomSearch: any;
+
   urlUoms: any;
+
+  urlMenus: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -19,12 +22,15 @@ export class ConfigParam {
 
   constructor() {
     this.url = 'http://localhost:8443/api';
+
     this.urlItems = this.url + '/items';
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;
     this.urlItemUoms = `${this.url}/itemUoms`;
     this.urlItemUomSearch = `${this.urlItemUoms}/search/findByItemId`;
 
     this.urlUoms = this.url + '/uoms';
+
+    this.urlMenus = `${this.url}/menus`;
 
     this.urlV1 = 'http://localhost:8443/api/v1';
     this.urlV1Items = this.urlV1 + '/items';

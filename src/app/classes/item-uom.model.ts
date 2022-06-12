@@ -12,11 +12,4 @@ export class ItemUom {
     public quantity: number,
     public uom?: Uom) {}
 
-  // set itemId(itemId) {
-  //   this.itemUomId.itemId = itemId;
-  // }
-
-  // set uomId(uomId) {
-  //   this.itemUomId.uomId = uomId;
-  // }
 }
