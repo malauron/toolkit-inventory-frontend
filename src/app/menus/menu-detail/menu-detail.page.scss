@@ -6,4 +6,13 @@ ion-list {
   ion-item {
     padding: 5px
   }
+  .search-button {
+    --border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    ion-icon {
+      margin-right: -30px;
+      margin-left: -30px;
+    }
+  }
 }

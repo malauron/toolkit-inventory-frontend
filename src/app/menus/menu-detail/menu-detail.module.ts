@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MenuDetailPageRoutingModule } from './menu-detail-routing.module';
 
 import { MenuDetailPage } from './menu-detail.page';
+import { ItemSearchComponent } from 'src/app/items/item-search/item-search.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { MenuDetailPage } from './menu-detail.page';
     IonicModule,
     MenuDetailPageRoutingModule
   ],
-  declarations: [MenuDetailPage]
+  declarations: [MenuDetailPage, ItemSearchComponent],
+  entryComponents: [ItemSearchComponent]
 })
 export class MenuDetailPageModule {}
