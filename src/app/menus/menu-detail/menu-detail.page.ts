@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ItemSearchComponent } from '../../items/item-search/item-search.component';
 
+// import Swiper core and required modules
+import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+
+// install Swiper modules
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
+
 @Component({
   selector: 'app-menu-detail',
   templateUrl: './menu-detail.page.html',
@@ -26,4 +32,11 @@ export class MenuDetailPage implements OnInit {
   }
 
   onSave() {}
+
+  onSwiper([swiper]) {
+    console.log(swiper);
+  }
+  onSlideChange() {
+    console.log('slide change');
+  }
 }

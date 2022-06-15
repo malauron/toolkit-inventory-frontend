@@ -11,4 +11,11 @@ export class ItemSearchComponent implements OnInit {
 
   ngOnInit() {}
 
+  onSwiper([swiper]) {
+    console.log(swiper);
+  }
+  onSlideChange() {
+    console.log('slide change');
+  }
+
 }

@@ -8,13 +8,15 @@ import { MenuDetailPageRoutingModule } from './menu-detail-routing.module';
 
 import { MenuDetailPage } from './menu-detail.page';
 import { ItemSearchComponent } from 'src/app/items/item-search/item-search.component';
+import { SwiperModule  } from 'swiper/angular';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MenuDetailPageRoutingModule
+    MenuDetailPageRoutingModule,
+    SwiperModule
   ],
   declarations: [MenuDetailPage, ItemSearchComponent],
   entryComponents: [ItemSearchComponent]
