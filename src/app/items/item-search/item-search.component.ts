@@ -1,5 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-import { AfterContentChecked, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentChecked,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { IonSearchbar } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -29,40 +34,34 @@ export class ItemSearchComponent implements OnInit, AfterContentChecked {
 
   isFetching = false;
 
-  constructor(
-    private itemService: ItemsService,
-    private config: ConfigParam
-    ) { }
+  constructor(private itemService: ItemsService, private config: ConfigParam) {}
 
   ngOnInit() {
-
-
+    this.itemSearchBarSubscription = this.itemSearchBar.ionInput
+      .pipe(
+        map((event) => (event.target as HTMLInputElement).value),
+        debounceTime(2000),
+        distinctUntilChanged()
+      )
+      .subscribe((res) => {
+        this.searchValue = res.trim();
+        // this.infiniteScroll.disabled = false;
+        this.itemList = [];
+        this.pageNumber = 0;
+        this.totalPages = 0;
+        if (this.searchValue) {
+          this.getItems(undefined, 0, this.config.pageSize, this.searchValue);
+        } else {
+          this.getItems(undefined, 0, this.config.pageSize);
+        }
+      });
   }
 
   ngAfterContentChecked(): void {
-
     if (this.swiper) {
-      this.itemSearchBarSubscription = this.itemSearchBar.ionInput
-    .pipe(
-      map((event) => (event.target as HTMLInputElement).value),
-      debounceTime(2000),
-      distinctUntilChanged()
-    )
-    .subscribe((res) => {
-      this.searchValue = res.trim();
-      this.infiniteScroll.disabled = false;
-      this.itemList = [];
-      this.pageNumber = 0;
-      this.totalPages = 0;
-      if (this.searchValue) {
-        this.getItems(undefined, 0, this.config.pageSize, this.searchValue);
-      } else {
-        this.getItems(undefined, 0, this.config.pageSize);
-      }
-    });
+      this.swiper.updateSwiper({});
     }
-       // Listen to user input for use in searching of items
-
+    // Listen to user input for use in searching of items
   }
 
   getItems(event?, pageNumber?: number, pageSize?: number, itemName?: string) {
@@ -116,11 +115,10 @@ export class ItemSearchComponent implements OnInit, AfterContentChecked {
     }
   }
 
-  // onSwiper([swiper]) {
-  //   console.log(swiper);
-  // }
+  onSwiper([swiper]) {
+    console.log(swiper);
+  }
   onSlideChange() {
     console.log('slide change');
   }
-
 }
