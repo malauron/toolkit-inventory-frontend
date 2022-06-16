@@ -39,8 +39,8 @@
                       <ion-select-option
                         *ngFor="let uom of uoms"
                         value="{{ uom.uomId }}"
-                        >{{ uom.uomName }}</ion-select-option
-                      >
+                        >{{ uom.uomName }}
+                      </ion-select-option>
                     </ion-select>
                   </ion-item>
                 </ion-col>
@@ -115,7 +115,13 @@
                 <h2>{{ itemUom.uom.uomName }}</h2>
                 <p>{{ itemUom.quantity }}{{ itemUom.uom.uomCode }}</p>
               </ion-label>
-              <ion-button slot="end" fill="clear" color="dark" size="default" (click)="onDeleteItemUom(itemUom)">
+              <ion-button
+                slot="end"
+                fill="clear"
+                color="dark"
+                size="default"
+                (click)="onDeleteItemUom(itemUom)"
+              >
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>

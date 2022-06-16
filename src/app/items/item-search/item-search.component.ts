@@ -45,7 +45,7 @@ export class ItemSearchComponent implements OnInit, AfterContentChecked {
       )
       .subscribe((res) => {
         this.searchValue = res.trim();
-        // this.infiniteScroll.disabled = false;
+        this.infiniteScroll.disabled = false;
         this.itemList = [];
         this.pageNumber = 0;
         this.totalPages = 0;
@@ -113,6 +113,10 @@ export class ItemSearchComponent implements OnInit, AfterContentChecked {
     } else {
       this.getItems(event, this.pageNumber, this.config.pageSize);
     }
+  }
+
+  onItemClick(item: Item) {
+    console.log(item);
   }
 
   onSwiper([swiper]) {

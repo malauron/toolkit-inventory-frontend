@@ -1,47 +1,50 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <label> Search Item </label>
+  </ion-toolbar>
+  <ion-toolbar color="light">
+    <ion-searchbar #itemSearchBar></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
-  <ion-searchbar #itemSearchBar></ion-searchbar>
+  <ion-grid *ngIf="itemList.length > 0">
+    <ion-card class="favCard" *ngFor="let item of itemList">
+      <ion-item lines="none" detail button (click)="onItemClick(item)">
+        <ion-icon
+          name="restaurant-outline"
+          color="secondary"
+          slot="start"
+        ></ion-icon>
+        <ion-card-subtitle>{{ item.itemName }}</ion-card-subtitle>
+      </ion-item>
+    </ion-card>
+  </ion-grid>
 
-  <!-- [slidesPerView]="1"
-      [spaceBetween]="50"
-      (swiper)="onSwiper($event)"
-      (slideChange)="onSlideChange()"
-      [navigation]="true"
-      [pagination]="{ clickable: true }"
-      [scrollbar]="{ draggable: true }" -->
-  <swiper
-    #swiper
-    [slidesPerView]="1"
-    [spaceBetween]="50"
-    (swiper)="onSwiper($event)"
-    (slideChange)="onSlideChange()"
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreItems($event)"
   >
-    <ng-template swiperSlide>
-      <!-- <ion-searchbar #itemSearchBar></ion-searchbar> -->
-      <ion-grid *ngIf="itemList.length > 0">
-        <ion-card class="favCard" *ngFor="let item of itemList">
-          <ion-item lines="none" detail button>
-            <ion-icon
-              name="restaurant-outline"
-              color="secondary"
-              slot="start"
-            ></ion-icon>
-            <ion-card-subtitle>{{ item.itemName }}</ion-card-subtitle>
-          </ion-item>
-        </ion-card>
-      </ion-grid>
-
-      <ion-infinite-scroll
-        #infiniteScroll
-        threshold="5%"
-        (ionInfinite)="loadMoreItems($event)"
-      >
-        <ion-infinite-scroll-content
-          loadingSpinner="bubbles"
-          loadingText="Loading more items..."
-        >
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
-    </ng-template>
-    <ng-template swiperSlide>Slide 2</ng-template>
-  </swiper>
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more items..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
+<!--
+<ion-footer>
+  <ion-toolbar color="danger">
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer> -->
