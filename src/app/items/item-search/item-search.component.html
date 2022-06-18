@@ -1,21 +1,18 @@
 <ion-header>
   <ion-toolbar color="danger">
     <ion-buttons slot="start">
-      <ion-button>
+      <ion-button (click)="dismissModal()">
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <label> Search Item </label>
-  </ion-toolbar>
-  <ion-toolbar color="light">
-    <ion-searchbar #itemSearchBar></ion-searchbar>
+    <ion-searchbar #itemSearchBar placeholder="Search item"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-grid *ngIf="itemList.length > 0">
     <ion-card class="favCard" *ngFor="let item of itemList">
-      <ion-item lines="none" detail button (click)="onItemClick(item)">
+      <ion-item lines="none" detail button (click)="onSelectItem(item)">
         <ion-icon
           name="restaurant-outline"
           color="secondary"
@@ -38,13 +35,3 @@
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>
-<!--
-<ion-footer>
-  <ion-toolbar color="danger">
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer> -->

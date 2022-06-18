@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { IonSearchbar } from '@ionic/angular';
+import { IonSearchbar, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Item } from 'src/app/classes/item.model';
@@ -34,7 +34,11 @@ export class ItemSearchComponent implements OnInit, AfterContentChecked {
 
   isFetching = false;
 
-  constructor(private itemService: ItemsService, private config: ConfigParam) {}
+  constructor(
+    private itemService: ItemsService,
+    private config: ConfigParam,
+    private modalController: ModalController
+  ) {}
 
   ngOnInit() {
     this.itemSearchBarSubscription = this.itemSearchBar.ionInput
@@ -115,14 +119,18 @@ export class ItemSearchComponent implements OnInit, AfterContentChecked {
     }
   }
 
-  onItemClick(item: Item) {
-    console.log(item);
-  }
-
-  onSwiper([swiper]) {
+   onSwiper([swiper]) {
     console.log(swiper);
   }
   onSlideChange() {
     console.log('slide change');
+  }
+
+  dismissModal() {
+    this.modalController.dismiss(null,'dismissModal');
+  }
+
+  onSelectItem(item: Item) {
+    this.modalController.dismiss(item, 'item');
   }
 }
