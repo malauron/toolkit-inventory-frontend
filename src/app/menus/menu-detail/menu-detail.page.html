@@ -55,10 +55,10 @@
                   </ion-item>
                   <ion-item fill="outline">
                     <ion-label position="floating">Uom</ion-label>
-                    <ion-select formControlName="uomId">
+                    <ion-select formControlName="uom">
                       <ion-select-option
                         *ngFor="let uom of uoms"
-                        value="{{ uom.uomId }}"
+                        [value]= "uom"
                         >{{ uom.uomName }}</ion-select-option
                       >
                     </ion-select>
@@ -66,6 +66,7 @@
                   <ion-item fill="outline">
                     <ion-label position="floating">Quantity</ion-label>
                     <ion-input
+                      #quantityInput
                       formControlName="quantity"
                       type="number"
                       inputmode="decimal"
@@ -90,7 +91,28 @@
           <ion-item>
             <ion-label>Ingredients</ion-label>
           </ion-item>
+
+          <ion-grid *ngIf="menuIngredients.length>0">
+            <ion-row>
+              <ion-col
+                size-xs="12"
+                size-md="6"
+                size-lg="12"
+                size-xl="6"
+                *ngFor="let ing of menuIngredients"
+              >
+                <ion-card class="favCard">
+                  <ion-item lines="none" detail button >
+                    <ion-icon name="restaurant-outline" color="secondary" slot="start"></ion-icon>
+                    <ion-card-subtitle>{{ ing.item.itemName }}</ion-card-subtitle>
+                  </ion-item>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
         </ion-card>
+
       </ion-col>
     </ion-row>
   </ion-grid>

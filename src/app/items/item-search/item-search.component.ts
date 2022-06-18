@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { IonSearchbar, ModalController } from '@ionic/angular';
+import { IonSearchbar, ModalController, ViewDidEnter } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Item } from 'src/app/classes/item.model';
@@ -18,7 +18,7 @@ import { SwiperComponent } from 'swiper/angular';
   templateUrl: './item-search.component.html',
   styleUrls: ['./item-search.component.scss'],
 })
-export class ItemSearchComponent implements OnInit, AfterContentChecked {
+export class ItemSearchComponent implements OnInit,ViewDidEnter, AfterContentChecked {
   @ViewChild('swiper') swiper: SwiperComponent;
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('itemSearchBar', { static: true }) itemSearchBar: IonSearchbar;
@@ -59,6 +59,12 @@ export class ItemSearchComponent implements OnInit, AfterContentChecked {
           this.getItems(undefined, 0, this.config.pageSize);
         }
       });
+  }
+
+  ionViewDidEnter(): void {
+    setTimeout(() => {
+      this.itemSearchBar.setFocus();
+    }, 5);
   }
 
   ngAfterContentChecked(): void {
