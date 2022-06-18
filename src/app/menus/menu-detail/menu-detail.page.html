@@ -59,7 +59,7 @@
                       <ion-select-option
                         *ngFor="let uom of uoms"
                         value="{{ uom.uomId }}"
-                        >{{uom.uomName}}</ion-select-option
+                        >{{ uom.uomName }}</ion-select-option
                       >
                     </ion-select>
                   </ion-item>
@@ -74,6 +74,12 @@
                     ></ion-input>
                   </ion-item>
                 </form>
+
+                <ion-item>
+                  <ion-button (click)="onAddIngredient()">
+                    <ion-icon name="add-outline"></ion-icon>
+                  </ion-button>
+                </ion-item>
               </ion-list>
             </ion-accordion>
           </ion-accordion-group>

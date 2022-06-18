@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { IonSelect, IonSelectOption, ModalController } from '@ionic/angular';
 import { ItemUom } from 'src/app/classes/item-uom.model';
 import { Item } from 'src/app/classes/item.model';
 import { Uom } from 'src/app/classes/uom.model';
@@ -13,6 +13,8 @@ import { ItemSearchComponent } from '../../items/item-search/item-search.compone
 })
 
 export class MenuDetailPage implements OnInit {
+
+  // @ViewChild('uomSelect') uomSelect: IonSelect;
 
   menuForm: FormGroup;
   itemForm: FormGroup;
@@ -71,13 +73,17 @@ export class MenuDetailPage implements OnInit {
           this.uoms = [this.item.uom];
           this.itemForm.patchValue({
             itemName: this.item.itemName,
-            uomId: this.item.uom.uomId,
+            uomId: this.item.uom.uomId.toString(),
           });
-
+          // this.uomSelect.value  = this.item.uom.uomId.toString();
           console.log(this.itemForm);
         }
       }
       );
+  }
+
+  onAddIngredient(){
+    console.log(this.itemForm);
   }
 
   onSave() {}
