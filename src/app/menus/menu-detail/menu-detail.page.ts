@@ -10,10 +10,12 @@ import {
 import { Subscription } from 'rxjs';
 import { ItemUom } from 'src/app/classes/item-uom.model';
 import { Item } from 'src/app/classes/item.model';
+import { MenuDto } from 'src/app/classes/menu-dto.model';
 import { MenuIngredient } from 'src/app/classes/menu-ingredient.model';
 import { Menu } from 'src/app/classes/menu.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemsService } from 'src/app/services/items.service';
+import { MenuService } from 'src/app/services/menus.service';
 import { ItemSearchComponent } from '../../items/item-search/item-search.component';
 
 @Component({
@@ -36,7 +38,8 @@ export class MenuDetailPage implements OnInit {
 
   constructor(
     private modalItemSearch: ModalController,
-    private itemService: ItemsService
+    private itemService: ItemsService,
+    private menuService: MenuService
   ) {}
 
   ngOnInit() {
@@ -126,19 +129,23 @@ export class MenuDetailPage implements OnInit {
     }
   }
 
-  onSave() {
-    console.log(this.processMenu());
+  onSaveMenu() {
+    this.menuService.postMenus(this.processMenu()).subscribe(
+      res => {console.log(res);}
+    );
   }
 
-  processMenu(): Menu {
-    const menu = new Menu(
-      null,
-      this.menuForm.value.menuName,
-      0,
-      null,
+  processMenu(): any {
+
+    const menu = new Menu();
+    menu.menuName = this.menuForm.value.menuName;
+    menu.price = 0;
+
+    const menuDto = new MenuDto(
+      menu,
       this.menuIngredients
     );
 
-    return menu;
+    return menuDto;
   }
 }

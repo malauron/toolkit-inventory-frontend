@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
     <ion-buttons slot="primary" *ngIf="!this.menuId">
-      <ion-button (click)="onSave()">
+      <ion-button (click)="onSaveMenu()">
         <ion-icon name="{{ postButton }}" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -102,15 +102,10 @@
                 *ngFor="let ing of menuIngredients"
               >
                 <ion-card class="favCard">
-                  <ion-item>
+                  <ion-item lines="none">
                     <ion-icon name="restaurant-outline" color="secondary" slot="start"></ion-icon>
                     <ion-card-subtitle>{{ ing.item.itemName }} - {{ ing.requiredQty }}{{ ing.requiredUom.uomCode }}</ion-card-subtitle>
                   </ion-item>
-                  <!-- <ion-item lines="none">
-                    <ion-card-subtitle class="uom">
-                      {{ ing.requiredQty }}{{ ing.requiredUom.uomCode }}
-                    </ion-card-subtitle>
-                  </ion-item> -->
                 </ion-card>
               </ion-col>
             </ion-row>
