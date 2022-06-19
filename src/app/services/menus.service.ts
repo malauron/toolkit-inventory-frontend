@@ -29,6 +29,11 @@ export class MenuService {
     return this.http.get<ResponseMenus>(this.apiUrl);
   }
 
+  postMenus(menu: Menu): Observable<ResponseMenus> {
+    this.apiUrl = `${this.config.urlV1Menus}`;
+    return this.http.post<ResponseMenus>(this.apiUrl, menu);
+  }
+
   getMenuIngredients() {
 
   }

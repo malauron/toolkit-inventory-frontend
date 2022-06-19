@@ -9,14 +9,13 @@ export class ConfigParam {
   urlItemSearch: any;
   urlItemUoms: any;
   urlItemUomSearch: any;
-
   urlUoms: any;
-
   urlMenus: any;
 
   urlV1: any;
   urlV1Items: any;
   urlV1ItemUoms: any;
+  urlV1Menus: any;
 
   pageSize: number;
 
@@ -27,14 +26,15 @@ export class ConfigParam {
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;
     this.urlItemUoms = `${this.url}/itemUoms`;
     this.urlItemUomSearch = `${this.urlItemUoms}/search/findByItemId`;
-
     this.urlUoms = this.url + '/uoms';
-
     this.urlMenus = `${this.url}/menus`;
 
     this.urlV1 = 'http://localhost:8443/api/v1';
     this.urlV1Items = this.urlV1 + '/items';
     this.urlV1ItemUoms = this.urlV1 + '/itemUoms';
+    this.urlV1Menus = this.urlV1 + '/menus';
+
+
 
     this.pageSize = 20;
   }

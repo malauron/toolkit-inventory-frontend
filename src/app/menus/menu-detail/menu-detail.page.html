@@ -102,10 +102,15 @@
                 *ngFor="let ing of menuIngredients"
               >
                 <ion-card class="favCard">
-                  <ion-item lines="none" detail button >
+                  <ion-item>
                     <ion-icon name="restaurant-outline" color="secondary" slot="start"></ion-icon>
-                    <ion-card-subtitle>{{ ing.item.itemName }}</ion-card-subtitle>
+                    <ion-card-subtitle>{{ ing.item.itemName }} - {{ ing.requiredQty }}{{ ing.requiredUom.uomCode }}</ion-card-subtitle>
                   </ion-item>
+                  <!-- <ion-item lines="none">
+                    <ion-card-subtitle class="uom">
+                      {{ ing.requiredQty }}{{ ing.requiredUom.uomCode }}
+                    </ion-card-subtitle>
+                  </ion-item> -->
                 </ion-card>
               </ion-col>
             </ion-row>

@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { ItemUom } from 'src/app/classes/item-uom.model';
 import { Item } from 'src/app/classes/item.model';
 import { MenuIngredient } from 'src/app/classes/menu-ingredient.model';
+import { Menu } from 'src/app/classes/menu.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemsService } from 'src/app/services/items.service';
 import { ItemSearchComponent } from '../../items/item-search/item-search.component';
@@ -112,20 +113,32 @@ export class MenuDetailPage implements OnInit {
   }
 
   onAddIngredient() {
-    // const uom =  new Uom();
-    // uom.uomId = this.itemForm.value.uomId;
-    // uom.uomName = this.itemForm.value.uomName;
-    console.log(this.itemForm);
-    const ingredient = new MenuIngredient(
+    if (this.itemForm.valid) {
+      const ingredient = new MenuIngredient(
       null,
       null,
       this.itemForm.value.item,
       this.itemForm.value.uom,
       this.itemForm.value.quantity
       );
-
       this.menuIngredients = this.menuIngredients.concat(ingredient);
+      this.itemForm.reset();
+    }
   }
 
-  onSave() {}
+  onSave() {
+    console.log(this.processMenu());
+  }
+
+  processMenu(): Menu {
+    const menu = new Menu(
+      null,
+      this.menuForm.value.menuName,
+      0,
+      null,
+      this.menuIngredients
+    );
+
+    return menu;
+  }
 }
