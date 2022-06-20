@@ -1,11 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import {
   IonInput,
   IonSelect,
   IonSelectOption,
   ModalController,
+  NavController,
 } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { ItemUom } from 'src/app/classes/item-uom.model';
@@ -37,12 +39,31 @@ export class MenuDetailPage implements OnInit {
   menuId: number;
 
   constructor(
+    private route: ActivatedRoute,
+    private navCtrl: NavController,
     private modalItemSearch: ModalController,
     private itemService: ItemsService,
     private menuService: MenuService
   ) {}
 
   ngOnInit() {
+
+    this.route.paramMap.subscribe((paramMap)=>{
+      console.log(paramMap);
+      //Check whether paramMap is empty of not
+      if (!paramMap.has('menuId')) {
+        this.navCtrl.navigateBack('/tabs/menus');
+        return;
+      }
+
+      //Check if paramMap is a number
+      if (isNaN(Number(paramMap.get('menuId')))) {
+        this.navCtrl.navigateBack('/tabs/menus');
+        return;
+      }
+
+    });
+
     this.menuForm = new FormGroup({
       menuName: new FormControl(null, {
         updateOn: 'blur',

@@ -5,13 +5,19 @@ import { MenusPage } from './menus.page';
 
 const routes: Routes = [
   {
+    path: 'menu-detail',
+    loadChildren: () => import('./menu-detail/menu-detail.module').then( m => m.MenuDetailPageModule)
+  },
+  {
     path: '',
     component: MenusPage
   },
   {
-    path: 'menu-detail',
-    loadChildren: () => import('./menu-detail/menu-detail.module').then( m => m.MenuDetailPageModule)
+    path: '**',
+    redirectTo: '/tabs/menus',
+    pathMatch: 'full'
   }
+
 ];
 
 @NgModule({

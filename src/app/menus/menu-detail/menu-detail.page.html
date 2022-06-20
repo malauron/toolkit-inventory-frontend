@@ -76,9 +76,9 @@
                   </ion-item>
                 </form>
 
-                <ion-item>
-                  <ion-button (click)="onAddIngredient()">
-                    <ion-icon name="add-outline"></ion-icon>
+                <ion-item lines="none">
+                  <ion-button full (click)="onAddIngredient()" slot="end" size="default">
+                    Add<ion-icon name="add-outline"></ion-icon>
                   </ion-button>
                 </ion-item>
               </ion-list>

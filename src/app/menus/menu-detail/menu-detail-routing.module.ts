@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/tas/menus',
+    redirectTo: '/tabs/menus',
     pathMatch: 'full'
   },
   {
