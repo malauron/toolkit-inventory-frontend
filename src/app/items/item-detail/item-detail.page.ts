@@ -92,6 +92,7 @@ export class ItemDetailPage implements OnInit {
       // Fecth all uoms for this item
       this.getItemUoms(this.itemId);
 
+      // Get item details
       if (this.itemId > 0) {
         this.postButton = 'checkmark-outline';
         this.itemSubscription = this.itemService.getItem(this.itemId).subscribe(
@@ -104,7 +105,8 @@ export class ItemDetailPage implements OnInit {
             });
           },
           (error) => {
-            console.log('An error has occured:' + error);
+            this.navCtrl.navigateBack('/tabs/items');
+            return;
           }
         );
       } else {
@@ -158,7 +160,7 @@ export class ItemDetailPage implements OnInit {
       if (this.itemId) {
         this.messageBox('Item details has been updated.');
       } else {
-        this.navCtrl.back();
+        this.navCtrl.navigateBack('/tabs/items');
       }
     };
   }

@@ -37,6 +37,7 @@ export class MenuDetailPage implements OnInit {
   postButton = 'add';
 
   menuId: number;
+  dateCreated: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,22 +48,6 @@ export class MenuDetailPage implements OnInit {
   ) {}
 
   ngOnInit() {
-
-    this.route.paramMap.subscribe((paramMap)=>{
-      console.log(paramMap);
-      //Check whether paramMap is empty of not
-      if (!paramMap.has('menuId')) {
-        this.navCtrl.navigateBack('/tabs/menus');
-        return;
-      }
-
-      //Check if paramMap is a number
-      if (isNaN(Number(paramMap.get('menuId')))) {
-        this.navCtrl.navigateBack('/tabs/menus');
-        return;
-      }
-
-    });
 
     this.menuForm = new FormGroup({
       menuName: new FormControl(null, {
@@ -86,6 +71,42 @@ export class MenuDetailPage implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
+    });
+
+    this.route.paramMap.subscribe((paramMap)=>{
+      //Check whether paramMap is empty of not
+      if (!paramMap.has('menuId')) {
+        this.navCtrl.navigateBack('/tabs/menus');
+        return;
+      }
+
+      //Check if paramMap is a number
+      if (isNaN(Number(paramMap.get('menuId')))) {
+        this.navCtrl.navigateBack('/tabs/menus');
+        return;
+      }
+
+      this.menuId = Number(paramMap.get('menuId'));
+
+      // Get item details
+      if (this.menuId > 0) {
+        this.menuService.getMenu(this.menuId).subscribe(
+          menuData => {
+            this.dateCreated = menuData.dateCreated;
+            this.menuForm.patchValue({
+              menuName: menuData.menuName
+            });
+          }
+        );
+
+        this.menuService.getMenuIngredients(this.menuId).subscribe(
+          menuIngredientsData => {
+            console.log(menuIngredientsData);
+            // this.menuIngredients = this.menuIngredients.concat(menu)
+          }
+        );
+      }
+
     });
   }
 

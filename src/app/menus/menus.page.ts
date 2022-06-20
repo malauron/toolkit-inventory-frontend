@@ -38,4 +38,8 @@ export class MenusPage implements OnInit {
     this.router.navigate(['/','tabs','menus','menu-detail',0]);
   }
 
+  onEditMenu(menuId: number) {
+    this.router.navigate(['/','tabs','menus','menu-detail',menuId]);
+  }
+
 }

@@ -34,7 +34,7 @@
         *ngFor="let menu of menuList"
       >
         <ion-card class="favCard">
-          <ion-item lines="none" detail button >
+          <ion-item lines="none" detail button (click)="onEditMenu(menu.menuId)" >
             <ion-icon name="restaurant-outline" color="secondary" slot="start"></ion-icon>
             <ion-card-subtitle>{{ menu.menuName }}</ion-card-subtitle>
           </ion-item>

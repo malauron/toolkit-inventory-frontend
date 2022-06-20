@@ -11,6 +11,8 @@ export class ConfigParam {
   urlItemUomSearch: any;
   urlUoms: any;
   urlMenus: any;
+  urlMenuIngredients: any;
+  urlMenuIngredientSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -28,6 +30,8 @@ export class ConfigParam {
     this.urlItemUomSearch = `${this.urlItemUoms}/search/findByItemId`;
     this.urlUoms = this.url + '/uoms';
     this.urlMenus = `${this.url}/menus`;
+    this.urlMenuIngredients = `${this.url}/menuIngredients`;
+    this.urlMenuIngredientSearch = `${this.urlMenuIngredients}/search/findByMenuId?menuId=`;
 
     this.urlV1 = 'http://localhost:8443/api/v1';
     this.urlV1Items = this.urlV1 + '/items';
