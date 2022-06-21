@@ -25,8 +25,20 @@
                   <ion-input type="text" formControlName="menuName"></ion-input>
                 </ion-item>
               </form>
+
             </ion-item-group>
           </ion-list>
+          <ion-item *ngIf="this.menuId">
+            <ion-button
+              (click)="onSaveMenu()"
+              color="danger"
+              slot="end"
+              size="default"
+            >
+              Save
+              <ion-icon name="{{ postButton }}" slot="end"></ion-icon>
+            </ion-button>
+          </ion-item>
           <ion-accordion-group>
             <ion-accordion value="newIngredient">
               <ion-item slot="header">
@@ -77,10 +89,11 @@
                 </form>
 
                 <ion-item lines="none">
-                  <ion-button full (click)="onAddIngredient()" slot="end" size="default">
+                  <ion-button full (click)="onAddIngredient()" slot="end" size="default" color="tertiary">
                     Add<ion-icon name="add-outline"></ion-icon>
                   </ion-button>
                 </ion-item>
+
               </ion-list>
             </ion-accordion>
           </ion-accordion-group>
@@ -103,7 +116,9 @@
               >
                 <ion-card class="favCard">
                   <ion-item lines="none">
-                    <ion-icon name="restaurant-outline" color="secondary" slot="start"></ion-icon>
+                    <ion-avatar slot="start">
+                      <img src="../../assets/icons/items.svg" class="icon" />
+                    </ion-avatar>
                     <ion-card-subtitle>{{ ing.item.itemName }} - {{ ing.requiredQty }}{{ ing.requiredUom.uomCode }}</ion-card-subtitle>
                   </ion-item>
                 </ion-card>

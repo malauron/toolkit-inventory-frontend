@@ -48,7 +48,6 @@ export class MenuDetailPage implements OnInit {
   ) {}
 
   ngOnInit() {
-
     this.menuForm = new FormGroup({
       menuName: new FormControl(null, {
         updateOn: 'blur',
@@ -73,7 +72,7 @@ export class MenuDetailPage implements OnInit {
       }),
     });
 
-    this.route.paramMap.subscribe((paramMap)=>{
+    this.route.paramMap.subscribe((paramMap) => {
       //Check whether paramMap is empty of not
       if (!paramMap.has('menuId')) {
         this.navCtrl.navigateBack('/tabs/menus');
@@ -90,23 +89,17 @@ export class MenuDetailPage implements OnInit {
 
       // Get item details
       if (this.menuId > 0) {
-        this.menuService.getMenu(this.menuId).subscribe(
-          menuData => {
-            this.dateCreated = menuData.dateCreated;
-            this.menuForm.patchValue({
-              menuName: menuData.menuName
-            });
-          }
-        );
+        this.menuService.getMenu(this.menuId).subscribe((menuData) => {
+          this.dateCreated = menuData.dateCreated;
+          this.menuForm.patchValue({
+            menuName: menuData.menuName,
+          });
+        });
 
-        this.menuService.getMenuIngredients(this.menuId).subscribe(
-          menuIngredientsData => {
-            console.log(menuIngredientsData);
-            // this.menuIngredients = this.menuIngredients.concat(menu)
-          }
-        );
+        this.menuService
+          .getMenuIngredients(this.menuId)
+          .subscribe(this.processMenuIngResult());
       }
-
     });
   }
 
@@ -157,14 +150,32 @@ export class MenuDetailPage implements OnInit {
     };
   }
 
+  processMenuIngResult() {
+    return (data) => {
+      this.menuIngredients = [];
+      for (const key in data._embedded.menuIngredients) {
+        if (data._embedded.menuIngredients.hasOwnProperty(key)) {
+          const ingredient = new MenuIngredient(
+            data._embedded.menuIngredients[key].menuIngredientId,
+            this.menuId,
+            data._embedded.menuIngredients[key]._embedded.item,
+            data._embedded.menuIngredients[key]._embedded.requiredUom,
+            data._embedded.menuIngredients[key].requiredQty
+          );
+          this.menuIngredients = this.menuIngredients.concat(ingredient);
+        }
+      }
+    };
+  }
+
   onAddIngredient() {
     if (this.itemForm.valid) {
       const ingredient = new MenuIngredient(
-      null,
-      null,
-      this.itemForm.value.item,
-      this.itemForm.value.uom,
-      this.itemForm.value.quantity
+        null,
+        null,
+        this.itemForm.value.item,
+        this.itemForm.value.uom,
+        this.itemForm.value.quantity
       );
       this.menuIngredients = this.menuIngredients.concat(ingredient);
       this.itemForm.reset();
@@ -172,21 +183,31 @@ export class MenuDetailPage implements OnInit {
   }
 
   onSaveMenu() {
-    this.menuService.postMenus(this.processMenu()).subscribe(
-      res => {console.log(res);}
-    );
+    if (this.menuId > 0) {
+      const menu = new Menu(
+        this.menuId,
+        this.menuForm.value.menuName,
+        0,
+        this.dateCreated
+      );
+      this.menuService.putMenu(menu).subscribe(
+        res => {
+          console.log(res);
+        }
+      );
+    } else {
+      this.menuService.postMenu(this.processMenu()).subscribe((res) => {
+        this.navCtrl.navigateBack('/tabs/menus');
+      });
+    }
   }
 
   processMenu(): any {
-
     const menu = new Menu();
     menu.menuName = this.menuForm.value.menuName;
     menu.price = 0;
 
-    const menuDto = new MenuDto(
-      menu,
-      this.menuIngredients
-    );
+    const menuDto = new MenuDto(menu, this.menuIngredients);
 
     return menuDto;
   }

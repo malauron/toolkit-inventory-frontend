@@ -13,11 +13,14 @@
   <ion-grid *ngIf="itemList.length > 0">
     <ion-card class="favCard" *ngFor="let item of itemList">
       <ion-item lines="none" detail button (click)="onSelectItem(item)">
-        <ion-icon
+        <!-- <ion-icon
           name="restaurant-outline"
           color="secondary"
           slot="start"
-        ></ion-icon>
+        ></ion-icon> -->
+        <ion-avatar slot="start">
+          <img src="../../assets/icons/items.svg" class="icon" />
+        </ion-avatar>
         <ion-card-subtitle>{{ item.itemName }}</ion-card-subtitle>
       </ion-item>
     </ion-card>

@@ -1,9 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Item } from '../classes/item.model';
 import { MenuIngredient } from '../classes/menu-ingredient.model';
 import { Menu } from '../classes/menu.model';
 import { PageInfo } from '../classes/page-info.model';
+import { Uom } from '../classes/uom.model';
 import { ConfigParam } from '../ConfigParam';
 
 interface ResponseMenus {
@@ -11,6 +14,19 @@ interface ResponseMenus {
     menus: Menu[];
   };
   page: PageInfo;
+}
+
+interface ResponseMenuIng {
+  _embedded: {
+    menuIngredients: {
+      menuIngredientId: number;
+      requiredQty: number;
+      _embedded: {
+        item: Item;
+        requiredUom: Uom;
+      };
+    };
+  };
 }
 
 
@@ -33,15 +49,18 @@ export class MenuService {
     return this.http.get<Menu>(this.apiUrl);
   }
 
-  getMenuIngredients(menuId: number): Observable<MenuIngredient> {
+  getMenuIngredients(menuId: number): Observable<ResponseMenuIng> {
     this.apiUrl =  `${this.config.urlMenuIngredientSearch}${menuId}`;
-    console.log(this.apiUrl);
-    return this.http.get<MenuIngredient>(this.apiUrl);
+    return this.http.get<ResponseMenuIng>(this.apiUrl);
   }
 
-  postMenus(menu: Menu): Observable<ResponseMenus> {
+  postMenu(menu: Menu): Observable<ResponseMenus> {
     this.apiUrl = `${this.config.urlV1Menus}`;
     return this.http.post<ResponseMenus>(this.apiUrl, menu);
+  }
+
+  putMenu(menu: Menu): Observable<Menu> {
+    return this.http.put<Menu>(this.config.urlV1Menus, menu);
   }
 
 }
