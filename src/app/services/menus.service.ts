@@ -63,4 +63,8 @@ export class MenuService {
     return this.http.put<Menu>(this.config.urlV1Menus, menu);
   }
 
+  postMenuIngredients(menuIng: MenuIngredient){
+    this.apiUrl = `${this.config.urlV1Menus}/menuIngredient`;
+    return this.http.post(this.apiUrl, menuIng);
+  }
 }

@@ -5,7 +5,6 @@ export class Menu {
     public menuId?: number,
     public menuName?: string,
     public price?: number,
-    public dateCreated?: string,
-    public menuIngredient?: MenuIngredient[]
+    public dateCreated?: string
   ) {}
 }

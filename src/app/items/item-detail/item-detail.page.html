@@ -99,7 +99,7 @@
             <label>UoM Group</label>
             <ion-button
               (click)="onSaveUom()"
-              color="danger"
+              color="tertiary"
               slot="end"
               size="default"
             >
@@ -116,9 +116,10 @@
                 <p>{{ itemUom.quantity }}{{ itemUom.uom.uomCode }}</p>
               </ion-label>
               <ion-button
+                mode="ios"
                 slot="end"
                 fill="clear"
-                color="dark"
+                color="medium"
                 size="default"
                 (click)="onDeleteItemUom(itemUom)"
               >
