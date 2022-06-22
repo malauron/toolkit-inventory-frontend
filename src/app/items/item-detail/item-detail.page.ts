@@ -2,7 +2,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NavController, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  NavController,
+  ToastController,
+} from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { ItemUom } from 'src/app/classes/item-uom.model';
 import { Item } from 'src/app/classes/item.model';
@@ -35,7 +39,8 @@ export class ItemDetailPage implements OnInit {
     private navCtrl: NavController,
     private itemService: ItemsService,
     private uomService: UomsService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
@@ -122,9 +127,7 @@ export class ItemDetailPage implements OnInit {
   }
 
   getItemUoms(itemId: number) {
-    this.itemService.getItemUoms(itemId).subscribe(
-      this.processResult()
-    );
+    this.itemService.getItemUoms(itemId).subscribe(this.processResult());
   }
 
   processResult() {
@@ -183,15 +186,31 @@ export class ItemDetailPage implements OnInit {
   }
 
   onDeleteItemUom(data: ItemUom) {
-    const itemUomId = data.itemUomId;
-    const uom = data.uom;
-    const quantity = data.quantity;
-    const itemUom = new ItemUom(itemUomId,quantity,uom);
-    this.itemService.deleteItemUoms(itemUom).subscribe(
-      res => {
-        this.getItemUoms(this.itemId);
-      }
-    );
+    this.alertCtrl
+      .create({
+        header: 'Confirm',
+        message: 'This will permanently deletes the unit of measure.',
+        buttons: [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'Delete',
+            handler: () => {
+              const itemUomId = data.itemUomId;
+              const uom = data.uom;
+              const quantity = data.quantity;
+              const itemUom = new ItemUom(itemUomId, quantity, uom);
+              this.itemService.deleteItemUoms(itemUom).subscribe((res) => {
+                this.getItemUoms(this.itemId);
+              });
+            },
+          },
+        ],
+      })
+      .then((res) => {
+        res.present();
+      });
   }
 
   async messageBox(msg: string) {

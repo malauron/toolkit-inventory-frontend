@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -63,8 +63,19 @@ export class MenuService {
     return this.http.put<Menu>(this.config.urlV1Menus, menu);
   }
 
-  postMenuIngredients(menuIng: MenuIngredient){
-    this.apiUrl = `${this.config.urlV1Menus}/menuIngredient`;
+  postMenuIngredient(menuIng: MenuIngredient){
+    this.apiUrl = `${this.config.urlV1MenuIngredients}`;
     return this.http.post(this.apiUrl, menuIng);
+  }
+
+  deleteMenuIngredient(menuIng: MenuIngredient) {
+    const options = {
+      headers: new HttpHeaders({
+        contentType: 'application/json',
+      }),
+      body: menuIng,
+    };
+    this.apiUrl = `${this.config.urlV1MenuIngredients}`;
+    return this.http.delete(this.apiUrl, options);
   }
 }

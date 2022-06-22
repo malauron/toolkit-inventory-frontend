@@ -105,6 +105,7 @@
         <ion-card>
           <ion-item>
             <ion-label>Ingredients</ion-label>
+            <ion-spinner name="dots" *ngIf="isFetching"></ion-spinner>
           </ion-item>
 
           <ion-grid *ngIf="menuIngredients.length>0">

@@ -18,6 +18,7 @@ export class ConfigParam {
   urlV1Items: any;
   urlV1ItemUoms: any;
   urlV1Menus: any;
+  urlV1MenuIngredients: any;
 
   pageSize: number;
 
@@ -37,7 +38,7 @@ export class ConfigParam {
     this.urlV1Items = this.urlV1 + '/items';
     this.urlV1ItemUoms = this.urlV1 + '/itemUoms';
     this.urlV1Menus = this.urlV1 + '/menus';
-
+    this.urlV1MenuIngredients = `${this.urlV1}/menuIngredients`;
 
 
     this.pageSize = 20;

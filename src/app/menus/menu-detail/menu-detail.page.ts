@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
+  AlertController,
   IonInput,
   IonSelect,
   IonSelectOption,
@@ -34,22 +35,24 @@ export class MenuDetailPage implements OnInit {
 
   pageLabel = 'Menu Detail';
   postButton = 'add';
+  ingCtr = 0;
 
   menu: Menu;
-  // menuId: number;
-  // dateCreated: string;
+
+  isFetching = false;
 
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private modalItemSearch: ModalController,
+    private alertCtrl: AlertController,
     private itemService: ItemsService,
     private menuService: MenuService
   ) {}
 
   ngOnInit() {
+    this.isFetching = true;
     this.menuForm = new FormGroup({
-
       menuName: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(30)],
@@ -86,17 +89,13 @@ export class MenuDetailPage implements OnInit {
         return;
       }
 
-      // this.menuId = Number(paramMap.get('menuId'));
-      // this.menu.menuId = Number(paramMap.get('menuId'));
       this.menu = new Menu();
       this.menu.menuId = Number(paramMap.get('menuId'));
       this.menu.price = 0;
 
       // Get item details
       if (this.menu.menuId > 0) {
-
         this.menuService.getMenu(this.menu.menuId).subscribe((menuData) => {
-          // this.dateCreated = menuData.dateCreated;
           this.menu.menuName = menuData.menuName;
           this.menu.dateCreated = menuData.dateCreated;
           this.menuForm.patchValue({
@@ -107,6 +106,8 @@ export class MenuDetailPage implements OnInit {
         this.menuService
           .getMenuIngredients(this.menu.menuId)
           .subscribe(this.processMenuIngResult());
+      } else {
+        this.isFetching = false;
       }
     });
   }
@@ -173,6 +174,7 @@ export class MenuDetailPage implements OnInit {
           this.menuIngredients = this.menuIngredients.concat(ingredient);
         }
       }
+      this.isFetching = false;
     };
   }
 
@@ -186,12 +188,10 @@ export class MenuDetailPage implements OnInit {
         this.itemForm.value.quantity
       );
       if (this.menu.menuId > 0) {
-        this.menuService.postMenuIngredients(ingredient).subscribe(
-          res => {
-            this.menuIngredients = this.menuIngredients.concat(ingredient);
-            this.itemForm.reset();
-          }
-        );
+        this.menuService.postMenuIngredient(ingredient).subscribe((res) => {
+          this.menuIngredients = this.menuIngredients.concat(ingredient);
+          this.itemForm.reset();
+        });
       } else {
         this.menuIngredients = this.menuIngredients.concat(ingredient);
         this.itemForm.reset();
@@ -202,11 +202,9 @@ export class MenuDetailPage implements OnInit {
   onSaveMenu() {
     if (this.menu.menuId > 0) {
       this.menu.menuName = this.menuForm.value.menuName;
-      this.menuService.putMenu(this.menu).subscribe(
-        res => {
-          // console.log(res);
-        }
-      );
+      this.menuService.putMenu(this.menu).subscribe((res) => {
+        // console.log(res);
+      });
     } else {
       this.menuService.postMenu(this.processMenu()).subscribe((res) => {
         this.navCtrl.navigateBack('/tabs/menus');
@@ -225,6 +223,38 @@ export class MenuDetailPage implements OnInit {
   }
 
   onDeleteIngredient(ing: MenuIngredient) {
-    console.log(ing);
+    this.alertCtrl
+      .create({
+        header: 'Confirm',
+        message: 'This will permanently deletes the ingredient.',
+        buttons: [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'Delete',
+            handler: () => {
+              if (this.menu.menuId > 0) {
+                this.menuService.deleteMenuIngredient(ing).subscribe((res) => {
+                  this.removeIngredientObj(ing);
+                });
+              } else {
+                this.removeIngredientObj(ing);
+              }
+            },
+          },
+        ],
+      })
+      .then((res) => {
+        res.present();
+      });
+  }
+
+  removeIngredientObj(ing: MenuIngredient) {
+    for (const key in this.menuIngredients) {
+      if (ing === this.menuIngredients[key]) {
+        this.menuIngredients.splice(Number(key), 1);
+      }
+    }
   }
 }
