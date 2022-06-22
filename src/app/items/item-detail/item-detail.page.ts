@@ -82,23 +82,6 @@ export class ItemDetailPage implements OnInit {
         return;
       }
 
-      this.uomSubscription = this.uomService
-      .findAllUoms()
-      .subscribe((uomApiData) => {
-        // this.uoms = uomApiData._embedded.uoms;
-        this.uoms = [];
-        for (const key in uomApiData._embedded.uoms) {
-          if (uomApiData._embedded.uoms.hasOwnProperty(key)) {
-            const uom = new Uom();
-            uom.uomId = uomApiData._embedded.uoms[key].uomId;
-            uom.uomCode = uomApiData._embedded.uoms[key].uomCode;
-            uom.uomName = uomApiData._embedded.uoms[key].uomName;
-            this.uoms = this.uoms.concat(uom);
-          }
-        }
-        console.log(this.uoms);
-      });
-
       this.item = new Item();
       this.item.itemId = Number(paramMap.get('itemId'));
 
@@ -117,17 +100,34 @@ export class ItemDetailPage implements OnInit {
           .getItem(this.item.itemId)
           .subscribe(
             (itemApiData) => {
-
-              this.item.uom = itemApiData.uom;
+              // this.item.uom = itemApiData.uom;
               this.item.itemName = itemApiData.itemName;
               this.item.dateCreated = itemApiData.dateCreated;
 
-              console.log(this.item.uom);
+              this.uomSubscription = this.uomService
+                .findAllUoms()
+                .subscribe((uomApiData) => {
+                  this.uoms = [];
+                  for (const key in uomApiData._embedded.uoms) {
+                    if (uomApiData._embedded.uoms.hasOwnProperty(key)) {
+                      const uom = new Uom();
+                      uom.uomId = uomApiData._embedded.uoms[key].uomId;
+                      uom.uomCode = uomApiData._embedded.uoms[key].uomCode;
+                      uom.uomName = uomApiData._embedded.uoms[key].uomName;
+                      if (itemApiData.uom.uomId === uom.uomId) {
+                        this.item.uom = uom;
+                      }
+                      this.uoms = this.uoms.concat(uom);
+                    }
+                  }
 
-              this.itemForm.patchValue({
-                itemName: itemApiData.itemName,
-                uom: this.item.uom,
-              });
+                  this.itemForm.patchValue({
+                    itemName: itemApiData.itemName,
+                    uom: this.item.uom,
+                  });
+                });
+
+              // console.log(this.item.uom);
 
               // Fecth all uoms for this item
               this.getItemUoms(this.item.itemId);
@@ -140,7 +140,6 @@ export class ItemDetailPage implements OnInit {
       } else {
         this.pageLabel = 'New Item';
       }
-
     });
   }
 
@@ -156,12 +155,12 @@ export class ItemDetailPage implements OnInit {
 
   onSave() {
     if (this.itemForm.valid) {
-
-      this.uom = new Uom();
+      // this.uom = new Uom();
 
       this.item.itemName = this.itemForm.value.itemName;
-      this.uom.setUomId = this.itemForm.value.uomId;
-      this.item.uom = this.uom;
+      // this.uom.setUomId = this.itemForm.value.uomId;
+      // this.item.uom = this.uom;
+      this.item.uom = this.itemForm.value.uom;
 
       if (this.item.itemId > 0) {
         this.itemService.putItem(this.item).subscribe(this.processSaveItem());
