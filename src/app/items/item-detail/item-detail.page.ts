@@ -25,8 +25,6 @@ export class ItemDetailPage implements OnInit {
   itemForm: FormGroup;
   itemUomForm: FormGroup;
   item: Item;
-  itemId: number;
-  dateCreated: string;
   uoms: Uom[] = [];
   itemUoms: ItemUom[] = [];
   uom: Uom;
@@ -49,7 +47,7 @@ export class ItemDetailPage implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(30)],
       }),
-      uomId: new FormControl(null, {
+      uom: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
@@ -84,45 +82,65 @@ export class ItemDetailPage implements OnInit {
         return;
       }
 
-      this.itemId = Number(paramMap.get('itemId'));
+      this.uomSubscription = this.uomService
+      .findAllUoms()
+      .subscribe((uomApiData) => {
+        // this.uoms = uomApiData._embedded.uoms;
+        this.uoms = [];
+        for (const key in uomApiData._embedded.uoms) {
+          if (uomApiData._embedded.uoms.hasOwnProperty(key)) {
+            const uom = new Uom();
+            uom.uomId = uomApiData._embedded.uoms[key].uomId;
+            uom.uomCode = uomApiData._embedded.uoms[key].uomCode;
+            uom.uomName = uomApiData._embedded.uoms[key].uomName;
+            this.uoms = this.uoms.concat(uom);
+          }
+        }
+        console.log(this.uoms);
+      });
+
+      this.item = new Item();
+      this.item.itemId = Number(paramMap.get('itemId'));
 
       // Assign the item id to each
       // new item uom
       this.itemUomForm.patchValue({
         itemUomId: {
-          itemId: this.itemId,
+          itemId: this.item.itemId,
         },
       });
 
-      // Fecth all uoms for this item
-      this.getItemUoms(this.itemId);
-
       // Get item details
-      if (this.itemId > 0) {
+      if (this.item.itemId > 0) {
         this.postButton = 'checkmark-outline';
-        this.itemSubscription = this.itemService.getItem(this.itemId).subscribe(
-          (itemApiData) => {
-            this.dateCreated = itemApiData.dateCreated;
+        this.itemSubscription = this.itemService
+          .getItem(this.item.itemId)
+          .subscribe(
+            (itemApiData) => {
 
-            this.itemForm.patchValue({
-              itemName: itemApiData.itemName,
-              uomId: itemApiData.uom.uomId.toString(),
-            });
-          },
-          (error) => {
-            this.navCtrl.navigateBack('/tabs/items');
-            return;
-          }
-        );
+              this.item.uom = itemApiData.uom;
+              this.item.itemName = itemApiData.itemName;
+              this.item.dateCreated = itemApiData.dateCreated;
+
+              console.log(this.item.uom);
+
+              this.itemForm.patchValue({
+                itemName: itemApiData.itemName,
+                uom: this.item.uom,
+              });
+
+              // Fecth all uoms for this item
+              this.getItemUoms(this.item.itemId);
+            },
+            (error) => {
+              this.navCtrl.navigateBack('/tabs/items');
+              return;
+            }
+          );
       } else {
         this.pageLabel = 'New Item';
       }
 
-      this.uomSubscription = this.uomService
-        .findAllUoms()
-        .subscribe((uomApiData) => {
-          this.uoms = uomApiData._embedded.uoms;
-        });
     });
   }
 
@@ -138,16 +156,14 @@ export class ItemDetailPage implements OnInit {
 
   onSave() {
     if (this.itemForm.valid) {
-      this.item = new Item();
+
       this.uom = new Uom();
 
-      this.item.setItemName = this.itemForm.value.itemName;
+      this.item.itemName = this.itemForm.value.itemName;
       this.uom.setUomId = this.itemForm.value.uomId;
       this.item.uom = this.uom;
 
-      if (this.itemId > 0) {
-        this.item.itemId = this.itemId;
-        this.item.setDateCreated = this.dateCreated;
+      if (this.item.itemId > 0) {
         this.itemService.putItem(this.item).subscribe(this.processSaveItem());
       } else {
         this.itemService.postItem(this.item).subscribe(this.processSaveItem());
@@ -160,7 +176,7 @@ export class ItemDetailPage implements OnInit {
   processSaveItem() {
     return (itemData) => {
       this.itemService.item.next(itemData);
-      if (this.itemId) {
+      if (this.item.itemId) {
         this.messageBox('Item details has been updated.');
       } else {
         this.navCtrl.navigateBack('/tabs/items');
@@ -170,9 +186,13 @@ export class ItemDetailPage implements OnInit {
 
   onSaveUom() {
     if (this.itemUomForm.valid) {
-      this.itemService
-        .postItemUoms(this.itemUomForm.value)
-        .subscribe(this.processSaveUom());
+      if (isNaN(this.itemUomForm.value.quantity)) {
+        this.messageBox('Invalid quantity.');
+      } else {
+        this.itemService
+          .postItemUoms(this.itemUomForm.value)
+          .subscribe(this.processSaveUom());
+      }
     } else {
       this.messageBox('Invalid UoM details.');
     }
@@ -180,8 +200,9 @@ export class ItemDetailPage implements OnInit {
 
   processSaveUom() {
     return (postData) => {
-      this.getItemUoms(this.itemId);
+      this.getItemUoms(this.item.itemId);
       this.messageBox('UoM has been saved.');
+      this.itemUomForm.reset();
     };
   }
 
@@ -189,7 +210,7 @@ export class ItemDetailPage implements OnInit {
     this.alertCtrl
       .create({
         header: 'Confirm',
-        message: 'This will permanently deletes the unit of measure.',
+        message: 'This will be permanently deleted.',
         buttons: [
           {
             text: 'Cancel',
@@ -202,7 +223,8 @@ export class ItemDetailPage implements OnInit {
               const quantity = data.quantity;
               const itemUom = new ItemUom(itemUomId, quantity, uom);
               this.itemService.deleteItemUoms(itemUom).subscribe((res) => {
-                this.getItemUoms(this.itemId);
+                this.messageBox('Unit of measure has been deleted.');
+                this.getItemUoms(this.item.itemId);
               });
             },
           },

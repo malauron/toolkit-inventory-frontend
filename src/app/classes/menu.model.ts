@@ -1,5 +1,3 @@
-import { MenuIngredient } from './menu-ingredient.model';
-
 export class Menu {
   constructor(
     public menuId?: number,

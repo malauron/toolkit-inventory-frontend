@@ -9,6 +9,7 @@ import {
   IonSelectOption,
   ModalController,
   NavController,
+  ToastController,
 } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { ItemUom } from 'src/app/classes/item-uom.model';
@@ -47,7 +48,8 @@ export class MenuDetailPage implements OnInit {
     private modalItemSearch: ModalController,
     private alertCtrl: AlertController,
     private itemService: ItemsService,
-    private menuService: MenuService
+    private menuService: MenuService,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -95,6 +97,7 @@ export class MenuDetailPage implements OnInit {
 
       // Get item details
       if (this.menu.menuId > 0) {
+        this.postButton = 'checkmark-outline';
         this.menuService.getMenu(this.menu.menuId).subscribe((menuData) => {
           this.menu.menuName = menuData.menuName;
           this.menu.dateCreated = menuData.dateCreated;
@@ -178,6 +181,31 @@ export class MenuDetailPage implements OnInit {
     };
   }
 
+  onSaveMenu() {
+    if (this.menuForm.valid) {
+      if (this.menu.menuId > 0) {
+        this.menu.menuName = this.menuForm.value.menuName;
+        this.menuService.putMenu(this.menu).subscribe((res) => {
+          this.messageBox('Menu details has been updated.');
+        });
+      } else {
+        this.menuService.postMenu(this.processMenu()).subscribe((res) => {
+          this.navCtrl.navigateBack('/tabs/menus');
+        });
+      }
+    } else {
+      this.messageBox('Invalid menu information.');
+    }
+  }
+
+  processMenu(): any {
+    const menu = new Menu();
+    menu.menuName = this.menuForm.value.menuName;
+    menu.price = 0;
+    const menuDto = new MenuDto(menu, this.menuIngredients);
+    return menuDto;
+  }
+
   onAddIngredient() {
     if (this.itemForm.valid) {
       const ingredient = new MenuIngredient(
@@ -189,44 +217,27 @@ export class MenuDetailPage implements OnInit {
       );
       if (this.menu.menuId > 0) {
         this.menuService.postMenuIngredient(ingredient).subscribe((res) => {
-          this.menuIngredients = this.menuIngredients.concat(ingredient);
-          this.itemForm.reset();
+          this.processIngredient(ingredient);
         });
       } else {
-        this.menuIngredients = this.menuIngredients.concat(ingredient);
-        this.itemForm.reset();
+        this.processIngredient(ingredient);
       }
-    }
-  }
-
-  onSaveMenu() {
-    if (this.menu.menuId > 0) {
-      this.menu.menuName = this.menuForm.value.menuName;
-      this.menuService.putMenu(this.menu).subscribe((res) => {
-        // console.log(res);
-      });
     } else {
-      this.menuService.postMenu(this.processMenu()).subscribe((res) => {
-        this.navCtrl.navigateBack('/tabs/menus');
-      });
+      this.messageBox('Incomplete ingredient detail.');
     }
   }
 
-  processMenu(): any {
-    const menu = new Menu();
-    menu.menuName = this.menuForm.value.menuName;
-    menu.price = 0;
-
-    const menuDto = new MenuDto(menu, this.menuIngredients);
-
-    return menuDto;
+  processIngredient(ing: MenuIngredient) {
+    this.messageBox('Ingredient has been added.');
+    this.menuIngredients = this.menuIngredients.concat(ing);
+    this.itemForm.reset();
   }
 
   onDeleteIngredient(ing: MenuIngredient) {
     this.alertCtrl
       .create({
         header: 'Confirm',
-        message: 'This will permanently deletes the ingredient.',
+        message: 'This will be permanently deleted.',
         buttons: [
           {
             text: 'Cancel',
@@ -256,5 +267,16 @@ export class MenuDetailPage implements OnInit {
         this.menuIngredients.splice(Number(key), 1);
       }
     }
+  }
+
+  messageBox(msg: string) {
+    this.toastCtrl.create({
+      color: 'dark',
+      duration: 2000,
+      position: 'top',
+      message: msg,
+    }).then(res => {
+      res.present();
+    });
   }
 }

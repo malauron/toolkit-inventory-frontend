@@ -4,7 +4,7 @@
       <ion-back-button defaultHref="/tabs/items"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
-    <ion-buttons slot="primary" *ngIf="!this.itemId">
+    <ion-buttons slot="primary" *ngIf="!this.item.itemId">
       <ion-button (click)="onSave()">
         <ion-icon name="{{ postButton }}" slot="icon-only"></ion-icon>
       </ion-button>
@@ -35,17 +35,17 @@
                 <ion-col>
                   <ion-item fill="outline">
                     <ion-label position="floating">Default Uom</ion-label>
-                    <ion-select formControlName="uomId" *ngIf="uoms.length">
+                    <ion-select formControlName="uom" *ngIf="uoms.length">
                       <ion-select-option
                         *ngFor="let uom of uoms"
-                        value="{{ uom.uomId }}"
+                        [value]="uom"
                         >{{ uom.uomName }}
                       </ion-select-option>
                     </ion-select>
                   </ion-item>
                 </ion-col>
               </ion-row>
-              <ion-item lines="none" *ngIf="this.itemId">
+              <ion-item lines="none" *ngIf="this.item.itemId">
                 <ion-button
                   (click)="onSave()"
                   color="danger"
@@ -61,7 +61,7 @@
         </ion-card>
       </ion-col>
 
-      <ion-col size-xs="12" size-lg="6" size-xl="8" *ngIf="this.itemId">
+      <ion-col size-xs="12" size-lg="6" size-xl="8" *ngIf="this.item.itemId">
         <ion-card>
           <form [formGroup]="itemUomForm">
             <ion-grid>
@@ -113,7 +113,7 @@
             <ion-item *ngFor="let itemUom of itemUoms">
               <ion-label>
                 <h2>{{ itemUom.uom.uomName }}</h2>
-                <p>{{ itemUom.quantity }}{{ itemUom.uom.uomCode }}</p>
+                <p>{{ itemUom.quantity }}{{ this.item.uom.uomCode }}</p>
               </ion-label>
               <ion-button
                 mode="ios"
