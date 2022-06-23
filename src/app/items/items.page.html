@@ -14,14 +14,14 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed"  *ngIf="!isFetching">
     <ion-fab-button color="danger" (click)="onAddItem()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
   <div class="spinner">
-    <ion-spinner color="secondary" *ngIf="isFetching"></ion-spinner>
+    <ion-spinner name="bubbles" color="secondary" *ngIf="isFetching"></ion-spinner>
   </div>
 
   <ion-grid *ngIf="itemLists.length>0">
@@ -39,21 +39,22 @@
               <ion-avatar slot="start">
                 <img src="../../assets/icons/items.svg" class="icon" />
               </ion-avatar>
-              <ion-card-title>{{ item.itemName }}</ion-card-title>
+              <label>{{ item.itemName }}</label>
             </ion-item>
-            <ion-card-subtitle class="uom"
-              >UOM: {{ item.uom.uomName }}</ion-card-subtitle
-            >
-            <div class="ion-card-button">
+            <ion-item lines="none">
+              <ion-card-subtitle class="uom"
+                >UoM: {{ item.uom.uomName }}</ion-card-subtitle
+              >
               <ion-button
-                size="large"
+                mode="ios"
+                size="small"
                 color="secondary"
                 fill="clear"
-                slot="icon-only"
+                slot="end"
                 (click)="onEditItem(item.itemId.toString())"
-                ><ion-icon name="create-outline"></ion-icon
+                ><ion-icon name="chevron-forward-outline"></ion-icon
               ></ion-button>
-            </div>
+            </ion-item>
           </ion-card-header>
         </ion-card>
       </ion-col>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="danger">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/items"></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/items"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
     <ion-buttons slot="primary" *ngIf="!this.item.itemId">
@@ -73,7 +73,7 @@
                     <ion-select formControlName="uomId" *ngIf="uoms.length">
                       <ion-select-option
                         *ngFor="let uom of uoms"
-                        value="{{ uom.uomId }}"
+                        [value]="uom.uomId"
                         >{{ uom.uomName }}</ion-select-option
                       >
                     </ion-select>
@@ -109,11 +109,12 @@
           </ion-item>
 
           <!-- Item UoMs -->
-          <ion-list>
+          <!-- This is to prevent an error in displaying the uomCode per item uom-->
+          <ion-list  *ngIf="this.item.uom">
             <ion-item *ngFor="let itemUom of itemUoms">
               <ion-label>
                 <h2>{{ itemUom.uom.uomName }}</h2>
-                <p>{{ itemUom.quantity }}{{ this.item.uom.uomCode }}</p>
+                <p>Equivalent to {{ itemUom.quantity }}{{ this.item.uom.uomCode }}</p>
               </ion-label>
               <ion-button
                 mode="ios"

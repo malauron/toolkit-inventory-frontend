@@ -2,6 +2,20 @@ ion-card {
   margin-bottom: -15px;
 }
 
-// ion-item {
-//   margin: -17px;
-// }
+.spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+ion-spinner {
+  stroke: var(--ion-color-primary);
+  fill: var(--ion-color-primary);
+  transform: scale(3);
+}
+
+p {
+  text-indent: 15%;
+  text-align: justify;
+  text-justify: inter-word;
+}

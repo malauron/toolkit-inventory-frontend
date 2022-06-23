@@ -85,14 +85,14 @@ export class ItemsPage implements OnInit, OnDestroy {
         .getItems(pageNumber, pageSize)
         .subscribe(this.processResult(event), (error) => {
           this.messageBox('Unable to communicate with the server.');
-          this.isFetching = false;
+          // this.isFetching = false;
         });
     } else {
       this.itemService
         .getItems(pageNumber, pageSize, itemName)
         .subscribe(this.processResult(event), (error) => {
           this.messageBox('Unable to communicate with the server.');
-          this.isFetching = false;
+          // this.isFetching = false;
         });
     }
   }

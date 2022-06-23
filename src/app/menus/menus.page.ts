@@ -13,6 +13,8 @@ export class MenusPage implements OnInit {
 
   menuList: Menu[] = [];
 
+  isFetching = false;
+
   constructor(
     private menuService: MenuService,
     private router: Router
@@ -23,6 +25,7 @@ export class MenusPage implements OnInit {
   }
 
   getMenus() {
+    this.isFetching = true;
     this.menuService.getMenus().subscribe(
       this.processMenuResult()
     );
@@ -31,6 +34,7 @@ export class MenusPage implements OnInit {
   processMenuResult() {
     return (data) => {
       this.menuList = this.menuList.concat(data._embedded.menus);
+      this.isFetching = false;
     };
   }
 

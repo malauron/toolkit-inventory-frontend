@@ -93,41 +93,19 @@ export class ItemDetailPage implements OnInit {
         },
       });
 
-      // Get item details
       if (this.item.itemId > 0) {
         this.postButton = 'checkmark-outline';
+
+        // Get item details
         this.itemSubscription = this.itemService
           .getItem(this.item.itemId)
           .subscribe(
             (itemApiData) => {
-              // this.item.uom = itemApiData.uom;
               this.item.itemName = itemApiData.itemName;
               this.item.dateCreated = itemApiData.dateCreated;
 
-              this.uomSubscription = this.uomService
-                .findAllUoms()
-                .subscribe((uomApiData) => {
-                  this.uoms = [];
-                  for (const key in uomApiData._embedded.uoms) {
-                    if (uomApiData._embedded.uoms.hasOwnProperty(key)) {
-                      const uom = new Uom();
-                      uom.uomId = uomApiData._embedded.uoms[key].uomId;
-                      uom.uomCode = uomApiData._embedded.uoms[key].uomCode;
-                      uom.uomName = uomApiData._embedded.uoms[key].uomName;
-                      if (itemApiData.uom.uomId === uom.uomId) {
-                        this.item.uom = uom;
-                      }
-                      this.uoms = this.uoms.concat(uom);
-                    }
-                  }
-
-                  this.itemForm.patchValue({
-                    itemName: itemApiData.itemName,
-                    uom: this.item.uom,
-                  });
-                });
-
-              // console.log(this.item.uom);
+              // // Fetch all UoMs
+              this.fetchAllUoms(itemApiData);
 
               // Fecth all uoms for this item
               this.getItemUoms(this.item.itemId);
@@ -139,8 +117,39 @@ export class ItemDetailPage implements OnInit {
           );
       } else {
         this.pageLabel = 'New Item';
+        this.fetchAllUoms();
       }
     });
+  }
+
+  // Fetch all UoMs
+  fetchAllUoms(itemResData?: Item) {
+    this.uomSubscription = this.uomService
+      .findAllUoms()
+      .subscribe((uomApiData) => {
+        this.uoms = [];
+        for (const key in uomApiData._embedded.uoms) {
+          if (uomApiData._embedded.uoms.hasOwnProperty(key)) {
+            const uom = new Uom();
+            uom.uomId = uomApiData._embedded.uoms[key].uomId;
+            uom.uomCode = uomApiData._embedded.uoms[key].uomCode;
+            uom.uomName = uomApiData._embedded.uoms[key].uomName;
+            if (itemResData) {
+              if (itemResData.uom.uomId === uom.uomId) {
+                this.item.uom = uom;
+              }
+            }
+            this.uoms = this.uoms.concat(uom);
+          }
+        }
+
+        if (itemResData) {
+          this.itemForm.patchValue({
+            itemName: itemResData.itemName,
+            uom: this.item.uom,
+          });
+        }
+      });
   }
 
   getItemUoms(itemId: number) {
@@ -202,6 +211,11 @@ export class ItemDetailPage implements OnInit {
       this.getItemUoms(this.item.itemId);
       this.messageBox('UoM has been saved.');
       this.itemUomForm.reset();
+      this.itemUomForm.patchValue({
+        itemUomId: {
+          itemId: this.item.itemId,
+        },
+      });
     };
   }
 

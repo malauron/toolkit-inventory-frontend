@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="danger">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/menus"></ion-back-button>
+      <ion-back-button  icon="chevron-back-outline" defaultHref="/tabs/menus"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
     <ion-buttons slot="primary" *ngIf="!this.menu.menuId">
@@ -52,9 +52,10 @@
                       formControlName="itemName"
                     ></ion-input>
                     <ion-button
+                      mode="ios"
                       class="search-button"
                       slot="end"
-                      size="default"
+                      size="small"
                       fill="clear"
                       (click)="onItemSearch()"
                     >
