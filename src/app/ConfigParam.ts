@@ -11,6 +11,7 @@ export class ConfigParam {
   urlItemUomSearch: any;
   urlUoms: any;
   urlMenus: any;
+  urlMenuSearch: any;
   urlMenuIngredients: any;
   urlMenuIngredientSearch: any;
 
@@ -31,6 +32,7 @@ export class ConfigParam {
     this.urlItemUomSearch = `${this.urlItemUoms}/search/findByItemId`;
     this.urlUoms = this.url + '/uoms';
     this.urlMenus = `${this.url}/menus`;
+    this.urlMenuSearch = `${this.urlMenus}/search/findByMenuNameContainingOrderByMenuName`;
     this.urlMenuIngredients = `${this.url}/menuIngredients`;
     this.urlMenuIngredientSearch = `${this.urlMenuIngredients}/search/findByMenuId?menuId=`;
 

@@ -9,7 +9,7 @@
         ></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-searchbar #itemSearchBar></ion-searchbar>
+    <ion-searchbar #menuSearchBar></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -47,15 +47,7 @@
             <ion-card-subtitle>{{ menu.menuName }}</ion-card-subtitle>
           </ion-item>
           <ion-card-content>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam
-              vero commodi nemo voluptatum tempore. Placeat necessitatibus
-              consequuntur quis aperiam recusandae. Tempore excepturi quam
-              provident, tenetur aspernatur possimus, repellendus laborum, vero
-              laudantium qui temporibus ipsa asperiores ad magni voluptatibus
-              accusamus! Nobis ab id sunt impedit voluptatem et modi quod odio
-              omnis.
-            </p>
+            <p>{{ menu.remarks }}</p>
           </ion-card-content>
           <!-- <ion-item lines="none">
             <label>
@@ -67,15 +59,16 @@
     </ion-row>
   </ion-grid>
 
-  <!-- <ion-infinite-scroll
+  <ion-infinite-scroll
     #infiniteScroll
     threshold="5%"
-    (ionInfinite)="loadMoreItems($event)"
+    (ionInfinite)="loadMoreMenus($event)"
   >
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more items..."
     >
     </ion-infinite-scroll-content>
-  </ion-infinite-scroll> -->
+  </ion-infinite-scroll>
+
 </ion-content>

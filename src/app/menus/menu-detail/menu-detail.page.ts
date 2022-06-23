@@ -59,6 +59,9 @@ export class MenuDetailPage implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(30)],
       }),
+      remarks: new FormControl('', {
+        updateOn: 'blur',
+      })
     });
 
     this.itemForm = new FormGroup({
@@ -100,9 +103,11 @@ export class MenuDetailPage implements OnInit {
         this.postButton = 'checkmark-outline';
         this.menuService.getMenu(this.menu.menuId).subscribe((menuData) => {
           this.menu.menuName = menuData.menuName;
+          this.menu.remarks = menuData.remarks;
           this.menu.dateCreated = menuData.dateCreated;
           this.menuForm.patchValue({
             menuName: menuData.menuName,
+            remarks: menuData.remarks
           });
         });
 
@@ -184,7 +189,10 @@ export class MenuDetailPage implements OnInit {
   onSaveMenu() {
     if (this.menuForm.valid) {
       if (this.menu.menuId > 0) {
+
         this.menu.menuName = this.menuForm.value.menuName;
+        this.menu.remarks = this.menuForm.value.remarks;
+
         this.menuService.putMenu(this.menu).subscribe((res) => {
           this.messageBox('Menu details has been updated.');
         });
@@ -201,6 +209,7 @@ export class MenuDetailPage implements OnInit {
   processMenu(): any {
     const menu = new Menu();
     menu.menuName = this.menuForm.value.menuName;
+    menu.remarks = this.menuForm.value.remarks;
     menu.price = 0;
     const menuDto = new MenuDto(menu, this.menuIngredients);
     return menuDto;

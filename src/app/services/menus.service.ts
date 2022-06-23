@@ -39,8 +39,18 @@ export class MenuService {
 
   constructor(private http: HttpClient, private config: ConfigParam){}
 
-  getMenus(): Observable<ResponseMenus> {
-    this.apiUrl = `${this.config.urlMenus}`;
+  getMenus(
+    pageNumber?: number,
+    pageSize?: number,
+    menuName?: string
+  ): Observable<ResponseMenus> {
+    // this.apiUrl = `${this.config.urlMenus}`;
+
+    if (menuName === undefined) {
+      this.apiUrl = `${this.config.urlMenus}?page=${pageNumber}&size=${pageSize}`;
+    } else {
+      this.apiUrl = `${this.config.urlMenuSearch}?menuName=${menuName}&page=${pageNumber}&size=${pageSize}`;
+    }
     return this.http.get<ResponseMenus>(this.apiUrl);
   }
 
