@@ -61,7 +61,7 @@ export class MenuDetailPage implements OnInit {
       }),
       remarks: new FormControl('', {
         updateOn: 'blur',
-      })
+      }),
     });
 
     this.itemForm = new FormGroup({
@@ -107,7 +107,7 @@ export class MenuDetailPage implements OnInit {
           this.menu.dateCreated = menuData.dateCreated;
           this.menuForm.patchValue({
             menuName: menuData.menuName,
-            remarks: menuData.remarks
+            remarks: menuData.remarks,
           });
         });
 
@@ -187,34 +187,56 @@ export class MenuDetailPage implements OnInit {
   }
 
   onSaveMenu() {
+
     if (this.menuForm.valid) {
       if (this.menu.menuId > 0) {
-
         this.menu.menuName = this.menuForm.value.menuName;
         this.menu.remarks = this.menuForm.value.remarks;
-
-        this.menuService.putMenu(this.menu).subscribe((res) => {
-          this.messageBox('Menu details has been updated.');
-        });
+        this.menu.altRemarks = this.getAltRemarks();
+        this.menuService.putMenu(this.menu)
+        .subscribe(this.processSaveMenu());
       } else {
-        this.menuService.postMenu(this.processMenu()).subscribe((res) => {
-          this.navCtrl.navigateBack('/tabs/menus');
-        });
+        this.menuService.postMenu(this.processMenu())
+        .subscribe(this.processSaveMenu());
       }
     } else {
       this.messageBox('Invalid menu information.');
     }
   }
-
   processMenu(): any {
     const menu = new Menu();
     menu.menuName = this.menuForm.value.menuName;
     menu.remarks = this.menuForm.value.remarks;
+    menu.altRemarks = this.getAltRemarks();
     menu.price = 0;
+
     const menuDto = new MenuDto(menu, this.menuIngredients);
     return menuDto;
   }
 
+  processSaveMenu() {
+    return (menuData) => {
+      this.menuService.menu.next(menuData);
+      if (this.menu.menuId) {
+        this.messageBox('Menu details has been updated.');
+      } else {
+        this.navCtrl.navigateBack('/tabs/menus');
+      }
+    };
+  }
+
+  getAltRemarks() {
+
+    let altRemarks = '';
+    this.menuIngredients.forEach((ing) => {
+      if (altRemarks.length !== 0) {
+        altRemarks = altRemarks + ',';
+      }
+      altRemarks = `${altRemarks} ${ing.item.itemName} - ${ing.requiredQty}${ing.requiredUom.uomCode}`;
+    });
+    return altRemarks;
+
+  }
   onAddIngredient() {
     if (this.itemForm.valid) {
       const ingredient = new MenuIngredient(
@@ -279,13 +301,15 @@ export class MenuDetailPage implements OnInit {
   }
 
   messageBox(msg: string) {
-    this.toastCtrl.create({
-      color: 'dark',
-      duration: 2000,
-      position: 'top',
-      message: msg,
-    }).then(res => {
-      res.present();
-    });
+    this.toastCtrl
+      .create({
+        color: 'dark',
+        duration: 2000,
+        position: 'top',
+        message: msg,
+      })
+      .then((res) => {
+        res.present();
+      });
   }
 }

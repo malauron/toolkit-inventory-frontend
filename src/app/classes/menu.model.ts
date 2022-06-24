@@ -4,6 +4,7 @@ export class Menu {
     public menuName?: string,
     public price?: number,
     public remarks?: string,
+    public altRemarks?: string,
     public dateCreated?: string
   ) {}
 }

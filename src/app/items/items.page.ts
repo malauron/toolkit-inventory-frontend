@@ -63,7 +63,7 @@ export class ItemsPage implements OnInit, OnDestroy {
 
     // Retrieves a new set of data from server
     // after adding or updating an item
-    this.itemSubcription = this.itemService.item.subscribe((itemData) => {
+    this.itemSubcription = this.itemService.item.subscribe((data) => {
       this.searchValue = '';
       this.infiniteScroll.disabled = false;
       this.itemLists = [];
@@ -109,6 +109,7 @@ export class ItemsPage implements OnInit, OnDestroy {
   }
 
   loadMoreItems(event) {
+
     if (this.pageNumber + 1 >= this.totalPages) {
       event.target.disabled = true;
       return;

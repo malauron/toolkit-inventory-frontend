@@ -13,11 +13,13 @@ import { MenuService } from '../services/menus.service';
   templateUrl: './menus.page.html',
   styleUrls: ['./menus.page.scss'],
 })
+
 export class MenusPage implements OnInit, OnDestroy {
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('menuSearchBar', { static: true }) menuSearchBar: IonSearchbar;
 
   menuSearchBarSub: Subscription;
+  menuSub: Subscription;
 
   menuList: Menu[] = [];
 
@@ -55,7 +57,20 @@ export class MenusPage implements OnInit, OnDestroy {
       }
     });
 
-    this.getMenus();
+    // Retrieves a new set of data from server
+    // after adding or updating a menu
+    this.menuSub = this.menuService.menu.subscribe((data) => {
+      this.searchValue = '';
+      this.infiniteScroll.disabled = false;
+      this.menuList = [];
+      this.pageNumber = 0;
+      this.totalPages = 0;
+      this.getMenus(undefined, 0, this.config.pageSize);
+    });
+
+    // Retrieves a partial list of menus from the server
+    // upon component initialization
+    this.getMenus(undefined, 0, this.config.pageSize);
   }
 
   getMenus(event?, pageNumber?: number, pageSize?: number, menuName?: string) {
@@ -64,20 +79,22 @@ export class MenusPage implements OnInit, OnDestroy {
     if (menuName === undefined) {
       this.menuService
         .getMenus(pageNumber, pageSize)
-        .subscribe(this.processMenuResult());
+        .subscribe(this.processMenuResult(event));
     } else {
       this.menuService.getMenus(pageNumber,pageSize,menuName)
-      .subscribe(this.processMenuResult());
+      .subscribe(this.processMenuResult(event));
     }
-    // this.menuService.getMenus().subscribe(
-    //   this.processMenuResult()
-    // );
+
   }
 
-  processMenuResult() {
+  processMenuResult(event?) {
     return (data) => {
       this.menuList = this.menuList.concat(data._embedded.menus);
+      this.totalPages = data.page.totalPages;
       this.isFetching = false;
+      if (event) {
+        event.target.complete();
+      }
     };
   }
 
@@ -90,6 +107,7 @@ export class MenusPage implements OnInit, OnDestroy {
   }
 
   loadMoreMenus(event) {
+
     if (this.pageNumber + 1 >= this.totalPages) {
       event.target.disabled = true;
       return;
@@ -111,5 +129,6 @@ export class MenusPage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.menuSearchBarSub.unsubscribe();
+    this.menuSub.unsubscribe();
   }
 }

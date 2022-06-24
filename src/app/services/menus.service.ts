@@ -1,6 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Item } from '../classes/item.model';
 import { MenuIngredient } from '../classes/menu-ingredient.model';
@@ -37,7 +38,13 @@ interface ResponseMenuIng {
 export class MenuService {
   private apiUrl: string;
 
+  private _menu = new Subject<Menu>();
+
   constructor(private http: HttpClient, private config: ConfigParam){}
+
+  get menu() {
+    return this._menu;
+  }
 
   getMenus(
     pageNumber?: number,

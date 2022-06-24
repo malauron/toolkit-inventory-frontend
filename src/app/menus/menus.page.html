@@ -47,13 +47,8 @@
             <ion-card-subtitle>{{ menu.menuName }}</ion-card-subtitle>
           </ion-item>
           <ion-card-content>
-            <p>{{ menu.remarks }}</p>
+            <p>{{ menu.remarks.length !== 0 ? menu.remarks : menu.altRemarks }}</p>
           </ion-card-content>
-          <!-- <ion-item lines="none">
-            <label>
-              <p>This is just a sample remarks</p>
-            </label>
-          </ion-item> -->
         </ion-card>
       </ion-col>
     </ion-row>
@@ -66,7 +61,7 @@
   >
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more items..."
+      loadingText="Loading more menus..."
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
