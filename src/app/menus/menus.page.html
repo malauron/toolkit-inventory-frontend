@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="danger">
+  <ion-toolbar color="primary">
     <ion-buttons slot="end">
       <ion-button>
         <ion-icon
@@ -40,8 +40,9 @@
         <ion-card class="favCard">
           <ion-item detail button (click)="onEditMenu(menu.menuId)">
             <ion-icon
+              class="menuIcon"
               name="restaurant-outline"
-              color="secondary"
+              color="primary"
               slot="start"
             ></ion-icon>
             <ion-card-subtitle>{{ menu.menuName }}</ion-card-subtitle>

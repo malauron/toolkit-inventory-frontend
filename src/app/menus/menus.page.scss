@@ -1,3 +1,7 @@
+ion-searchbar {
+  --border-radius: 10px;
+}
+
 ion-card {
   margin-bottom: -15px;
 }
@@ -8,6 +12,7 @@ ion-card {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 ion-spinner {
   stroke: var(--ion-color-primary);
   fill: var(--ion-color-primary);
@@ -20,6 +25,9 @@ ion-spinner {
   box-shadow: 1px 01px 3px 1px rgba(0,0,0,0.19);
   margin: auto;
   margin-top: 30px;
+  .menuIcon {
+    font-size: 30px;
+  }
 }
 
 p {

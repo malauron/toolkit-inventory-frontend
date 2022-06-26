@@ -1,10 +1,78 @@
 <ion-header>
-  <ion-toolbar>
-    <!-- <ion-title>Orders</ion-title> -->
-    <ion-searchbar></ion-searchbar>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon
+          slot="icon-only"
+          ios="ellipsis-horizontal"
+          md="ellipsis-vertical"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar #menuSearchBar></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content  class="ion-padding">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
+    <ion-badge mode="ios" color="warning">99</ion-badge>
+    <ion-fab-button color="danger" (click)="onAddMenu()">
+      <ion-icon name="cart-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <div class="spinner">
+    <ion-spinner
+      name="bubbles"
+      color="secondary"
+      *ngIf="isFetching"
+    ></ion-spinner>
+  </div>
+
+  <ion-grid *ngIf="menuList.length>0">
+    <ion-row>
+      <ion-col
+        size-xs="12"
+        size-sm="6"
+        size-lg="4"
+        size-xl="3"
+        *ngFor="let menu of menuList"
+      >
+        <ion-card class="favCard">
+          <ion-item>
+            <ion-icon
+              class="menuIcon"
+              name="restaurant-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-card-subtitle>{{ menu.menuName }}</ion-card-subtitle>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-button mode="ios" slot="end" color="tertiary">
+              <ion-icon slot="start" name="open-sharp"></ion-icon>
+              <ion-label>View Detail</ion-label>
+            </ion-button>
+            <ion-button mode="ios" slot="end" color="primary">
+              <ion-icon slot="start" name="cart-sharp"></ion-icon>
+              Add to Cart
+            </ion-button>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreMenus($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more menus..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
