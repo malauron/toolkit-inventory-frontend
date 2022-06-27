@@ -5,8 +5,17 @@ import { OrdersPage } from './orders.page';
 
 const routes: Routes = [
   {
+    path: 'cart-menu',
+    loadChildren: () => import('./cart-menu/cart-menu.module').then( m => m.CartMenuPageModule)
+  },
+  {
     path: '',
     component: OrdersPage
+  },
+  {
+    path: '**',
+    redirectTo: '/tabs/orders',
+    pathMatch: 'full'
   }
 ];
 

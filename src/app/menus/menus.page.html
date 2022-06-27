@@ -38,8 +38,7 @@
         *ngFor="let menu of menuList"
       >
         <ion-card class="favCard">
-          <ion-item>
-            <!-- <ion-item detail button (click)="onEditMenu(menu.menuId)"> -->
+          <ion-item class="menuName">
             <ion-icon
               class="menuIcon"
               name="restaurant-outline"
@@ -48,12 +47,9 @@
             ></ion-icon>
             <ion-label>{{ menu.menuName }}</ion-label>
           </ion-item>
-          <!-- <ion-card-content>
-            <p>{{ menu.remarks.length !== 0 ? menu.remarks : menu.altRemarks }}</p>
-          </ion-card-content> -->
-          <ion-item lines="none" class="menuDesc">
+          <ion-item lines="none">
             <ion-card-subtitle
-              ><p>
+              ><p class="menuDesc">
                 {{ menu.remarks.length !== 0 ? menu.remarks : menu.altRemarks }}
               </p></ion-card-subtitle
             >

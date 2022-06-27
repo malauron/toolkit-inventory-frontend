@@ -34,28 +34,26 @@
         *ngFor="let item of itemLists"
       >
         <ion-card class="favCard">
-          <ion-card-header>
-            <ion-item>
-              <ion-avatar slot="start">
-                <img src="../../assets/icons/items.svg" class="icon" />
-              </ion-avatar>
-              <ion-label>{{ item.itemName }}</ion-label>
-            </ion-item>
-            <ion-item lines="none">
-              <ion-card-subtitle class="uom"
-                >UoM: {{ item.uom.uomName }}</ion-card-subtitle
-              >
-              <ion-button
-                mode="ios"
-                size="small"
-                color="secondary"
-                fill="clear"
-                slot="end"
-                (click)="onEditItem(item.itemId.toString())"
-                ><ion-icon name="chevron-forward-outline"></ion-icon
-              ></ion-button>
-            </ion-item>
-          </ion-card-header>
+          <ion-item class="menuName">
+            <ion-avatar slot="start">
+              <img src="../../assets/icons/items.svg" class="icon" />
+            </ion-avatar>
+            <ion-label>{{ item.itemName }}</ion-label>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-card-subtitle class="uom"
+              >UoM: {{ item.uom.uomName }}</ion-card-subtitle
+            >
+            <ion-button
+              mode="ios"
+              size="small"
+              color="secondary"
+              fill="clear"
+              slot="end"
+              (click)="onEditItem(item.itemId.toString())"
+              ><ion-icon name="chevron-forward-outline"></ion-icon
+            ></ion-button>
+          </ion-item>
         </ion-card>
       </ion-col>
     </ion-row>
