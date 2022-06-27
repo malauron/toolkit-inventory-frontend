@@ -38,18 +38,35 @@
         *ngFor="let menu of menuList"
       >
         <ion-card class="favCard">
-          <ion-item detail button (click)="onEditMenu(menu.menuId)">
+          <ion-item>
+            <!-- <ion-item detail button (click)="onEditMenu(menu.menuId)"> -->
             <ion-icon
               class="menuIcon"
               name="restaurant-outline"
               color="primary"
               slot="start"
             ></ion-icon>
-            <ion-card-subtitle>{{ menu.menuName }}</ion-card-subtitle>
+            <ion-label>{{ menu.menuName }}</ion-label>
           </ion-item>
-          <ion-card-content>
+          <!-- <ion-card-content>
             <p>{{ menu.remarks.length !== 0 ? menu.remarks : menu.altRemarks }}</p>
-          </ion-card-content>
+          </ion-card-content> -->
+          <ion-item lines="none" class="menuDesc">
+            <ion-card-subtitle
+              ><p>
+                {{ menu.remarks.length !== 0 ? menu.remarks : menu.altRemarks }}
+              </p></ion-card-subtitle
+            >
+            <ion-button
+              mode="ios"
+              size="small"
+              color="secondary"
+              fill="clear"
+              slot="end"
+              (click)="onEditMenu(menu.menuId)"
+              ><ion-icon name="chevron-forward-outline"></ion-icon
+            ></ion-button>
+          </ion-item>
         </ion-card>
       </ion-col>
     </ion-row>
@@ -66,5 +83,4 @@
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-
 </ion-content>

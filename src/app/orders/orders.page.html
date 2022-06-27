@@ -46,7 +46,10 @@
               color="primary"
               slot="start"
             ></ion-icon>
-            <ion-card-subtitle>{{ menu.menuName }}</ion-card-subtitle>
+            <div class="menuTitle">
+              <ion-label>{{ menu.menuName }}</ion-label>
+            </div>
+
           </ion-item>
           <ion-item lines="none">
             <ion-button mode="ios" slot="end" color="tertiary">
