@@ -96,8 +96,8 @@ export class OrdersPage implements OnInit, OnDestroy {
     };
   }
 
-  onAddMenu() {
-    this.router.navigate(['/', 'tabs', 'menus', 'menu-detail', 0]);
+  onAddCartMenu() {
+    this.router.navigate(['/', 'tabs', 'orders', 'cart-menu', 0]);
   }
 
   onEditMenu(menuId: number) {

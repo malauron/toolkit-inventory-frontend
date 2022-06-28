@@ -5,8 +5,18 @@ import { CartMenuPage } from './cart-menu.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':menuId',
     component: CartMenuPage
+  },
+  {
+    path: '',
+    redirectTo: '/tabs/orders',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: '/tabs/orders',
+    pathMatch: 'full'
   }
 ];
 
