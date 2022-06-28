@@ -3,12 +3,51 @@
     <ion-buttons slot="start">
       <ion-back-button  icon="chevron-back-outline" defaultHref="/tabs/orders"></ion-back-button>
     </ion-buttons>
-    <ion-title>Menu</ion-title>
+    <ion-title>{{ pageLabel }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-label>Ingredients</ion-label>
+      <ion-spinner name="dots" *ngIf="isFetching"></ion-spinner>
+    </ion-item>
+
+    <ion-grid *ngIf="menuIngredients.length>0">
+      <ion-row>
+        <ion-col
+          size-xs="12"
+          size-md="6"
+          size-lg="4"
+          *ngFor="let ing of menuIngredients"
+        >
+          <ion-card class="favCard">
+            <ion-item lines="none">
+              <ion-avatar slot="start">
+                <img src="../../assets/icons/items.svg" class="icon" />
+              </ion-avatar>
+              <ion-card-subtitle
+                >{{ ing.item.itemName }} - {{ ing.requiredQty }}{{
+                ing.requiredUom.uomCode }}</ion-card-subtitle
+              >
+              <ion-button
+                mode="ios"
+                slot="end"
+                fill="clear"
+                color="medium"
+                size="default"
+                (click)="onDeleteIngredient(ing)"
+              >
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
   <ion-button mode="ios" color="warning">
     <ion-icon name="cart-sharp" slot="start"></ion-icon>
     <ion-label>Add to Cart</ion-label>
