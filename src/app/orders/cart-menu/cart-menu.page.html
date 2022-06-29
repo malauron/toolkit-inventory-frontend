@@ -36,6 +36,7 @@
                 fill="clear"
                 color="medium"
                 size="default"
+                (click) ="decrementQty()"
               >
                 <ion-icon name="remove-circle" slot="icon-only"></ion-icon>
               </ion-button>
@@ -45,6 +46,7 @@
                 type="number"
                 inputmode="numeric"
                 min="0"
+                [(ngModel)] ="quantity"
               ></ion-input>
 
               <ion-button
@@ -53,6 +55,7 @@
                 fill="clear"
                 color="medium"
                 size="default"
+                (click) = "incrementQty()"
               >
                 <ion-icon name="add-circle" slot="icon-only"></ion-icon>
               </ion-button>

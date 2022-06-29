@@ -30,7 +30,7 @@ export class CartMenuPage implements OnInit {
 
   pageLabel = 'Cart Menu';
   postButton = 'add';
-  ingCtr = 0;
+  quantity = 1;
 
   menu: Menu;
 
@@ -291,6 +291,18 @@ export class CartMenuPage implements OnInit {
       if (ing === this.menuIngredients[key]) {
         this.menuIngredients.splice(Number(key), 1);
       }
+    }
+  }
+
+  incrementQty() {
+    this.quantity += 1;
+  }
+
+  decrementQty() {
+    if (this.quantity < 2) {
+      this.quantity = 1;
+    } else {
+      this.quantity -= 1;
     }
   }
 
