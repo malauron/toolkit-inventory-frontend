@@ -22,8 +22,8 @@ import { ItemSearchComponent } from '../../items/item-search/item-search.compone
   styleUrls: ['./cart-menu.page.scss'],
 })
 export class CartMenuPage implements OnInit {
-  menuForm: FormGroup;
-  itemForm: FormGroup;
+  // menuForm: FormGroup;
+  // itemForm: FormGroup;
 
   uoms: Uom[] = [];
   menuIngredients: MenuIngredient[] = [];
@@ -48,32 +48,32 @@ export class CartMenuPage implements OnInit {
 
   ngOnInit() {
     this.isFetching = true;
-    this.menuForm = new FormGroup({
-      menuName: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(30)],
-      }),
-      remarks: new FormControl('', {
-        updateOn: 'blur',
-      }),
-    });
+    // this.menuForm = new FormGroup({
+    //   menuName: new FormControl(null, {
+    //     updateOn: 'blur',
+    //     validators: [Validators.required, Validators.maxLength(30)],
+    //   }),
+    //   remarks: new FormControl('', {
+    //     updateOn: 'blur',
+    //   }),
+    // });
 
-    this.itemForm = new FormGroup({
-      item: new FormControl(null, {
-        validators: [Validators.required],
-      }),
-      itemName: new FormControl(null, {
-        validators: [Validators.required],
-      }),
-      uom: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required],
-      }),
-      quantity: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.min(0)],
-      }),
-    });
+    // this.itemForm = new FormGroup({
+    //   item: new FormControl(null, {
+    //     validators: [Validators.required],
+    //   }),
+    //   itemName: new FormControl(null, {
+    //     validators: [Validators.required],
+    //   }),
+    //   uom: new FormControl(null, {
+    //     updateOn: 'blur',
+    //     validators: [Validators.required],
+    //   }),
+    //   quantity: new FormControl(null, {
+    //     updateOn: 'blur',
+    //     validators: [Validators.required, Validators.min(0)],
+    //   }),
+    // });
 
     this.route.paramMap.subscribe((paramMap) => {
       //Check whether paramMap is empty of not
@@ -99,10 +99,10 @@ export class CartMenuPage implements OnInit {
           this.menu.menuName = menuData.menuName;
           this.menu.remarks = menuData.remarks;
           this.menu.dateCreated = menuData.dateCreated;
-          this.menuForm.patchValue({
-            menuName: menuData.menuName,
-            remarks: menuData.remarks,
-          });
+          // this.menuForm.patchValue({
+          //   menuName: menuData.menuName,
+          //   remarks: menuData.remarks,
+          // });
         });
 
         this.menuService
@@ -136,12 +136,12 @@ export class CartMenuPage implements OnInit {
           // this.item = resultData.data;
           this.uoms = [uomData];
           this.getItemUoms(itemData.itemId);
-          this.itemForm.patchValue({
-            item: itemData,
-            itemName: itemData.itemName,
-            uom: uomData,
-            quantity: 0,
-          });
+          // this.itemForm.patchValue({
+          //   item: itemData,
+          //   itemName: itemData.itemName,
+          //   uom: uomData,
+          //   quantity: 0,
+          // });
         }
       });
   }
@@ -180,27 +180,27 @@ export class CartMenuPage implements OnInit {
     };
   }
 
-  onSaveMenu() {
+  // onSaveMenu() {
+  //   if (this.menuForm.valid) {
+  //     if (this.menu.menuId > 0) {
+  //       this.menu.menuName = this.menuForm.value.menuName;
+  //       this.menu.remarks = this.menuForm.value.remarks;
+  //       this.menu.altRemarks = this.getAltRemarks();
+  //       this.menuService.putMenu(this.menu)
+  //       .subscribe(this.processSaveMenu());
+  //     } else {
+  //       this.menuService.postMenu(this.processMenu())
+  //       .subscribe(this.processSaveMenu());
+  //     }
+  //   } else {
+  //     this.messageBox('Invalid menu information.');
+  //   }
+  // }
 
-    if (this.menuForm.valid) {
-      if (this.menu.menuId > 0) {
-        this.menu.menuName = this.menuForm.value.menuName;
-        this.menu.remarks = this.menuForm.value.remarks;
-        this.menu.altRemarks = this.getAltRemarks();
-        this.menuService.putMenu(this.menu)
-        .subscribe(this.processSaveMenu());
-      } else {
-        this.menuService.postMenu(this.processMenu())
-        .subscribe(this.processSaveMenu());
-      }
-    } else {
-      this.messageBox('Invalid menu information.');
-    }
-  }
   processMenu(): any {
     const menu = new Menu();
-    menu.menuName = this.menuForm.value.menuName;
-    menu.remarks = this.menuForm.value.remarks;
+    // menu.menuName = this.menuForm.value.menuName;
+    // menu.remarks = this.menuForm.value.remarks;
     menu.altRemarks = this.getAltRemarks();
     menu.price = 0;
 
@@ -231,32 +231,33 @@ export class CartMenuPage implements OnInit {
     return altRemarks;
 
   }
-  onAddIngredient() {
-    if (this.itemForm.valid) {
-      const ingredient = new MenuIngredient(
-        null,
-        this.menu.menuId > 0 ? this.menu : null,
-        this.itemForm.value.item,
-        this.itemForm.value.uom,
-        this.itemForm.value.quantity
-      );
-      if (this.menu.menuId > 0) {
-        this.menuService.postMenuIngredient(ingredient).subscribe((res) => {
-          this.processIngredient(ingredient);
-        });
-      } else {
-        this.processIngredient(ingredient);
-      }
-    } else {
-      this.messageBox('Incomplete ingredient detail.');
-    }
-  }
 
-  processIngredient(ing: MenuIngredient) {
-    this.messageBox('Ingredient has been added.');
-    this.menuIngredients = this.menuIngredients.concat(ing);
-    this.itemForm.reset();
-  }
+  // onAddIngredient() {
+  //   if (this.itemForm.valid) {
+  //     const ingredient = new MenuIngredient(
+  //       null,
+  //       this.menu.menuId > 0 ? this.menu : null,
+  //       this.itemForm.value.item,
+  //       this.itemForm.value.uom,
+  //       this.itemForm.value.quantity
+  //     );
+  //     if (this.menu.menuId > 0) {
+  //       this.menuService.postMenuIngredient(ingredient).subscribe((res) => {
+  //         this.processIngredient(ingredient);
+  //       });
+  //     } else {
+  //       this.processIngredient(ingredient);
+  //     }
+  //   } else {
+  //     this.messageBox('Incomplete ingredient detail.');
+  //   }
+  // }
+
+  // processIngredient(ing: MenuIngredient) {
+  //   this.messageBox('Ingredient has been added.');
+  //   this.menuIngredients = this.menuIngredients.concat(ing);
+  //   this.itemForm.reset();
+  // }
 
   onDeleteIngredient(ing: MenuIngredient) {
     this.alertCtrl

@@ -24,7 +24,7 @@ export class ConfigParam {
   pageSize: number;
 
   constructor() {
-    this.url = 'http://112.198.193.97:8443/api';
+    this.url = 'http://localhost:8443/api';
 
     this.urlItems = this.url + '/items';
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;
@@ -36,7 +36,7 @@ export class ConfigParam {
     this.urlMenuIngredients = `${this.url}/menuIngredients`;
     this.urlMenuIngredientSearch = `${this.urlMenuIngredients}/search/findByMenuId?menuId=`;
 
-    this.urlV1 = 'http://112.198.193.97:8443/api/v1';
+    this.urlV1 = 'http://localhost:8443/api/v1';
     this.urlV1Items = this.urlV1 + '/items';
     this.urlV1ItemUoms = this.urlV1 + '/itemUoms';
     this.urlV1Menus = this.urlV1 + '/menus';
