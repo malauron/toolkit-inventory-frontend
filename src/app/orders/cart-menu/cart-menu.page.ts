@@ -48,33 +48,6 @@ export class CartMenuPage implements OnInit {
 
   ngOnInit() {
     this.isFetching = true;
-    // this.menuForm = new FormGroup({
-    //   menuName: new FormControl(null, {
-    //     updateOn: 'blur',
-    //     validators: [Validators.required, Validators.maxLength(30)],
-    //   }),
-    //   remarks: new FormControl('', {
-    //     updateOn: 'blur',
-    //   }),
-    // });
-
-    // this.itemForm = new FormGroup({
-    //   item: new FormControl(null, {
-    //     validators: [Validators.required],
-    //   }),
-    //   itemName: new FormControl(null, {
-    //     validators: [Validators.required],
-    //   }),
-    //   uom: new FormControl(null, {
-    //     updateOn: 'blur',
-    //     validators: [Validators.required],
-    //   }),
-    //   quantity: new FormControl(null, {
-    //     updateOn: 'blur',
-    //     validators: [Validators.required, Validators.min(0)],
-    //   }),
-    // });
-
     this.route.paramMap.subscribe((paramMap) => {
       //Check whether paramMap is empty of not
       if (!paramMap.has('menuId')) {
@@ -99,10 +72,6 @@ export class CartMenuPage implements OnInit {
           this.menu.menuName = menuData.menuName;
           this.menu.remarks = menuData.remarks;
           this.menu.dateCreated = menuData.dateCreated;
-          // this.menuForm.patchValue({
-          //   menuName: menuData.menuName,
-          //   remarks: menuData.remarks,
-          // });
         });
 
         this.menuService

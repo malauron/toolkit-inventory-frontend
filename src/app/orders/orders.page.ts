@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonSearchbar } from '@ionic/angular';
+import { IonSearchbar, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Menu } from '../classes/menu.model';
@@ -31,29 +31,29 @@ export class OrdersPage implements OnInit, OnDestroy {
   constructor(
     private menuService: MenuService,
     private router: Router,
-    private config: ConfigParam
+    private config: ConfigParam,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {
-
     this.menuSearchBarSub = this.menuSearchBar.ionInput
-    .pipe(
-      map((event) => (event.target as HTMLInputElement).value),
-      debounceTime(2000),
-      distinctUntilChanged()
-    )
-    .subscribe((res) => {
-      this.searchValue = res.trim();
-      this.infiniteScroll.disabled = false;
-      this.menuList = [];
-      this.pageNumber = 0;
-      this.totalPages = 0;
-      if (this.searchValue) {
-        this.getMenus(undefined, 0, this.config.pageSize, this.searchValue);
-      } else {
-        this.getMenus(undefined, 0, this.config.pageSize);
-      }
-    });
+      .pipe(
+        map((event) => (event.target as HTMLInputElement).value),
+        debounceTime(2000),
+        distinctUntilChanged()
+      )
+      .subscribe((res) => {
+        this.searchValue = res.trim();
+        this.infiniteScroll.disabled = false;
+        this.menuList = [];
+        this.pageNumber = 0;
+        this.totalPages = 0;
+        if (this.searchValue) {
+          this.getMenus(undefined, 0, this.config.pageSize, this.searchValue);
+        } else {
+          this.getMenus(undefined, 0, this.config.pageSize);
+        }
+      });
 
     // Retrieves a new set of data from server
     // after adding or updating a menu
@@ -77,12 +77,16 @@ export class OrdersPage implements OnInit, OnDestroy {
     if (menuName === undefined) {
       this.menuService
         .getMenus(pageNumber, pageSize)
-        .subscribe(this.processMenuResult(event));
+        .subscribe(this.processMenuResult(event), (error) => {
+          this.messageBox('Unable to communicate with the server.');
+        });
     } else {
-      this.menuService.getMenus(pageNumber,pageSize,menuName)
-      .subscribe(this.processMenuResult(event));
+      this.menuService
+        .getMenus(pageNumber, pageSize, menuName)
+        .subscribe(this.processMenuResult(event), (error) => {
+          this.messageBox('Unable to communicate with the server.');
+        });
     }
-
   }
 
   processMenuResult(event?) {
@@ -100,12 +104,11 @@ export class OrdersPage implements OnInit, OnDestroy {
     this.router.navigate(['/', 'tabs', 'orders', 'cart-menu', menuId]);
   }
 
-  onEditMenu(menuId: number) {
+  onEditCartMenu(menuId: number) {
     this.router.navigate(['/', 'tabs', 'menus', 'menu-detail', menuId]);
   }
 
   loadMoreMenus(event) {
-
     if (this.pageNumber + 1 >= this.totalPages) {
       event.target.disabled = true;
       return;
@@ -123,6 +126,17 @@ export class OrdersPage implements OnInit, OnDestroy {
     } else {
       this.getMenus(event, this.pageNumber, this.config.pageSize);
     }
+  }
+
+  async messageBox(messageDescription: string) {
+    const toast = await this.toastController.create({
+      color: 'dark',
+      duration: 2000,
+      position: 'top',
+      message: messageDescription,
+    });
+
+    await toast.present();
   }
 
   ngOnDestroy(): void {
