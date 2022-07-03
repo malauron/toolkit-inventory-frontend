@@ -8,11 +8,14 @@ import {
   NavController,
   ToastController,
 } from '@ionic/angular';
+import { CartMenuDto } from 'src/app/classes/cart-menu-dto.model';
+import { CartMenu } from 'src/app/classes/cart-menu.model';
 import { Item } from 'src/app/classes/item.model';
 import { MenuDto } from 'src/app/classes/menu-dto.model';
 import { MenuIngredient } from 'src/app/classes/menu-ingredient.model';
 import { Menu } from 'src/app/classes/menu.model';
 import { Uom } from 'src/app/classes/uom.model';
+import { CartsService } from 'src/app/services/carts.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { MenuService } from 'src/app/services/menus.service';
 import { ItemSearchComponent } from '../../items/item-search/item-search.component';
@@ -43,6 +46,7 @@ export class CartMenuPage implements OnInit {
     private alertCtrl: AlertController,
     private itemService: ItemsService,
     private menuService: MenuService,
+    private cartsService: CartsService,
     private toastCtrl: ToastController
   ) {}
 
@@ -51,13 +55,13 @@ export class CartMenuPage implements OnInit {
     this.route.paramMap.subscribe((paramMap) => {
       //Check whether paramMap is empty of not
       if (!paramMap.has('menuId')) {
-        this.navCtrl.navigateBack('/tabs/menus');
+        this.navCtrl.navigateBack('/tabs/orders');
         return;
       }
 
       //Check if paramMap is a number
       if (isNaN(Number(paramMap.get('menuId')))) {
-        this.navCtrl.navigateBack('/tabs/menus');
+        this.navCtrl.navigateBack('/tabs/orders');
         return;
       }
 
@@ -83,41 +87,34 @@ export class CartMenuPage implements OnInit {
     });
   }
 
-  onItemSearch() {
-    this.modalItemSearch
-      .create({ component: ItemSearchComponent })
-      .then((modalSearch) => {
-        modalSearch.present();
-        return modalSearch.onDidDismiss();
-      })
-      .then((resultData) => {
-        if (resultData.role === 'item') {
-          const itemData = new Item();
-          const uomData = new Uom();
+  // onItemSearch() {
+  //   this.modalItemSearch
+  //     .create({ component: ItemSearchComponent })
+  //     .then((modalSearch) => {
+  //       modalSearch.present();
+  //       return modalSearch.onDidDismiss();
+  //     })
+  //     .then((resultData) => {
+  //       if (resultData.role === 'item') {
+  //         const itemData = new Item();
+  //         const uomData = new Uom();
 
-          itemData.itemId = resultData.data.itemId;
-          itemData.itemName = resultData.data.itemName;
+  //         itemData.itemId = resultData.data.itemId;
+  //         itemData.itemName = resultData.data.itemName;
 
-          uomData.uomId = resultData.data.uom.uomId;
-          uomData.uomName = resultData.data.uom.uomName;
-          uomData.uomCode = resultData.data.uom.uomCode;
+  //         uomData.uomId = resultData.data.uom.uomId;
+  //         uomData.uomName = resultData.data.uom.uomName;
+  //         uomData.uomCode = resultData.data.uom.uomCode;
 
-          // this.item = resultData.data;
-          this.uoms = [uomData];
-          this.getItemUoms(itemData.itemId);
-          // this.itemForm.patchValue({
-          //   item: itemData,
-          //   itemName: itemData.itemName,
-          //   uom: uomData,
-          //   quantity: 0,
-          // });
-        }
-      });
-  }
+  //         this.uoms = [uomData];
+  //         this.getItemUoms(itemData.itemId);
+  //       }
+  //     });
+  // }
 
-  getItemUoms(itemId: number) {
-    this.itemService.getItemUoms(itemId).subscribe(this.processResult());
-  }
+  // getItemUoms(itemId: number) {
+  //   this.itemService.getItemUoms(itemId).subscribe(this.processResult());
+  // }
 
   processResult() {
     return (data) => {
@@ -149,32 +146,31 @@ export class CartMenuPage implements OnInit {
     };
   }
 
-  // onSaveMenu() {
-  //   if (this.menuForm.valid) {
-  //     if (this.menu.menuId > 0) {
-  //       this.menu.menuName = this.menuForm.value.menuName;
-  //       this.menu.remarks = this.menuForm.value.remarks;
-  //       this.menu.altRemarks = this.getAltRemarks();
-  //       this.menuService.putMenu(this.menu)
-  //       .subscribe(this.processSaveMenu());
-  //     } else {
-  //       this.menuService.postMenu(this.processMenu())
-  //       .subscribe(this.processSaveMenu());
-  //     }
-  //   } else {
-  //     this.messageBox('Invalid menu information.');
-  //   }
-  // }
+  onSaveCartMenu() {
+    // if (this.menu.menuId > 0) {
+    //   this.menu.menuName = this.menuForm.value.menuName;
+    //   this.menu.remarks = this.menuForm.value.remarks;
+    //   this.menu.altRemarks = this.getAltRemarks();
+    //   this.menuService.putMenu(this.menu)
+    //   .subscribe(this.processSaveMenu());
+    // } else {
+      this.cartsService.postCartMenu(this.processCartMenu())
+      .subscribe(this.processSaveMenu());
+    // }
+  }
 
-  processMenu(): any {
-    const menu = new Menu();
+  processCartMenu(): any {
+    const cartMenuDto = new CartMenuDto(
+      this.menu,
+      this.menuIngredients
+    );
     // menu.menuName = this.menuForm.value.menuName;
     // menu.remarks = this.menuForm.value.remarks;
-    menu.altRemarks = this.getAltRemarks();
-    menu.price = 0;
+    // menu.altRemarks = this.getAltRemarks();
+    // menu.price = 0;
 
-    const menuDto = new MenuDto(menu, this.menuIngredients);
-    return menuDto;
+    // const menuDto = new MenuDto(menu, this.menuIngredients);
+    return cartMenuDto;
   }
 
   processSaveMenu() {
