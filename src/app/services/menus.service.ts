@@ -35,7 +35,7 @@ interface ResponseMenuIng {
   providedIn: 'root'
 })
 
-export class MenuService {
+export class MenusService {
   private apiUrl: string;
 
   private _menu = new Subject<Menu>();

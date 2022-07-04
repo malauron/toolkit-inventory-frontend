@@ -1,7 +1,12 @@
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CartMenuDto } from '../classes/cart-menu-dto.model';
 import { ConfigParam } from '../ConfigParam';
+
+@Injectable({
+  providedIn: 'root'
+})
 
 export class CartsService {
 

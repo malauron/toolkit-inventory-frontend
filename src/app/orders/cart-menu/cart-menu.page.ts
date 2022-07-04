@@ -9,6 +9,7 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { CartMenuDto } from 'src/app/classes/cart-menu-dto.model';
+import { CartMenuIngredient } from 'src/app/classes/cart-menu-ingredient.model';
 import { CartMenu } from 'src/app/classes/cart-menu.model';
 import { Item } from 'src/app/classes/item.model';
 import { MenuDto } from 'src/app/classes/menu-dto.model';
@@ -17,7 +18,7 @@ import { Menu } from 'src/app/classes/menu.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { CartsService } from 'src/app/services/carts.service';
 import { ItemsService } from 'src/app/services/items.service';
-import { MenuService } from 'src/app/services/menus.service';
+import { MenusService } from 'src/app/services/menus.service';
 import { ItemSearchComponent } from '../../items/item-search/item-search.component';
 @Component({
   selector: 'app-cart-menu',
@@ -45,7 +46,7 @@ export class CartMenuPage implements OnInit {
     private modalItemSearch: ModalController,
     private alertCtrl: AlertController,
     private itemService: ItemsService,
-    private menuService: MenuService,
+    private menusService: MenusService,
     private cartsService: CartsService,
     private toastCtrl: ToastController
   ) {}
@@ -72,13 +73,13 @@ export class CartMenuPage implements OnInit {
       // Get item details
       if (this.menu.menuId > 0) {
         this.postButton = 'checkmark-outline';
-        this.menuService.getMenu(this.menu.menuId).subscribe((menuData) => {
+        this.menusService.getMenu(this.menu.menuId).subscribe((menuData) => {
           this.menu.menuName = menuData.menuName;
           this.menu.remarks = menuData.remarks;
           this.menu.dateCreated = menuData.dateCreated;
         });
 
-        this.menuService
+        this.menusService
           .getMenuIngredients(this.menu.menuId)
           .subscribe(this.processMenuIngResult());
       } else {
@@ -147,6 +148,7 @@ export class CartMenuPage implements OnInit {
   }
 
   onSaveCartMenu() {
+
     // if (this.menu.menuId > 0) {
     //   this.menu.menuName = this.menuForm.value.menuName;
     //   this.menu.remarks = this.menuForm.value.remarks;
@@ -154,33 +156,51 @@ export class CartMenuPage implements OnInit {
     //   this.menuService.putMenu(this.menu)
     //   .subscribe(this.processSaveMenu());
     // } else {
-      this.cartsService.postCartMenu(this.processCartMenu())
+
+    this.cartsService.postCartMenu(this.processCartMenu())
       .subscribe(this.processSaveMenu());
-    // }
+
+      // }
   }
 
   processCartMenu(): any {
-    const cartMenuDto = new CartMenuDto(
-      this.menu,
-      this.menuIngredients
-    );
-    // menu.menuName = this.menuForm.value.menuName;
-    // menu.remarks = this.menuForm.value.remarks;
-    // menu.altRemarks = this.getAltRemarks();
-    // menu.price = 0;
 
-    // const menuDto = new MenuDto(menu, this.menuIngredients);
+    const cartMenuDto = new CartMenuDto();
+    const cartMenu = new CartMenu();
+
+
+    cartMenu.menu = this.menu;
+    cartMenu.orderQty = this.quantity;
+    cartMenu.price = 0;
+    cartMenu.lineTotal = 0;
+
+    cartMenuDto.cartMenu = cartMenu;
+    cartMenuDto.cartMenuIngredients = [];
+
+    this.menuIngredients.forEach((ing) => {
+      const cartMenuIngredient = new CartMenuIngredient();
+      cartMenuIngredient.item = ing.item;
+      cartMenuIngredient.baseUom = ing.item.uom;
+      cartMenuIngredient.baseQty = 1;
+      cartMenuIngredient.orderedQty = this.quantity;
+      cartMenuIngredient.requiredUom = ing.requiredUom;
+      cartMenuIngredient.requiredQty = ing.requiredQty;
+      cartMenuDto.cartMenuIngredients = cartMenuDto.cartMenuIngredients.concat(cartMenuIngredient);
+
+    });
+
     return cartMenuDto;
+
   }
 
   processSaveMenu() {
     return (menuData) => {
-      this.menuService.menu.next(menuData);
-      if (this.menu.menuId) {
-        this.messageBox('Menu details has been updated.');
-      } else {
-        this.navCtrl.navigateBack('/tabs/menus');
-      }
+      // this.menusService.menu.next(menuData);
+      // if (this.menu.menuId) {
+      //   this.messageBox('Menu details has been updated.');
+      // } else {
+      //   this.navCtrl.navigateBack('/tabs/menus');
+      // }
     };
   }
 
@@ -237,7 +257,7 @@ export class CartMenuPage implements OnInit {
             text: 'Delete',
             handler: () => {
               if (this.menu.menuId > 0) {
-                this.menuService.deleteMenuIngredient(ing).subscribe((res) => {
+                this.menusService.deleteMenuIngredient(ing).subscribe((res) => {
                   this.removeIngredientObj(ing);
                 });
               } else {

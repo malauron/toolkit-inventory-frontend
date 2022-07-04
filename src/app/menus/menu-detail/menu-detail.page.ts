@@ -19,7 +19,7 @@ import { MenuIngredient } from 'src/app/classes/menu-ingredient.model';
 import { Menu } from 'src/app/classes/menu.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemsService } from 'src/app/services/items.service';
-import { MenuService } from 'src/app/services/menus.service';
+import { MenusService } from 'src/app/services/menus.service';
 import { ItemSearchComponent } from '../../items/item-search/item-search.component';
 
 @Component({
@@ -48,7 +48,7 @@ export class MenuDetailPage implements OnInit {
     private modalItemSearch: ModalController,
     private alertCtrl: AlertController,
     private itemService: ItemsService,
-    private menuService: MenuService,
+    private menusService: MenusService,
     private toastCtrl: ToastController
   ) {}
 
@@ -101,7 +101,7 @@ export class MenuDetailPage implements OnInit {
       // Get item details
       if (this.menu.menuId > 0) {
         this.postButton = 'checkmark-outline';
-        this.menuService.getMenu(this.menu.menuId).subscribe((menuData) => {
+        this.menusService.getMenu(this.menu.menuId).subscribe((menuData) => {
           this.menu.menuName = menuData.menuName;
           this.menu.remarks = menuData.remarks;
           this.menu.dateCreated = menuData.dateCreated;
@@ -111,7 +111,7 @@ export class MenuDetailPage implements OnInit {
           });
         });
 
-        this.menuService
+        this.menusService
           .getMenuIngredients(this.menu.menuId)
           .subscribe(this.processMenuIngResult());
       } else {
@@ -193,10 +193,10 @@ export class MenuDetailPage implements OnInit {
         this.menu.menuName = this.menuForm.value.menuName;
         this.menu.remarks = this.menuForm.value.remarks;
         this.menu.altRemarks = this.getAltRemarks();
-        this.menuService.putMenu(this.menu)
+        this.menusService.putMenu(this.menu)
         .subscribe(this.processSaveMenu());
       } else {
-        this.menuService.postMenu(this.processMenu())
+        this.menusService.postMenu(this.processMenu())
         .subscribe(this.processSaveMenu());
       }
     } else {
@@ -216,7 +216,7 @@ export class MenuDetailPage implements OnInit {
 
   processSaveMenu() {
     return (menuData) => {
-      this.menuService.menu.next(menuData);
+      this.menusService.menu.next(menuData);
       if (this.menu.menuId) {
         this.messageBox('Menu details has been updated.');
       } else {
@@ -247,7 +247,7 @@ export class MenuDetailPage implements OnInit {
         this.itemForm.value.quantity
       );
       if (this.menu.menuId > 0) {
-        this.menuService.postMenuIngredient(ingredient).subscribe((res) => {
+        this.menusService.postMenuIngredient(ingredient).subscribe((res) => {
           this.processIngredient(ingredient);
         });
       } else {
@@ -277,7 +277,7 @@ export class MenuDetailPage implements OnInit {
             text: 'Delete',
             handler: () => {
               if (this.menu.menuId > 0) {
-                this.menuService.deleteMenuIngredient(ing).subscribe((res) => {
+                this.menusService.deleteMenuIngredient(ing).subscribe((res) => {
                   this.removeIngredientObj(ing);
                 });
               } else {

@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Menu } from '../classes/menu.model';
 import { ConfigParam } from '../ConfigParam';
-import { MenuService } from '../services/menus.service';
+import { MenusService } from '../services/menus.service';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
@@ -29,7 +29,7 @@ export class OrdersPage implements OnInit, OnDestroy {
   isFetching = false;
 
   constructor(
-    private menuService: MenuService,
+    private menusService: MenusService,
     private router: Router,
     private config: ConfigParam,
     private toastController: ToastController
@@ -57,7 +57,7 @@ export class OrdersPage implements OnInit, OnDestroy {
 
     // Retrieves a new set of data from server
     // after adding or updating a menu
-    this.menuSub = this.menuService.menu.subscribe((data) => {
+    this.menuSub = this.menusService.menu.subscribe((data) => {
       this.searchValue = '';
       this.infiniteScroll.disabled = false;
       this.menuList = [];
@@ -75,13 +75,13 @@ export class OrdersPage implements OnInit, OnDestroy {
     this.isFetching = true;
 
     if (menuName === undefined) {
-      this.menuService
+      this.menusService
         .getMenus(pageNumber, pageSize)
         .subscribe(this.processMenuResult(event), (error) => {
           this.messageBox('Unable to communicate with the server.');
         });
     } else {
-      this.menuService
+      this.menusService
         .getMenus(pageNumber, pageSize, menuName)
         .subscribe(this.processMenuResult(event), (error) => {
           this.messageBox('Unable to communicate with the server.');
