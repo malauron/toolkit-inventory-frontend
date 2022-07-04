@@ -201,6 +201,8 @@ export class CartMenuPage implements OnInit {
       // } else {
       //   this.navCtrl.navigateBack('/tabs/menus');
       // }
+
+      this.messageBox('Menu has been added to the cart.');
     };
   }
 
