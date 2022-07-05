@@ -203,6 +203,7 @@ export class CartMenuPage implements OnInit {
       // }
 
       this.messageBox('Menu has been added to the cart.');
+      this.navCtrl.navigateBack('/tabs/orders');
     };
   }
 
