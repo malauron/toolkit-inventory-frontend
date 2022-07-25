@@ -88,35 +88,6 @@ export class CartMenuPage implements OnInit {
     });
   }
 
-  // onItemSearch() {
-  //   this.modalItemSearch
-  //     .create({ component: ItemSearchComponent })
-  //     .then((modalSearch) => {
-  //       modalSearch.present();
-  //       return modalSearch.onDidDismiss();
-  //     })
-  //     .then((resultData) => {
-  //       if (resultData.role === 'item') {
-  //         const itemData = new Item();
-  //         const uomData = new Uom();
-
-  //         itemData.itemId = resultData.data.itemId;
-  //         itemData.itemName = resultData.data.itemName;
-
-  //         uomData.uomId = resultData.data.uom.uomId;
-  //         uomData.uomName = resultData.data.uom.uomName;
-  //         uomData.uomCode = resultData.data.uom.uomCode;
-
-  //         this.uoms = [uomData];
-  //         this.getItemUoms(itemData.itemId);
-  //       }
-  //     });
-  // }
-
-  // getItemUoms(itemId: number) {
-  //   this.itemService.getItemUoms(itemId).subscribe(this.processResult());
-  // }
-
   processResult() {
     return (data) => {
       const itemUoms = [];
@@ -149,18 +120,9 @@ export class CartMenuPage implements OnInit {
 
   onSaveCartMenu() {
 
-    // if (this.menu.menuId > 0) {
-    //   this.menu.menuName = this.menuForm.value.menuName;
-    //   this.menu.remarks = this.menuForm.value.remarks;
-    //   this.menu.altRemarks = this.getAltRemarks();
-    //   this.menuService.putMenu(this.menu)
-    //   .subscribe(this.processSaveMenu());
-    // } else {
-
     this.cartsService.postCartMenu(this.processCartMenu())
       .subscribe(this.processSaveMenu());
 
-      // }
   }
 
   processCartMenu(): any {
@@ -195,12 +157,6 @@ export class CartMenuPage implements OnInit {
 
   processSaveMenu() {
     return (menuData) => {
-      // this.menusService.menu.next(menuData);
-      // if (this.menu.menuId) {
-      //   this.messageBox('Menu details has been updated.');
-      // } else {
-      //   this.navCtrl.navigateBack('/tabs/menus');
-      // }
 
       this.messageBox('Menu has been added to the cart.');
       this.navCtrl.navigateBack('/tabs/orders');
@@ -219,33 +175,6 @@ export class CartMenuPage implements OnInit {
     return altRemarks;
 
   }
-
-  // onAddIngredient() {
-  //   if (this.itemForm.valid) {
-  //     const ingredient = new MenuIngredient(
-  //       null,
-  //       this.menu.menuId > 0 ? this.menu : null,
-  //       this.itemForm.value.item,
-  //       this.itemForm.value.uom,
-  //       this.itemForm.value.quantity
-  //     );
-  //     if (this.menu.menuId > 0) {
-  //       this.menuService.postMenuIngredient(ingredient).subscribe((res) => {
-  //         this.processIngredient(ingredient);
-  //       });
-  //     } else {
-  //       this.processIngredient(ingredient);
-  //     }
-  //   } else {
-  //     this.messageBox('Incomplete ingredient detail.');
-  //   }
-  // }
-
-  // processIngredient(ing: MenuIngredient) {
-  //   this.messageBox('Ingredient has been added.');
-  //   this.menuIngredients = this.menuIngredients.concat(ing);
-  //   this.itemForm.reset();
-  // }
 
   onDeleteIngredient(ing: MenuIngredient) {
     this.alertCtrl

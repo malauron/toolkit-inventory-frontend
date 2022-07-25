@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CartMenuDto } from '../classes/cart-menu-dto.model';
+import { Menu } from '../classes/menu.model';
 import { ConfigParam } from '../ConfigParam';
 
 @Injectable({
@@ -22,8 +23,9 @@ export class CartsService {
     return this.http.post(this.apiUrl, cartMenuDto);
   }
 
-  postCartMenuById() {
-
+  postCartSingleMenu(menu: Menu) {
+    this.apiUrl = `${this.config.urlV1CartSingleMenu}`;
+    return this.http.post(this.apiUrl, menu);
   }
 
 }

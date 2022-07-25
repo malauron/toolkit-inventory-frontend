@@ -6,7 +6,9 @@ import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Menu } from '../classes/menu.model';
 import { ConfigParam } from '../ConfigParam';
+import { CartsService } from '../services/carts.service';
 import { MenusService } from '../services/menus.service';
+
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
@@ -32,7 +34,8 @@ export class OrdersPage implements OnInit, OnDestroy {
     private menusService: MenusService,
     private router: Router,
     private config: ConfigParam,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private cartService: CartsService
   ) {}
 
   ngOnInit() {
@@ -100,12 +103,22 @@ export class OrdersPage implements OnInit, OnDestroy {
     };
   }
 
-  onAddCartMenu(menuId: number) {
+  onLoadMoreOptions(menuId: number) {
     this.router.navigate(['/', 'tabs', 'orders', 'cart-menu', menuId]);
+  }
+
+  onAddToCart(menu: Menu) {
+    this.cartService.postCartSingleMenu(menu).subscribe(this.processSaveMenu());
   }
 
   onEditCartMenu(menuId: number) {
     this.router.navigate(['/', 'tabs', 'menus', 'menu-detail', menuId]);
+  }
+
+  processSaveMenu() {
+    return(menuData) => {
+      this.messageBox('Menu has been added to cart.');
+    };
   }
 
   loadMoreMenus(event) {
