@@ -1,3 +1,15 @@
+ion-content {
+  --ion-background-color: #f6f6f6;
+}
+
+ion-card {
+  --ion-background-color: #FFFFFF;
+}
+
+.card-top {
+  border-top: 5px solid var(--ion-color-primary);
+}
+
 ion-list {
   padding: 20px;
 
@@ -26,6 +38,7 @@ ion-list {
 
 .favCard {
   margin: auto;
+  box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.19);
 }
 
 .icon {

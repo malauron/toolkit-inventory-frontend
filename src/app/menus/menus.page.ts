@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonSearchbar, ToastController } from '@ionic/angular';
+import { IonSearchbar, MenuController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Menu } from '../classes/menu.model';
@@ -33,7 +33,8 @@ export class MenusPage implements OnInit, OnDestroy {
     private menusService: MenusService,
     private router: Router,
     private config: ConfigParam,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private menu: MenuController
   ) {}
 
   ngOnInit() {
@@ -70,6 +71,12 @@ export class MenusPage implements OnInit, OnDestroy {
     // Retrieves a partial list of menus from the server
     // upon component initialization
     this.getMenus(undefined, 0, this.config.pageSize);
+  }
+
+  openEnd() {
+
+    this.menu.enable(true, 'custom');
+    this.menu.open('custom');
   }
 
   getMenus(event?, pageNumber?: number, pageSize?: number, menuName?: string) {

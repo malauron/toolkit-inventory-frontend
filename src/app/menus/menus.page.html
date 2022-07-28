@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-button (click)="openEnd()">
         <ion-icon
           slot="icon-only"
           ios="ellipsis-horizontal"
@@ -38,6 +38,7 @@
         *ngFor="let menu of menuList"
       >
         <ion-card class="favCard">
+          <div class="card-top"></div>
           <ion-item class="menuName">
             <ion-icon
               class="menuIcon"

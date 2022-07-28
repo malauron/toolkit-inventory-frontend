@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonSearchbar, ToastController } from '@ionic/angular';
+import { IonSearchbar, MenuController, ToastController } from '@ionic/angular';
 import { Observable, Subscription } from 'rxjs';
 import {
   map,
@@ -37,7 +37,8 @@ export class ItemsPage implements OnInit, OnDestroy {
     private itemService: ItemsService,
     private router: Router,
     private config: ConfigParam,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private menu: MenuController
   ) {}
 
   ngOnInit() {
@@ -75,6 +76,11 @@ export class ItemsPage implements OnInit, OnDestroy {
     // Retrieves a partial list of items from the server
     // upon component initialization
     this.getItems(undefined, 0, this.config.pageSize);
+  }
+
+  openCustom() {
+    this.menu.enable(true, 'last');
+    this.menu.open('last');
   }
 
   getItems(event?, pageNumber?: number, pageSize?: number, itemName?: string) {

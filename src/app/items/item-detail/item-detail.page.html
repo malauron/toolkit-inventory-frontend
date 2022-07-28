@@ -17,6 +17,8 @@
     <ion-row>
       <ion-col>
         <ion-card>
+
+          <div class="card-top"></div>
           <form [formGroup]="itemForm">
             <ion-grid>
               <!-- Item Description -->
@@ -63,6 +65,8 @@
 
       <ion-col size-xs="12" size-lg="6" size-xl="8" *ngIf="this.item.itemId">
         <ion-card>
+
+          <div class="card-top"></div>
           <form [formGroup]="itemUomForm">
             <ion-grid>
               <!-- UOMs -->

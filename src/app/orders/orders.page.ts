@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonSearchbar, ToastController } from '@ionic/angular';
+import { IonSearchbar, MenuController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Menu } from '../classes/menu.model';
@@ -35,7 +35,8 @@ export class OrdersPage implements OnInit, OnDestroy {
     private router: Router,
     private config: ConfigParam,
     private toastController: ToastController,
-    private cartService: CartsService
+    private cartService: CartsService,
+    private menu: MenuController
   ) {}
 
   ngOnInit() {
@@ -74,6 +75,11 @@ export class OrdersPage implements OnInit, OnDestroy {
     this.getMenus(undefined, 0, this.config.pageSize);
   }
 
+  openFirst() {
+    this.menu.enable(true, 'first');
+    this.menu.open('first');
+  }
+
   getMenus(event?, pageNumber?: number, pageSize?: number, menuName?: string) {
     this.isFetching = true;
 
@@ -101,6 +107,10 @@ export class OrdersPage implements OnInit, OnDestroy {
         event.target.complete();
       }
     };
+  }
+
+  onShowCart() {
+    this.router.navigate(['/', 'tabs', 'orders', 'cart']);
   }
 
   onLoadMoreOptions(menuId: number) {

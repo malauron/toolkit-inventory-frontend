@@ -157,7 +157,6 @@ export class CartMenuPage implements OnInit {
 
   processSaveMenu() {
     return (menuData) => {
-
       this.messageBox('Menu has been added to the cart.');
       this.navCtrl.navigateBack('/tabs/orders');
     };
@@ -177,31 +176,32 @@ export class CartMenuPage implements OnInit {
   }
 
   onDeleteIngredient(ing: MenuIngredient) {
-    this.alertCtrl
-      .create({
-        header: 'Confirm',
-        message: 'This will be permanently deleted.',
-        buttons: [
-          {
-            text: 'Cancel',
-          },
-          {
-            text: 'Delete',
-            handler: () => {
-              if (this.menu.menuId > 0) {
-                this.menusService.deleteMenuIngredient(ing).subscribe((res) => {
-                  this.removeIngredientObj(ing);
-                });
-              } else {
-                this.removeIngredientObj(ing);
-              }
-            },
-          },
-        ],
-      })
-      .then((res) => {
-        res.present();
-      });
+    this.removeIngredientObj(ing);
+    // this.alertCtrl
+    //   .create({
+    //     header: 'Confirm',
+    //     message: 'This will be permanently deleted.',
+    //     buttons: [
+    //       {
+    //         text: 'Cancel',
+    //       },
+    //       {
+    //         text: 'Delete',
+    //         handler: () => {
+    //           if (this.menu.menuId > 0) {
+    //             this.menusService.deleteMenuIngredient(ing).subscribe((res) => {
+    //               this.removeIngredientObj(ing);
+    //             });
+    //           } else {
+    //             this.removeIngredientObj(ing);
+    //           }
+    //         },
+    //       },
+    //     ],
+    //   })
+    //   .then((res) => {
+    //     res.present();
+    //   });
   }
 
   removeIngredientObj(ing: MenuIngredient) {

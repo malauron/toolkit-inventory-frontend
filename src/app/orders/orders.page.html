@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-button (click)="openFirst()">
         <ion-icon
           slot="icon-only"
           ios="ellipsis-horizontal"
@@ -16,7 +16,7 @@
 <ion-content class="ion-padding">
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
     <ion-badge mode="ios" color="warning">99</ion-badge>
-    <ion-fab-button color="danger">
+    <ion-fab-button color="primary" (click)="onShowCart()">
       <ion-icon name="cart-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
@@ -39,6 +39,7 @@
         *ngFor="let menu of menuList"
       >
         <ion-card class="favCard">
+          <div class="card-top"></div>
           <ion-item>
             <ion-icon
               class="menuIcon"
