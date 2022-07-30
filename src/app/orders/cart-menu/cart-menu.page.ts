@@ -26,8 +26,6 @@ import { ItemSearchComponent } from '../../items/item-search/item-search.compone
   styleUrls: ['./cart-menu.page.scss'],
 })
 export class CartMenuPage implements OnInit {
-  // menuForm: FormGroup;
-  // itemForm: FormGroup;
 
   uoms: Uom[] = [];
   menuIngredients: MenuIngredient[] = [];
@@ -177,31 +175,6 @@ export class CartMenuPage implements OnInit {
 
   onDeleteIngredient(ing: MenuIngredient) {
     this.removeIngredientObj(ing);
-    // this.alertCtrl
-    //   .create({
-    //     header: 'Confirm',
-    //     message: 'This will be permanently deleted.',
-    //     buttons: [
-    //       {
-    //         text: 'Cancel',
-    //       },
-    //       {
-    //         text: 'Delete',
-    //         handler: () => {
-    //           if (this.menu.menuId > 0) {
-    //             this.menusService.deleteMenuIngredient(ing).subscribe((res) => {
-    //               this.removeIngredientObj(ing);
-    //             });
-    //           } else {
-    //             this.removeIngredientObj(ing);
-    //           }
-    //         },
-    //       },
-    //     ],
-    //   })
-    //   .then((res) => {
-    //     res.present();
-    //   });
   }
 
   removeIngredientObj(ing: MenuIngredient) {
