@@ -1,25 +1,18 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
-  AlertController,
-  ModalController,
   NavController,
   ToastController,
 } from '@ionic/angular';
 import { CartMenuDto } from 'src/app/classes/cart-menu-dto.model';
 import { CartMenuIngredient } from 'src/app/classes/cart-menu-ingredient.model';
 import { CartMenu } from 'src/app/classes/cart-menu.model';
-import { Item } from 'src/app/classes/item.model';
-import { MenuDto } from 'src/app/classes/menu-dto.model';
 import { MenuIngredient } from 'src/app/classes/menu-ingredient.model';
 import { Menu } from 'src/app/classes/menu.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { CartsService } from 'src/app/services/carts.service';
-import { ItemsService } from 'src/app/services/items.service';
 import { MenusService } from 'src/app/services/menus.service';
-import { ItemSearchComponent } from '../../items/item-search/item-search.component';
 @Component({
   selector: 'app-cart-menu',
   templateUrl: './cart-menu.page.html',
@@ -41,9 +34,6 @@ export class CartMenuPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
-    private modalItemSearch: ModalController,
-    private alertCtrl: AlertController,
-    private itemService: ItemsService,
     private menusService: MenusService,
     private cartsService: CartsService,
     private toastCtrl: ToastController

@@ -1,5 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { CartMenuIngredient } from 'src/app/classes/cart-menu-ingredient.model';
+import { CartMenu } from 'src/app/classes/cart-menu.model';
+import { CartsService } from 'src/app/services/carts.service';
 
 @Component({
   selector: 'app-cart',
@@ -8,23 +11,55 @@ import { MenuController } from '@ionic/angular';
 })
 export class CartPage implements OnInit {
 
-  constructor(private menu: MenuController) { }
+  cartMenus: CartMenu[] = [];
+
+  constructor(
+    private cartService: CartsService,
+  ) { }
 
   ngOnInit() {
+
+    this.cartService.getCartMenus()
+    .subscribe(
+      resData => {
+        this.cartMenus = resData._embedded.cartMenus;
+        console.log(this.cartMenus);
+      }
+    );
   }
 
-  openFirst() {
-    this.menu.enable(true, 'first');
-    this.menu.open('first');
+  processCartMenuResult() {
+    return (data) => {
+      for (const key in data._embedded.cartMenus) {
+        if (data._embedded.cartMenus.hasOwnProperty(key)) {
+          const cartMenu = new CartMenu();
+          console.log(
+            this.processCartMenuIngredients(
+            data._embedded.cartMenus[key].cartMenuIngredients));
+        }
+      }
+    };
   }
 
-  openEnd() {
-    this.menu.open('end');
-  }
-
-  openCustom() {
-    this.menu.enable(true, 'custom');
-    this.menu.open('custom');
+  processCartMenuIngredients(ing: CartMenuIngredient[]) {
+    let cartMenuIngredients = new Array<CartMenuIngredient>();
+    cartMenuIngredients = [];
+    for(const key in ing) {
+      if(ing.hasOwnProperty(key)) {
+        const cartMenuIng = new CartMenuIngredient(
+          ing[key].cartMenuIngredientId,
+          ing[key].cartMenu,
+          ing[key].item,
+          ing[key].baseUom,
+          ing[key].baseQty,
+          ing[key].requiredUom,
+          ing[key].requiredQty,
+          ing[key].orderedQty
+        );
+        cartMenuIngredients = cartMenuIngredients.concat(cartMenuIng);
+      }
+    };
+    return cartMenuIngredients;
   }
 }
 
