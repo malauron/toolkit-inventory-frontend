@@ -17,17 +17,49 @@
 
 <ion-content class="ion-padding">
 
-  <!-- <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-card>
+  <ion-card>
     <div class="card-top"></div>
+    <ion-grid>
+      <ion-row class="customer-info">
+        <ion-col
+        class="ion-text-center">
+
+          <ion-item lines="none">
+            <ion-label class="ion-text-center">
+              <h6>-- Customer --</h6>
+              <ion-label class="ion-text-wrap"><ion-card-title>Taiyo Yuden Corporation</ion-card-title></ion-label>
+            </ion-label>
+          </ion-item>
+          <br />
+
+          <ion-item lines="none">
+            <ion-label class="ion-text-center">
+              <h6>-- Contact Number --</h6>
+              <ion-card-subtitle>09173164549</ion-card-subtitle>
+            </ion-label>
+          </ion-item>
+          <br />
+
+          <ion-item lines="none">
+            <ion-label class="ion-text-center">
+              <h6>-- Address --</h6>
+              <ion-label class="ion-text-wrap">Sitio Kamanggahan, Lower Tabok, Mandaue City, Cebu, Philippines 6014</ion-label>
+            </ion-label>
+          </ion-item>
+          <br />
+
+          <div class="separator"></div>
+          <ion-card-content>
+            <ion-button mode="ios" color="primary">
+              <ion-icon name="search-outline" slot="start"></ion-icon>
+              <ion-label>Search</ion-label>
+            </ion-button>
+          </ion-card-content>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
-
-
 
   <ion-grid>
     <ion-row *ngFor="let menu of cartMenus">
@@ -44,7 +76,7 @@
           <div class="separator"></div>
 
           <ion-grid>
-            <ion-row class="grid-ing">
+            <ion-row>
               <ion-col
                 size-xs="12"
                 size-md="6"

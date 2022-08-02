@@ -9,6 +9,8 @@ export class ConfigParam {
   urlItemSearch: any;
   urlItemUoms: any;
   urlItemUomSearch: any;
+  urlCustomers: any;
+  urlCustomerSearch: any;
   urlUoms: any;
   urlMenus: any;
   urlMenuSearch: any;
@@ -36,6 +38,8 @@ export class ConfigParam {
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;
     this.urlItemUoms = `${this.url}/itemUoms`;
     this.urlItemUomSearch = `${this.urlItemUoms}/search/findByItemId`;
+    this.urlCustomers = `${this.url}/customers`;
+    this.urlCustomerSearch = `${this.urlCustomers}/search/findByCustomerNameContainingOrderByCustomerName`;
     this.urlUoms = this.url + '/uoms';
     this.urlMenus = `${this.url}/menus`;
     this.urlMenuSearch = `${this.urlMenus}/search/findByMenuNameContainingOrderByMenuName`;
