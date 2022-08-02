@@ -7,20 +7,84 @@
       ></ion-back-button>
     </ion-buttons>
     <ion-title>Cart</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button>
+        <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-grid>
-    <ion-row>
-      <ion-col class="ion-text-center">
 
+  <!-- <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+    <div class="card-top"></div>
+  </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+
+
+
+  <ion-grid>
+    <ion-row *ngFor="let menu of cartMenus">
+      <ion-col class="ion-text-center">
         <ion-card>
           <div class="card-top"></div>
-          <ion-card-header></ion-card-header>
+          <ion-card-header>
+            <ion-label class="ion-text-center">
+              <ion-card-title>{{ menu.menu.menuName }}</ion-card-title>
+              <br />
+              <ion-card-subtitle>{{ menu.menu.remarks }}</ion-card-subtitle>
+            </ion-label>
+          </ion-card-header>
+          <div class="separator"></div>
+
+          <ion-grid>
+            <ion-row class="grid-ing">
+              <ion-col
+                size-xs="12"
+                size-md="6"
+                size-lg="4"
+                *ngFor="let ing of menu.cartMenuIngredients"
+              >
+                <ion-card class="favCard">
+                  <ion-item lines="none">
+                    <ion-avatar slot="start">
+                      <img src="../../assets/icons/items.svg" class="icon" />
+                    </ion-avatar>
+                    <ion-card-subtitle>
+                      {{ ing.item.itemName }} - {{ ing.requiredQty }}{{
+                      ing.requiredUom.uomCode }}
+                    </ion-card-subtitle>
+                    <ion-button
+                      mode="ios"
+                      slot="end"
+                      fill="clear"
+                      color="medium"
+                      size="default"
+                      (click)="onDeleteIngredient(ing, menu.cartMenuIngredients)"
+                    >
+                      <ion-icon name="close-circle"></ion-icon>
+                    </ion-button>
+                  </ion-item>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <div class="separator"></div>
+          <ion-card-content>
+            <ion-button mode="ios" color="medium" (click)="onDeleteMenu(menu)">
+              <ion-icon name="trash-sharp" slot="start"></ion-icon>
+              <ion-label>Remove</ion-label>
+            </ion-button>
+          </ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

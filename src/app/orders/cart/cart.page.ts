@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnInit } from '@angular/core';
+import { AlertController, ToastController } from '@ionic/angular';
 import { CartMenuIngredient } from 'src/app/classes/cart-menu-ingredient.model';
 import { CartMenu } from 'src/app/classes/cart-menu.model';
 import { CartsService } from 'src/app/services/carts.service';
@@ -10,22 +11,18 @@ import { CartsService } from 'src/app/services/carts.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-
   cartMenus: CartMenu[] = [];
 
   constructor(
     private cartService: CartsService,
-  ) { }
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController
+  ) {}
 
   ngOnInit() {
-
-    this.cartService.getCartMenus()
-    .subscribe(
-      resData => {
-        this.cartMenus = resData._embedded.cartMenus;
-        console.log(this.cartMenus);
-      }
-    );
+    this.cartService.getCartMenus().subscribe((resData) => {
+      this.cartMenus = resData._embedded.cartMenus;
+    });
   }
 
   processCartMenuResult() {
@@ -33,9 +30,6 @@ export class CartPage implements OnInit {
       for (const key in data._embedded.cartMenus) {
         if (data._embedded.cartMenus.hasOwnProperty(key)) {
           const cartMenu = new CartMenu();
-          console.log(
-            this.processCartMenuIngredients(
-            data._embedded.cartMenus[key].cartMenuIngredients));
         }
       }
     };
@@ -44,8 +38,8 @@ export class CartPage implements OnInit {
   processCartMenuIngredients(ing: CartMenuIngredient[]) {
     let cartMenuIngredients = new Array<CartMenuIngredient>();
     cartMenuIngredients = [];
-    for(const key in ing) {
-      if(ing.hasOwnProperty(key)) {
+    for (const key in ing) {
+      if (ing.hasOwnProperty(key)) {
         const cartMenuIng = new CartMenuIngredient(
           ing[key].cartMenuIngredientId,
           ing[key].cartMenu,
@@ -58,8 +52,85 @@ export class CartPage implements OnInit {
         );
         cartMenuIngredients = cartMenuIngredients.concat(cartMenuIng);
       }
-    };
+    }
     return cartMenuIngredients;
   }
-}
 
+  onDeleteMenu(menu: CartMenu) {
+    this.alertCtrl
+      .create({
+        header: 'Confirm',
+        message: 'This will be deleted permanently .',
+        buttons: [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'Delete',
+            handler: () => {
+              this.cartService.deleteCartMenu(menu).subscribe((res) => {
+                this.removeMenuObj(menu);
+              });
+            },
+          },
+        ],
+      })
+      .then((res) => {
+        res.present();
+      });
+  }
+
+  removeMenuObj(menu: CartMenu) {
+    for (const key in this.cartMenus) {
+      if (menu === this.cartMenus[key]) {
+        this.cartMenus.splice(Number(key), 1);
+      }
+    }
+  }
+
+  onDeleteIngredient(ing: CartMenuIngredient, ings: CartMenuIngredient[]) {
+    this.alertCtrl
+      .create({
+        header: 'Confirm',
+        message: 'This will be deleted permanently .',
+        buttons: [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'Delete',
+            handler: () => {
+              this.cartService.deleteCartMenuIngredient(ing).subscribe((res) => {
+                this.removeIngredientObj(ing, ings);
+              });
+            },
+          },
+        ],
+      })
+      .then((res) => {
+        res.present();
+      });
+  }
+
+  removeIngredientObj(ing: CartMenuIngredient, ings: CartMenuIngredient[]) {
+    for (const key in ings) {
+      if (ing === ings[key]) {
+        ings.splice(Number(key), 1);
+      }
+    }
+  }
+
+  messageBox(msg: string) {
+    this.toastCtrl
+      .create({
+        color: 'dark',
+        duration: 2000,
+        position: 'top',
+        message: msg,
+      })
+      .then((res) => {
+        res.present();
+      });
+  }
+
+}

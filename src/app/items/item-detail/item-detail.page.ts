@@ -21,7 +21,7 @@ import { UomsService } from 'src/app/services/uoms.service';
 })
 export class ItemDetailPage implements OnInit {
   pageLabel = 'Item Detail';
-  postButton = 'add';
+  postButton = 'checkmark-outline';
   itemForm: FormGroup;
   itemUomForm: FormGroup;
   item: Item;
@@ -223,7 +223,7 @@ export class ItemDetailPage implements OnInit {
     this.alertCtrl
       .create({
         header: 'Confirm',
-        message: 'This will be permanently deleted.',
+        message: 'This will be deleted permanently .',
         buttons: [
           {
             text: 'Cancel',

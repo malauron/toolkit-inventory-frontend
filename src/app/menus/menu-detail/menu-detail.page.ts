@@ -35,7 +35,7 @@ export class MenuDetailPage implements OnInit {
   menuIngredients: MenuIngredient[] = [];
 
   pageLabel = 'Menu Detail';
-  postButton = 'add';
+  postButton = 'checkmark-outline';
   ingCtr = 0;
 
   menu: Menu;
@@ -268,7 +268,7 @@ export class MenuDetailPage implements OnInit {
     this.alertCtrl
       .create({
         header: 'Confirm',
-        message: 'This will be permanently deleted.',
+        message: 'This will be deleted permanently .',
         buttons: [
           {
             text: 'Cancel',

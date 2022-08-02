@@ -16,7 +16,7 @@
 <ion-content class="ion-padding">
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
     <ion-badge mode="ios" color="warning">99</ion-badge>
-    <ion-fab-button color="primary" (click)="onShowCart()">
+    <ion-fab-button color="success" (click)="onShowCart()">
       <ion-icon name="cart-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
@@ -24,7 +24,7 @@
   <div class="spinner">
     <ion-spinner
       name="bubbles"
-      color="secondary"
+      color="primary"
       *ngIf="isFetching"
     ></ion-spinner>
   </div>
@@ -52,7 +52,7 @@
             </div>
           </ion-item>
           <ion-item lines="none">
-            <ion-button
+            <!-- <ion-button
               (click)="onLoadMoreOptions(menu.menuId)"
               mode="ios"
               slot="end"
@@ -60,8 +60,8 @@
             >
               <ion-icon slot="start" name="open-sharp"></ion-icon>
               <ion-label>More Options</ion-label>
-            </ion-button>
-            <ion-button (click)="onAddToCart(menu)" mode="ios" slot="end" color="warning" size="small">
+            </ion-button> -->
+            <ion-button (click)="onAddToCart(menu)" mode="ios" slot="end" color="success" size="small">
               <ion-icon slot="start" name="cart-sharp"></ion-icon>
               Add to Cart
             </ion-button>
