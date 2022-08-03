@@ -1,8 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { CartMenuIngredient } from 'src/app/classes/cart-menu-ingredient.model';
 import { CartMenu } from 'src/app/classes/cart-menu.model';
+import { Customer } from 'src/app/classes/customer.model';
+import { CustomerSearchComponent } from 'src/app/customers/customer-search/customer-search.component';
 import { CartsService } from 'src/app/services/carts.service';
 
 @Component({
@@ -12,17 +14,37 @@ import { CartsService } from 'src/app/services/carts.service';
 })
 export class CartPage implements OnInit {
   cartMenus: CartMenu[] = [];
+  customer = new Customer();
+
+  isFetching = false;
 
   constructor(
     private cartService: CartsService,
     private alertCtrl: AlertController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private modalCustomerSearch: ModalController
   ) {}
 
   ngOnInit() {
+    this.isFetching = true;
     this.cartService.getCartMenus().subscribe((resData) => {
       this.cartMenus = resData._embedded.cartMenus;
+      this.isFetching = false;
     });
+  }
+
+  onCustomerSearch() {
+    this.modalCustomerSearch
+      .create({ component: CustomerSearchComponent })
+      .then((modalSearch) => {
+        modalSearch.present();
+        return modalSearch.onDidDismiss();
+      })
+      .then((resultData) => {
+        if (resultData.role === 'customer') {
+          this.customer = resultData.data;
+        }
+      });
   }
 
   processCartMenuResult() {

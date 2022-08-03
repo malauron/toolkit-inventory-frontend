@@ -14,14 +14,18 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed"  *ngIf="!isFetching">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
     <ion-fab-button color="success" (click)="onAddItem()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
   <div class="spinner">
-    <ion-spinner name="bubbles" color="secondary" *ngIf="isFetching"></ion-spinner>
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
   </div>
 
   <ion-grid *ngIf="itemLists.length>0">

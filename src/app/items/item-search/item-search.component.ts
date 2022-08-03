@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 import {
-  AfterContentChecked,
   Component,
   OnInit,
   ViewChild,
@@ -11,15 +10,13 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Item } from 'src/app/classes/item.model';
 import { ConfigParam } from 'src/app/ConfigParam';
 import { ItemsService } from 'src/app/services/items.service';
-import { SwiperComponent } from 'swiper/angular';
 
 @Component({
   selector: 'app-item-search',
   templateUrl: './item-search.component.html',
   styleUrls: ['./item-search.component.scss'],
 })
-export class ItemSearchComponent implements OnInit,ViewDidEnter, AfterContentChecked {
-  @ViewChild('swiper') swiper: SwiperComponent;
+export class ItemSearchComponent implements OnInit,ViewDidEnter {
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('itemSearchBar', { static: true }) itemSearchBar: IonSearchbar;
 
@@ -65,13 +62,6 @@ export class ItemSearchComponent implements OnInit,ViewDidEnter, AfterContentChe
     setTimeout(() => {
       this.itemSearchBar.setFocus();
     }, 5);
-  }
-
-  ngAfterContentChecked(): void {
-    if (this.swiper) {
-      this.swiper.updateSwiper({});
-    }
-    // Listen to user input for use in searching of items
   }
 
   getItems(event?, pageNumber?: number, pageSize?: number, itemName?: string) {
@@ -123,13 +113,6 @@ export class ItemSearchComponent implements OnInit,ViewDidEnter, AfterContentChe
     } else {
       this.getItems(event, this.pageNumber, this.config.pageSize);
     }
-  }
-
-   onSwiper([swiper]) {
-    console.log(swiper);
-  }
-  onSlideChange() {
-    console.log('slide change');
   }
 
   dismissModal() {

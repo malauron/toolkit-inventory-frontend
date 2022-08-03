@@ -17,6 +17,14 @@
 
 <ion-content class="ion-padding">
 
+  <div class="spinner">
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
+  </div>
+
   <ion-card>
     <div class="card-top"></div>
     <ion-grid>
@@ -27,7 +35,7 @@
           <ion-item lines="none">
             <ion-label class="ion-text-center">
               <h6>-- Customer --</h6>
-              <ion-label class="ion-text-wrap"><ion-card-title>Taiyo Yuden Corporation</ion-card-title></ion-label>
+              <ion-label class="ion-text-wrap"><ion-card-title>{{ customer.customerName }}</ion-card-title></ion-label>
             </ion-label>
           </ion-item>
           <br />
@@ -35,7 +43,7 @@
           <ion-item lines="none">
             <ion-label class="ion-text-center">
               <h6>-- Contact Number --</h6>
-              <ion-card-subtitle>09173164549</ion-card-subtitle>
+              <ion-card-subtitle>{{ customer.contactNo }}</ion-card-subtitle>
             </ion-label>
           </ion-item>
           <br />
@@ -43,14 +51,14 @@
           <ion-item lines="none">
             <ion-label class="ion-text-center">
               <h6>-- Address --</h6>
-              <ion-label class="ion-text-wrap">Sitio Kamanggahan, Lower Tabok, Mandaue City, Cebu, Philippines 6014</ion-label>
+              <ion-label class="ion-text-wrap">{{ customer.address }}</ion-label>
             </ion-label>
           </ion-item>
           <br />
 
           <div class="separator"></div>
           <ion-card-content>
-            <ion-button mode="ios" color="primary">
+            <ion-button mode="ios" color="primary" (click)="onCustomerSearch()">
               <ion-icon name="search-outline" slot="start"></ion-icon>
               <ion-label>Search</ion-label>
             </ion-button>
