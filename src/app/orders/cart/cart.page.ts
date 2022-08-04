@@ -4,9 +4,15 @@ import { AlertController, ModalController, ToastController } from '@ionic/angula
 import { CartMenuIngredient } from 'src/app/classes/cart-menu-ingredient.model';
 import { CartMenu } from 'src/app/classes/cart-menu.model';
 import { Customer } from 'src/app/classes/customer.model';
+import { Item } from 'src/app/classes/item.model';
 import { Menu } from 'src/app/classes/menu.model';
+import { OrderDto } from 'src/app/classes/order-dto.model';
+import { OrderMenuIngredient } from 'src/app/classes/order-menu-ingredient.models';
+import { OrderMenu } from 'src/app/classes/order-menu.model';
+import { Uom } from 'src/app/classes/uom.model';
 import { CustomerSearchComponent } from 'src/app/customers/customer-search/customer-search.component';
 import { CartsService } from 'src/app/services/carts.service';
+import { OrdersService } from 'src/app/services/orders.service';
 
 @Component({
   selector: 'app-cart',
@@ -14,6 +20,7 @@ import { CartsService } from 'src/app/services/carts.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
+
   cartMenus: CartMenu[] = [];
   customer = new Customer();
 
@@ -21,6 +28,7 @@ export class CartPage implements OnInit {
 
   constructor(
     private cartService: CartsService,
+    private orderService: OrdersService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private modalCustomerSearch: ModalController
@@ -48,35 +56,101 @@ export class CartPage implements OnInit {
       });
   }
 
-  processCartMenuResult() {
-    return (data) => {
-      for (const key in data._embedded.cartMenus) {
-        if (data._embedded.cartMenus.hasOwnProperty(key)) {
-          const cartMenu = new CartMenu();
-        }
-      }
-    };
+  onSaveMenu(){
+    if (this.customer.customerId !== undefined && this.cartMenus.length>0){
+
+      const orderDto = new OrderDto(
+        this.customer,
+        this.processOrderMenus(this.cartMenus),
+        this.processCartMenu(this.cartMenus)
+      );
+
+      console.log(orderDto);
+      this.orderService.postOrders(orderDto).subscribe(
+        res => { console.log(res); },
+        err => { console.log(err); }
+      );
+    }
   }
 
-  processCartMenuIngredients(ings: CartMenuIngredient[]) {
-    let cartMenuIngredients = new Array<CartMenuIngredient>();
-    cartMenuIngredients = [];
-    for (const key in ings) {
-      if (ings.hasOwnProperty(key)) {
-        const cartMenuIng = new CartMenuIngredient(
-          ings[key].cartMenuIngredientId,
-          ings[key].cartMenu,
-          ings[key].item,
-          ings[key].baseUom,
-          ings[key].baseQty,
-          ings[key].requiredUom,
-          ings[key].requiredQty,
-          ings[key].orderedQty
+  processOrderMenus(menus: CartMenu[]) {
+    let orderMenus = new Array<OrderMenu>();
+    orderMenus = [];
+    for (const key in menus) {
+      if (menus.hasOwnProperty(key)) {
+
+        const menu = new Menu(
+          menus[key].menu.menuId,
+          menus[key].menu.menuName
         );
-        cartMenuIngredients = cartMenuIngredients.concat(cartMenuIng);
+
+        const orderMenu = new OrderMenu(
+          undefined,
+          undefined,
+          menu,
+          menus[key].orderQty,
+          menus[key].price,
+          menus[key].lineTotal,
+          this.processOrderMenuIngredients(menus[key].cartMenuIngredients)
+        );
+        orderMenus = orderMenus.concat(orderMenu);
       }
     }
-    return cartMenuIngredients;
+    return orderMenus;
+  }
+
+  processCartMenu(menus: CartMenu[]) {
+    let cartMenus = new Array<CartMenu>();
+    cartMenus = [];
+    for (const key in menus) {
+      if (menus.hasOwnProperty(key)) {
+        const cartMenu = new CartMenu(
+          menus[key].cartMenuId
+        );
+        cartMenus = cartMenus.concat(cartMenu);
+      }
+    }
+    return cartMenus;
+  }
+
+  processOrderMenuIngredients(ings: CartMenuIngredient[]) {
+    let orderMenuIngredients = new Array<OrderMenuIngredient>();
+    orderMenuIngredients = [];
+    for (const key in ings) {
+      if (ings.hasOwnProperty(key)) {
+
+        const item = new Item(
+          ings[key].item.itemId,
+          ings[key].item.itemName
+        );
+
+        const baseUom = new Uom(
+          ings[key].baseUom.uomId,
+          ings[key].baseUom.uomCode,
+          ings[key].baseUom.uomName
+        );
+
+        const requiredUom = new Uom(
+          ings[key].requiredUom.uomId,
+          ings[key].requiredUom.uomCode,
+          ings[key].requiredUom.uomName
+        );
+
+        const cartMenuIng = new OrderMenuIngredient(
+          undefined,
+          undefined,
+          item,
+          baseUom,
+          ings[key].baseQty,
+          requiredUom,
+          ings[key].requiredQty,
+          ings[key].orderedQty,
+          ings[key].menuIngredientId
+        );
+        orderMenuIngredients = orderMenuIngredients.concat(cartMenuIng);
+      }
+    }
+    return orderMenuIngredients;
   }
 
   onDeleteMenu(menu: CartMenu) {

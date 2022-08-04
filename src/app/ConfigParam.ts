@@ -27,6 +27,7 @@ export class ConfigParam {
   urlV1CartMenus: any;
   urlV1CartSingleMenu: any;
   urlV1CartMenuIngredients: any;
+  urlV1Orders: any;
 
   pageSize: number;
 
@@ -58,6 +59,7 @@ export class ConfigParam {
     this.urlV1CartMenus = `${this.urlV1}/cartMenus`;
     this.urlV1CartSingleMenu = `${this.urlV1}/cartSingleMenu`;
     this.urlV1CartMenuIngredients = `${this.urlV1}/cartMenuIngredients`;
+    this.urlV1Orders = `${this.urlV1}/orders`;
 
 
     this.pageSize = 20;
