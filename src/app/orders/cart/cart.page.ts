@@ -4,6 +4,7 @@ import { AlertController, ModalController, ToastController } from '@ionic/angula
 import { CartMenuIngredient } from 'src/app/classes/cart-menu-ingredient.model';
 import { CartMenu } from 'src/app/classes/cart-menu.model';
 import { Customer } from 'src/app/classes/customer.model';
+import { Menu } from 'src/app/classes/menu.model';
 import { CustomerSearchComponent } from 'src/app/customers/customer-search/customer-search.component';
 import { CartsService } from 'src/app/services/carts.service';
 
@@ -57,20 +58,20 @@ export class CartPage implements OnInit {
     };
   }
 
-  processCartMenuIngredients(ing: CartMenuIngredient[]) {
+  processCartMenuIngredients(ings: CartMenuIngredient[]) {
     let cartMenuIngredients = new Array<CartMenuIngredient>();
     cartMenuIngredients = [];
-    for (const key in ing) {
-      if (ing.hasOwnProperty(key)) {
+    for (const key in ings) {
+      if (ings.hasOwnProperty(key)) {
         const cartMenuIng = new CartMenuIngredient(
-          ing[key].cartMenuIngredientId,
-          ing[key].cartMenu,
-          ing[key].item,
-          ing[key].baseUom,
-          ing[key].baseQty,
-          ing[key].requiredUom,
-          ing[key].requiredQty,
-          ing[key].orderedQty
+          ings[key].cartMenuIngredientId,
+          ings[key].cartMenu,
+          ings[key].item,
+          ings[key].baseUom,
+          ings[key].baseQty,
+          ings[key].requiredUom,
+          ings[key].requiredQty,
+          ings[key].orderedQty
         );
         cartMenuIngredients = cartMenuIngredients.concat(cartMenuIng);
       }
@@ -90,7 +91,12 @@ export class CartPage implements OnInit {
           {
             text: 'Delete',
             handler: () => {
-              this.cartService.deleteCartMenu(menu).subscribe((res) => {
+
+              const cartMenu = new CartMenu(
+                menu.cartMenuId
+              );
+
+              this.cartService.deleteCartMenu(cartMenu).subscribe((res) => {
                 this.removeMenuObj(menu);
               });
             },
@@ -122,7 +128,10 @@ export class CartPage implements OnInit {
           {
             text: 'Delete',
             handler: () => {
-              this.cartService.deleteCartMenuIngredient(ing).subscribe((res) => {
+
+              const cartMenuIngredient = new CartMenuIngredient(ing.cartMenuIngredientId);
+
+              this.cartService.deleteCartMenuIngredient(cartMenuIngredient).subscribe((res) => {
                 this.removeIngredientObj(ing, ings);
               });
             },

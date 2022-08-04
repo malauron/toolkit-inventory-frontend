@@ -11,6 +11,7 @@ export class CartMenuIngredient {
     public baseQty?: number,
     public requiredUom?: Uom,
     public requiredQty?: number,
-    public orderedQty?: number
+    public orderedQty?: number,
+    public menuIngredientId?: number,
   ) {}
 }
