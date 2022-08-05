@@ -7,7 +7,7 @@
       ></ion-back-button>
     </ion-buttons>
     <ion-title>Cart</ion-title>
-    <ion-buttons slot="primary">
+    <ion-buttons slot="primary" *ngIf="cartMenus.length>0">
       <ion-button (click)="onSaveMenu()">
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
@@ -25,7 +25,7 @@
     ></ion-spinner>
   </div>
 
-  <ion-card>
+  <ion-card *ngIf="cartMenus.length>0">
     <div class="card-top"></div>
     <ion-grid>
       <ion-row class="customer-info">

@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { CartMenuIngredient } from 'src/app/classes/cart-menu-ingredient.model';
 import { CartMenu } from 'src/app/classes/cart-menu.model';
 import { Customer } from 'src/app/classes/customer.model';
@@ -27,6 +27,7 @@ export class CartPage implements OnInit {
   isFetching = false;
 
   constructor(
+    private navCtrl: NavController,
     private cartService: CartsService,
     private orderService: OrdersService,
     private alertCtrl: AlertController,
@@ -65,11 +66,16 @@ export class CartPage implements OnInit {
         this.processCartMenu(this.cartMenus)
       );
 
-      console.log(orderDto);
       this.orderService.postOrders(orderDto).subscribe(
-        res => { console.log(res); },
+        res => { this.navCtrl.navigateBack('/tabs/orders'); },
         err => { console.log(err); }
       );
+    } else {
+      if (this.cartMenus.length <= 0) {
+        this.messageBox('Cart is empty.');
+      } else {
+        this.messageBox('Please assign a customer for the order.');
+      }
     }
   }
 
