@@ -13,6 +13,10 @@ const routes: Routes = [
     loadChildren: () => import('./cart-menu/cart-menu.module').then( m => m.CartMenuPageModule)
   },
   {
+    path: 'orders-list',
+    loadChildren: () => import('./orders-list/orders-list.module').then( m => m.OrdersListPageModule)
+  },
+  {
     path: '',
     component: OrdersPage
   },
@@ -21,6 +25,7 @@ const routes: Routes = [
     redirectTo: '/tabs/orders',
     pathMatch: 'full'
   },
+
 ];
 
 @NgModule({

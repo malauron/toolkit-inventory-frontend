@@ -46,7 +46,7 @@ export class ItemsPage implements OnInit, OnDestroy {
     this.itemSearchBarSubscription = this.itemSearchBar.ionInput
       .pipe(
         map((event) => (event.target as HTMLInputElement).value),
-        debounceTime(2000),
+        debounceTime(this.config.waitTime),
         distinctUntilChanged()
       )
       .subscribe((res) => {

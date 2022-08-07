@@ -18,6 +18,7 @@ export class ConfigParam {
   urlMenuIngredientSearch: any;
   urlCartMenus: any;
   urlCartMenuSearch: any;
+  urlOrders: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -27,8 +28,10 @@ export class ConfigParam {
   urlV1CartMenus: any;
   urlV1CartSingleMenu: any;
   urlV1CartMenuIngredients: any;
+  urlV1CartMenuCount: any;
   urlV1Orders: any;
 
+  waitTime: number;
   pageSize: number;
 
   constructor() {
@@ -48,6 +51,8 @@ export class ConfigParam {
     this.urlMenuIngredientSearch = `${this.urlMenuIngredients}/search/findByMenuId?menuId=`;
     this.urlCartMenus = `${this.url}/cartMenus`;
     this.urlCartMenuSearch = `${this.urlCartMenus}/search/findAllCartMenus`;
+    this.urlOrders = `${this.url}/orders`;
+
 
     // this.urlV1 = 'http://122.52.134.244:8443/api/v1';
     this.urlV1 = 'http://localhost:8443/api/v1';
@@ -59,9 +64,11 @@ export class ConfigParam {
     this.urlV1CartMenus = `${this.urlV1}/cartMenus`;
     this.urlV1CartSingleMenu = `${this.urlV1}/cartSingleMenu`;
     this.urlV1CartMenuIngredients = `${this.urlV1}/cartMenuIngredients`;
+    this.urlV1CartMenuCount = `${this.urlV1CartMenus}/count`;
     this.urlV1Orders = `${this.urlV1}/orders`;
 
 
+    this.waitTime = 500;
     this.pageSize = 20;
   }
 }

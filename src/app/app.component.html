@@ -1,19 +1,53 @@
 <ion-app>
-
   <ion-menu side="end" menuId="first" contentId="main">
     <ion-header>
       <ion-toolbar color="primary">
-        <ion-title>Start Menu</ion-title>
+        <ion-title>More options ...</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ion-list>
+      <!-- <ion-list>
         <ion-item>Menu Item</ion-item>
         <ion-item>Menu Item</ion-item>
         <ion-item>Menu Item</ion-item>
         <ion-item>Menu Item</ion-item>
         <ion-item>Menu Item</ion-item>
-      </ion-list>
+      </ion-list> -->
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-menu-toggle>
+              <ion-card class="favCard">
+                <ion-item lines="none" button routerLink="/tabs/orders/orders-list">
+                  <!-- <ion-avatar slot="start">
+                    <img src="../../assets/icons/orders.svg" class="icon" />
+                  </ion-avatar> -->
+                  <ion-icon
+                    class="customerIcon"
+                    src="../../assets/icons/orders.svg"
+                    color="primary"
+                    slot="start"
+                  ></ion-icon>
+                  <ion-card-subtitle>Orders List</ion-card-subtitle>
+                </ion-item>
+              </ion-card>
+            </ion-menu-toggle>
+
+            <!-- <ion-card class="favCard">
+              <ion-item lines="none" button>
+                <ion-icon
+                  class="customerIcon"
+                  name="person-circle-outline"
+                  color="primary"
+                  slot="start"
+                ></ion-icon>
+                <ion-card-subtitle>Orders List</ion-card-subtitle>
+              </ion-item>
+            </ion-card> -->
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-content>
   </ion-menu>
 

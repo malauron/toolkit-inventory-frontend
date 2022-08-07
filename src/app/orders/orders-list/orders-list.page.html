@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button
+        icon="chevron-back-outline"
+        defaultHref="/tabs/orders"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-searchbar #orderSearchBar placeholder="Search orders"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="spinner">
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
+  </div>
+
+  <ion-grid *ngIf="orders.length>0">
+    <ion-row>
+      <ion-col
+        size-xs="12"
+        size-sm="6"
+        size-lg="4"
+        size-xl="3"
+        *ngFor="let order of orders"
+      >
+        <ion-card class="favCard">
+          <div class="card-top"></div>
+
+          <ion-item class="customerName">
+            <ion-icon
+              class="cartIcon"
+              name="cart-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label>{{ order.orderId.toString().padStart(8, "0") }}</ion-label>
+            <ion-badge color="warning">Pending</ion-badge>
+            <ion-button
+              mode="ios"
+              size="small"
+              color="secondary"
+              fill="clear"
+              slot="end"
+              ><ion-icon name="chevron-forward-outline"></ion-icon
+            ></ion-button>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="person-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <!-- <ion-card-title> -->
+              {{ order.customer.customerName }}
+            <!-- </ion-card-title> -->
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="call-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-card-subtitle>
+              <p>{{ order.customer.contactNo }}</p>
+            </ion-card-subtitle>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="location-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-card-subtitle>
+              <p>{{ order.customer.address }}</p>
+            </ion-card-subtitle>
+          </ion-item>
+
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreMenus($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more menus..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

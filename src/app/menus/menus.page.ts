@@ -41,7 +41,7 @@ export class MenusPage implements OnInit, OnDestroy {
     this.menuSearchBarSub = this.menuSearchBar.ionInput
       .pipe(
         map((event) => (event.target as HTMLInputElement).value),
-        debounceTime(2000),
+        debounceTime(this.config.waitTime),
         distinctUntilChanged()
       )
       .subscribe((res) => {

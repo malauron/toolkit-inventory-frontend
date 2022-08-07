@@ -23,8 +23,10 @@ export class OrdersPage implements OnInit, OnDestroy {
 
   menuList: Menu[] = [];
 
+
   searchValue = '';
 
+  totalCartQty = 0;
   pageNumber = 0;
   totalPages = 0;
 
@@ -43,7 +45,7 @@ export class OrdersPage implements OnInit, OnDestroy {
     this.menuSearchBarSub = this.menuSearchBar.ionInput
       .pipe(
         map((event) => (event.target as HTMLInputElement).value),
-        debounceTime(2000),
+        debounceTime(this.config.waitTime),
         distinctUntilChanged()
       )
       .subscribe((res) => {
@@ -73,6 +75,15 @@ export class OrdersPage implements OnInit, OnDestroy {
     // Retrieves a partial list of menus from the server
     // upon component initialization
     this.getMenus(undefined, 0, this.config.pageSize);
+
+    this.cartService.totalCartQty.subscribe(
+      data => this.totalCartQty = data
+    );
+
+  }
+
+  ionViewDidEnter() {
+    this.getTotalCartQty();
   }
 
   openFirst() {
@@ -96,6 +107,15 @@ export class OrdersPage implements OnInit, OnDestroy {
           this.messageBox('Unable to communicate with the server.');
         });
     }
+  }
+
+  getTotalCartQty() {
+    this.cartService.getCartMenuCount().subscribe(
+      res => {
+        this.cartService.totalCartQty.next(res.cartMenuCount);
+      }
+
+    );
   }
 
   processMenuResult(event?) {
@@ -127,6 +147,7 @@ export class OrdersPage implements OnInit, OnDestroy {
 
   processSaveMenu() {
     return(menuData) => {
+      this.getTotalCartQty();
       this.messageBox('Menu has been added to cart.');
     };
   }

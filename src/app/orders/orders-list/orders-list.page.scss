@@ -1,0 +1,73 @@
+ion-searchbar {
+  --border-radius: 10px;
+}
+
+ion-content {
+  --ion-background-color: #f6f6f6;
+}
+
+ion-card {
+  margin-bottom: -15px;
+  --ion-background-color: #FFFFFF;
+}
+
+.card-top {
+  border-top: 5px solid var(--ion-color-primary);
+}
+
+.spinner {
+  z-index: 100;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+ion-spinner {
+  stroke: var(--ion-color-primary);
+  fill: var(--ion-color-primary);
+  transform: scale(3);
+}
+
+.favCard {
+  height: 300px;
+  border-radius: 10px;
+  // box-shadow: 1px 01px 3px 1px rgba(0,0,0,0.19);
+  box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.19);
+  margin: auto;
+  margin-top: 30px;
+
+  .customerName {
+    margin-top: 5px;
+  }
+
+  .cartIcon {
+    font-size: 30px;
+  }
+
+  .contactIcon {
+    font-size: 18px;
+    margin-left: 12px;
+  }
+
+  .menuDetail {
+    min-height: 80px;
+  }
+}
+
+p {
+
+  // Indents and justifies remarks
+  // text-indent: 15%;
+  text-align: justify;
+  text-justify: inter-word;
+  // margin-left: 60px;
+
+
+  // Shortens remarks
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
