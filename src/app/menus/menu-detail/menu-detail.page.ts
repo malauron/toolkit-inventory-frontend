@@ -54,6 +54,7 @@ export class MenuDetailPage implements OnInit {
 
   ngOnInit() {
     this.isFetching = true;
+
     this.menuForm = new FormGroup({
       menuName: new FormControl(null, {
         updateOn: 'blur',
@@ -62,6 +63,7 @@ export class MenuDetailPage implements OnInit {
       remarks: new FormControl('', {
         updateOn: 'blur',
       }),
+
     });
 
     this.itemForm = new FormGroup({

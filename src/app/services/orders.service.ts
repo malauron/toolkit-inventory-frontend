@@ -27,6 +27,11 @@ export class OrdersService{
     private config: ConfigParam
   ){}
 
+  getOrder(orderId: number): Observable<Order>{
+    this.apiUrl = `${this.config.urlOrders}/${orderId}?projection=orderView`;
+    return this.http.get<Order>(this.apiUrl);
+  }
+
   getOrders(
     pageNumber?: number,
     pageSize?: number,
@@ -44,8 +49,6 @@ export class OrdersService{
         } else {
           orderId = searchDesc;
         }
-        // eslint-disable-next-line max-len
-        // this.apiUrl = `${this.config.urlOrdersSearch}?customerName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
 
         // eslint-disable-next-line max-len
         this.apiUrl = `${this.config.urlOrdersSearch}?orderId=${orderId}&customerName=${searchDesc}&address=${searchDesc}&contactNo=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
@@ -54,16 +57,10 @@ export class OrdersService{
     return this.http.get<ResponseOrders>(this.apiUrl);
   }
 
-  getOrderMenus(order: Order): Observable<OrderMenuDto> {
+  getOrderMenus(orderId: number): Observable<OrderMenuDto> {
 
-    const options = {
-      headers: new HttpHeaders({
-        contentType: 'application/json'
-      }),
-      body: order
-    };
-    this.apiUrl = `${this.config.urlV1OrderMenus}`;
-    return this.http.post<OrderMenuDto>(this.apiUrl, order);
+    this.apiUrl = `${this.config.urlV1OrderMenus}?orderId=${orderId}`;
+    return this.http.get<OrderMenuDto>(this.apiUrl);
   }
 
   postOrders(order: OrderDto) {

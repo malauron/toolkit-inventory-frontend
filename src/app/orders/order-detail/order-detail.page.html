@@ -3,10 +3,10 @@
     <ion-buttons slot="start">
       <ion-back-button
         icon="chevron-back-outline"
-        defaultHref="/tabs/orders"
+        defaultHref="/tabs/orders/orders-list"
       ></ion-back-button>
     </ion-buttons>
-    <ion-title>Cart</ion-title>
+    <ion-title>Order Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -50,14 +50,6 @@
             </ion-label>
           </ion-item>
           <br />
-
-          <div class="separator"></div>
-          <ion-card-content>
-            <ion-button mode="ios" color="primary" (click)="onCustomerSearch()">
-              <ion-icon name="search-outline" slot="start"></ion-icon>
-              <ion-label>Search</ion-label>
-            </ion-button>
-          </ion-card-content>
 
         </ion-col>
       </ion-row>
