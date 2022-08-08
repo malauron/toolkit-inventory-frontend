@@ -19,6 +19,7 @@ export class ConfigParam {
   urlCartMenus: any;
   urlCartMenuSearch: any;
   urlOrders: any;
+  urlOrdersSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -30,6 +31,7 @@ export class ConfigParam {
   urlV1CartMenuIngredients: any;
   urlV1CartMenuCount: any;
   urlV1Orders: any;
+  urlV1OrderMenus: any;
 
   waitTime: number;
   pageSize: number;
@@ -52,6 +54,12 @@ export class ConfigParam {
     this.urlCartMenus = `${this.url}/cartMenus`;
     this.urlCartMenuSearch = `${this.urlCartMenus}/search/findAllCartMenus`;
     this.urlOrders = `${this.url}/orders`;
+    // this.urlOrdersSearch = `${this.urlOrders}/search/findByCustomer_CustomerNameContaining`;
+
+    // eslint-disable-next-line max-len
+    this.urlOrdersSearch = `${this.urlOrders}/search/findByOrderIdOrCustomer_CustomerNameContaining` +
+                            `OrCustomer_AddressContainingOrCustomer_ContactNoContaining`;
+
 
 
     // this.urlV1 = 'http://122.52.134.244:8443/api/v1';
@@ -66,6 +74,8 @@ export class ConfigParam {
     this.urlV1CartMenuIngredients = `${this.urlV1}/cartMenuIngredients`;
     this.urlV1CartMenuCount = `${this.urlV1CartMenus}/count`;
     this.urlV1Orders = `${this.urlV1}/orders`;
+    this.urlV1OrderMenus = `${this.urlV1Orders}/orderMenus`;
+
 
 
     this.waitTime = 500;

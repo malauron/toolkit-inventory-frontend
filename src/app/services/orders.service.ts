@@ -1,7 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OrderDto } from '../classes/order-dto.model';
+import { OrderMenuDto } from '../classes/order-menu-dto.model';
+import { OrderMenu } from '../classes/order-menu.model';
 import { Order } from '../classes/order.model';
 import { PageInfo } from '../classes/page-info.model';
 import { ConfigParam } from '../ConfigParam';
@@ -28,10 +30,40 @@ export class OrdersService{
   getOrders(
     pageNumber?: number,
     pageSize?: number,
-    menuName?: string
+    searchDesc?: any
     ): Observable<ResponseOrders> {
-    this.apiUrl = `${this.config.urlOrders}`;
+
+      if (searchDesc === undefined) {
+        this.apiUrl = `${this.config.urlOrders}?page=${pageNumber}&size=${pageSize}`;
+      } else {
+
+        let orderId: number;
+
+        if (isNaN(searchDesc)) {
+          orderId = 0;
+        } else {
+          orderId = searchDesc;
+        }
+        // eslint-disable-next-line max-len
+        // this.apiUrl = `${this.config.urlOrdersSearch}?customerName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+
+        // eslint-disable-next-line max-len
+        this.apiUrl = `${this.config.urlOrdersSearch}?orderId=${orderId}&customerName=${searchDesc}&address=${searchDesc}&contactNo=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+
+      }
     return this.http.get<ResponseOrders>(this.apiUrl);
+  }
+
+  getOrderMenus(order: Order): Observable<OrderMenuDto> {
+
+    const options = {
+      headers: new HttpHeaders({
+        contentType: 'application/json'
+      }),
+      body: order
+    };
+    this.apiUrl = `${this.config.urlV1OrderMenus}`;
+    return this.http.post<OrderMenuDto>(this.apiUrl, order);
   }
 
   postOrders(order: OrderDto) {

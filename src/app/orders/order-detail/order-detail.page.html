@@ -1,0 +1,125 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button
+        icon="chevron-back-outline"
+        defaultHref="/tabs/orders"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cart</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="spinner">
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
+  </div>
+
+  <ion-card *ngIf="orderMenus.length>0">
+    <div class="card-top"></div>
+    <ion-grid>
+      <ion-row class="customer-info">
+        <ion-col
+        class="ion-text-center">
+
+          <ion-item lines="none">
+            <ion-label class="ion-text-center">
+              <h6>-- Customer --</h6>
+              <ion-label class="ion-text-wrap"><ion-card-title>{{ customer.customerName }}</ion-card-title></ion-label>
+            </ion-label>
+          </ion-item>
+          <br />
+
+          <ion-item lines="none">
+            <ion-label class="ion-text-center">
+              <h6>-- Contact Number --</h6>
+              <ion-card-subtitle>{{ customer.contactNo }}</ion-card-subtitle>
+            </ion-label>
+          </ion-item>
+          <br />
+
+          <ion-item lines="none">
+            <ion-label class="ion-text-center">
+              <h6>-- Address --</h6>
+              <ion-label class="ion-text-wrap">{{ customer.address }}</ion-label>
+            </ion-label>
+          </ion-item>
+          <br />
+
+          <div class="separator"></div>
+          <ion-card-content>
+            <ion-button mode="ios" color="primary" (click)="onCustomerSearch()">
+              <ion-icon name="search-outline" slot="start"></ion-icon>
+              <ion-label>Search</ion-label>
+            </ion-button>
+          </ion-card-content>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-grid>
+    <ion-row *ngFor="let menu of orderMenus">
+      <ion-col class="ion-text-center">
+        <ion-card>
+          <div class="card-top"></div>
+          <ion-card-header>
+            <ion-label class="ion-text-center">
+              <ion-card-title>{{ menu.menu.menuName }}</ion-card-title>
+              <br />
+              <ion-card-subtitle>{{ menu.menu.remarks }}</ion-card-subtitle>
+            </ion-label>
+          </ion-card-header>
+          <div class="separator"></div>
+
+          <ion-grid>
+            <ion-row>
+              <ion-col
+                size-xs="12"
+                size-md="6"
+                size-lg="4"
+                *ngFor="let ing of menu.orderMenuIngredients"
+              >
+                <ion-card class="favCard">
+                  <ion-item lines="none">
+                    <ion-avatar slot="start">
+                      <img src="../../assets/icons/items.svg" class="icon" />
+                    </ion-avatar>
+                    <ion-card-subtitle>
+                      {{ ing.item.itemName }} - {{ ing.requiredQty }}{{
+                      ing.requiredUom.uomCode }}
+                    </ion-card-subtitle>
+                    <ion-button
+                      mode="ios"
+                      slot="end"
+                      fill="clear"
+                      color="medium"
+                      size="default"
+                      (click)="onDeleteIngredient(ing, menu.orderMenuIngredients)"
+                    >
+                      <ion-icon name="close-circle"></ion-icon>
+                    </ion-button>
+                  </ion-item>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <div class="separator"></div>
+          <ion-card-content>
+            <ion-button mode="ios" color="medium" (click)="onDeleteMenu(menu)">
+              <ion-icon name="trash-sharp" slot="start"></ion-icon>
+              <ion-label>Remove</ion-label>
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

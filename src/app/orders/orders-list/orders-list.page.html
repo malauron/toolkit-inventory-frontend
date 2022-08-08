@@ -39,13 +39,14 @@
               slot="start"
             ></ion-icon>
             <ion-label>{{ order.orderId.toString().padStart(8, "0") }}</ion-label>
-            <ion-badge color="warning">Pending</ion-badge>
+            <ion-badge color="warning">{{ order.orderStatus }}</ion-badge>
             <ion-button
               mode="ios"
               size="small"
               color="secondary"
               fill="clear"
               slot="end"
+              (click)="onEditOrder(order.orderId)"
               ><ion-icon name="chevron-forward-outline"></ion-icon
             ></ion-button>
           </ion-item>
@@ -94,7 +95,7 @@
   <ion-infinite-scroll
     #infiniteScroll
     threshold="5%"
-    (ionInfinite)="loadMoreMenus($event)"
+    (ionInfinite)="loadMoreOrders($event)"
   >
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
