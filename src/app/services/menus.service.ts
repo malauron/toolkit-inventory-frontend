@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Item } from '../classes/item.model';
+import { MenuDto } from '../classes/menu-dto.model';
 import { MenuIngredient } from '../classes/menu-ingredient.model';
 import { Menu } from '../classes/menu.model';
 import { PageInfo } from '../classes/page-info.model';
@@ -70,7 +71,7 @@ export class MenusService {
     return this.http.get<ResponseMenuIng>(this.apiUrl);
   }
 
-  postMenu(menu: Menu): Observable<ResponseMenus> {
+  postMenu(menu: MenuDto): Observable<ResponseMenus> {
     this.apiUrl = `${this.config.urlV1Menus}`;
     return this.http.post<ResponseMenus>(this.apiUrl, menu);
   }

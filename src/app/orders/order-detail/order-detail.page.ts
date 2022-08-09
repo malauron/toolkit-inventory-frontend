@@ -53,6 +53,7 @@ export class OrderDetailPage implements OnInit {
       const orderId = Number(paramMap.get('orderId'));
 
       this.orderService.getOrder(orderId).subscribe((resData) => {
+        this.order = resData;
         this.customer = resData.customer;
       });
 
@@ -77,13 +78,9 @@ export class OrderDetailPage implements OnInit {
             text: 'Delete',
             handler: () => {
 
-              const orderMenu = new OrderMenu(
-                menu.orderMenuId
-              );
-
-              // this.orderService.deleteOrderMenu(OrderMenu).subscribe((res) => {
-              //   this.removeMenuObj(menu);
-              // });
+              this.orderService.deleteOrderMenu(menu.orderMenuId).subscribe((res) => {
+                this.removeMenuObj(menu);
+              });
             },
           },
         ],
@@ -114,11 +111,9 @@ export class OrderDetailPage implements OnInit {
             text: 'Delete',
             handler: () => {
 
-              const orderMenuIngredient = new OrderMenuIngredient(ing.orderMenuIngredientId);
-
-              // this.orderService.deleteOrderMenuIngredient(OrderMenuIngredient).subscribe((res) => {
-              //   this.removeIngredientObj(ing, ings);
-              // });
+              this.orderService.deleteOrderMenuIngredient(ing.orderMenuIngredientId).subscribe((res) => {
+                this.removeIngredientObj(ing, ings);
+              });
             },
           },
         ],
@@ -131,7 +126,7 @@ export class OrderDetailPage implements OnInit {
   removeIngredientObj(ing: OrderMenuIngredient, ings: OrderMenuIngredient[]) {
     for (const key in ings) {
       if (ing === ings[key]) {
-        ings.splice(Number(key), 1);
+        ing.orderMenuIngredientId = 0;
       }
     }
   }

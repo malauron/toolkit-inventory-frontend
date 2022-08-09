@@ -32,6 +32,7 @@ export class ConfigParam {
   urlV1CartMenuCount: any;
   urlV1Orders: any;
   urlV1OrderMenus: any;
+  urlV1OrderMenuIngredients: any;
 
   waitTime: number;
   pageSize: number;
@@ -75,6 +76,7 @@ export class ConfigParam {
     this.urlV1CartMenuCount = `${this.urlV1CartMenus}/count`;
     this.urlV1Orders = `${this.urlV1}/orders`;
     this.urlV1OrderMenus = `${this.urlV1Orders}/orderMenus`;
+    this.urlV1OrderMenuIngredients = `${this.urlV1OrderMenus}/orderMenuIngredients`;
 
 
 

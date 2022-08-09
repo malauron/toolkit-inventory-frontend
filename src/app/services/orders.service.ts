@@ -68,4 +68,13 @@ export class OrdersService{
     return this.http.post(this.apiUrl, order);
   }
 
+  deleteOrderMenu(id: number) {
+    this.apiUrl = `${this.config.urlV1OrderMenus}?orderMenuId=${id}`;
+    return this.http.delete(this.apiUrl);
+  }
+
+  deleteOrderMenuIngredient(id: number) {
+    this.apiUrl = `${this.config.urlV1OrderMenuIngredients}?orderMenuIngredientId=${id}`;
+    return this.http.delete(this.apiUrl);
+  }
 }
