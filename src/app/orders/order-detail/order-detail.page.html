@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button
-        icon="chevron-back-outline"
-        defaultHref="/tabs/orders/orders-list"
-      ></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/orders/orders-list"></ion-back-button>
     </ion-buttons>
     <ion-title>Order Details</ion-title>
   </ion-toolbar>
@@ -12,11 +9,7 @@
 
 <ion-content class="ion-padding">
   <div class="spinner">
-    <ion-spinner
-      name="bubbles"
-      color="primary"
-      *ngIf="isFetching"
-    ></ion-spinner>
+    <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
   </div>
 
   <ion-card *ngIf="orderMenus.length>0">
@@ -25,74 +18,41 @@
       <ion-row>
         <ion-col size-xs="12" size-xl="4">
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="calendar-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="calendar-outline" color="primary" slot="start"></ion-icon>
             <ion-label>
-              <ion-label class="ion-text-wrap"
-                >{{ order.dateCreated | date:'MMM dd, yyyy hh:mm a' }}
+              <ion-label class="ion-text-wrap">{{ order.dateCreated | date:'MMM dd, yyyy hh:mm a' }}
               </ion-label>
             </ion-label>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon
-              class="cartIcon"
-              name="cart-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label
-              >{{ order.orderId.toString().padStart(8, "0") }}</ion-label
-            >
+            <ion-icon class="cartIcon" name="cart-outline" color="primary" slot="start"></ion-icon>
+            <ion-label>{{ order.orderId.toString().padStart(8, "0") }}</ion-label>
             <ion-button fill="clear" size="small" mode="ios">
               <ion-badge color="warning">{{ order.orderStatus }}</ion-badge>
             </ion-button>
-
           </ion-item>
         </ion-col>
 
         <ion-col size-xs="12" size-xl="8">
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="person-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
             <ion-label>
-              <ion-label class="ion-text-wrap"
-                ><ion-card-title
-                  >{{ customer.customerName }}</ion-card-title
-                ></ion-label
-              >
+              <ion-label class="ion-text-wrap">
+                <ion-card-title>{{ customer.customerName }}</ion-card-title>
+              </ion-label>
             </ion-label>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="call-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="call-outline" color="primary" slot="start"></ion-icon>
             <ion-label> {{ customer.contactNo }} </ion-label>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="location-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="location-outline" color="primary" slot="start"></ion-icon>
             <ion-label>
-              <ion-label class="ion-text-wrap"
-                >{{ customer.address }}</ion-label
-              >
+              <ion-label class="ion-text-wrap">{{ customer.address }}</ion-label>
             </ion-label>
           </ion-item>
         </ion-col>
@@ -116,12 +76,7 @@
 
           <ion-grid>
             <ion-row>
-              <ion-col
-                size-xs="12"
-                size-md="6"
-                size-lg="4"
-                *ngFor="let ing of menu.orderMenuIngredients"
-              >
+              <ion-col size-xs="12" size-md="6" size-lg="4" *ngFor="let ing of menu.orderMenuIngredients">
                 <ion-card class="favCard">
                   <ion-item lines="none">
                     <ion-avatar slot="start">
@@ -133,28 +88,13 @@
                       ing.requiredUom.uomCode }}
                     </ion-card-subtitle>
 
-                    <ion-button
-                      class="ion-no-padding ion-no-margin"
-                      *ngIf="ing.orderMenuIngredientId === 0"
-                      disabled="true"
-                      mode="ios"
-                      fill="clear"
-                      color="tertiary"
-                      size="default"
-                      slot="end"
-                    >
+                    <ion-button class="ion-no-padding ion-no-margin" *ngIf="ing.orderMenuIngredientId === 0"
+                      disabled="true" mode="ios" fill="clear" color="tertiary" size="default" slot="end">
                       <ion-icon name="close-circle"></ion-icon>
                     </ion-button>
-                    <ion-button
-                      class="ion-no-padding ion-no-margin"
-                      *ngIf="ing.orderMenuIngredientId !== 0"
-                      mode="ios"
-                      fill="clear"
-                      color="success"
-                      size="default"
-                      slot="end"
-                      (click)="onDeleteIngredient(ing, menu.orderMenuIngredients)"
-                    >
+                    <ion-button class="ion-no-padding ion-no-margin" *ngIf="ing.orderMenuIngredientId !== 0" mode="ios"
+                      fill="clear" color="success" size="default" slot="end"
+                      (click)="onDeleteIngredient(ing, menu.orderMenuIngredients)">
                       <ion-icon name="checkmark-circle"></ion-icon>
                     </ion-button>
                   </ion-item>
