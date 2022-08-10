@@ -45,7 +45,7 @@ export class ItemDetailPage implements OnInit {
     this.itemForm = new FormGroup({
       itemName: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(30)],
+        validators: [Validators.required, Validators.maxLength(50)],
       }),
       uom: new FormControl(null, {
         updateOn: 'blur',

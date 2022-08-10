@@ -37,6 +37,9 @@ export class ConfigParam {
   waitTime: number;
   pageSize: number;
 
+  editItem: true;
+  editMenu: true;
+
   constructor() {
     // this.url = 'http://122.52.134.244:8443/api';
     this.url = 'http://localhost:8443/api';
@@ -55,7 +58,6 @@ export class ConfigParam {
     this.urlCartMenus = `${this.url}/cartMenus`;
     this.urlCartMenuSearch = `${this.urlCartMenus}/search/findAllCartMenus`;
     this.urlOrders = `${this.url}/orders`;
-    // this.urlOrdersSearch = `${this.urlOrders}/search/findByCustomer_CustomerNameContaining`;
 
     // eslint-disable-next-line max-len
     this.urlOrdersSearch = `${this.urlOrders}/search/findByOrderIdOrCustomer_CustomerNameContaining` +
