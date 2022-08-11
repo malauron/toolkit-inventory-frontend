@@ -1,17 +1,17 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {
-  AlertController,
-  ModalController,
-  NavController,
-  ToastController,
-} from '@ionic/angular';
+import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { Customer } from 'src/app/classes/customer.model';
+import { Item } from 'src/app/classes/item.model';
+import { Menu } from 'src/app/classes/menu.model';
+import { OrderDto } from 'src/app/classes/order-dto.model';
 import { OrderMenuDto } from 'src/app/classes/order-menu-dto.model';
 import { OrderMenuIngredient } from 'src/app/classes/order-menu-ingredient.models';
 import { OrderMenu } from 'src/app/classes/order-menu.model';
 import { Order } from 'src/app/classes/order.model';
+import { Uom } from 'src/app/classes/uom.model';
+import { CustomerSearchComponent } from 'src/app/customers/customer-search/customer-search.component';
 import { OrdersService } from 'src/app/services/orders.service';
 
 @Component({
@@ -19,10 +19,14 @@ import { OrdersService } from 'src/app/services/orders.service';
   templateUrl: './order-detail.page.html',
   styleUrls: ['./order-detail.page.scss'],
 })
+
 export class OrderDetailPage implements OnInit {
+
   orderMenus: OrderMenuDto[] = [];
   customer = new Customer();
   order = new Order();
+  orderStatus = 0;
+  orderStatusColor: string;
 
   isFetching = false;
 
@@ -31,7 +35,7 @@ export class OrderDetailPage implements OnInit {
     private navCtrl: NavController,
     private orderService: OrdersService,
     private alertCtrl: AlertController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
   ) {}
 
   ngOnInit() {
@@ -53,12 +57,29 @@ export class OrderDetailPage implements OnInit {
       this.orderService.getOrder(orderId).subscribe((resData) => {
         this.order = resData;
         this.customer = resData.customer;
+        if (this.order.orderStatus === 'Preparing') {
+          this.orderStatus = 1;
+          this.orderStatusColor = 'warning';
+        };
+        if (this.order.orderStatus === 'In Transit') {
+          this.orderStatus = 2;
+          this.orderStatusColor = 'tertiary';
+        };
+        if (this.order.orderStatus === 'Delivered') {
+          this.orderStatus = 3;
+          this.orderStatusColor = 'success';
+        };
+        if (this.order.orderStatus === 'Cancelled') {
+          this.orderStatus = 4;
+          this.orderStatusColor = 'primary';
+        };
       });
 
       this.orderService.getOrderMenus(orderId).subscribe((resData) => {
         this.orderMenus = this.orderMenus.concat(resData);
         this.isFetching = false;
       });
+
     });
   }
 
@@ -74,11 +95,10 @@ export class OrderDetailPage implements OnInit {
           {
             text: 'Delete',
             handler: () => {
-              this.orderService
-                .deleteOrderMenu(menu.orderMenuId)
-                .subscribe((res) => {
-                  this.removeMenuObj(menu);
-                });
+
+              this.orderService.deleteOrderMenu(menu.orderMenuId).subscribe((res) => {
+                this.removeMenuObj(menu);
+              });
             },
           },
         ],
@@ -108,11 +128,10 @@ export class OrderDetailPage implements OnInit {
           {
             text: 'Delete',
             handler: () => {
-              this.orderService
-                .deleteOrderMenuIngredient(ing.orderMenuIngredientId)
-                .subscribe((res) => {
-                  this.removeIngredientObj(ing, ings);
-                });
+
+              this.orderService.deleteOrderMenuIngredient(ing.orderMenuIngredientId).subscribe((res) => {
+                this.removeIngredientObj(ing, ings);
+              });
             },
           },
         ],
@@ -142,4 +161,5 @@ export class OrderDetailPage implements OnInit {
         res.present();
       });
   }
+
 }

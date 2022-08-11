@@ -28,3 +28,9 @@
 @import '/src/theme/fonts.scss';
 
 @import '~swiper/swiper-bundle.css';
+
+
+//ion-popovers
+ion-popover {
+  --width: 150px;
+}

@@ -1,18 +1,16 @@
 /* eslint-disable no-underscore-dangle */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AlertController,
   IonInput,
   IonSelect,
-  IonSelectOption,
   ModalController,
   NavController,
   ToastController,
 } from '@ionic/angular';
-// import { Subscription } from 'rxjs';
-// import { ItemUom } from 'src/app/classes/item-uom.model';
+import { Subscription } from 'rxjs';
 import { Item } from 'src/app/classes/item.model';
 import { MenuDto } from 'src/app/classes/menu-dto.model';
 import { MenuIngredient } from 'src/app/classes/menu-ingredient.model';
@@ -27,7 +25,13 @@ import { ItemSearchComponent } from '../../items/item-search/item-search.compone
   templateUrl: './menu-detail.page.html',
   styleUrls: ['./menu-detail.page.scss'],
 })
-export class MenuDetailPage implements OnInit {
+export class MenuDetailPage implements OnInit, OnDestroy {
+  @ViewChild('quantityInput', { static: true }) quantityInput: IonInput;
+  @ViewChild('uomSelect', { static: true }) uomSelect: IonSelect;
+
+  uomSelectSub: Subscription;
+  qtyInputSub: Subscription;
+
   menuForm: FormGroup;
   itemForm: FormGroup;
 
@@ -63,7 +67,6 @@ export class MenuDetailPage implements OnInit {
       remarks: new FormControl('', {
         updateOn: 'blur',
       }),
-
     });
 
     this.itemForm = new FormGroup({
@@ -79,9 +82,13 @@ export class MenuDetailPage implements OnInit {
       }),
       quantity: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.min(0)],
+        validators: [Validators.required, Validators.min(1)],
       }),
     });
+
+    this.uomSelectSub = this.uomSelect.ionDismiss.subscribe(this.onQtyFocus());
+
+    this.qtyInputSub = this.quantityInput.ionFocus.subscribe(this.onQtyFocus());
 
     this.route.paramMap.subscribe((paramMap) => {
       //Check whether paramMap is empty of not
@@ -122,6 +129,13 @@ export class MenuDetailPage implements OnInit {
     });
   }
 
+  onQtyFocus() {
+    return (res) => {
+      const qtyElem = this.quantityInput.getInputElement();
+      qtyElem.then((rst) => rst.select());
+    };
+  }
+
   onItemSearch() {
     this.modalItemSearch
       .create({ component: ItemSearchComponent })
@@ -148,8 +162,11 @@ export class MenuDetailPage implements OnInit {
             item: itemData,
             itemName: itemData.itemName,
             uom: uomData,
-            quantity: 0,
+            quantity: 1,
           });
+
+          const qtyElem = this.quantityInput.getInputElement();
+          qtyElem.then((res) => res.focus());
         }
       });
   }
@@ -189,17 +206,16 @@ export class MenuDetailPage implements OnInit {
   }
 
   onSaveMenu() {
-
     if (this.menuForm.valid) {
       if (this.menu.menuId > 0) {
         this.menu.menuName = this.menuForm.value.menuName;
         this.menu.remarks = this.menuForm.value.remarks;
         this.menu.altRemarks = this.getAltRemarks();
-        this.menusService.putMenu(this.menu)
-        .subscribe(this.processSaveMenu());
+        this.menusService.putMenu(this.menu).subscribe(this.processSaveMenu());
       } else {
-        this.menusService.postMenu(this.processMenu())
-        .subscribe(this.processSaveMenu());
+        this.menusService
+          .postMenu(this.processMenu())
+          .subscribe(this.processSaveMenu());
       }
     } else {
       this.messageBox('Invalid menu information.');
@@ -218,7 +234,7 @@ export class MenuDetailPage implements OnInit {
 
   processSaveMenu() {
     return (menuData) => {
-      this.menusService.menu.next(menuData);
+      this.menusService.menuHasChanged.next(true);
       if (this.menu.menuId) {
         this.messageBox('Menu details has been updated.');
       } else {
@@ -228,7 +244,6 @@ export class MenuDetailPage implements OnInit {
   }
 
   getAltRemarks() {
-
     let altRemarks = '';
     this.menuIngredients.forEach((ing) => {
       if (altRemarks.length !== 0) {
@@ -237,7 +252,6 @@ export class MenuDetailPage implements OnInit {
       altRemarks = `${altRemarks} ${ing.item.itemName} - ${ing.requiredQty}${ing.requiredUom.uomCode}`;
     });
     return altRemarks;
-
   }
   onAddIngredient() {
     if (this.itemForm.valid) {
@@ -313,5 +327,10 @@ export class MenuDetailPage implements OnInit {
       .then((res) => {
         res.present();
       });
+  }
+
+  ngOnDestroy(): void {
+    this.uomSelectSub.unsubscribe();
+    this.qtyInputSub.unsubscribe();
   }
 }
