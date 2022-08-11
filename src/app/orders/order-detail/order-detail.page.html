@@ -48,10 +48,45 @@
             <ion-label
               >{{ order.orderId.toString().padStart(8, "0") }}</ion-label
             >
-            <ion-button fill="clear" size="small" mode="ios">
-              <ion-badge color="warning">{{ order.orderStatus }}</ion-badge>
+            <ion-button fill="clear" size="small" mode="ios" id="click-trigger">
+              <ion-badge [color]="orderStatusColor"
+                >{{ order.orderStatus }}</ion-badge
+              >
             </ion-button>
 
+            <ion-popover
+              trigger="click-trigger"
+              triggerAction="click"
+              *ngIf="orderStatus < 3"
+            >
+              <ng-template>
+                <ion-content>
+                  <ion-list>
+                    <ion-item
+                      *ngIf="orderStatus < 2"
+                      class="ion-text-center ion-no-padding ion-no-margin"
+                      lines="none"
+                      [button]="true"
+                      ><ion-label>In Transit</ion-label></ion-item
+                    >
+                    <ion-item
+                      *ngIf="orderStatus < 3"
+                      class="ion-text-center ion-no-padding ion-no-margin"
+                      lines="full"
+                      [button]="true"
+                      ><ion-label>Delivered</ion-label></ion-item
+                    >
+                    <ion-item
+                      *ngIf="orderStatus < 3"
+                      class="ion-text-center ion-no-padding ion-no-margin"
+                      lines="none"
+                      [button]="true"
+                      ><ion-label color="primary">Cancel</ion-label></ion-item
+                    >
+                  </ion-list>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
           </ion-item>
         </ion-col>
 
@@ -135,7 +170,7 @@
 
                     <ion-button
                       class="ion-no-padding ion-no-margin"
-                      *ngIf="ing.orderMenuIngredientId === 0"
+                      *ngIf="ing.orderMenuIngredientId === 0 && orderStatus < 2"
                       disabled="true"
                       mode="ios"
                       fill="clear"
@@ -147,7 +182,7 @@
                     </ion-button>
                     <ion-button
                       class="ion-no-padding ion-no-margin"
-                      *ngIf="ing.orderMenuIngredientId !== 0"
+                      *ngIf="ing.orderMenuIngredientId !== 0  && orderStatus < 2"
                       mode="ios"
                       fill="clear"
                       color="success"
@@ -163,8 +198,11 @@
             </ion-row>
           </ion-grid>
 
-          <div class="separator"></div>
-          <ion-card-content>
+          <div
+          *ngIf="orderStatus < 2"
+          class="separator"></div>
+          <ion-card-content
+          *ngIf="orderStatus < 2">
             <ion-button mode="ios" color="medium" (click)="onDeleteMenu(menu)">
               <ion-icon name="trash-sharp" slot="start"></ion-icon>
               <ion-label>Remove</ion-label>

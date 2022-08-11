@@ -63,7 +63,7 @@ export class OrdersPage implements OnInit, OnDestroy {
 
     // Retrieves a new set of data from server
     // after adding or updating a menu
-    this.menuSub = this.menusService.menu.subscribe((data) => {
+    this.menuSub = this.menusService.menuHasChanged.subscribe((data) => {
       this.searchValue = '';
       this.infiniteScroll.disabled = false;
       this.menuList = [];

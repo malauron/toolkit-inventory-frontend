@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Item } from '../classes/item.model';
 import { MenuDto } from '../classes/menu-dto.model';
@@ -38,12 +38,14 @@ interface ResponseMenuIng {
 export class MenusService {
   private apiUrl: string;
 
-  private _menu = new Subject<Menu>();
+  // private _menusHasChanged = new BehaviorSubject<boolean>(false);
+  private _menusHasChanged = new Subject<boolean>();
+
 
   constructor(private http: HttpClient, private config: ConfigParam){}
 
-  get menu() {
-    return this._menu;
+  get menuHasChanged() {
+    return this._menusHasChanged;
   }
 
   getMenus(

@@ -54,6 +54,7 @@
                   <ion-item fill="outline">
                     <ion-label position="floating">Item</ion-label>
                     <ion-input
+                      (click)="onItemSearch()"
                       readonly="true"
                       formControlName="itemName"
                     ></ion-input>
@@ -73,7 +74,7 @@
                   </ion-item>
                   <ion-item fill="outline">
                     <ion-label position="floating">Uom</ion-label>
-                    <ion-select formControlName="uom">
+                    <ion-select #uomSelect formControlName="uom">
                       <ion-select-option *ngFor="let uom of uoms" [value]="uom"
                         >{{ uom.uomName }}</ion-select-option
                       >

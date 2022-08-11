@@ -25,6 +25,8 @@ export class OrderDetailPage implements OnInit {
   orderMenus: OrderMenuDto[] = [];
   customer = new Customer();
   order = new Order();
+  orderStatus = 0;
+  orderStatusColor: string;
 
   isFetching = false;
 
@@ -55,6 +57,22 @@ export class OrderDetailPage implements OnInit {
       this.orderService.getOrder(orderId).subscribe((resData) => {
         this.order = resData;
         this.customer = resData.customer;
+        if (this.order.orderStatus === 'Preparing') {
+          this.orderStatus = 1;
+          this.orderStatusColor = 'warning';
+        };
+        if (this.order.orderStatus === 'In Transit') {
+          this.orderStatus = 2;
+          this.orderStatusColor = 'tertiary';
+        };
+        if (this.order.orderStatus === 'Delivered') {
+          this.orderStatus = 3;
+          this.orderStatusColor = 'success';
+        };
+        if (this.order.orderStatus === 'Cancelled') {
+          this.orderStatus = 4;
+          this.orderStatusColor = 'primary';
+        };
       });
 
       this.orderService.getOrderMenus(orderId).subscribe((resData) => {
