@@ -39,7 +39,7 @@
               slot="start"
             ></ion-icon>
             <ion-label>{{ order.orderId.toString().padStart(8, "0") }}</ion-label>
-            <ion-badge color="warning">{{ order.orderStatus }}</ion-badge>
+            <ion-badge [color]=getStatusColor(order.orderStatus)>{{ order.orderStatus }}</ion-badge>
             <ion-button
               mode="ios"
               size="small"

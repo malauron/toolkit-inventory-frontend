@@ -47,13 +47,10 @@
             ></ion-icon>
             <ion-label
               >{{ order.orderId.toString().padStart(8, "0") }}</ion-label
-            >
-            <ion-button fill="clear" size="small" mode="ios" id="click-trigger">
-              <ion-badge [color]="orderStatusColor"
-                >{{ order.orderStatus }}</ion-badge
-              >
+            ><ion-button fill="clear" size="small" mode="ios" id="click-trigger" *ngIf="orderStatus <= 2">
+              <ion-badge [color]="orderStatusColor">{{ order.orderStatus }}</ion-badge>
             </ion-button>
-
+            <ion-badge [color]="orderStatusColor"  *ngIf="orderStatus >= 3">{{ order.orderStatus }}</ion-badge>
             <ion-popover
               trigger="click-trigger"
               triggerAction="click"
@@ -168,21 +165,11 @@
                       ing.requiredUom.uomCode }}
                     </ion-card-subtitle>
 
+                    <ion-icon *ngIf="ing.orderMenuIngredientId === 0" slot="end" color="tertiary" name="close-circle"></ion-icon>
+
                     <ion-button
                       class="ion-no-padding ion-no-margin"
-                      *ngIf="ing.orderMenuIngredientId === 0 && orderStatus < 2"
-                      disabled="true"
-                      mode="ios"
-                      fill="clear"
-                      color="tertiary"
-                      size="default"
-                      slot="end"
-                    >
-                      <ion-icon name="close-circle"></ion-icon>
-                    </ion-button>
-                    <ion-button
-                      class="ion-no-padding ion-no-margin"
-                      *ngIf="ing.orderMenuIngredientId !== 0  && orderStatus < 2"
+                      *ngIf="ing.orderMenuIngredientId !== 0 && orderStatus < 2"
                       mode="ios"
                       fill="clear"
                       color="success"
@@ -192,6 +179,9 @@
                     >
                       <ion-icon name="checkmark-circle"></ion-icon>
                     </ion-button>
+
+                    <ion-icon *ngIf="ing.orderMenuIngredientId !== 0 && orderStatus >= 2" slot="end" color="success"   name="checkmark-circle"></ion-icon>
+
                   </ion-item>
                 </ion-card>
               </ion-col>

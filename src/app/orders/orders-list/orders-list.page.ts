@@ -63,6 +63,23 @@ export class OrdersListPage implements OnInit, OnDestroy {
     this.getOrders(undefined, 0, this.config.pageSize);
   }
 
+  getStatusColor(orderStatus): string {
+    let statusColor: string;
+    if (orderStatus === 'Preparing') {
+      statusColor = 'warning';
+    }
+    if (orderStatus === 'In Transit') {
+      statusColor = 'tertiary';
+    }
+    if (orderStatus === 'Delivered') {
+      statusColor = 'success';
+    }
+    if (orderStatus === 'Cancelled') {
+      statusColor = 'primary';
+    }
+    return statusColor;
+  }
+
   getOrders(event?, pageNumber?: number, pageSize?: number, searchDesc?: string) {
     this.isFetching = true;
 

@@ -1,7 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+  ToastController,
+} from '@ionic/angular';
 import { Customer } from 'src/app/classes/customer.model';
 import { Item } from 'src/app/classes/item.model';
 import { Menu } from 'src/app/classes/menu.model';
@@ -19,9 +24,7 @@ import { OrdersService } from 'src/app/services/orders.service';
   templateUrl: './order-detail.page.html',
   styleUrls: ['./order-detail.page.scss'],
 })
-
 export class OrderDetailPage implements OnInit {
-
   orderMenus: OrderMenuDto[] = [];
   customer = new Customer();
   order = new Order();
@@ -35,7 +38,7 @@ export class OrderDetailPage implements OnInit {
     private navCtrl: NavController,
     private orderService: OrdersService,
     private alertCtrl: AlertController,
-    private toastCtrl: ToastController,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -60,26 +63,25 @@ export class OrderDetailPage implements OnInit {
         if (this.order.orderStatus === 'Preparing') {
           this.orderStatus = 1;
           this.orderStatusColor = 'warning';
-        };
+        }
         if (this.order.orderStatus === 'In Transit') {
           this.orderStatus = 2;
           this.orderStatusColor = 'tertiary';
-        };
+        }
         if (this.order.orderStatus === 'Delivered') {
           this.orderStatus = 3;
           this.orderStatusColor = 'success';
-        };
+        }
         if (this.order.orderStatus === 'Cancelled') {
           this.orderStatus = 4;
           this.orderStatusColor = 'primary';
-        };
+        }
       });
 
       this.orderService.getOrderMenus(orderId).subscribe((resData) => {
         this.orderMenus = this.orderMenus.concat(resData);
         this.isFetching = false;
       });
-
     });
   }
 
@@ -95,10 +97,11 @@ export class OrderDetailPage implements OnInit {
           {
             text: 'Delete',
             handler: () => {
-
-              this.orderService.deleteOrderMenu(menu.orderMenuId).subscribe((res) => {
-                this.removeMenuObj(menu);
-              });
+              this.orderService
+                .deleteOrderMenu(menu.orderMenuId)
+                .subscribe((res) => {
+                  this.removeMenuObj(menu);
+                });
             },
           },
         ],
@@ -117,28 +120,31 @@ export class OrderDetailPage implements OnInit {
   }
 
   onDeleteIngredient(ing: OrderMenuIngredient, ings: OrderMenuIngredient[]) {
-    this.alertCtrl
-      .create({
-        header: 'Confirm',
-        message: 'This will be deleted permanently .',
-        buttons: [
-          {
-            text: 'Cancel',
-          },
-          {
-            text: 'Delete',
-            handler: () => {
-
-              this.orderService.deleteOrderMenuIngredient(ing.orderMenuIngredientId).subscribe((res) => {
-                this.removeIngredientObj(ing, ings);
-              });
+    if (this.orderStatus < 2) {
+      this.alertCtrl
+        .create({
+          header: 'Confirm',
+          message: 'This will be deleted permanently .',
+          buttons: [
+            {
+              text: 'Cancel',
             },
-          },
-        ],
-      })
-      .then((res) => {
-        res.present();
-      });
+            {
+              text: 'Delete',
+              handler: () => {
+                this.orderService
+                  .deleteOrderMenuIngredient(ing.orderMenuIngredientId)
+                  .subscribe((res) => {
+                    this.removeIngredientObj(ing, ings);
+                  });
+              },
+            },
+          ],
+        })
+        .then((res) => {
+          res.present();
+        });
+    }
   }
 
   removeIngredientObj(ing: OrderMenuIngredient, ings: OrderMenuIngredient[]) {
@@ -161,5 +167,4 @@ export class OrderDetailPage implements OnInit {
         res.present();
       });
   }
-
 }
