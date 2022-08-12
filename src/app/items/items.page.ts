@@ -9,7 +9,7 @@ import {
   distinctUntilChanged,
 } from 'rxjs/operators';
 import { Item } from '../classes/item.model';
-import { ConfigParam } from '../ConfigParam';
+import { AppParamsConfig } from '../Configurations/app-params.config';
 import { ItemsService } from '../services/items.service';
 
 @Component({
@@ -36,7 +36,7 @@ export class ItemsPage implements OnInit, OnDestroy {
   constructor(
     private itemService: ItemsService,
     private router: Router,
-    private config: ConfigParam,
+    private config: AppParamsConfig,
     private toastController: ToastController,
     private menu: MenuController
   ) {}

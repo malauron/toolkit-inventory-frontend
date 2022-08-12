@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class ConfigParam {
+export class AppParamsConfig {
   url: any;
   urlItems: any;
   urlItemSearch: any;

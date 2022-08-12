@@ -1,15 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { Item } from '../classes/item.model';
 import { MenuDto } from '../classes/menu-dto.model';
 import { MenuIngredient } from '../classes/menu-ingredient.model';
 import { Menu } from '../classes/menu.model';
 import { PageInfo } from '../classes/page-info.model';
 import { Uom } from '../classes/uom.model';
-import { ConfigParam } from '../ConfigParam';
+import { AppParamsConfig } from '../Configurations/app-params.config';
 
 interface ResponseMenus {
   _embedded: {
@@ -38,11 +37,9 @@ interface ResponseMenuIng {
 export class MenusService {
   private apiUrl: string;
 
-  // private _menusHasChanged = new BehaviorSubject<boolean>(false);
   private _menusHasChanged = new Subject<boolean>();
 
-
-  constructor(private http: HttpClient, private config: ConfigParam){}
+  constructor(private http: HttpClient, private config: AppParamsConfig){}
 
   get menuHasChanged() {
     return this._menusHasChanged;

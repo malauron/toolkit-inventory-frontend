@@ -1,12 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+/* eslint-disable no-underscore-dangle */
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { OrderDto } from '../classes/order-dto.model';
 import { OrderMenuDto } from '../classes/order-menu-dto.model';
-import { OrderMenu } from '../classes/order-menu.model';
 import { Order } from '../classes/order.model';
 import { PageInfo } from '../classes/page-info.model';
-import { ConfigParam } from '../ConfigParam';
+import { AppParamsConfig } from '../Configurations/app-params.config';
 
 interface ResponseOrders {
   _emdbedded: {
@@ -22,10 +22,16 @@ interface ResponseOrders {
 export class OrdersService{
   private apiUrl: string;
 
+  private _ordersHaveChanged = new Subject<boolean>();
+
   constructor(
     private http: HttpClient,
-    private config: ConfigParam
+    private config: AppParamsConfig
   ){}
+
+  get ordersHaveChanged() {
+    return this._ordersHaveChanged;
+  }
 
   getOrder(orderId: number): Observable<Order>{
     this.apiUrl = `${this.config.urlOrders}/${orderId}?projection=orderView`;
@@ -49,9 +55,10 @@ export class OrdersService{
         } else {
           orderId = searchDesc;
         }
-
         // eslint-disable-next-line max-len
-        this.apiUrl = `${this.config.urlOrdersSearch}?orderId=${orderId}&customerName=${searchDesc}&address=${searchDesc}&contactNo=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+        this.apiUrl = `${this.config.urlOrdersSearch}` +
+        `?orderId=${orderId}&customerName=${searchDesc}&address=${searchDesc}` +
+        `&contactNo=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
 
       }
     return this.http.get<ResponseOrders>(this.apiUrl);
@@ -66,6 +73,11 @@ export class OrdersService{
   postOrders(order: OrderDto) {
     this.apiUrl = `${this.config.urlV1Orders}`;
     return this.http.post(this.apiUrl, order);
+  }
+
+  patchOrders(order: Order){
+    this.apiUrl = `${this.config.urlV1Orders}`;
+    return this.http.patch(this.apiUrl, order);
   }
 
   deleteOrderMenu(id: number) {

@@ -221,6 +221,7 @@ export class MenuDetailPage implements OnInit, OnDestroy {
       this.messageBox('Invalid menu information.');
     }
   }
+
   processMenu(): any {
     const menu = new Menu();
     menu.menuName = this.menuForm.value.menuName;

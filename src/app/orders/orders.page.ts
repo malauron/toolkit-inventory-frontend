@@ -5,7 +5,7 @@ import { IonSearchbar, MenuController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Menu } from '../classes/menu.model';
-import { ConfigParam } from '../ConfigParam';
+import { AppParamsConfig } from '../Configurations/app-params.config';
 import { CartsService } from '../services/carts.service';
 import { MenusService } from '../services/menus.service';
 
@@ -35,7 +35,7 @@ export class OrdersPage implements OnInit, OnDestroy {
   constructor(
     private menusService: MenusService,
     private router: Router,
-    private config: ConfigParam,
+    private config: AppParamsConfig,
     private toastController: ToastController,
     private cartService: CartsService,
     private menu: MenuController

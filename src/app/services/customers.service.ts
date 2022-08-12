@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Customer } from '../classes/customer.model';
-import { ConfigParam } from '../ConfigParam';
+import { AppParamsConfig } from '../Configurations/app-params.config';
 
 interface ResponseCustomers {
   _embedded: {
@@ -28,7 +28,7 @@ export class CustomersService {
 
   constructor(
     private http: HttpClient,
-    private config: ConfigParam
+    private config: AppParamsConfig
   ){}
 
   getCustomers(

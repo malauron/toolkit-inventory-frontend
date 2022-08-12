@@ -5,7 +5,7 @@ import { IonSearchbar, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Order } from 'src/app/classes/order.model';
-import { ConfigParam } from 'src/app/ConfigParam';
+import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { OrdersService } from 'src/app/services/orders.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class OrdersListPage implements OnInit, OnDestroy {
   @ViewChild('orderSearchBar', { static: true }) orderSearchBar: IonSearchbar;
 
   orderSearchBarSub: Subscription;
-  // orderSub: Subscription;
+  orderSub: Subscription;
 
   orders: Order[] = [];
 
@@ -32,7 +32,7 @@ export class OrdersListPage implements OnInit, OnDestroy {
 
   constructor(
     private orderService: OrdersService,
-    private config: ConfigParam,
+    private config: AppParamsConfig,
     private router: Router,
     private toastController: ToastController,
   ) { }
@@ -58,7 +58,19 @@ export class OrdersListPage implements OnInit, OnDestroy {
       }
     });
 
-    // Retrieves a partial list of ordes from the server
+    // Retrieves a new set of data from the server
+    // after adding or updating
+    this.orderSub = this.orderService.ordersHaveChanged.subscribe((data) => {
+      this.searchValue = '';
+      this.infiniteScroll.disabled = false;
+      this.orders = [];
+      this.pageNumber = 0;
+      this.totalPages = 0;
+      this.getOrders(undefined, 0, this.config.pageSize);
+    });
+
+
+    // Retrieves a partial list from the server
     // upon component initialization
     this.getOrders(undefined, 0, this.config.pageSize);
   }
@@ -147,6 +159,6 @@ export class OrdersListPage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.orderSearchBarSub.unsubscribe();
-    // this.orderSub.unsubscribe();
+    this.orderSub.unsubscribe();
   }
 }

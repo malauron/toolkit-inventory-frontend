@@ -8,7 +8,7 @@ import { IonSearchbar, ModalController, ViewDidEnter } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Item } from 'src/app/classes/item.model';
-import { ConfigParam } from 'src/app/ConfigParam';
+import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ItemsService } from 'src/app/services/items.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class ItemSearchComponent implements OnInit,ViewDidEnter {
 
   constructor(
     private itemService: ItemsService,
-    private config: ConfigParam,
+    private config: AppParamsConfig,
     private modalController: ModalController
   ) {}
 

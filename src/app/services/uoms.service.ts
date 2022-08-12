@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Uom } from '../classes/uom.model';
-import { ConfigParam } from '../ConfigParam';
+import { AppParamsConfig } from '../Configurations/app-params.config';
 
 interface ResponseUoms {
   _embedded: {
@@ -15,7 +15,7 @@ interface ResponseUoms {
 })
 export class UomsService {
 
-  constructor(private http: HttpClient, private config: ConfigParam) { }
+  constructor(private http: HttpClient, private config: AppParamsConfig) { }
 
   getUoms(): Observable<ResponseUoms> {
     return this.http.get<ResponseUoms>(this.config.urlUoms);

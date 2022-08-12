@@ -5,7 +5,7 @@ import { CartMenuDto } from '../classes/cart-menu-dto.model';
 import { CartMenuIngredient } from '../classes/cart-menu-ingredient.model';
 import { CartMenu } from '../classes/cart-menu.model';
 import { Menu } from '../classes/menu.model';
-import { ConfigParam } from '../ConfigParam';
+import { AppParamsConfig } from '../Configurations/app-params.config';
 
 interface ResponseCartMenus {
   _embedded: {
@@ -29,7 +29,7 @@ export class CartsService {
 
   constructor(
     private http: HttpClient,
-    private config: ConfigParam
+    private config: AppParamsConfig
   ) {}
 
   getCartMenus(): Observable<ResponseCartMenus> {

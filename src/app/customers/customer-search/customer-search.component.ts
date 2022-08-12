@@ -4,7 +4,7 @@ import { IonSearchbar, ModalController, ViewDidEnter } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Customer } from 'src/app/classes/customer.model';
-import { ConfigParam } from 'src/app/ConfigParam';
+import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { CustomersService } from 'src/app/services/customers.service';
 
 
@@ -30,7 +30,7 @@ export class CustomerSearchComponent implements OnInit, ViewDidEnter {
 
   constructor(
     private customerService: CustomersService,
-    private config: ConfigParam,
+    private config: AppParamsConfig,
     private modalController: ModalController
   ) { }
 

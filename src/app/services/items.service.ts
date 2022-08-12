@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ItemUom } from '../classes/item-uom.model';
 import { Item } from '../classes/item.model';
-import { ConfigParam } from '../ConfigParam';
+import { AppParamsConfig } from '../Configurations/app-params.config';
 
 interface ResponseItems {
   _embedded: {
@@ -33,7 +33,7 @@ export class ItemsService {
 
   private _item = new Subject<Item>();
 
-  constructor(private http: HttpClient, private config: ConfigParam) {}
+  constructor(private http: HttpClient, private config: AppParamsConfig) {}
 
   get item() {
     return this._item;
