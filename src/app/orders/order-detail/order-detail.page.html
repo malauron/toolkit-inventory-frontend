@@ -10,6 +10,16 @@
   </ion-toolbar>
 </ion-header>
 
+<div id="print-section">
+  sample text to print
+</div>
+
+ <!--
+   2)- Add the directive name in your button (ngxPrint),
+   3)- Affect your ID to printSectionId
+ -->
+<button printSectionId="print-section" ngxPrint>print</button>
+
 <ion-content class="ion-padding">
   <div class="spinner">
     <ion-spinner
@@ -159,7 +169,7 @@
   </ion-card>
 
   <ion-grid>
-    <ion-row *ngFor="let menu of orderMenus">
+    <ion-row *ngFor="let menu of orderMenus" [id]="menu.orderMenuId">
       <ion-col class="ion-text-center">
         <ion-card>
           <div class="card-top"></div>
@@ -245,6 +255,12 @@
           <ion-card-content
             #optionButtonsContainer
             *ngIf="orderDetailsConfig.optionButtonsContainer">
+            <ion-button
+              mode="ios"
+              color="secondary">
+              <ion-icon name="print" slot="start"></ion-icon>
+              <ion-label>Print</ion-label>
+            </ion-button>
             <ion-button mode="ios" color="medium" (click)="onDeleteMenu(menu)">
               <ion-icon name="trash-sharp" slot="start"></ion-icon>
               <ion-label>Remove</ion-label>
