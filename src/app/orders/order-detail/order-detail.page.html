@@ -10,15 +10,66 @@
   </ion-toolbar>
 </ion-header>
 
-<div id="print-section">
+<!-- <div id="print-section">
   sample text to print
-</div>
+</div> -->
 
- <!--
+<!--
    2)- Add the directive name in your button (ngxPrint),
    3)- Affect your ID to printSectionId
+  [useExistingCss]="true"
+  styleSheetFile="assets/css/custom.css"
  -->
-<button printSectionId="print-section" ngxPrint>print</button>
+
+<button
+  styleSheetFile="assets/css/custom.css"
+  printSectionId="print-section"
+  ngxPrint
+>
+  print
+</button>
+
+<div id="print-section" class="card">
+
+
+
+  <table id="customers">
+    <thead>
+      <tr>
+        <th class="left-aligned">Item</th>
+        <th class="centered">Quantity</th>
+        <th class="centered">Included</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Bell Pepper / Atsal</td>
+        <td class="centered">100g</td>
+        <td class="centered">&#10004;</td>
+      </tr>
+      <tr>
+        <td>Maggi Magic Sarap</td>
+        <td class="centered">24g</td>
+        <td class="centered">&#10004;</td>
+      </tr>
+      <tr>
+        <td>Soy Sauce / Toyo</td>
+        <td class="centered">300mL</td>
+        <td class="centered">&#10004;</td>
+      </tr>
+      <tr>
+        <td>Water Spinach / Kangkong</td>
+        <td class="centered">400g</td>
+        <td class="centered">&#10004;</td>
+      </tr>
+      <tr>
+        <td>Cayenne Pepper / Sili Espada</td>
+        <td class="centered">80g</td>
+        <td class="centered">&#10004;</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <ion-content class="ion-padding">
   <div class="spinner">
@@ -55,7 +106,9 @@
               color="primary"
               slot="start"
             ></ion-icon>
-            <ion-label>{{ order.orderId.toString().padStart(8, "0") }}</ion-label>
+            <ion-label
+              >{{ order.orderId.toString().padStart(8, "0") }}</ion-label
+            >
 
             <!-- Button to change the status of the order -->
             <ion-button
@@ -64,8 +117,11 @@
               size="small"
               mode="ios"
               id="click-trigger"
-              *ngIf="orderDetailsConfig.orderStatusButton">
-              <ion-badge [color]="orderDetailsConfig.orderStatusColor">{{ order.orderStatus }}</ion-badge>
+              *ngIf="orderDetailsConfig.orderStatusButton"
+            >
+              <ion-badge [color]="orderDetailsConfig.orderStatusColor"
+                >{{ order.orderStatus }}</ion-badge
+              >
             </ion-button>
 
             <ion-popover
@@ -115,11 +171,11 @@
             <ion-badge
               #orderStatusBadge
               [color]="orderDetailsConfig.orderStatusColor"
-              *ngIf="orderDetailsConfig.orderStatusBadge">
+              *ngIf="orderDetailsConfig.orderStatusBadge"
+            >
               {{ order.orderStatus }}
             </ion-badge>
             <!-- *************************************** -->
-
           </ion-item>
         </ion-col>
 
@@ -207,7 +263,8 @@
                       *ngIf="ing.orderMenuIngredientId === 0"
                       slot="end"
                       color="tertiary"
-                      name="close-circle">
+                      name="close-circle"
+                    >
                     </ion-icon>
                     <!-- *************************************** -->
 
@@ -233,10 +290,10 @@
                       *ngIf="ing.orderMenuIngredientId !== 0 && orderDetailsConfig.includedIngredientIcon"
                       slot="end"
                       color="success"
-                      name="checkmark-circle">
+                      name="checkmark-circle"
+                    >
                     </ion-icon>
                     <!-- *************************************** -->
-
                   </ion-item>
                 </ion-card>
               </ion-col>
@@ -247,17 +304,16 @@
           <div
             #ingredientsBottomDiv
             *ngIf="orderDetailsConfig.ingredientsBottomDiv"
-            class="separator">
-          </div>
+            class="separator"
+          ></div>
           <!-- ********* -->
 
           <!-- Option buttons container -->
           <ion-card-content
             #optionButtonsContainer
-            *ngIf="orderDetailsConfig.optionButtonsContainer">
-            <ion-button
-              mode="ios"
-              color="secondary">
+            *ngIf="orderDetailsConfig.optionButtonsContainer"
+          >
+            <ion-button mode="ios" color="secondary">
               <ion-icon name="print" slot="start"></ion-icon>
               <ion-label>Print</ion-label>
             </ion-button>
@@ -267,9 +323,7 @@
             </ion-button>
           </ion-card-content>
           <!-- ************************ -->
-
         </ion-card>
-
       </ion-col>
     </ion-row>
   </ion-grid>

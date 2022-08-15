@@ -17,7 +17,7 @@ import { OrdersService } from 'src/app/services/orders.service';
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.page.html',
-  styleUrls: ['./order-detail.page.scss'],
+  styleUrls: ['./order-detail.page.scss','../../../assets/css/custom.css'],
 })
 export class OrderDetailPage implements OnInit {
   orderMenus: OrderMenuDto[] = [];

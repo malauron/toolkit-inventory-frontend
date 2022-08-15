@@ -1,0 +1,36 @@
+#customers {
+  font-family: Lato;
+  font-size: 12px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers th {
+  border-bottom: 3px solid #ddd;
+  padding: 8px;
+}
+
+#customers td {
+  border-bottom: 0.1px solid #ddd ;
+  padding: 5px;
+}
+
+.left-aligned {
+  /* padding-top: 12px; */
+  /* padding-bottom: 12px; */
+  text-align: left;
+  /* background-color: #04AA6D; */
+  /* color: white; */
+}
+
+#customers th {
+  padding-top: 12px;
+  /* padding-bottom: 12px; */
+  /* text-align: center; */
+  /* background-color: #04AA6D; */
+  /* color: white; */
+}
+
+.centered {
+  text-align: center;
+}
