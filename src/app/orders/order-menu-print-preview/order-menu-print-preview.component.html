@@ -1,87 +1,70 @@
 <ion-content>
-  <button
-    styleSheetFile="assets/css/custom.css"
-    printSectionId="print-section"
-    ngxPrint
-  >
-    Print
+  <div class="navbar">
+    <button (click)="dismissModal()">&#8249;</button>
+    <button
+      styleSheetFile="assets/css/custom.css"
+      printSectionId="print-section" ngxPrint
+      class="split">
+      <img src="../../../assets/icons/printer.svg" />
   </button>
+  </div>
 
-  <div id="print-section" class="card">
-    <div class="order-header">
-      <div class="order-detail">
-        <img src="../../../assets/icons/calendar.svg" />
-        {{ orderMenuDto.dateCreated | date:'MMM dd, yyyy hh:mm a' }}
+
+  <div id="print-section">
+    <div class="card">
+      <div class="order-header">
+        <div class="order-detail">
+          <img src="../../../assets/icons/calendar.svg" />
+          {{ orderMenuDto.dateCreated | date:'MMM dd, yyyy hh:mm a' }}
+        </div>
+        <div class="order-detail">
+          <img src="../../../assets/icons/cart.svg" />
+          {{ orderMenuDto.orderId.toString().padStart(8, "0") }}
+        </div>
+        <div class="order-detail">
+          <img src="../../../assets/icons/person.svg" />
+          {{ orderMenuDto.customerName }}
+        </div>
+        <div class="order-detail">
+          <img src="../../../assets/icons/telephone.svg" />
+          {{ orderMenuDto.contactNo }}
+        </div>
+        <div class="order-detail">
+          <img src="../../../assets/icons/map.svg" />
+          {{ orderMenuDto.address }}
+        </div>
       </div>
-      <div class="order-detail">
-        <img src="../../../assets/icons/cart.svg" />
-        {{ orderMenuDto.orderId.toString().padStart(8, "0") }}
+
+      <div class="menu-header">
+        <h3>{{ orderMenuDto.orderMenu.menu.menuName }}</h3>
+        <p class="menuId">
+          <img src="../../../assets/icons/spoonfork.svg" />
+          {{ orderMenuDto.orderMenu.orderMenuId.toString().padStart(8, "0") }}
+        </p>
+        <p class="remarks">
+          {{ orderMenuDto.orderMenu.menu.remarks }}
+        </p>
       </div>
-      <div class="order-detail">
-        <img src="../../../assets/icons/person.svg" />
-        {{ orderMenuDto.customerName }}
-      </div>
-      <div class="order-detail">
-        <img src="../../../assets/icons/telephone.svg" />
-        {{ orderMenuDto.contactNo }}
-      </div>
-      <div class="order-detail">
-        <img src="../../../assets/icons/map.svg" />
-        {{ orderMenuDto.address }}
-      </div>
+
+      <table id="ingredients">
+        <thead>
+          <tr>
+            <th class="left-aligned">Ingredients</th>
+            <th class="centered">Quantity</th>
+            <th class="centered">Included</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ing of orderMenuDto.orderMenu.orderMenuIngredients">
+            <td>{{ ing.item.itemName }}</td>
+            <td class="centered">{{ ing.requiredQty }}{{ ing.requiredUom.uomCode }}</td>
+            <td class="centered">
+              <strong *ngIf="ing.orderMenuIngredientId !== 0">&#10004;</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
-
-    <div class="menu-header">
-      <h3>Tinolang Manok</h3>
-      <p class="menuId">
-        <img src="../../../assets/icons/spoonfork.svg" />
-        00000001
-      </p>
-      <p class="remarks">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam quisquam
-        quasi ea explicabo repudiandae quaerat deserunt minus at. Voluptatibus
-        harum repellendus exercitationem reiciendis neque veritatis, quia
-        facilis porro consectetur iusto! Nobis aut at odit facilis dignissimos.
-        Atque molestiae quo, doloremque est voluptas adipisci, expedita
-        laudantium, sed possimus quam laboriosam ad!
-      </p>
-    </div>
-
-    <table id="customers">
-      <thead>
-        <tr>
-          <th class="left-aligned">Ingredients</th>
-          <th class="centered">Quantity</th>
-          <th class="centered">Included</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Bell Pepper / Atsal</td>
-          <td class="centered">100g</td>
-          <td class="centered">&#10004;</td>
-        </tr>
-        <tr>
-          <td>Maggi Magic Sarap</td>
-          <td class="centered">24g</td>
-          <td class="centered">&#10004;</td>
-        </tr>
-        <tr>
-          <td>Soy Sauce / Toyo</td>
-          <td class="centered">300mL</td>
-          <td class="centered">&#10004;</td>
-        </tr>
-        <tr>
-          <td>Water Spinach / Kangkong</td>
-          <td class="centered">400g</td>
-          <td class="centered">&#10004;</td>
-        </tr>
-        <tr>
-          <td>Cayenne Pepper / Sili Espada</td>
-          <td class="centered">80g</td>
-          <td class="centered">&#10004;</td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </ion-content>

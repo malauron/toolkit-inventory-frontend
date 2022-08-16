@@ -3,12 +3,41 @@
 
 * {
   font-family: 'Lato';
-  // color: rgb(78, 78, 78);
+}
+
+.navbar {
+  overflow: hidden;
+  background-color: var(--ion-color-primary);
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.navbar button {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 8px 20px;
+  // padding: 14px 16px;
+  text-decoration: none;
+  font-size: 30px;
+  background-color: var(--ion-color-primary);
+}
+
+.navbar button.split {
+  float: right;
+}
+
+.navbar button img {
+  // fill: #ddd;
+  margin: 0 15px 0 0;
+  width: 20px;
+  height: 20px;
 }
 
 .card {
   font-size: 14px;
-  padding-top: 30px;
+  padding: 60px 50px 60px 50px;
 }
 
 .order-header {
@@ -39,11 +68,9 @@
   margin: 0 20px;
   display: grid;
   grid-template-columns: auto 120px;
-  /* gap: 5px; */
 }
 
 .menu-header .menuId {
-  /* justify-self: center; */
   text-align: end;
 }
 
@@ -59,36 +86,28 @@
   grid-column: 1/3;
 }
 
-#customers {
+#ingredients {
   font-size: 12px;
   border-collapse: collapse;
   width: 100%;
 }
 
-#customers th {
+#ingredients th {
   border-bottom: 3px solid #ddd;
   padding: 8px;
 }
 
-#customers td {
+#ingredients td {
   border-bottom: 0.1px solid #ddd ;
   padding: 5px;
 }
 
 .left-aligned {
-  /* padding-top: 12px; */
-  /* padding-bottom: 12px; */
   text-align: left;
-  /* background-color: #04AA6D; */
-  /* color: white; */
 }
 
-#customers th {
+#ingredients th {
   padding-top: 12px;
-  /* padding-bottom: 12px; */
-  /* text-align: center; */
-  /* background-color: #04AA6D; */
-  /* color: white; */
 }
 
 .centered {
