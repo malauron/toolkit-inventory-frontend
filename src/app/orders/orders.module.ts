@@ -8,15 +8,18 @@ import { OrdersPageRoutingModule } from './orders-routing.module';
 
 import { OrdersPage } from './orders.page';
 import { CustomerSearchComponent } from '../customers/customer-search/customer-search.component';
+import { OrderMenuPrintPreviewComponent } from './order-menu-print-preview/order-menu-print-preview.component';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    OrdersPageRoutingModule
+    OrdersPageRoutingModule,
+    NgxPrintModule
   ],
-  declarations: [OrdersPage, CustomerSearchComponent],
-  entryComponents: [CustomerSearchComponent]
+  declarations: [OrdersPage, CustomerSearchComponent, OrderMenuPrintPreviewComponent],
+  entryComponents: [CustomerSearchComponent, OrderMenuPrintPreviewComponent]
 })
 export class OrdersPageModule {}

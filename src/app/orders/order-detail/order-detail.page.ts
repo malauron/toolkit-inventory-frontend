@@ -3,16 +3,19 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   AlertController,
+  ModalController,
   NavController,
   ToastController,
 } from '@ionic/angular';
 import { Customer } from 'src/app/classes/customer.model';
 import { OrderMenuDto } from 'src/app/classes/order-menu-dto.model';
 import { OrderMenuIngredient } from 'src/app/classes/order-menu-ingredient.models';
+import { OrderMenuPrintPreviewDto } from 'src/app/classes/order-menu-print-preview.dto.model';
 import { OrderMenu } from 'src/app/classes/order-menu.model';
 import { Order } from 'src/app/classes/order.model';
 import { OrderDetailsConfig } from 'src/app/Configurations/order-details.config';
 import { OrdersService } from 'src/app/services/orders.service';
+import { OrderMenuPrintPreviewComponent } from '../order-menu-print-preview/order-menu-print-preview.component';
 
 @Component({
   selector: 'app-order-detail',
@@ -32,7 +35,8 @@ export class OrderDetailPage implements OnInit {
     private navCtrl: NavController,
     private orderService: OrdersService,
     private alertCtrl: AlertController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private modalPrintPreview: ModalController
   ) {}
 
   ngOnInit() {
@@ -144,6 +148,32 @@ export class OrderDetailPage implements OnInit {
         ing.orderMenuIngredientId = 0;
       }
     }
+  }
+
+
+  onPrintPreview(menu: OrderMenuDto) {
+
+    const orderMenuPrintPreviewDto = new OrderMenuPrintPreviewDto();
+    orderMenuPrintPreviewDto.orderId = this.order.orderId;
+    orderMenuPrintPreviewDto.dateCreated = this.order.dateCreated;
+    orderMenuPrintPreviewDto.customerName = this.customer.customerName;
+    orderMenuPrintPreviewDto.contactNo = this.customer.contactNo;
+    orderMenuPrintPreviewDto.address = this.customer.address;
+    orderMenuPrintPreviewDto.orderMenu = menu;
+    this.orderService.orderMenuPrintPreview.next(orderMenuPrintPreviewDto);
+    console.log(orderMenuPrintPreviewDto);
+
+    this.modalPrintPreview
+      .create({ component: OrderMenuPrintPreviewComponent })
+      .then((modalView) => {
+        modalView.present();
+        return modalView.onDidDismiss();
+      })
+      .then((resultData) => {
+        if (resultData.role === 'customer') {
+          // this.customer = resultData.data;
+        }
+      });
   }
 
   messageBox(msg: string) {

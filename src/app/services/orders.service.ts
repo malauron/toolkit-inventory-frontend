@@ -1,9 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { OrderDto } from '../classes/order-dto.model';
 import { OrderMenuDto } from '../classes/order-menu-dto.model';
+import { OrderMenuPrintPreviewDto } from '../classes/order-menu-print-preview.dto.model';
 import { Order } from '../classes/order.model';
 import { PageInfo } from '../classes/page-info.model';
 import { AppParamsConfig } from '../Configurations/app-params.config';
@@ -23,6 +24,7 @@ export class OrdersService{
   private apiUrl: string;
 
   private _ordersHaveChanged = new Subject<boolean>();
+  private _orderMenuPrintPreview = new BehaviorSubject<OrderMenuPrintPreviewDto>(undefined);
 
   constructor(
     private http: HttpClient,
@@ -31,6 +33,10 @@ export class OrdersService{
 
   get ordersHaveChanged() {
     return this._ordersHaveChanged;
+  }
+
+  get orderMenuPrintPreview() {
+    return this._orderMenuPrintPreview;
   }
 
   getOrder(orderId: number): Observable<Order>{

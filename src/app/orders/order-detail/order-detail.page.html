@@ -10,96 +10,6 @@
   </ion-toolbar>
 </ion-header>
 
-<!-- <div id="print-section">
-  sample text to print
-</div> -->
-
-<!--
-   2)- Add the directive name in your button (ngxPrint),
-   3)- Affect your ID to printSectionId
-  [useExistingCss]="true"
-  styleSheetFile="assets/css/custom.css"
- -->
-
-<button
-  styleSheetFile="assets/css/custom.css"
-  printSectionId="print-section"
-  ngxPrint
->
-  print
-</button>
-
-<div id="print-section" class="card">
-
-  <div class="order-header">
-    <div class="order-detail">
-      <img src="../../../assets/icons/calendar.svg">
-      August 15, 2022 08:00 PM
-    </div>
-    <div class="order-detail">
-      <img src="../../../assets/icons/cart.svg">
-      00000001
-    </div>
-    <div class="order-detail">
-      <img src="../../../assets/icons/person.svg">
-      Mark Anthony M. Lauron
-    </div>
-    <div class="order-detail">
-      <img src="../../../assets/icons/telephone.svg">
-      09173164549
-    </div>
-    <div class="order-detail">
-      <img src="../../../assets/icons/map.svg">
-      Sitio Kamanggahan, Lower Tabok, Mandaue City, Cebu, Philippines 6014
-    </div>
-  </div>
-
-  <div class="menu-header">
-    <h3>Tinolang Manok</h3>
-    <p class="menuId">
-      <img src="../../../assets/icons/spoonfork.svg">
-      00000001</p>
-    <p class="remarks">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam quisquam quasi ea explicabo repudiandae quaerat deserunt minus at. Voluptatibus harum repellendus exercitationem reiciendis neque veritatis, quia facilis porro consectetur iusto! Nobis aut at odit facilis dignissimos. Atque molestiae quo, doloremque est voluptas adipisci, expedita laudantium, sed possimus quam laboriosam ad!</p>
-  </div>
-
-  <table id="customers">
-    <thead>
-      <tr>
-        <th class="left-aligned">Ingredients</th>
-        <th class="centered">Quantity</th>
-        <th class="centered">Included</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Bell Pepper / Atsal</td>
-        <td class="centered">100g</td>
-        <td class="centered">&#10004;</td>
-      </tr>
-      <tr>
-        <td>Maggi Magic Sarap</td>
-        <td class="centered">24g</td>
-        <td class="centered">&#10004;</td>
-      </tr>
-      <tr>
-        <td>Soy Sauce / Toyo</td>
-        <td class="centered">300mL</td>
-        <td class="centered">&#10004;</td>
-      </tr>
-      <tr>
-        <td>Water Spinach / Kangkong</td>
-        <td class="centered">400g</td>
-        <td class="centered">&#10004;</td>
-      </tr>
-      <tr>
-        <td>Cayenne Pepper / Sili Espada</td>
-        <td class="centered">80g</td>
-        <td class="centered">&#10004;</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
 <ion-content class="ion-padding">
   <div class="spinner">
     <ion-spinner
@@ -342,9 +252,9 @@
             #optionButtonsContainer
             *ngIf="orderDetailsConfig.optionButtonsContainer"
           >
-            <ion-button mode="ios" color="secondary">
-              <ion-icon name="print" slot="start"></ion-icon>
-              <ion-label>Print</ion-label>
+            <ion-button mode="ios" color="secondary" (click)="onPrintPreview(menu)">
+              <ion-icon  src="../../assets/icons/preview.svg" slot="start"></ion-icon>
+              <ion-label>Preview</ion-label>
             </ion-button>
             <ion-button mode="ios" color="medium" (click)="onDeleteMenu(menu)">
               <ion-icon name="trash-sharp" slot="start"></ion-icon>
