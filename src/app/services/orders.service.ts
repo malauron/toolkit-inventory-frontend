@@ -17,19 +17,16 @@ interface ResponseOrders {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
-export class OrdersService{
+export class OrdersService {
   private apiUrl: string;
 
   private _ordersHaveChanged = new Subject<boolean>();
-  private _orderMenuPrintPreview = new BehaviorSubject<OrderMenuPrintPreviewDto>(undefined);
+  private _orderMenuPrintPreview =
+    new BehaviorSubject<OrderMenuPrintPreviewDto>(undefined);
 
-  constructor(
-    private http: HttpClient,
-    private config: AppParamsConfig
-  ){}
+  constructor(private http: HttpClient, private config: AppParamsConfig) {}
 
   get ordersHaveChanged() {
     return this._ordersHaveChanged;
@@ -39,7 +36,7 @@ export class OrdersService{
     return this._orderMenuPrintPreview;
   }
 
-  getOrder(orderId: number): Observable<Order>{
+  getOrder(orderId: number): Observable<Order> {
     this.apiUrl = `${this.config.urlOrders}/${orderId}?projection=orderView`;
     return this.http.get<Order>(this.apiUrl);
   }
@@ -48,30 +45,37 @@ export class OrdersService{
     pageNumber?: number,
     pageSize?: number,
     searchDesc?: any
-    ): Observable<ResponseOrders> {
+  ): Observable<ResponseOrders> {
+    if (searchDesc === undefined) {
+      searchDesc = '';
+    }
 
-      if (searchDesc === undefined) {
-        this.apiUrl = `${this.config.urlOrders}?page=${pageNumber}&size=${pageSize}`;
-      } else {
+    let orderId: number;
+    const orderStatus = ['Preparing', 'In Transit'];
 
-        let orderId: number;
+    if (isNaN(searchDesc)) {
+      orderId = 0;
+    } else {
+      orderId = searchDesc;
+    }
 
-        if (isNaN(searchDesc)) {
-          orderId = 0;
-        } else {
-          orderId = searchDesc;
-        }
-        // eslint-disable-next-line max-len
-        this.apiUrl = `${this.config.urlOrdersSearch}` +
-        `?orderId=${orderId}&customerName=${searchDesc}&address=${searchDesc}` +
-        `&contactNo=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+    searchDesc = String(searchDesc).replace('%','');
+    searchDesc = String(searchDesc).replace('^','');
+    searchDesc = String(searchDesc).replace('[','');
+    searchDesc = String(searchDesc).replace(']','');
+    searchDesc = String(searchDesc).replace('|','');
+    searchDesc = String(searchDesc).replace('\\','');
 
-      }
+    // eslint-disable-next-line max-len
+    this.apiUrl =
+      `${this.config.urlOrdersSearch}` +
+      `?orderId=${orderId}&customerName=${searchDesc}&address=${searchDesc}` +
+      `&contactNo=${searchDesc}&orderStatus=${orderStatus}&page=${pageNumber}&size=${pageSize}`;
+
     return this.http.get<ResponseOrders>(this.apiUrl);
   }
 
   getOrderMenus(orderId: number): Observable<OrderMenuDto> {
-
     this.apiUrl = `${this.config.urlV1OrderMenus}?orderId=${orderId}`;
     return this.http.get<OrderMenuDto>(this.apiUrl);
   }
@@ -81,7 +85,7 @@ export class OrdersService{
     return this.http.post(this.apiUrl, order);
   }
 
-  patchOrders(order: Order){
+  patchOrders(order: Order) {
     this.apiUrl = `${this.config.urlV1Orders}`;
     return this.http.patch(this.apiUrl, order);
   }

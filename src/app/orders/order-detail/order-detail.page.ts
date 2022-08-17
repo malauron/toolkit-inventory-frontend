@@ -161,7 +161,6 @@ export class OrderDetailPage implements OnInit {
     orderMenuPrintPreviewDto.address = this.customer.address;
     orderMenuPrintPreviewDto.orderMenu = menu;
     this.orderService.orderMenuPrintPreview.next(orderMenuPrintPreviewDto);
-    console.log(orderMenuPrintPreviewDto);
 
     this.modalPrintPreview
       .create({ component: OrderMenuPrintPreviewComponent })

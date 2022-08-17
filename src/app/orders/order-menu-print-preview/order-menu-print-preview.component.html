@@ -49,18 +49,18 @@
       <table id="ingredients">
         <thead>
           <tr>
+            <th class="centered"></th>
             <th class="left-aligned">Ingredients</th>
             <th class="centered">Quantity</th>
-            <th class="centered">Included</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let ing of orderMenuDto.orderMenu.orderMenuIngredients">
-            <td>{{ ing.item.itemName }}</td>
-            <td class="centered">{{ ing.requiredQty }}{{ ing.requiredUom.uomCode }}</td>
             <td class="centered">
               <strong *ngIf="ing.orderMenuIngredientId !== 0">&#10004;</strong>
             </td>
+            <td>{{ ing.item.itemName }}</td>
+            <td class="centered">{{ ing.requiredQty }}{{ ing.requiredUom.uomCode }}</td>
           </tr>
         </tbody>
       </table>
