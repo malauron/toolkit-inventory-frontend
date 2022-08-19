@@ -5,6 +5,7 @@ import { IonSearchbar, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Order } from 'src/app/classes/order.model';
+import { PurchasePrintPreviewDto } from 'src/app/classes/purchase-print-preview.dto';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { OrdersService } from 'src/app/services/orders.service';
 
@@ -21,6 +22,8 @@ export class OrdersListPage implements OnInit, OnDestroy {
   orderSub: Subscription;
 
   orders: Order[] = [];
+
+  purchasePrintPreview = new PurchasePrintPreviewDto([]);
 
   searchValue = '';
 
@@ -144,6 +147,13 @@ export class OrdersListPage implements OnInit, OnDestroy {
     } else {
       this.getOrders(event, this.pageNumber, this.config.pageSize);
     }
+  }
+
+  onAddToPurchaseList(orderId: number) {
+    if (!this.purchasePrintPreview.orderId.includes(orderId)){
+      this.purchasePrintPreview.orderId.push(orderId);
+    }
+    console.log(this.purchasePrintPreview.orderId);
   }
 
   async messageBox(messageDescription: string) {

@@ -10,7 +10,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-adding">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
+    <ion-badge mode="ios" color="warning">100</ion-badge>
+    <ion-fab-button color="success">
+      <ion-icon src="../../assets/icons/list-checks.svg"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <div class="spinner">
     <ion-spinner
       name="bubbles"
@@ -31,24 +38,19 @@
         <ion-card class="favCard">
           <div class="card-top"></div>
 
-          <ion-item class="customerName">
+          <ion-item class="order-id">
             <ion-icon
               class="cartIcon"
               name="cart-outline"
               color="primary"
               slot="start"
             ></ion-icon>
-            <ion-label>{{ order.orderId.toString().padStart(8, "0") }}</ion-label>
-            <ion-badge [color]=getStatusColor(order.orderStatus)>{{ order.orderStatus }}</ion-badge>
-            <ion-button
-              mode="ios"
-              size="small"
-              color="secondary"
-              fill="clear"
-              slot="end"
-              (click)="onEditOrder(order.orderId)"
-              ><ion-icon name="chevron-forward-outline"></ion-icon
-            ></ion-button>
+            <ion-label
+              >{{ order.orderId.toString().padStart(8, "0") }}</ion-label
+            >
+            <ion-badge [color]="getStatusColor(order.orderStatus)"
+              >{{ order.orderStatus }}</ion-badge
+            >
           </ion-item>
 
           <ion-item lines="none">
@@ -58,10 +60,10 @@
               color="primary"
               slot="start"
             ></ion-icon>
-              {{ order.customer.customerName }}
+            {{ order.customer.customerName }}
           </ion-item>
 
-          <ion-item lines="none">
+          <ion-item lines="none" class="contact-no">
             <ion-icon
               class="contactIcon"
               name="call-outline"
@@ -73,18 +75,48 @@
             </ion-card-subtitle>
           </ion-item>
 
-          <ion-item lines="none">
+          <ion-item class="address" lines="none">
             <ion-icon
               class="contactIcon"
               name="location-outline"
               color="primary"
               slot="start"
             ></ion-icon>
-            <ion-card-subtitle>
+            <ion-card-subtitle class="ion-no-padding ion-no-margin">
               <p>{{ order.customer.address }}</p>
             </ion-card-subtitle>
           </ion-item>
 
+          <div class="separator"></div>
+
+          <div class="action-buttons">
+            <div>
+              <ion-button
+                [disabled]="purchasePrintPreview.orderId.includes(order.orderId)"
+                class="ion-no-padding ion-no-margin"
+                expand="full"
+                mode="ios"
+                color="success"
+                (click)="onAddToPurchaseList(order.orderId)"
+                ><ion-icon
+                  slot="start"
+                  src="../../assets/icons/list-add.svg"
+                ></ion-icon>
+                Add to Purchase List</ion-button
+              >
+            </div>
+            <div>
+              <ion-button
+                class="ion-no-padding ion-no-margin"
+                expand="full"
+                mode="ios"
+                color="secondary"
+                fill="clear"
+                (click)="onEditOrder(order.orderId)"
+                ><ion-icon name="chevron-forward-sharp"></ion-icon
+              ></ion-button>
+            </div>
+          </div>
         </ion-card>
       </ion-col>
     </ion-row>
@@ -101,4 +133,6 @@
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
+
+  <div class="empty-space"></div>
 </ion-content>

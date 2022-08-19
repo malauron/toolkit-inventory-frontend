@@ -40,7 +40,7 @@
       >
         <ion-card class="favCard">
           <div class="card-top"></div>
-          <ion-item>
+          <ion-item lines="none">
             <ion-icon
               class="menuIcon"
               name="restaurant-outline"
@@ -48,24 +48,22 @@
               slot="start"
             ></ion-icon>
             <div class="menuName">
-              <ion-label>{{ menu.menuName }}</ion-label>
+              <ion-label class="ion-text-wrap">{{ menu.menuName }}</ion-label>
             </div>
           </ion-item>
-          <ion-item lines="none">
-            <!-- <ion-button
-              (click)="onLoadMoreOptions(menu.menuId)"
+          <div class="add-to-card">
+            <ion-button
+              (click)="onAddToCart(menu)"
               mode="ios"
               slot="end"
-              color="primary"
+              color="success"
+              expand="full"
+              class="ion-no-padding ion-no-margin"
             >
-              <ion-icon slot="start" name="open-sharp"></ion-icon>
-              <ion-label>More Options</ion-label>
-            </ion-button> -->
-            <ion-button (click)="onAddToCart(menu)" mode="ios" slot="end" color="success" size="small">
               <ion-icon slot="start" name="cart-sharp"></ion-icon>
               Add to Cart
             </ion-button>
-          </ion-item>
+          </div>
         </ion-card>
       </ion-col>
     </ion-row>
@@ -82,4 +80,5 @@
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
+  <div class="empty-space"></div>
 </ion-content>

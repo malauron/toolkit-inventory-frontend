@@ -1,4 +1,3 @@
-
 ion-searchbar {
   --border-radius: 10px;
 }
@@ -17,7 +16,7 @@ ion-card {
 }
 
 ion-badge {
-  z-index:100;
+  z-index: 100;
   position: absolute;
   top: -5px;
   right: 1px;
@@ -40,8 +39,9 @@ ion-spinner {
 
 .favCard {
   height: 150px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.19);
+  // border-radius: 10px;
+  // box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 2px 3px 1px rgba(0,0,0,0.19);
   margin: auto;
   margin-top: 30px;
 
@@ -55,7 +55,12 @@ ion-spinner {
     ion-label {
       margin-top: 30px;
     }
+
     min-height: 90px;
+  }
+
+  .add-to-card {
+    padding-top: 12px;
   }
 
 }
@@ -73,4 +78,9 @@ p {
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.empty-space {
+  margin-bottom: 100px;
+
 }
