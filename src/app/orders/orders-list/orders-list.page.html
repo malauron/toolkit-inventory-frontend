@@ -11,11 +11,25 @@
 </ion-header>
 
 <ion-content class="ion-adding">
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
-    <ion-badge mode="ios" color="warning">100</ion-badge>
+  <ion-fab
+    #purchaseListFab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    *ngIf="!isFetching">
+    <ion-badge mode="ios" color="warning">{{ this.purchasePrintPreview.orderId.length }}</ion-badge>
     <ion-fab-button color="success">
       <ion-icon src="../../assets/icons/list-checks.svg"></ion-icon>
     </ion-fab-button>
+
+    <ion-fab-list side="top" *ngIf="purchasePrintPreview.orderId.length>0">
+      <ion-fab-button color="light" (click)="onPrintPurchaseList()">
+        <ion-icon name="print-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light"  (click)="onClearPurchaseList()">
+        <ion-icon src="../../assets/icons/list-remove.svg"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
 
   <div class="spinner">

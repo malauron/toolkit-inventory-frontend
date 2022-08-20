@@ -20,7 +20,7 @@ import { OrderMenuPrintPreviewComponent } from '../order-menu-print-preview/orde
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.page.html',
-  styleUrls: ['./order-detail.page.scss','../../../assets/css/custom.css'],
+  styleUrls: ['./order-detail.page.scss'],
 })
 export class OrderDetailPage implements OnInit {
   orderMenus: OrderMenuDto[] = [];

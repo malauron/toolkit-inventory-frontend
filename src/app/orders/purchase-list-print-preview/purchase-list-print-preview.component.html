@@ -1,0 +1,35 @@
+<ion-content>
+  <div class="navbar">
+    <button (click)="dismissModal()">&#8249;</button>
+    <button
+      styleSheetFile="assets/css/purchase-list-print-preview.component.css"
+      printSectionId="print-section" ngxPrint
+      class="split">
+      <img src="../../../assets/icons/printer.svg" />
+  </button>
+  </div>
+
+  <div id="print-section">
+    <div class="card">
+      <div class="order-header">
+        <h3>Purchase List</h3>
+      </div>
+
+      <table id="ingredients">
+        <thead>
+          <tr>
+            <th class="left-aligned">Ingredients</th>
+            <th class="centered">Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ing of totalIngredients">
+            <td>{{ ing.item.itemName }}</td>
+            <td class="centered">{{ ing.totalQty | number:'1.2-3' }} {{ ing.baseUom.uomCode }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</ion-content>

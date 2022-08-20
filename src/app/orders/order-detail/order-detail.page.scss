@@ -8,12 +8,6 @@ ion-card {
   --ion-background-color: #ffffff;
 }
 
-// .customer-info {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// }
-
 .card-top {
   border-top: 5px solid var(--ion-color-primary);
 }
@@ -53,23 +47,3 @@ ion-spinner {
   // secondary
   // filter: invert(97%) sepia(79%) saturate(2860%) hue-rotate(292deg) brightness(103%) contrast(91%);
 }
-
-// .table-responsive .table {
-//   th {
-//     border-top: none;
-//     border-bottom: none;
-//     vertical-align: middle;
-//   }
-//   tbody {
-//     tr:first-child td {
-//       border-top: none;
-//     }
-//     td {
-//       vertical-align: middle;
-//       p {
-//         display: inline-block;
-//         margin-left: 30px;
-//       }
-//     }
-//   }
-// }

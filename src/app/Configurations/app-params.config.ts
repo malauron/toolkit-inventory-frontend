@@ -33,6 +33,7 @@ export class AppParamsConfig {
   urlV1Orders: any;
   urlV1OrderMenus: any;
   urlV1OrderMenuIngredients: any;
+  urlV1OrderMenuIngredientSummary: any;
 
   waitTime: number;
   pageSize: number;
@@ -79,6 +80,7 @@ export class AppParamsConfig {
     this.urlV1Orders = `${this.urlV1}/orders`;
     this.urlV1OrderMenus = `${this.urlV1Orders}/orderMenus`;
     this.urlV1OrderMenuIngredients = `${this.urlV1OrderMenus}/orderMenuIngredients`;
+    this.urlV1OrderMenuIngredientSummary = `${this.urlV1Orders}/orderMenuIngredientSummary`;
 
 
 

@@ -1,13 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonSearchbar, ToastController } from '@ionic/angular';
+import { IonFab, IonSearchbar, ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Order } from 'src/app/classes/order.model';
 import { PurchasePrintPreviewDto } from 'src/app/classes/purchase-print-preview.dto';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { OrdersService } from 'src/app/services/orders.service';
+import { PurchasesService } from 'src/app/services/purchases.service';
+import { PurchaseListPrintPreviewComponent } from '../purchase-list-print-preview/purchase-list-print-preview.component';
 
 @Component({
   selector: 'app-orders-list',
@@ -17,6 +19,7 @@ import { OrdersService } from 'src/app/services/orders.service';
 export class OrdersListPage implements OnInit, OnDestroy {
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('orderSearchBar', { static: true }) orderSearchBar: IonSearchbar;
+  @ViewChild('purchaseListFab') purchaseListFab: IonFab;
 
   orderSearchBarSub: Subscription;
   orderSub: Subscription;
@@ -35,9 +38,11 @@ export class OrdersListPage implements OnInit, OnDestroy {
 
   constructor(
     private orderService: OrdersService,
+    private purchasesService: PurchasesService,
     private config: AppParamsConfig,
     private router: Router,
     private toastController: ToastController,
+    private modalPrintPreview: ModalController
   ) { }
 
   ngOnInit() {
@@ -153,7 +158,23 @@ export class OrdersListPage implements OnInit, OnDestroy {
     if (!this.purchasePrintPreview.orderId.includes(orderId)){
       this.purchasePrintPreview.orderId.push(orderId);
     }
-    console.log(this.purchasePrintPreview.orderId);
+  }
+
+  onPrintPurchaseList() {
+    this.purchasesService.purchasePrintPreview
+      .next(this.purchasePrintPreview);
+
+    this.modalPrintPreview
+      .create({ component: PurchaseListPrintPreviewComponent })
+      .then((modalView) => {
+        modalView.present();
+        return modalView.onDidDismiss();
+      });
+  }
+
+  onClearPurchaseList() {
+    this.purchaseListFab.close();
+    this.purchasePrintPreview.orderId = [];
   }
 
   async messageBox(messageDescription: string) {
@@ -163,7 +184,6 @@ export class OrdersListPage implements OnInit, OnDestroy {
       position: 'top',
       message: messageDescription,
     });
-
     await toast.present();
   }
 
