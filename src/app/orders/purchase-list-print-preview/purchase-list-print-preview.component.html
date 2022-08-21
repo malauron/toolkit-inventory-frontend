@@ -19,13 +19,13 @@
         <thead>
           <tr>
             <th class="left-aligned">Ingredients</th>
-            <th class="centered">Quantity</th>
+            <th class="right-aligned">Quantity</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let ing of totalIngredients">
             <td>{{ ing.item.itemName }}</td>
-            <td class="centered">{{ ing.totalQty | number:'1.2-3' }} {{ ing.baseUom.uomCode }}</td>
+            <td class="right-aligned">{{ ing.totalQty | number:'1.3-3' }} {{ ing.baseUom.uomCode }}</td>
           </tr>
         </tbody>
       </table>

@@ -1,0 +1,158 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button  icon="chevron-back-outline" defaultHref="/tabs/purchases"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Purchase Details</ion-title>
+    <!-- <ion-buttons slot="primary" *ngIf="!this.menu.menuId">
+      <ion-button (click)="onSaveMenu()">
+        <ion-icon name="{{ postButton }}" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+
+          <div class="card-top"></div>
+          <ion-list>
+            <ion-item-group>
+              <form [formGroup]="menuForm">
+                <ion-item fill="outline">
+                  <ion-label position="floating">Description</ion-label>
+                  <ion-input type="text" formControlName="menuName"></ion-input>
+                </ion-item>
+                <ion-item fill="outline">
+                  <ion-label position="floating">Remarks</ion-label>
+                  <ion-textarea formControlName="remarks"></ion-textarea>
+                </ion-item>
+              </form>
+            </ion-item-group>
+          </ion-list>
+          <ion-item *ngIf="this.menu.menuId">
+            <ion-button
+              (click)="onSaveMenu()"
+              color="success"
+              slot="end"
+              size="default"
+            >
+              Save
+              <ion-icon name="{{ postButton }}" slot="start"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <ion-accordion-group>
+            <ion-accordion value="newIngredient">
+              <ion-item slot="header">
+                <ion-label>Add Ingredient</ion-label>
+              </ion-item>
+              <ion-list slot="content" class="list-content">
+                <form [formGroup]="itemForm">
+                  <ion-item fill="outline">
+                    <ion-label position="floating">Item</ion-label>
+                    <ion-input
+                      (click)="onItemSearch()"
+                      readonly="true"
+                      formControlName="itemName"
+                    ></ion-input>
+                    <ion-button
+                      mode="ios"
+                      class="search-button"
+                      slot="end"
+                      size="small"
+                      fill="clear"
+                      (click)="onItemSearch()"
+                    >
+                      <ion-icon
+                        name="search-outline"
+                        slot="icon-only"
+                      ></ion-icon>
+                    </ion-button>
+                  </ion-item>
+                  <ion-item fill="outline">
+                    <ion-label position="floating">Uom</ion-label>
+                    <ion-select #uomSelect formControlName="uom">
+                      <ion-select-option *ngFor="let uom of uoms" [value]="uom"
+                        >{{ uom.uomName }}</ion-select-option
+                      >
+                    </ion-select>
+                  </ion-item>
+                  <ion-item fill="outline">
+                    <ion-label position="floating">Quantity</ion-label>
+                    <ion-input
+                      #quantityInput
+                      formControlName="quantity"
+                      type="number"
+                      inputmode="decimal"
+                      min="0"
+                      value="0"
+                    ></ion-input>
+                  </ion-item>
+                </form>
+
+                <ion-item lines="none">
+                  <ion-button
+                    full
+                    (click)="onAddIngredient()"
+                    slot="end"
+                    size="default"
+                    color="success"
+                  >
+                    Add<ion-icon name="add-outline" slot="start"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ion-list>
+            </ion-accordion>
+          </ion-accordion-group>
+        </ion-card>
+      </ion-col>
+      <ion-col size-xs="12" size-lg="6" size-xl="8">
+        <ion-card>
+
+          <div class="card-top"></div>
+          <ion-item>
+            <ion-label>Ingredients</ion-label>
+            <ion-spinner name="dots" *ngIf="isFetching"></ion-spinner>
+          </ion-item>
+
+          <ion-grid *ngIf="menuIngredients.length>0">
+            <ion-row>
+              <ion-col
+                size-xs="12"
+                size-md="6"
+                size-lg="12"
+                size-xl="6"
+                *ngFor="let ing of menuIngredients"
+              >
+                <ion-card class="favCard">
+                  <ion-item lines="none">
+                    <ion-avatar slot="start">
+                      <img src="../../assets/icons/items.svg" class="icon" />
+                    </ion-avatar>
+                    <ion-card-subtitle
+                      >{{ ing.item.itemName }} - {{ ing.requiredQty }}{{
+                      ing.requiredUom.uomCode }}</ion-card-subtitle
+                    >
+                    <ion-button
+                      mode="ios"
+                      slot="end"
+                      fill="clear"
+                      color="medium"
+                      size="default"
+                      (click)="onDeleteIngredient(ing)"
+                    >
+                      <ion-icon name="close-circle"></ion-icon>
+                    </ion-button>
+                  </ion-item>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+</ion-content>
