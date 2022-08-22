@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-purchases',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PurchasesPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit() {
+  }
+
+  onAddPurchase() {
+    this.router.navigate(['/', 'tabs', 'purchases', 'purchase-detail', 0]);
   }
 
 }
