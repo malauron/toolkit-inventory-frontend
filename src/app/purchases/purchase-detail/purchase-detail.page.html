@@ -4,16 +4,16 @@
       <ion-back-button  icon="chevron-back-outline" defaultHref="/tabs/purchases"></ion-back-button>
     </ion-buttons>
     <ion-title>Purchase Details</ion-title>
-    <!-- <ion-buttons slot="primary" *ngIf="!this.menu.menuId">
-      <ion-button (click)="onSaveMenu()">
+    <ion-buttons slot="primary" *ngIf="!this.menu.menuId">
+      <ion-button>
         <ion-icon name="{{ postButton }}" slot="icon-only"></ion-icon>
       </ion-button>
-    </ion-buttons> -->
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <!-- <ion-grid>
+  <ion-grid>
     <ion-row>
       <ion-col>
         <ion-card>
@@ -35,7 +35,6 @@
           </ion-list>
           <ion-item *ngIf="this.menu.menuId">
             <ion-button
-              (click)="onSaveMenu()"
               color="success"
               slot="end"
               size="default"
@@ -154,5 +153,5 @@
         </ion-card>
       </ion-col>
     </ion-row>
-  </ion-grid> -->
+  </ion-grid>
 </ion-content>

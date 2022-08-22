@@ -84,3 +84,8 @@
   text-align: center;
   width: 100px;
 }
+
+.right-aligned {
+  text-align: right;
+  width: 100px;
+}

@@ -30,7 +30,6 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   uoms: Uom[] = [];
   menuIngredients: MenuIngredient[] = [];
 
-  pageLabel = 'Menu Detail';
   postButton = 'checkmark-outline';
   ingCtr = 0;
 
@@ -84,19 +83,19 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
 
     this.route.paramMap.subscribe((paramMap) => {
       //Check whether paramMap is empty of not
-      if (!paramMap.has('menuId')) {
-        this.navCtrl.navigateBack('/tabs/menus');
+      if (!paramMap.has('purchaseId')) {
+        this.navCtrl.navigateBack('/tabs/purchases');
         return;
       }
 
       //Check if paramMap is a number
-      if (isNaN(Number(paramMap.get('menuId')))) {
-        this.navCtrl.navigateBack('/tabs/menus');
+      if (isNaN(Number(paramMap.get('purchaseId')))) {
+        this.navCtrl.navigateBack('/tabs/purchases');
         return;
       }
 
       this.menu = new Menu();
-      this.menu.menuId = Number(paramMap.get('menuId'));
+      this.menu.menuId = Number(paramMap.get('purchaseId'));
       this.menu.price = 0;
 
       // Get item details
