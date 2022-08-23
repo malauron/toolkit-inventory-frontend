@@ -11,5 +11,18 @@ export class Order {
     public dateCreated?: string,
     public dateUpdated?: string,
 
-  ) {}
+  ) {
+    this.setParams();
+  }
+
+  setParams() {
+    this.orderId = 0;
+    this.customer = undefined;
+    this.totalPrice = 0;
+    this.orderStatus = '';
+    this.orderMenus = undefined;
+    this.dateCreated = '';
+    this.dateUpdated = '';
+  }
+
 }

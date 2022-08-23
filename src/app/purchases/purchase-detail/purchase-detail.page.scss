@@ -45,6 +45,10 @@ ion-card {
     // primary
     filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg)
       brightness(89%) contrast(108%);
-    }
+  }
+
+  .total-cost {
+    padding-left: 50px;
+  }
 }
 

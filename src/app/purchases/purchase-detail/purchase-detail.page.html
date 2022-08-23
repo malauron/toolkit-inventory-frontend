@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button
-        icon="chevron-back-outline"
-        defaultHref="/tabs/purchases"
-      ></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/purchases"></ion-back-button>
     </ion-buttons>
     <ion-title>Purchase Details</ion-title>
     <ion-buttons slot="primary">
@@ -26,67 +23,37 @@
       <ion-row>
         <ion-col size-xs="12" size-xl="4" push-xl="8">
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="calendar-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="calendar-outline" color="primary" slot="start"></ion-icon>
             <ion-label>
               <ion-label class="ion-text-wrap">-</ion-label>
             </ion-label>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon
-              class="cartIcon"
-              name="cart-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="cartIcon" name="cart-outline" color="primary" slot="start"></ion-icon>
             <ion-label>-</ion-label>
 
             <!-- Button to change the status of the order -->
-            <ion-button
-              #orderStatusButton
-              fill="clear"
-              size="small"
-              mode="ios"
-              id="click-trigger"
-            >
+            <ion-button #orderStatusButton fill="clear" size="small" mode="ios" id="click-trigger">
               <ion-badge color="warning">Unposted</ion-badge>
             </ion-button>
 
-            <ion-popover
-              #orderStatusPopover
-              trigger="click-trigger"
-              triggerAction="click"
-              dismissOnSelect="true"
-            >
+            <ion-popover #orderStatusPopover trigger="click-trigger" triggerAction="click" dismissOnSelect="true">
               <ng-template>
                 <ion-content>
                   <ion-list>
-                    <ion-item
-                      #inTransitStatus
-                      class="ion-text-center ion-no-padding ion-no-margin"
-                      lines="none"
-                      [button]="true"
-                      ><ion-label>In Transit</ion-label></ion-item
-                    >
-                    <ion-item
-                      #deliveredStatus
-                      class="ion-text-center ion-no-padding ion-no-margin"
-                      lines="full"
-                      [button]="true"
-                      ><ion-label>Delivered</ion-label></ion-item
-                    >
-                    <ion-item
-                      #cancelledStatus
-                      class="ion-text-center ion-no-padding ion-no-margin"
-                      lines="none"
-                      [button]="true"
-                      ><ion-label color="primary">Cancel</ion-label></ion-item
-                    >
+                    <ion-item #inTransitStatus class="ion-text-center ion-no-padding ion-no-margin" lines="none"
+                      [button]="true">
+                      <ion-label>In Transit</ion-label>
+                    </ion-item>
+                    <ion-item #deliveredStatus class="ion-text-center ion-no-padding ion-no-margin" lines="full"
+                      [button]="true">
+                      <ion-label>Delivered</ion-label>
+                    </ion-item>
+                    <ion-item #cancelledStatus class="ion-text-center ion-no-padding ion-no-margin" lines="none"
+                      [button]="true">
+                      <ion-label color="primary">Cancel</ion-label>
+                    </ion-item>
                   </ion-list>
                 </ion-content>
               </ng-template>
@@ -101,53 +68,30 @@
 
         <ion-col size-xs="12" size-xl="7" pull-xl="4">
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="person-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon
-            ><ion-label class="ion-text-wrap"
-              ><ion-card-title>-</ion-card-title></ion-label
-            >
+            <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-title>-</ion-card-title>
+            </ion-label>
             <!-- <ion-icon
               class="contactIcon"
               name="search-outline"
               color="primary"
               slot="end"
             ></ion-icon> -->
-            <ion-button
-              #orderStatusButton
-              fill="clear"
-              size="small"
-              mode="ios"
-              id="click-trigger"
-            >
+            <ion-button #orderStatusButton fill="clear" size="small" mode="ios" id="click-trigger">
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="call-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="call-outline" color="primary" slot="start"></ion-icon>
             <ion-label>-</ion-label>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="location-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="location-outline" color="primary" slot="start"></ion-icon>
             <ion-label>
-              <ion-label class="ion-text-wrap"
-                >-</ion-label
-              >
+              <ion-label class="ion-text-wrap">-</ion-label>
             </ion-label>
           </ion-item>
         </ion-col>
@@ -160,13 +104,7 @@
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
         <ion-card-title>Items</ion-card-title>
-        <ion-button
-          slot="end"
-          mode="ios"
-          fill="clear"
-          size="large"
-          color="success"
-        >
+        <ion-button slot="end" mode="ios" fill="clear" size="large" color="success">
           <ion-icon name="add"></ion-icon>
         </ion-button>
       </ion-item>
@@ -174,6 +112,7 @@
     <div class="separator"></div>
     <ion-grid>
       <ion-row>
+
         <ion-col size-xs="12" size-md="6" size-lg="4">
           <ion-card class="card-item">
             <ion-item lines="none">
@@ -181,53 +120,28 @@
                 <img src="../../assets/icons/items.svg" class="icon" />
               </ion-avatar>
               <ion-card-subtitle class="ion-no-padding ion-no-margin">
-                <p>Salted Black Beans / Tausi / Taosio - 465g @ 4.50</p>
-                <h5>450.00</h5>
+                Salted Black Beans / Tausi / Taosio - 465g
               </ion-card-subtitle>
-              <ion-button
-                #deleteIngredientButton
-                class="ion-no-padding ion-no-margin"
-                mode="ios"
-                fill="clear"
-                color="success"
-                size="default"
-                slot="end"
-              >
-                <ion-icon name="checkmark-circle"></ion-icon>
+              <ion-label slot="end">
+                 @ 999,999.99
+                </ion-label>
+            </ion-item>
+            <ion-item class="total-cost" lines="none">
+              <ion-label>
+                999,999.99
+              </ion-label>
+              <ion-button class="ion-no-margin" mode="ios" slot="end" fill="clear" color="medium"
+                size="default">
+                <ion-icon name="close-circle"></ion-icon>
               </ion-button>
-            </ion-item>
-            <ion-item>
-              <ion-label>sample</ion-label>
-            </ion-item>
-          </ion-card>
-        </ion-col>
-
-
-        <ion-col size-xs="12" size-md="6" size-lg="4">
-          <ion-card class="card-item">
-            <ion-item lines="none">
-              <ion-avatar slot="start">
-                <img src="../../assets/icons/items.svg" class="icon" />
-              </ion-avatar>
-              <ion-card-subtitle class="ion-no-padding ion-no-margin">
-                Salted Black Beans / Tausi / Taosio - 465g @ 4.50
-              </ion-card-subtitle>
-              <ion-button
-                #deleteIngredientButton
-                class="ion-no-padding ion-no-margin"
-                mode="ios"
-                fill="clear"
-                color="success"
-                size="default"
-                slot="end"
-              >
-                <ion-icon name="checkmark-circle"></ion-icon>
+              <ion-button #deleteIngredientButton class="ion-no-padding ion-no-margin" mode="ios" fill="clear"
+                color="success" size="default" slot="end">
+                <ion-icon name="create-outline"></ion-icon>
               </ion-button>
             </ion-item>
           </ion-card>
         </ion-col>
 
-
         <ion-col size-xs="12" size-md="6" size-lg="4">
           <ion-card class="card-item">
             <ion-item lines="none">
@@ -235,25 +149,28 @@
                 <img src="../../assets/icons/items.svg" class="icon" />
               </ion-avatar>
               <ion-card-subtitle class="ion-no-padding ion-no-margin">
-                <p>Salted Black Beans / Tausi / Taosio - 465g @ 4.50</p>
-                <h5>450.00</h5>
+                Salted Black Beans / Tausi / Taosio - 465g
               </ion-card-subtitle>
-              <ion-button
-                #deleteIngredientButton
-                class="ion-no-padding ion-no-margin"
-                mode="ios"
-                fill="clear"
-                color="success"
-                size="default"
-                slot="end"
-              >
-                <ion-icon name="checkmark-circle"></ion-icon>
+              <ion-label slot="end">
+                 @ 999,999.99
+                </ion-label>
+            </ion-item>
+            <ion-item class="total-cost" lines="none">
+              <ion-label>
+                999,999.99
+              </ion-label>
+              <ion-button class="ion-no-margin" mode="ios" slot="end" fill="clear" color="medium"
+                size="default">
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+              <ion-button #deleteIngredientButton class="ion-no-padding ion-no-margin" mode="ios" fill="clear"
+                color="success" size="default" slot="end">
+                <ion-icon name="create-outline"></ion-icon>
               </ion-button>
             </ion-item>
           </ion-card>
         </ion-col>
 
-
         <ion-col size-xs="12" size-md="6" size-lg="4">
           <ion-card class="card-item">
             <ion-item lines="none">
@@ -261,24 +178,56 @@
                 <img src="../../assets/icons/items.svg" class="icon" />
               </ion-avatar>
               <ion-card-subtitle class="ion-no-padding ion-no-margin">
-                <p>Salted Black Beans / Tausi / Taosio - 465g @ 4.50</p>
-                <h5>450.00</h5>
+                Salted Black Beans / Tausi / Taosio - 465g
               </ion-card-subtitle>
-              <ion-button
-                #deleteIngredientButton
-                class="ion-no-padding ion-no-margin"
-                mode="ios"
-                fill="clear"
-                color="success"
-                size="default"
-                slot="end"
-              >
-                <ion-icon name="checkmark-circle"></ion-icon>
+              <ion-label slot="end">
+                 @ 999,999.99
+                </ion-label>
+            </ion-item>
+            <ion-item class="total-cost" lines="none">
+              <ion-label>
+                999,999.99
+              </ion-label>
+              <ion-button class="ion-no-margin" mode="ios" slot="end" fill="clear" color="medium"
+                size="default">
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+              <ion-button #deleteIngredientButton class="ion-no-padding ion-no-margin" mode="ios" fill="clear"
+                color="success" size="default" slot="end">
+                <ion-icon name="create-outline"></ion-icon>
               </ion-button>
             </ion-item>
           </ion-card>
         </ion-col>
 
+        <ion-col size-xs="12" size-md="6" size-lg="4">
+          <ion-card class="card-item">
+            <ion-item lines="none">
+              <ion-avatar slot="start">
+                <img src="../../assets/icons/items.svg" class="icon" />
+              </ion-avatar>
+              <ion-card-subtitle class="ion-no-padding ion-no-margin">
+                Salted Black Beans / Tausi / Taosio - 465g
+              </ion-card-subtitle>
+              <ion-label slot="end">
+                 @ 999,999.99
+                </ion-label>
+            </ion-item>
+            <ion-item class="total-cost" lines="none">
+              <ion-label>
+                999,999.99
+              </ion-label>
+              <ion-button class="ion-no-margin" mode="ios" slot="end" fill="clear" color="medium"
+                size="default">
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+              <ion-button #deleteIngredientButton class="ion-no-padding ion-no-margin" mode="ios" fill="clear"
+                color="success" size="default" slot="end">
+                <ion-icon name="create-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-card>
+        </ion-col>
 
         <ion-col size-xs="12" size-md="6" size-lg="4">
           <ion-card class="card-item">
@@ -287,19 +236,52 @@
                 <img src="../../assets/icons/items.svg" class="icon" />
               </ion-avatar>
               <ion-card-subtitle class="ion-no-padding ion-no-margin">
-                <p>Salted Black Beans / Tausi / Taosio - 465g @ 4.50</p>
-                <h5>450.00</h5>
+                Salted Black Beans / Tausi / Taosio - 465g
               </ion-card-subtitle>
-              <ion-button
-                #deleteIngredientButton
-                class="ion-no-padding ion-no-margin"
-                mode="ios"
-                fill="clear"
-                color="success"
-                size="default"
-                slot="end"
-              >
-                <ion-icon name="checkmark-circle"></ion-icon>
+              <ion-label slot="end">
+                 @ 999,999.99
+                </ion-label>
+            </ion-item>
+            <ion-item class="total-cost" lines="none">
+              <ion-label>
+                999,999.99
+              </ion-label>
+              <ion-button class="ion-no-margin" mode="ios" slot="end" fill="clear" color="medium"
+                size="default">
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+              <ion-button #deleteIngredientButton class="ion-no-padding ion-no-margin" mode="ios" fill="clear"
+                color="success" size="default" slot="end">
+                <ion-icon name="create-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size-xs="12" size-md="6" size-lg="4">
+          <ion-card class="card-item">
+            <ion-item lines="none">
+              <ion-avatar slot="start">
+                <img src="../../assets/icons/items.svg" class="icon" />
+              </ion-avatar>
+              <ion-card-subtitle class="ion-no-padding ion-no-margin">
+                Salted Black Beans / Tausi / Taosio - 465g
+              </ion-card-subtitle>
+              <ion-label slot="end">
+                 @ 999,999.99
+                </ion-label>
+            </ion-item>
+            <ion-item class="total-cost" lines="none">
+              <ion-label>
+                999,999.99
+              </ion-label>
+              <ion-button class="ion-no-margin" mode="ios" slot="end" fill="clear" color="medium"
+                size="default">
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+              <ion-button #deleteIngredientButton class="ion-no-padding ion-no-margin" mode="ios" fill="clear"
+                color="success" size="default" slot="end">
+                <ion-icon name="create-outline"></ion-icon>
               </ion-button>
             </ion-item>
           </ion-card>

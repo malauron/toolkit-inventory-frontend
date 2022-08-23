@@ -50,7 +50,7 @@
             >
 
             <!-- Button to change the status of the order -->
-            <ion-button
+            <!-- <ion-button
               #orderStatusButton
               fill="clear"
               size="small"
@@ -61,7 +61,20 @@
               <ion-badge [color]="orderDetailsConfig.orderStatusColor"
                 >{{ order.orderStatus }}</ion-badge
               >
-            </ion-button>
+            </ion-button> -->
+
+            <ion-button
+            #orderStatusButton
+            fill="clear"
+            size="small"
+            mode="ios"
+            id="click-trigger"
+            *ngIf="orderDetailsConfig.orderStatusButton"
+          >
+            <ion-badge [color]="orderDetailsConfig.orderStatusColor"
+              >{{ order.orderStatus }}</ion-badge
+            >
+          </ion-button>
 
             <ion-popover
               *ngIf="orderDetailsConfig.orderStatusPopover"
