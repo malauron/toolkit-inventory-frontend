@@ -1,6 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+  ToastController,
+} from '@ionic/angular';
 import { CartMenuIngredient } from 'src/app/classes/cart-menu-ingredient.model';
 import { CartMenu } from 'src/app/classes/cart-menu.model';
 import { Customer } from 'src/app/classes/customer.model';
@@ -20,11 +25,11 @@ import { OrdersService } from 'src/app/services/orders.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-
   cartMenus: CartMenu[] = [];
   customer = new Customer();
 
   isFetching = false;
+  modalOpen = false;
 
   constructor(
     private navCtrl: NavController,
@@ -44,22 +49,24 @@ export class CartPage implements OnInit {
   }
 
   onCustomerSearch() {
-    this.modalCustomerSearch
-      .create({ component: CustomerSearchComponent })
-      .then((modalSearch) => {
-        modalSearch.present();
-        return modalSearch.onDidDismiss();
-      })
-      .then((resultData) => {
-        if (resultData.role === 'customer') {
-          this.customer = resultData.data;
-        }
-      });
+    if (!this.modalOpen) {
+      this.modalCustomerSearch
+        .create({ component: CustomerSearchComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'customer') {
+            this.customer = resultData.data;
+          }
+          this.modalOpen = false;
+        });
+    }
   }
 
-  onSaveMenu(){
-    if (this.customer.customerId !== undefined && this.cartMenus.length>0){
-
+  onSaveMenu() {
+    if (this.customer.customerId !== undefined && this.cartMenus.length > 0) {
       const orderDto = new OrderDto(
         this.customer,
         this.processOrderMenus(this.cartMenus),
@@ -67,8 +74,12 @@ export class CartPage implements OnInit {
       );
 
       this.orderService.postOrders(orderDto).subscribe(
-        res => { this.navCtrl.navigateBack('/tabs/orders'); },
-        err => { console.log(err); }
+        (res) => {
+          this.navCtrl.navigateBack('/tabs/orders');
+        },
+        (err) => {
+          console.log(err);
+        }
       );
     } else {
       if (this.cartMenus.length <= 0) {
@@ -84,11 +95,7 @@ export class CartPage implements OnInit {
     orderMenus = [];
     for (const key in menus) {
       if (menus.hasOwnProperty(key)) {
-
-        const menu = new Menu(
-          menus[key].menu.menuId,
-          menus[key].menu.menuName
-        );
+        const menu = new Menu(menus[key].menu.menuId, menus[key].menu.menuName);
 
         const orderMenu = new OrderMenu(
           undefined,
@@ -110,9 +117,7 @@ export class CartPage implements OnInit {
     cartMenus = [];
     for (const key in menus) {
       if (menus.hasOwnProperty(key)) {
-        const cartMenu = new CartMenu(
-          menus[key].cartMenuId
-        );
+        const cartMenu = new CartMenu(menus[key].cartMenuId);
         cartMenus = cartMenus.concat(cartMenu);
       }
     }
@@ -124,11 +129,7 @@ export class CartPage implements OnInit {
     orderMenuIngredients = [];
     for (const key in ings) {
       if (ings.hasOwnProperty(key)) {
-
-        const item = new Item(
-          ings[key].item.itemId,
-          ings[key].item.itemName
-        );
+        const item = new Item(ings[key].item.itemId, ings[key].item.itemName);
 
         const baseUom = new Uom(
           ings[key].baseUom.uomId,
@@ -171,10 +172,7 @@ export class CartPage implements OnInit {
           {
             text: 'Delete',
             handler: () => {
-
-              const cartMenu = new CartMenu(
-                menu.cartMenuId
-              );
+              const cartMenu = new CartMenu(menu.cartMenuId);
 
               this.cartService.deleteCartMenu(cartMenu).subscribe((res) => {
                 this.removeMenuObj(menu);
@@ -208,12 +206,15 @@ export class CartPage implements OnInit {
           {
             text: 'Delete',
             handler: () => {
+              const cartMenuIngredient = new CartMenuIngredient(
+                ing.cartMenuIngredientId
+              );
 
-              const cartMenuIngredient = new CartMenuIngredient(ing.cartMenuIngredientId);
-
-              this.cartService.deleteCartMenuIngredient(cartMenuIngredient).subscribe((res) => {
-                this.removeIngredientObj(ing, ings);
-              });
+              this.cartService
+                .deleteCartMenuIngredient(cartMenuIngredient)
+                .subscribe((res) => {
+                  this.removeIngredientObj(ing, ings);
+                });
             },
           },
         ],
@@ -243,5 +244,4 @@ export class CartPage implements OnInit {
         res.present();
       });
   }
-
 }

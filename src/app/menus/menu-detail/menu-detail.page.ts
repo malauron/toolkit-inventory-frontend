@@ -45,6 +45,7 @@ export class MenuDetailPage implements OnInit, OnDestroy {
   menu: Menu;
 
   isFetching = false;
+  modalOpen = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -137,38 +138,43 @@ export class MenuDetailPage implements OnInit, OnDestroy {
   }
 
   onItemSearch() {
-    this.modalItemSearch
-      .create({ component: ItemSearchComponent })
-      .then((modalSearch) => {
-        modalSearch.present();
-        return modalSearch.onDidDismiss();
-      })
-      .then((resultData) => {
-        if (resultData.role === 'item') {
-          const itemData = new Item();
-          const uomData = new Uom();
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.modalItemSearch
+        .create({ component: ItemSearchComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'item') {
+            const itemData = new Item();
+            const uomData = new Uom();
 
-          itemData.itemId = resultData.data.itemId;
-          itemData.itemName = resultData.data.itemName;
+            itemData.itemId = resultData.data.itemId;
+            itemData.itemName = resultData.data.itemName;
 
-          uomData.uomId = resultData.data.uom.uomId;
-          uomData.uomName = resultData.data.uom.uomName;
-          uomData.uomCode = resultData.data.uom.uomCode;
+            uomData.uomId = resultData.data.uom.uomId;
+            uomData.uomName = resultData.data.uom.uomName;
+            uomData.uomCode = resultData.data.uom.uomCode;
 
-          // this.item = resultData.data;
-          this.uoms = [uomData];
-          this.getItemUoms(itemData.itemId);
-          this.itemForm.patchValue({
-            item: itemData,
-            itemName: itemData.itemName,
-            uom: uomData,
-            quantity: 1,
-          });
+            // this.item = resultData.data;
+            this.uoms = [uomData];
+            this.getItemUoms(itemData.itemId);
+            this.itemForm.patchValue({
+              item: itemData,
+              itemName: itemData.itemName,
+              uom: uomData,
+              quantity: 1,
+            });
 
-          const qtyElem = this.quantityInput.getInputElement();
-          qtyElem.then((res) => res.focus());
-        }
-      });
+            const qtyElem = this.quantityInput.getInputElement();
+            qtyElem.then((res) => res.focus());
+          }
+          this.modalOpen = false;
+        });
+
+    }
   }
 
   getItemUoms(itemId: number) {
