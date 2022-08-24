@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar #vendorSearchBar placeholder="Search vendor"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="vendorList.length > 0">
+    <ion-card class="favCard" *ngFor="let vendor of vendorList">
+      <ion-item lines="none" detail button (click)="onSelectVendor(vendor)">
+        <!-- <ion-avatar slot="start">
+          <img src="../../assets/icons/items.svg" class="icon" />
+        </ion-avatar> -->
+        <ion-icon
+          class="vendorIcon"
+          name="person-circle-outline"
+          color="primary"
+          slot="start"
+        ></ion-icon>
+        <ion-card-subtitle>{{ vendor.vendorName }}</ion-card-subtitle>
+      </ion-item>
+    </ion-card>
+  </ion-grid>
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreVendors($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more vendors..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

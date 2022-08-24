@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { Customer } from 'src/app/classes/customer.model';
+import { ModalController, ToastController } from '@ionic/angular';
+import { PurchaseDto } from 'src/app/classes/purchase-dto.model';
 import { PurchaseItem } from 'src/app/classes/purchase-item.model';
 import { Purchase } from 'src/app/classes/purchase.model';
-import { CustomerSearchComponent } from 'src/app/customers/customer-search/customer-search.component';
+import { Vendor } from 'src/app/classes/vendor.model';
+import { PurchasesService } from 'src/app/services/purchases.service';
+import { VendorSearchComponent } from 'src/app/vendors/vendor-search/vendor-search.component';
 import { PurchasedItemComponent } from '../purchased-item/purchased-item.component';
 
 @Component({
@@ -14,13 +16,19 @@ import { PurchasedItemComponent } from '../purchased-item/purchased-item.compone
 export class PurchaseDetailPage implements OnInit, OnDestroy {
 
   purchase = new Purchase();
-  customer = new Customer();
+  vendor = new Vendor();
   purchaseItems: PurchaseItem[] = [];
 
   isFetching = false;
   modalOpen = false;
 
-  constructor(private modalCustomerSearch: ModalController) {}
+  totalAmt = 0;
+
+  constructor(
+    private purchaseService: PurchasesService,
+    private modalCustomerSearch: ModalController,
+    private toastCtrl: ToastController
+    ) {}
 
   ngOnInit() {}
 
@@ -28,14 +36,14 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.modalCustomerSearch
-        .create({ component: CustomerSearchComponent })
+        .create({ component: VendorSearchComponent })
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
         })
         .then((resultData) => {
-          if (resultData.role === 'customer') {
-            this.customer = resultData.data;
+          if (resultData.role === 'vendor') {
+            this.vendor = resultData.data;
           }
           this.modalOpen = false;
         });
@@ -54,10 +62,48 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
         .then((resultData) => {
           if (resultData.role === 'purchasedItem') {
             this.purchaseItems = this.purchaseItems.concat(resultData.data);
+            this.totalAmt = 0;
+            this.purchaseItems.forEach(item => {
+              this.totalAmt += (item.cost * item.requiredQty);
+            });
           }
           this.modalOpen = false;
         });
     }
+  }
+
+  onSavePurchaseDetails() {
+    if (this.vendor.vendorId === undefined) {
+      this.messageBox('Please provide a vendor');
+      return;
+    }
+    if (this.purchaseItems.length <=0) {
+      this.messageBox('Please provide at least 1 purchased item.');
+      return;
+    }
+
+    console.log(this.purchaseItems);
+
+    const purchaseDto = new PurchaseDto(
+      this.totalAmt, this.vendor, this.purchaseItems
+    );
+    console.log(purchaseDto);
+    this.purchaseService.postPurhcase(purchaseDto).subscribe(
+      res => console.log(res)
+    );
+  }
+
+  messageBox(msg: string) {
+    this.toastCtrl
+      .create({
+        color: 'dark',
+        duration: 2000,
+        position: 'top',
+        message: msg,
+      })
+      .then((res) => {
+        res.present();
+      });
   }
 
   ngOnDestroy(): void {}

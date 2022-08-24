@@ -25,6 +25,18 @@ const routes: Routes = [
         loadChildren: () => import('../items/items.module').then( m => m.ItemsPageModule)
       },
       {
+        path: 'uoms',
+        loadChildren: () => import('../uoms/uoms.module').then( m => m.UomsPageModule)
+      },
+      {
+        path: 'customers',
+        loadChildren: () => import('../customers/customers.module').then( m => m.CustomersPageModule)
+      },
+      {
+        path: 'vendors',
+        loadChildren: () => import('../vendors/vendors.module').then( m => m.VendorsPageModule)
+      },
+      {
         path: '',
         redirectTo: 'orders',
         pathMatch: 'full'

@@ -7,8 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { PurchaseDetailPageRoutingModule } from './purchase-detail-routing.module';
 
 import { PurchaseDetailPage } from './purchase-detail.page';
-import { CustomerSearchModule } from 'src/app/customers/customer-search/customer-search.module';
 import { PurchasedItemModule } from '../purchased-item/purchased-item.module';
+import { VendorSearchModule } from 'src/app/vendors/vendor-search/vendor-search.module';
 
 @NgModule({
   imports: [
@@ -17,7 +17,7 @@ import { PurchasedItemModule } from '../purchased-item/purchased-item.module';
     IonicModule,
     PurchaseDetailPageRoutingModule,
     ReactiveFormsModule,
-    CustomerSearchModule,
+    VendorSearchModule,
     PurchasedItemModule
   ],
   declarations: [PurchaseDetailPage]

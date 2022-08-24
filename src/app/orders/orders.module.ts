@@ -7,11 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { OrdersPageRoutingModule } from './orders-routing.module';
 
 import { OrdersPage } from './orders.page';
-import { CustomerSearchComponent } from '../customers/customer-search/customer-search.component';
 import { OrderMenuPrintPreviewComponent } from './order-menu-print-preview/order-menu-print-preview.component';
 import { NgxPrintModule } from 'ngx-print';
 import { PurchaseListPrintPreviewComponent } from './purchase-list-print-preview/purchase-list-print-preview.component';
-import { CustomerSearchModule } from '../customers/customer-search/customer-search.module';
 
 @NgModule({
   imports: [
@@ -20,7 +18,6 @@ import { CustomerSearchModule } from '../customers/customer-search/customer-sear
     IonicModule,
     OrdersPageRoutingModule,
     NgxPrintModule,
-    CustomerSearchModule
   ],
   declarations: [
     OrdersPage,
@@ -28,7 +25,6 @@ import { CustomerSearchModule } from '../customers/customer-search/customer-sear
     PurchaseListPrintPreviewComponent,
   ],
   entryComponents: [
-    CustomerSearchComponent,
     OrderMenuPrintPreviewComponent,
     PurchaseListPrintPreviewComponent,
   ],

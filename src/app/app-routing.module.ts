@@ -11,14 +11,6 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then( m => m.AuthPageModule)
   },
   {
-    path: 'uoms',
-    loadChildren: () => import('./uoms/uoms.module').then( m => m.UomsPageModule)
-  },
-  {
-    path: 'customers',
-    loadChildren: () => import('./customers/customers.module').then( m => m.CustomersPageModule)
-  },
-  {
     path: '',
     redirectTo: 'tabs',
     pathMatch: 'full'
@@ -28,6 +20,7 @@ const routes: Routes = [
     redirectTo: 'tabs',
     pathMatch: 'full'
   },
+
 ];
 
 @NgModule({

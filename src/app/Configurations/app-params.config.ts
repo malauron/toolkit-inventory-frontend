@@ -20,6 +20,8 @@ export class AppParamsConfig {
   urlCartMenuSearch: any;
   urlOrders: any;
   urlOrdersSearch: any;
+  urlVendors: any;
+  urlVendorSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -34,6 +36,7 @@ export class AppParamsConfig {
   urlV1OrderMenus: any;
   urlV1OrderMenuIngredients: any;
   urlV1OrderMenuIngredientSummary: any;
+  urlV1Purchases: any;
 
   waitTime: number;
   pageSize: number;
@@ -59,6 +62,8 @@ export class AppParamsConfig {
     this.urlCartMenus = `${this.url}/cartMenus`;
     this.urlCartMenuSearch = `${this.urlCartMenus}/search/findAllCartMenus`;
     this.urlOrders = `${this.url}/orders`;
+    this.urlVendors = `${this.url}/vendors`;
+    this.urlVendorSearch = `${this.urlVendors}/search/findByVendorNameContainingOrderByVendorName`;
 
     // eslint-disable-next-line max-len
     // this.urlOrdersSearch = `${this.urlOrders}/search/findByOrderIdOrCustomer_CustomerNameContaining` +
@@ -81,7 +86,7 @@ export class AppParamsConfig {
     this.urlV1OrderMenus = `${this.urlV1Orders}/orderMenus`;
     this.urlV1OrderMenuIngredients = `${this.urlV1OrderMenus}/orderMenuIngredients`;
     this.urlV1OrderMenuIngredientSummary = `${this.urlV1Orders}/orderMenuIngredientSummary`;
-
+    this.urlV1Purchases = `${this.urlV1}/purchases`;
 
 
     this.waitTime = 500;

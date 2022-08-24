@@ -98,6 +98,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
 
             itemData.itemId = resultData.data.itemId;
             itemData.itemName = resultData.data.itemName;
+            itemData.uom = resultData.data.uom;
 
             uomData.uomId = resultData.data.uom.uomId;
             uomData.uomName = resultData.data.uom.uomName;
