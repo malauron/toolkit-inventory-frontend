@@ -1,9 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IonInput, IonSelect, ModalController } from '@ionic/angular';
+import { IonInput, IonSelect, ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Item } from 'src/app/classes/item.model';
+import { PurchaseItem } from 'src/app/classes/purchase-item.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemSearchComponent } from 'src/app/items/item-search/item-search.component';
 import { ItemsService } from 'src/app/services/items.service';
@@ -14,7 +15,6 @@ import { ItemsService } from 'src/app/services/items.service';
   styleUrls: ['./purchased-item.component.scss'],
 })
 export class PurchasedItemComponent implements OnInit, OnDestroy {
-
   @ViewChild('uomSelect', { static: true }) uomSelect: IonSelect;
   @ViewChild('quantityInput', { static: true }) quantityInput: IonInput;
   @ViewChild('costInput', { static: true }) costInput: IonInput;
@@ -31,7 +31,8 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private itemService: ItemsService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnDestroy(): void {
@@ -52,20 +53,19 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
-      quantity: new FormControl(null, {
+      requiredQty: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.min(1)],
+        validators: [Validators.required, Validators.min(0.001)],
       }),
       cost: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.min(1)],
+        validators: [Validators.required, Validators.min(0.001)],
       }),
     });
 
     this.uomSelectSub = this.uomSelect.ionDismiss.subscribe(this.onQtyFocus());
     this.qtyInputSub = this.quantityInput.ionFocus.subscribe(this.onQtyFocus());
     this.costInputSub = this.costInput.ionFocus.subscribe(this.onCostFocus());
-
   }
 
   onQtyFocus() {
@@ -110,8 +110,8 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
               item: itemData,
               itemName: itemData.itemName,
               uom: uomData,
-              quantity: 1,
-              cost: 1
+              requiredQty: 1.0,
+              cost: 1.0,
             });
 
             const qtyElem = this.quantityInput.getInputElement();
@@ -137,11 +137,35 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
     };
   }
 
-  onSavePurchasedItem(item?: Item) {
-    this.modalController.dismiss(item, 'purchasedItem');
+  onSavePurchasedItem() {
+    if (!this.itemForm.valid) {
+      this.messageBox('Plrease provide a valid purchased item information.');
+    } else {
+      const purchaseItem = new PurchaseItem(
+        undefined,
+        this.itemForm.value.item,
+        this.itemForm.value.uom,
+        this.itemForm.value.requiredQty,
+        this.itemForm.value.cost
+      );
+      this.modalController.dismiss(purchaseItem, 'purchasedItem');
+    }
   }
 
   dismissModal() {
     this.modalController.dismiss(null, 'dismissModal');
+  }
+
+  messageBox(msg: string) {
+    this.toastCtrl
+      .create({
+        color: 'dark',
+        duration: 2000,
+        position: 'top',
+        message: msg,
+      })
+      .then((res) => {
+        res.present();
+      });
   }
 }
