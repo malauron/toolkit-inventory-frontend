@@ -6,6 +6,8 @@ import { Purchase } from 'src/app/classes/purchase.model';
 import { Vendor } from 'src/app/classes/vendor.model';
 import { PurchasesService } from 'src/app/services/purchases.service';
 import { VendorSearchComponent } from 'src/app/vendors/vendor-search/vendor-search.component';
+import { PurchaseItemDetail } from '../purchased-item/purchase-item.model';
+import { PurchaseItemService } from '../purchased-item/purchase-item.service';
 import { PurchasedItemComponent } from '../purchased-item/purchased-item.component';
 
 @Component({
@@ -25,6 +27,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
 
   constructor(
     private purchaseService: PurchasesService,
+    private purchaseItemService: PurchaseItemService,
     private modalCustomerSearch: ModalController,
     private toastCtrl: ToastController
   ) {}
@@ -48,9 +51,13 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
                 undefined,
                 resultData.data
               );
-              this.purchaseService.putPurchaseSetVendor(purchaseDto).subscribe(
-                res => this.messageBox('You have successfully assigned a new vendor.')
-              );
+              this.purchaseService
+                .putPurchaseSetVendor(purchaseDto)
+                .subscribe((res) =>
+                  this.messageBox(
+                    'You have successfully assigned a new vendor.'
+                  )
+                );
             }
             this.vendor = resultData.data;
           }
@@ -60,8 +67,10 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   }
 
   onAddPurchasedItem() {
+
     if (!this.modalOpen) {
       this.modalOpen = true;
+      this.purchaseItemService.purchaseItemDetail.next(undefined);
       this.modalCustomerSearch
         .create({ component: PurchasedItemComponent })
         .then((modalSearch) => {
@@ -69,20 +78,35 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
           return modalSearch.onDidDismiss();
         })
         .then((resultData) => {
-          if (resultData.role === 'purchasedItem') {
+          if (resultData.role === 'item') {
+
+            const item: PurchaseItemDetail = resultData.data;
+            const purchaseItem = new PurchaseItem(
+              undefined,
+              undefined,
+              item.item,
+              undefined,
+              undefined,
+              item.uom,
+              item.quantity,
+              item.cost
+            );
+
             if (this.purchase.purchaseId) {
-              const item: PurchaseItem = resultData.data;
-              item.purchase = this.purchase;
-              this.purchaseService.putPurchaseItem(item).subscribe(
-                res => {
+              purchaseItem.purchase = this.purchase;
+              this.purchaseService
+                .putPurchaseItem(purchaseItem)
+                .subscribe((res) => {
+                  this.purchaseItems = this.purchaseItems.concat(res);
                   this.messageBox('New purchased item has been added.');
-                }
-              );
+                });
+            } else {
+              this.purchaseItems = this.purchaseItems.concat(purchaseItem);
             }
-            this.purchaseItems = this.purchaseItems.concat(resultData.data);
+
             this.totalAmt = 0;
-            this.purchaseItems.forEach((item) => {
-              this.totalAmt += item.cost * item.purchasedQty;
+            this.purchaseItems.forEach((itm) => {
+              this.totalAmt += itm.cost * itm.purchasedQty;
             });
           }
           this.modalOpen = false;
@@ -118,6 +142,62 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       this.purchase.dateCreated = res.dateCreated;
       this.purchaseItems = res.purchaseItems;
     };
+  }
+
+  onUpdatePurchaseItem(pItem?: PurchaseItem) {
+
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+
+      const purchaseItemDetail = new PurchaseItemDetail(
+        pItem.item,
+        pItem.requiredUom,
+        pItem.purchasedQty,
+        pItem.cost
+      );
+      this.purchaseItemService.purchaseItemDetail.next(purchaseItemDetail);
+
+      this.modalCustomerSearch
+        .create({ component: PurchasedItemComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'item') {
+
+            const item: PurchaseItemDetail = resultData.data;
+            const purchaseItem = new PurchaseItem(
+              undefined,
+              undefined,
+              item.item,
+              undefined,
+              undefined,
+              item.uom,
+              item.quantity,
+              item.cost
+            );
+
+            if (this.purchase.purchaseId) {
+              purchaseItem.purchase = this.purchase;
+              this.purchaseService
+                .putPurchaseItem(purchaseItem)
+                .subscribe((res) => {
+                  this.purchaseItems = this.purchaseItems.concat(res);
+                  this.messageBox('New purchased item has been added.');
+                });
+            } else {
+              this.purchaseItems = this.purchaseItems.concat(purchaseItem);
+            }
+
+            this.totalAmt = 0;
+            this.purchaseItems.forEach((itm) => {
+              this.totalAmt += itm.cost * itm.purchasedQty;
+            });
+          }
+          this.modalOpen = false;
+        });
+    }
   }
 
   messageBox(msg: string) {

@@ -154,6 +154,7 @@
   </ion-card>
 
   <ion-card class="card-holder purchased-items">
+
     <div class="card-top"></div>
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
@@ -173,6 +174,7 @@
       </ion-item>
     </ion-card-header>
     <div class="separator"></div>
+
     <ion-grid>
       <ion-row>
         <ion-col
@@ -209,6 +211,7 @@
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
               <ion-button
+                (click)="onUpdatePurchaseItem(item)"
                 #deleteIngredientButton
                 class="ion-no-padding ion-no-margin"
                 mode="ios"

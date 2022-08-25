@@ -1,13 +1,19 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IonInput, IonSelect, ModalController, ToastController } from '@ionic/angular';
+import {
+  IonInput,
+  IonSelect,
+  ModalController,
+  ToastController,
+} from '@ionic/angular';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Item } from 'src/app/classes/item.model';
-import { PurchaseItem } from 'src/app/classes/purchase-item.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemSearchComponent } from 'src/app/items/item-search/item-search.component';
 import { ItemsService } from 'src/app/services/items.service';
+import { PurchaseItemDetail } from './purchase-item.model';
+import { PurchaseItemService } from './purchase-item.service';
 
 @Component({
   selector: 'app-purchased-item',
@@ -19,6 +25,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
   @ViewChild('quantityInput', { static: true }) quantityInput: IonInput;
   @ViewChild('costInput', { static: true }) costInput: IonInput;
 
+  purchaseItemSub: Subscription;
   uomSelectSub: Subscription;
   qtyInputSub: Subscription;
   costInputSub: Subscription;
@@ -31,11 +38,13 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private itemService: ItemsService,
+    private purchaseItemService: PurchaseItemService,
     private modalController: ModalController,
     private toastCtrl: ToastController
   ) {}
 
   ngOnDestroy(): void {
+    this.purchaseItemSub.unsubscribe();
     this.uomSelectSub.unsubscribe();
     this.qtyInputSub.unsubscribe();
     this.costInputSub.unsubscribe();
@@ -53,7 +62,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
-      purchasedQty: new FormControl(null, {
+      quantity: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.001)],
       }),
@@ -66,6 +75,42 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
     this.uomSelectSub = this.uomSelect.ionDismiss.subscribe(this.onQtyFocus());
     this.qtyInputSub = this.quantityInput.ionFocus.subscribe(this.onQtyFocus());
     this.costInputSub = this.costInput.ionFocus.subscribe(this.onCostFocus());
+
+    this.purchaseItemSub =
+      this.purchaseItemService.purchaseItemDetail.subscribe((res) => {
+        if (res !== undefined) {
+          const itemData = new Item();
+          const uomData = new Uom();
+          const reqUomData = new Uom();
+
+          itemData.itemId = res.item.itemId;
+          itemData.itemName = res.item.itemName;
+          itemData.uom = res.item.uom;
+
+          uomData.uomId = res.item.uom.uomId;
+          uomData.uomName = res.item.uom.uomName;
+          uomData.uomCode = res.item.uom.uomCode;
+
+          reqUomData.uomId = res.uom.uomId;
+          reqUomData.uomName = res.uom.uomName;
+          reqUomData.uomCode = res.uom.uomCode;
+
+          this.uoms = [];
+          this.uoms.push(uomData);
+          this.getItemUoms(itemData.itemId, reqUomData);
+
+          this.itemForm.patchValue({
+            item: itemData,
+            itemName: itemData.itemName,
+            uom: uomData,
+            quantity: res.quantity,
+            cost: res.cost,
+          });
+
+          const qtyElem = this.quantityInput.getInputElement();
+          qtyElem.then((rs) => rs.focus());
+        }
+      });
   }
 
   onQtyFocus() {
@@ -105,13 +150,14 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
             uomData.uomCode = resultData.data.uom.uomCode;
 
             // this.item = resultData.data;
-            this.uoms = [uomData];
+            this.uoms = [];
+            this.uoms = this.uoms.concat(uomData) ;
             this.getItemUoms(itemData.itemId);
             this.itemForm.patchValue({
               item: itemData,
               itemName: itemData.itemName,
               uom: uomData,
-              purchasedQty: 1.0,
+              quantity: 1.0,
               cost: 1.0,
             });
 
@@ -123,34 +169,44 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  getItemUoms(itemId: number) {
-    this.itemService.getItemUoms(itemId).subscribe(this.processResult());
+  getItemUoms(itemId: number, selectedUom?: Uom) {
+    this.itemService
+      .getItemUoms(itemId)
+      .subscribe(this.processResult(selectedUom));
   }
 
-  processResult() {
+  processResult(selectedUom?: Uom) {
     return (data) => {
       const itemUoms = [];
       for (const key in data._embedded.itemUoms) {
         if (data._embedded.itemUoms.hasOwnProperty(key)) {
-          this.uoms = this.uoms.concat(data._embedded.itemUoms[key].uom);
+          // this.uoms = this.uoms.concat(data._embedded.itemUoms[key].uom);
+          this.uoms.push(data._embedded.itemUoms[key].uom);
         }
       }
+
+      console.log(this.uoms);
+      console.log(selectedUom);
+
+      // if (selectedUom !== undefined) {
+      //   this.itemForm.patchValue({
+      //     uom: selectedUom
+      //   });
+      // }
     };
   }
 
   onSavePurchasedItem() {
     if (!this.itemForm.valid) {
-      this.messageBox('Plrease provide a valid purchased item information.');
+      this.messageBox('Plrease provide a valid item information.');
     } else {
-      const purchaseItem = new PurchaseItem(
-        undefined,
-        undefined,
+      const purchaseItemDetail = new PurchaseItemDetail(
         this.itemForm.value.item,
         this.itemForm.value.uom,
-        this.itemForm.value.purchasedQty,
+        this.itemForm.value.quantity,
         this.itemForm.value.cost
       );
-      this.modalController.dismiss(purchaseItem, 'purchasedItem');
+      this.modalController.dismiss(purchaseItemDetail, 'item');
     }
   }
 
