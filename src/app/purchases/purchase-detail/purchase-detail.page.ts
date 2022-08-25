@@ -64,7 +64,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
             this.purchaseItems = this.purchaseItems.concat(resultData.data);
             this.totalAmt = 0;
             this.purchaseItems.forEach(item => {
-              this.totalAmt += (item.cost * item.requiredQty);
+              this.totalAmt += (item.cost * item.purchasedQty);
             });
           }
           this.modalOpen = false;
@@ -72,7 +72,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
     }
   }
 
-  onSavePurchaseDetails() {
+  onSavePurchase() {
     if (this.vendor.vendorId === undefined) {
       this.messageBox('Please provide a vendor');
       return;
@@ -82,15 +82,21 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       return;
     }
 
-    console.log(this.purchaseItems);
-
     const purchaseDto = new PurchaseDto(
       this.totalAmt, this.vendor, this.purchaseItems
     );
-    console.log(purchaseDto);
+
     this.purchaseService.postPurhcase(purchaseDto).subscribe(
-      res => console.log(res)
+      this.onProcessSavedPurchase()
     );
+  }
+
+  onProcessSavedPurchase() {
+    return (res: Purchase) => {
+      this.purchase.purchaseId = res.purchaseId;
+      this.purchase.dateCreated = res.dateCreated;
+      this.purchaseItems = res.purchaseItems;
+    };
   }
 
   messageBox(msg: string) {

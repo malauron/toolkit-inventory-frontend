@@ -53,7 +53,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
-      requiredQty: new FormControl(null, {
+      purchasedQty: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.001)],
       }),
@@ -111,7 +111,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
               item: itemData,
               itemName: itemData.itemName,
               uom: uomData,
-              requiredQty: 1.0,
+              purchasedQty: 1.0,
               cost: 1.0,
             });
 
@@ -146,7 +146,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
         undefined,
         this.itemForm.value.item,
         this.itemForm.value.uom,
-        this.itemForm.value.requiredQty,
+        this.itemForm.value.purchasedQty,
         this.itemForm.value.cost
       );
       this.modalController.dismiss(purchaseItem, 'purchasedItem');

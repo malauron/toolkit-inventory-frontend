@@ -6,7 +6,7 @@ export class PurchaseItem {
     public purchaseItemId?: number,
     public item?: Item,
     public requiredUom?: Uom,
-    public requiredQty?: number,
+    public purchasedQty?: number,
     public cost?: number,
   ){}
 }
