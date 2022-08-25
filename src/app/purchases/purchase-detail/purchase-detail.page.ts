@@ -14,7 +14,6 @@ import { PurchasedItemComponent } from '../purchased-item/purchased-item.compone
   styleUrls: ['./purchase-detail.page.scss'],
 })
 export class PurchaseDetailPage implements OnInit, OnDestroy {
-
   purchase = new Purchase();
   vendor = new Vendor();
   purchaseItems: PurchaseItem[] = [];
@@ -28,7 +27,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
     private purchaseService: PurchasesService,
     private modalCustomerSearch: ModalController,
     private toastCtrl: ToastController
-    ) {}
+  ) {}
 
   ngOnInit() {}
 
@@ -43,6 +42,16 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
         })
         .then((resultData) => {
           if (resultData.role === 'vendor') {
+            if (this.purchase.purchaseId) {
+              const purchaseDto = new PurchaseDto(
+                this.purchase.purchaseId,
+                undefined,
+                resultData.data
+              );
+              this.purchaseService.putPurchaseSetVendor(purchaseDto).subscribe(
+                res => this.messageBox('You have successfully assigned a new vendor.')
+              );
+            }
             this.vendor = resultData.data;
           }
           this.modalOpen = false;
@@ -61,10 +70,19 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
         })
         .then((resultData) => {
           if (resultData.role === 'purchasedItem') {
+            if (this.purchase.purchaseId) {
+              const item: PurchaseItem = resultData.data;
+              item.purchase = this.purchase;
+              this.purchaseService.putPurchaseItem(item).subscribe(
+                res => {
+                  this.messageBox('New purchased item has been added.');
+                }
+              );
+            }
             this.purchaseItems = this.purchaseItems.concat(resultData.data);
             this.totalAmt = 0;
-            this.purchaseItems.forEach(item => {
-              this.totalAmt += (item.cost * item.purchasedQty);
+            this.purchaseItems.forEach((item) => {
+              this.totalAmt += item.cost * item.purchasedQty;
             });
           }
           this.modalOpen = false;
@@ -77,18 +95,21 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       this.messageBox('Please provide a vendor');
       return;
     }
-    if (this.purchaseItems.length <=0) {
+    if (this.purchaseItems.length <= 0) {
       this.messageBox('Please provide at least 1 purchased item.');
       return;
     }
 
     const purchaseDto = new PurchaseDto(
-      this.totalAmt, this.vendor, this.purchaseItems
+      undefined,
+      this.totalAmt,
+      this.vendor,
+      this.purchaseItems
     );
 
-    this.purchaseService.postPurhcase(purchaseDto).subscribe(
-      this.onProcessSavedPurchase()
-    );
+    this.purchaseService
+      .postPurhcase(purchaseDto)
+      .subscribe(this.onProcessSavedPurchase());
   }
 
   onProcessSavedPurchase() {

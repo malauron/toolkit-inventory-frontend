@@ -144,6 +144,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
     } else {
       const purchaseItem = new PurchaseItem(
         undefined,
+        undefined,
         this.itemForm.value.item,
         this.itemForm.value.uom,
         this.itemForm.value.purchasedQty,

@@ -37,6 +37,8 @@ export class AppParamsConfig {
   urlV1OrderMenuIngredients: any;
   urlV1OrderMenuIngredientSummary: any;
   urlV1Purchases: any;
+  urlV1PurchaseSetVendor: any;
+  urlV1PurchaseItems: any;
 
   waitTime: number;
   pageSize: number;
@@ -87,7 +89,8 @@ export class AppParamsConfig {
     this.urlV1OrderMenuIngredients = `${this.urlV1OrderMenus}/orderMenuIngredients`;
     this.urlV1OrderMenuIngredientSummary = `${this.urlV1Orders}/orderMenuIngredientSummary`;
     this.urlV1Purchases = `${this.urlV1}/purchases`;
-
+    this.urlV1PurchaseSetVendor = `${this.urlV1Purchases}/vendor`;
+    this.urlV1PurchaseItems = `${this.urlV1}/purchaseItems`;
 
     this.waitTime = 500;
     this.pageSize = 20;

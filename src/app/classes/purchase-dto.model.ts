@@ -3,6 +3,7 @@ import { Vendor } from './vendor.model';
 
 export class PurchaseDto {
   constructor(
+    public purchaseId?: number,
     public totalAmt?: number,
     public vendor?: Vendor,
     public purchaseItems?: PurchaseItem[]
