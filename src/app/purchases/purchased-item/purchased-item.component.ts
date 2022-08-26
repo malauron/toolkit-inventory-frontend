@@ -99,13 +99,22 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
           this.uoms.push(uomData);
           this.getItemUoms(itemData.itemId, reqUomData);
 
-          this.itemForm.patchValue({
-            item: itemData,
-            itemName: itemData.itemName,
-            uom: uomData,
-            quantity: res.quantity,
-            cost: res.cost,
-          });
+          if (uomData.uomId === reqUomData.uomId) {
+            this.itemForm.patchValue({
+              item: itemData,
+              itemName: itemData.itemName,
+              uom: uomData,
+              quantity: res.quantity,
+              cost: res.cost,
+            });
+          } else {
+            this.itemForm.patchValue({
+              item: itemData,
+              itemName: itemData.itemName,
+              quantity: res.quantity,
+              cost: res.cost,
+            });
+          }
 
           const qtyElem = this.quantityInput.getInputElement();
           qtyElem.then((rs) => rs.focus());
@@ -151,7 +160,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
 
             // this.item = resultData.data;
             this.uoms = [];
-            this.uoms = this.uoms.concat(uomData) ;
+            this.uoms = this.uoms.concat(uomData);
             this.getItemUoms(itemData.itemId);
             this.itemForm.patchValue({
               item: itemData,
@@ -181,18 +190,24 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
       for (const key in data._embedded.itemUoms) {
         if (data._embedded.itemUoms.hasOwnProperty(key)) {
           // this.uoms = this.uoms.concat(data._embedded.itemUoms[key].uom);
-          this.uoms.push(data._embedded.itemUoms[key].uom);
+
+          const newUom = new Uom();
+
+          newUom.uomId = data._embedded.itemUoms[key].uom.uomId;
+          newUom.uomName = data._embedded.itemUoms[key].uom.uomName;
+          newUom.uomCode = data._embedded.itemUoms[key].uom.uomCode;
+
+          this.uoms.push(newUom);
+
+          if (selectedUom !== undefined) {
+            if (selectedUom.uomId === newUom.uomId) {
+              this.itemForm.patchValue({
+                uom: newUom,
+              });
+            }
+          }
         }
       }
-
-      console.log(this.uoms);
-      console.log(selectedUom);
-
-      // if (selectedUom !== undefined) {
-      //   this.itemForm.patchValue({
-      //     uom: selectedUom
-      //   });
-      // }
     };
   }
 

@@ -1,8 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   AlertController,
+  IonPopover,
   ModalController,
   NavController,
   ToastController,
@@ -23,6 +24,10 @@ import { OrderMenuPrintPreviewComponent } from '../order-menu-print-preview/orde
   styleUrls: ['./order-detail.page.scss'],
 })
 export class OrderDetailPage implements OnInit {
+
+  @ViewChild('orderStatusPopover') orderStatusPopover: IonPopover;
+  orderStatusPopoverOpen = false;
+
   orderMenus: OrderMenuDto[] = [];
   customer = new Customer();
   order = new Order();
@@ -173,6 +178,11 @@ export class OrderDetailPage implements OnInit {
           // this.customer = resultData.data;
         }
       });
+  }
+
+  onShowPopOver(event: Event) {
+    this.orderStatusPopover.event = event;
+    this.orderStatusPopoverOpen = true;
   }
 
   messageBox(msg: string) {

@@ -51,7 +51,7 @@
           <tr>
             <th class="centered"></th>
             <th class="left-aligned">Ingredients</th>
-            <th class="centered">Quantity</th>
+            <th class="right-aligned">Quantity</th>
           </tr>
         </thead>
         <tbody>
@@ -60,7 +60,7 @@
               <strong *ngIf="ing.orderMenuIngredientId !== 0">&#10004;</strong>
             </td>
             <td>{{ ing.item.itemName }}</td>
-            <td class="centered">{{ ing.requiredQty  | number:'1.3-3' }}{{ ing.requiredUom.uomCode }}</td>
+            <td class="right-aligned">{{ ing.requiredQty  | number:'1.3-3' }} {{ ing.requiredUom.uomCode }}</td>
           </tr>
         </tbody>
       </table>

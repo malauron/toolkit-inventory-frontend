@@ -1,5 +1,9 @@
 // @import "~bootstrap/dist/css/bootstrap.css";
 
+.none {
+  display: none;
+}
+
 ion-content {
   --ion-background-color: #f6f6f6;
 }
@@ -46,4 +50,8 @@ ion-spinner {
 
   // secondary
   // filter: invert(97%) sepia(79%) saturate(2860%) hue-rotate(292deg) brightness(103%) contrast(91%);
+}
+
+ion-popover {
+  --backdrop-opacity: 0;
 }

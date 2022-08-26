@@ -22,6 +22,8 @@ export class AppParamsConfig {
   urlOrdersSearch: any;
   urlVendors: any;
   urlVendorSearch: any;
+  urlPurchases: any;
+  urlPurchasesSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -64,14 +66,11 @@ export class AppParamsConfig {
     this.urlCartMenus = `${this.url}/cartMenus`;
     this.urlCartMenuSearch = `${this.urlCartMenus}/search/findAllCartMenus`;
     this.urlOrders = `${this.url}/orders`;
+    this.urlOrdersSearch = `${this.urlOrders}/search/findUndeliveredOrders`;
     this.urlVendors = `${this.url}/vendors`;
     this.urlVendorSearch = `${this.urlVendors}/search/findByVendorNameContainingOrderByVendorName`;
-
-    // eslint-disable-next-line max-len
-    // this.urlOrdersSearch = `${this.urlOrders}/search/findByOrderIdOrCustomer_CustomerNameContaining` +
-    //                         `OrCustomer_AddressContainingOrCustomer_ContactNoContainingAndOrderStatusIn`;
-    this.urlOrdersSearch = `${this.urlOrders}/search/findUndeliveredOrders`;
-
+    this.urlPurchases = `${this.url}/purchases`;
+    this.urlPurchasesSearch = `${this.urlPurchases}/search/findUnpostedPurchases`;
 
     // this.urlV1 = 'http://122.52.134.244:8443/api/v1';
     this.urlV1 = 'http://localhost:8443/api/v1';

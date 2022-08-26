@@ -44,7 +44,7 @@
           <ion-item lines="none" *ngIf="purchase.purchaseId">
             <ion-icon
               class="cartIcon"
-              name="cart-outline"
+              name="receipt-outline"
               color="primary"
               slot="start"
             ></ion-icon>
@@ -56,16 +56,17 @@
               fill="clear"
               size="small"
               mode="ios"
-              id="click-trigger"
+              (click)="onShowPopOver($event)"
             >
               <ion-badge color="warning">Unposted</ion-badge>
             </ion-button>
 
             <ion-popover
               #orderStatusPopover
-              trigger="click-trigger"
               triggerAction="click"
               dismissOnSelect="true"
+              [isOpen]="orderStatusPopoverOpen"
+              (didDismiss)="orderStatusPopoverOpen = false"
             >
               <ng-template>
                 <ion-content>
@@ -201,6 +202,7 @@
                 {{ item.purchasedQty * item.cost | number:'1.2-2' }}
               </ion-label>
               <ion-button
+                (click)="onDeletePurchaseItem(item)"
                 class="ion-no-margin"
                 mode="ios"
                 slot="end"

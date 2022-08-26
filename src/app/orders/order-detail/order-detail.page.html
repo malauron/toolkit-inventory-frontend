@@ -49,25 +49,44 @@
               >{{ order.orderId.toString().padStart(8, "0") }}</ion-label
             >
 
-            <ion-button
-            #orderStatusButton
-            fill="clear"
-            size="small"
-            mode="ios"
-            id="click-trigger"
-            *ngIf="orderDetailsConfig.orderStatusButton"
-          >
-            <ion-badge [color]="orderDetailsConfig.orderStatusColor"
-              >{{ order.orderStatus }}</ion-badge
-            >
-          </ion-button>
+            <!-- <ion-button
+              #orderStatusButton
+              fill="clear"
+              size="small"
+              mode="ios"
+              id="click-trigger"
+              *ngIf="orderDetailsConfig.orderStatusButton"
+              event="($event)"
+            > -->
 
-            <ion-popover
+            <ion-button
+              #orderStatusButton
+              fill="clear"
+              size="small"
+              mode="ios"
+              *ngIf="orderDetailsConfig.orderStatusButton"
+              (click)="onShowPopOver($event)"
+            >
+              <ion-badge [color]="orderDetailsConfig.orderStatusColor"
+                >{{ order.orderStatus }}</ion-badge
+              >
+            </ion-button>
+
+            <!-- <ion-popover
               *ngIf="orderDetailsConfig.orderStatusPopover"
               #orderStatusPopover
               trigger="click-trigger"
               triggerAction="click"
               dismissOnSelect="true"
+            > -->
+
+            <ion-popover
+              *ngIf="orderDetailsConfig.orderStatusPopover"
+              #orderStatusPopover
+              triggerAction="click"
+              dismissOnSelect="true"
+              [isOpen]="orderStatusPopoverOpen"
+              (didDismiss)="orderStatusPopoverOpen = false"
             >
               <ng-template>
                 <ion-content>
@@ -251,8 +270,15 @@
             #optionButtonsContainer
             *ngIf="orderDetailsConfig.optionButtonsContainer"
           >
-            <ion-button mode="ios" color="secondary" (click)="onPrintPreview(menu)">
-              <ion-icon  src="../../assets/icons/preview.svg" slot="start"></ion-icon>
+            <ion-button
+              mode="ios"
+              color="secondary"
+              (click)="onPrintPreview(menu)"
+            >
+              <ion-icon
+                src="../../assets/icons/preview.svg"
+                slot="start"
+              ></ion-icon>
               <ion-label>Preview</ion-label>
             </ion-button>
             <ion-button mode="ios" color="medium" (click)="onDeleteMenu(menu)">

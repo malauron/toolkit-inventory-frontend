@@ -1,5 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AlertController,
+  IonPopover,
+  ModalController,
+  ToastController,
+} from '@ionic/angular';
 import { PurchaseDto } from 'src/app/classes/purchase-dto.model';
 import { PurchaseItem } from 'src/app/classes/purchase-item.model';
 import { Purchase } from 'src/app/classes/purchase.model';
@@ -16,6 +21,10 @@ import { PurchasedItemComponent } from '../purchased-item/purchased-item.compone
   styleUrls: ['./purchase-detail.page.scss'],
 })
 export class PurchaseDetailPage implements OnInit, OnDestroy {
+
+  @ViewChild('orderStatusPopover') orderStatusPopover: IonPopover;
+  orderStatusPopoverOpen = false;
+
   purchase = new Purchase();
   vendor = new Vendor();
   purchaseItems: PurchaseItem[] = [];
@@ -29,7 +38,8 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
     private purchaseService: PurchasesService,
     private purchaseItemService: PurchaseItemService,
     private modalCustomerSearch: ModalController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {}
@@ -179,16 +189,15 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
             );
 
             if (this.purchase.purchaseId) {
+              purchaseItem.purchaseItemId = pItem.purchaseItemId;
               purchaseItem.purchase = this.purchase;
               this.purchaseService
                 .putPurchaseItem(purchaseItem)
                 .subscribe((res) => {
-                  this.purchaseItems = this.purchaseItems.concat(res);
-                  this.messageBox('New purchased item has been added.');
+                  this.messageBox('Purchased item has been updated.');
                 });
-            } else {
-              this.purchaseItems = this.purchaseItems.concat(purchaseItem);
             }
+            this.updatePurchaseItemObj(pItem, purchaseItem);
 
             this.totalAmt = 0;
             this.purchaseItems.forEach((itm) => {
@@ -198,6 +207,65 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
           this.modalOpen = false;
         });
     }
+  }
+
+  updatePurchaseItemObj(pItem: PurchaseItem, purchaseItem: PurchaseItem) {
+    for (const key in this.purchaseItems) {
+      if (pItem === this.purchaseItems[key]) {
+        this.purchaseItems[key].item = purchaseItem.item;
+        this.purchaseItems[key].requiredUom = purchaseItem.requiredUom;
+        this.purchaseItems[key].purchasedQty = purchaseItem.purchasedQty;
+        this.purchaseItems[key].cost = purchaseItem.cost;
+      }
+    }
+  }
+
+  onDeletePurchaseItem(pItem: PurchaseItem) {
+    this.alertCtrl
+      .create({
+        header: 'Confirm',
+        message: 'This will be deleted permanently .',
+        buttons: [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'Delete',
+            handler: () => {
+              if (pItem.purchaseItemId !== undefined) {
+                this.purchaseService
+                  .deletePurchaseItem(pItem)
+                  .subscribe((res) => {
+                    this.removeMenuObj(pItem);
+                  });
+              } else {
+                this.removeMenuObj(pItem);
+              }
+            },
+          },
+        ],
+      })
+      .then((res) => {
+        res.present();
+      });
+  }
+
+  removeMenuObj(pItem: PurchaseItem) {
+    for (const key in this.purchaseItems) {
+      if (pItem === this.purchaseItems[key]) {
+        this.purchaseItems.splice(Number(key), 1);
+      }
+    }
+
+    this.totalAmt = 0;
+    this.purchaseItems.forEach((itm) => {
+      this.totalAmt += itm.cost * itm.purchasedQty;
+    });
+  }
+
+  onShowPopOver(event: Event) {
+    this.orderStatusPopover.event = event;
+    this.orderStatusPopoverOpen = true;
   }
 
   messageBox(msg: string) {

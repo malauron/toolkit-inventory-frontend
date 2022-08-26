@@ -33,7 +33,6 @@ export class OrdersListPage implements OnInit, OnDestroy {
   pageNumber = 0;
   totalPages = 0;
 
-
   isFetching  = false;
 
   constructor(
