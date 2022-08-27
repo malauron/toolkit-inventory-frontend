@@ -9,95 +9,52 @@
         ></ion-icon>
       </ion-button> -->
       <ion-button>
-        <ion-icon
-          slot="icon-only"
-          ios="ellipsis-horizontal"
-          md="ellipsis-vertical"
-        ></ion-icon>
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-searchbar #menuSearchBar></ion-searchbar>
+    <ion-searchbar #purchaseSearchBar></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
-    <ion-badge mode="ios" color="warning">{{ totalCartQty }}</ion-badge>
-    <ion-fab-button color="success" (click)="onShowCart()">
-      <ion-icon name="cart-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab> -->
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
     <ion-fab-button color="success" (click)="onAddPurchase()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
   <div class="spinner">
-    <ion-spinner
-      name="bubbles"
-      color="primary"
-      *ngIf="isFetching"
-    ></ion-spinner>
+    <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
   </div>
 
   <ion-grid *ngIf="purchases.length>0">
     <ion-row>
-      <ion-col
-        size-xs="12"
-        size-sm="6"
-        size-lg="4"
-        size-xl="3"
-        *ngFor="let purchase of purchases"
-      >
+      <ion-col size-xs="12" size-sm="6" size-lg="4" size-xl="3" *ngFor="let purchase of purchases">
         <ion-card class="favCard">
           <div class="card-top"></div>
 
           <ion-item class="order-id">
-            <ion-icon
-              class="cartIcon"
-              name="receipt-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label
-              >{{ purchase.purchaseId.toString().padStart(8, "0") }}</ion-label
-            >
-            <!-- <ion-badge [color]="getStatusColor(purchase.purchaseStatus)"
+            <ion-icon class="cartIcon" name="receipt-outline" color="primary" slot="start"></ion-icon>
+            <ion-label>{{ purchase.purchaseId.toString().padStart(8, "0") }}</ion-label>
+            <ion-badge [color]="getStatusColor(purchase.purchaseStatus)"
               >{{ purchase.purchaseStatus }}</ion-badge
-            > -->
+            >
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="person-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
             {{ purchase.vendor.vendorName }}
           </ion-item>
 
           <ion-item lines="none" class="contact-no">
-            <ion-icon
-              class="contactIcon"
-              name="call-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="call-outline" color="primary" slot="start"></ion-icon>
             <ion-card-subtitle>
               <p>{{ purchase.vendor.contactNo }}</p>
             </ion-card-subtitle>
           </ion-item>
 
           <ion-item class="address" lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="location-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="location-outline" color="primary" slot="start"></ion-icon>
             <ion-card-subtitle class="ion-no-padding ion-no-margin">
               <p>{{ purchase.vendor.address }}</p>
             </ion-card-subtitle>
@@ -105,9 +62,9 @@
 
           <div class="separator"></div>
 
-          <!-- <div class="action-buttons">
-            <div>
-              <ion-button
+          <div class="action-buttons">
+            <!-- <div> -->
+            <!-- <ion-button
                 [disabled]="purchasePrintPreview.orderId.includes(order.orderId)"
                 class="ion-no-padding ion-no-margin"
                 expand="full"
@@ -119,34 +76,27 @@
                   src="../../assets/icons/list-add.svg"
                 ></ion-icon>
                 Add to Purchase List</ion-button
-              >
-            </div>
+              > -->
+            <ion-item class="ion-padding-start ion-margin-start">
+              <ion-card-title class="ion-padding-start ion-margin-start">
+                {{ purchase.totalAmt | number:'1.2-2' }}
+              </ion-card-title>
+            </ion-item>
+            <!-- </div> -->
             <div>
-              <ion-button
-                class="ion-no-padding ion-no-margin"
-                expand="full"
-                mode="ios"
-                color="secondary"
-                fill="clear"
-                (click)="onEditOrder(order.orderId)"
-                ><ion-icon name="chevron-forward-sharp"></ion-icon
-              ></ion-button>
+              <ion-button class="ion-no-padding ion-no-margin" expand="full" mode="ios" color="secondary" fill="clear"
+                (click)="onEditPurchase(purchase.purchaseId)">
+                <ion-icon name="chevron-forward-sharp"></ion-icon>
+              </ion-button>
             </div>
-          </div> -->
+          </div>
         </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-infinite-scroll
-    #infiniteScroll
-    threshold="5%"
-    (ionInfinite)="loadMorePurchases($event)"
-  >
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading more menus..."
-    >
+  <ion-infinite-scroll #infiniteScroll threshold="5%" (ionInfinite)="loadMorePurchases($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more menus...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

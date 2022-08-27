@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { OrderMenuIngredientSummaryDto } from '../classes/order-menu-ingredient-summary-dto.model';
 import { PageInfo } from '../classes/page-info.model';
 import { PurchaseDto } from '../classes/purchase-dto.model';
@@ -23,7 +23,7 @@ interface ResponsePurchases {
 export class PurchasesService {
   private apiUrl: string;
 
-  private _purchaseItem = new BehaviorSubject<PurchaseItem>(undefined);
+  private _purchasesHaveChanged = new Subject<boolean>();
 
   private _purchasePrintPreview = new BehaviorSubject<PurchasePrintPreviewDto>(
     undefined
@@ -31,12 +31,17 @@ export class PurchasesService {
 
   constructor(private http: HttpClient, private config: AppParamsConfig) {}
 
-  get purchaseItem() {
-    return this._purchaseItem;
+  get purchasesHaveChanged() {
+    return this._purchasesHaveChanged;
   }
 
   get purchasePrintPreview() {
     return this._purchasePrintPreview;
+  }
+
+  getPurchase(purchaseId: number): Observable<Purchase> {
+    this.apiUrl = `${this.config.urlPurchases}/${purchaseId}?projection=purchaseView`;
+    return this.http.get<Purchase>(this.apiUrl);
   }
 
   getPurchases(

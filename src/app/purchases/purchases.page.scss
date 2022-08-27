@@ -7,19 +7,19 @@ ion-content {
 }
 
 ion-card {
-  --ion-background-color: #FFFFFF;
   margin-bottom: -15px;
+  --ion-background-color: #FFFFFF;
+}
+
+ion-fab ion-badge {
+  z-index:100;
+  position: absolute;
+  top: -5px;
+  right: 1px;
 }
 
 .card-top {
   border-top: 5px solid var(--ion-color-primary);
-}
-
-ion-badge {
-  z-index: 100;
-  position: absolute;
-  top: -5px;
-  right: 1px;
 }
 
 .spinner {
@@ -36,51 +36,63 @@ ion-spinner {
   transform: scale(3);
 }
 
-
 .favCard {
-  height: 150px;
+  height: 255px;
   // border-radius: 10px;
-  // box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.19);
+  // box-shadow: 1px 01px 3px 1px rgba(0,0,0,0.19);
   box-shadow: 0px 2px 3px 1px rgba(0,0,0,0.19);
   margin: auto;
   margin-top: 30px;
 
+  .order-id {
+    margin-top: 5px;
+  }
 
-  .menuIcon {
-    margin-top: -3px;
+  .cartIcon {
     font-size: 30px;
   }
 
-  .menuName {
-    ion-label {
-      margin-top: 30px;
-    }
-
-    min-height: 90px;
+  .contactIcon {
+    font-size: 15px;
+    margin-left: 15px;
   }
 
-  .add-to-card {
-    padding-top: 12px;
+  .menuDetail {
+    min-height: 80px;
+  }
+
+  .contact-no {
+    --min-height: 0px;
+  }
+
+  .address {
+    --min-height: 60px;
   }
 
 }
 
-p {
+.action-buttons {
+  display: grid;
+  grid-template-columns: auto 80px;
+  align-content: center;
+  font-size: 5px;
+}
 
-  // Indens and justifies remarks
-  text-indent: 15%;
+p {
+  margin: 0;
   text-align: justify;
   text-justify: inter-word;
-
-  // Shortens remarks
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
-.empty-space {
-  margin-bottom: 100px;
+.separator {
+  border-top: 0.5px solid #f0eded;
+}
 
+.empty-space {
+  margin-bottom: 200px;
 }

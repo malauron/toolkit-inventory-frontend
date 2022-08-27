@@ -32,7 +32,7 @@ export class OrderDetailPage implements OnInit {
   customer = new Customer();
   order = new Order();
   orderDetailsConfig = new OrderDetailsConfig();
-  orderStatusButton: string;
+  // orderStatusButton: string;
   isFetching = false;
 
   constructor(
@@ -46,7 +46,7 @@ export class OrderDetailPage implements OnInit {
 
   ngOnInit() {
     this.isFetching = true;
-    this.orderStatusButton = 'false';
+    // this.orderStatusButton = 'false';
     this.route.paramMap.subscribe((paramMap) => {
       if (!paramMap.has('orderId')) {
         this.navCtrl.navigateBack('/tabs/orders/orders-list');

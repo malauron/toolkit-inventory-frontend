@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
   AlertController,
   IonPopover,
   ModalController,
+  NavController,
   ToastController,
 } from '@ionic/angular';
 import { PurchaseDto } from 'src/app/classes/purchase-dto.model';
@@ -21,20 +23,22 @@ import { PurchasedItemComponent } from '../purchased-item/purchased-item.compone
   styleUrls: ['./purchase-detail.page.scss'],
 })
 export class PurchaseDetailPage implements OnInit, OnDestroy {
-
-  @ViewChild('orderStatusPopover') orderStatusPopover: IonPopover;
-  orderStatusPopoverOpen = false;
+  @ViewChild('statusPopover') statusPopover: IonPopover;
+  statusPopoverOpen = false;
 
   purchase = new Purchase();
   vendor = new Vendor();
   purchaseItems: PurchaseItem[] = [];
 
+  dataHaveChanged = false;
   isFetching = false;
   modalOpen = false;
 
   totalAmt = 0;
 
   constructor(
+    private route: ActivatedRoute,
+    private navCtrl: NavController,
     private purchaseService: PurchasesService,
     private purchaseItemService: PurchaseItemService,
     private modalCustomerSearch: ModalController,
@@ -42,7 +46,35 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.isFetching = true;
+    // this.statusButton = 'false';
+    this.route.paramMap.subscribe((paramMap) => {
+      if (!paramMap.has('purchaseId')) {
+        this.navCtrl.navigateBack('/tabs/purchases');
+        return;
+      }
+
+      if (isNaN(Number(paramMap.get('purchaseId')))) {
+        this.navCtrl.navigateBack('/tabs/purchases');
+        return;
+      }
+
+      const purchaseId = Number(paramMap.get('purchaseId'));
+
+      this.purchaseService.getPurchase(purchaseId).subscribe((resData) => {
+        this.purchase = resData;
+        this.vendor = resData.vendor;
+        // this.orderDetailsConfig.setParams(this.order.orderStatus);
+      });
+
+      // this.orderService.getOrderMenus(orderId).subscribe((resData) => {
+      //   this.orderMenus = this.orderMenus.concat(resData);
+      //   this.isFetching = false;
+      // });
+    });
+
+  }
 
   onCustomerSearch() {
     if (!this.modalOpen) {
@@ -63,11 +95,12 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
               );
               this.purchaseService
                 .putPurchaseSetVendor(purchaseDto)
-                .subscribe((res) =>
+                .subscribe((res) => {
+                  this.dataHaveChanged = true;
                   this.messageBox(
                     'You have successfully assigned a new vendor.'
-                  )
-                );
+                  );
+                });
             }
             this.vendor = resultData.data;
           }
@@ -77,7 +110,6 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   }
 
   onAddPurchasedItem() {
-
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.purchaseItemService.purchaseItemDetail.next(undefined);
@@ -89,7 +121,6 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
         })
         .then((resultData) => {
           if (resultData.role === 'item') {
-
             const item: PurchaseItemDetail = resultData.data;
             const purchaseItem = new PurchaseItem(
               undefined,
@@ -108,6 +139,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
                 .putPurchaseItem(purchaseItem)
                 .subscribe((res) => {
                   this.purchaseItems = this.purchaseItems.concat(res);
+                  this.dataHaveChanged = true;
                   this.messageBox('New purchased item has been added.');
                 });
             } else {
@@ -151,11 +183,11 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       this.purchase.purchaseId = res.purchaseId;
       this.purchase.dateCreated = res.dateCreated;
       this.purchaseItems = res.purchaseItems;
+      this.dataHaveChanged = true;
     };
   }
 
   onUpdatePurchaseItem(pItem?: PurchaseItem) {
-
     if (!this.modalOpen) {
       this.modalOpen = true;
 
@@ -175,7 +207,6 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
         })
         .then((resultData) => {
           if (resultData.role === 'item') {
-
             const item: PurchaseItemDetail = resultData.data;
             const purchaseItem = new PurchaseItem(
               undefined,
@@ -194,6 +225,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
               this.purchaseService
                 .putPurchaseItem(purchaseItem)
                 .subscribe((res) => {
+                  this.dataHaveChanged = true;
                   this.messageBox('Purchased item has been updated.');
                 });
             }
@@ -236,6 +268,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
                 this.purchaseService
                   .deletePurchaseItem(pItem)
                   .subscribe((res) => {
+                    this.dataHaveChanged = true;
                     this.removeMenuObj(pItem);
                   });
               } else {
@@ -264,8 +297,8 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   }
 
   onShowPopOver(event: Event) {
-    this.orderStatusPopover.event = event;
-    this.orderStatusPopoverOpen = true;
+    this.statusPopover.event = event;
+    this.statusPopoverOpen = true;
   }
 
   messageBox(msg: string) {
@@ -281,5 +314,9 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    if (this.dataHaveChanged) {
+      this.purchaseService.purchasesHaveChanged.next(true);
+    }
+  }
 }

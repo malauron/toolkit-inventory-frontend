@@ -50,9 +50,9 @@
             ></ion-icon>
             <ion-label>{{ purchase.purchaseId.toString().padStart(8, "0")  }}</ion-label>
 
-            <!-- Button to change the status of the order -->
+            <!-- Button to change the status of the purchase -->
             <ion-button
-              #orderStatusButton
+              #statusButton
               fill="clear"
               size="small"
               mode="ios"
@@ -62,11 +62,11 @@
             </ion-button>
 
             <ion-popover
-              #orderStatusPopover
+              #statusPopover
               triggerAction="click"
               dismissOnSelect="true"
-              [isOpen]="orderStatusPopoverOpen"
-              (didDismiss)="orderStatusPopoverOpen = false"
+              [isOpen]="statusPopoverOpen"
+              (didDismiss)="statusPopoverOpen = false"
             >
               <ng-template>
                 <ion-content>
@@ -101,8 +101,8 @@
             </ion-popover>
             <!-- **************************************** -->
 
-            <!-- Badge that indicates the status of the order -->
-            <!-- <ion-badge #orderStatusBadge color="primary"> Unposted </ion-badge> -->
+            <!-- Badge that indicates the status of the purchase -->
+            <!-- <ion-badge #statusBadge color="primary"> Unposted </ion-badge> -->
             <!-- *************************************** -->
           </ion-item>
         </ion-col>
@@ -119,7 +119,7 @@
               <ion-card-title>{{ vendor.vendorName }}</ion-card-title>
             </ion-label>
             <ion-button
-              #orderStatusButton
+              #statusButton
               (click)="onCustomerSearch()"
               fill="clear"
               size="small"
