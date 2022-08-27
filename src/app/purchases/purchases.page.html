@@ -42,7 +42,7 @@
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
+            <ion-icon class="contactIcon" name="storefront-outline" color="primary" slot="start"></ion-icon>
             {{ purchase.vendor.vendorName }}
           </ion-item>
 
@@ -77,12 +77,19 @@
                 ></ion-icon>
                 Add to Purchase List</ion-button
               > -->
-            <ion-item class="ion-padding-start ion-margin-start">
+            <!-- <ion-item class="ion-padding-start ion-margin-start">
               <ion-card-title class="ion-padding-start ion-margin-start">
                 {{ purchase.totalAmt | number:'1.2-2' }}
               </ion-card-title>
-            </ion-item>
+            </ion-item> -->
             <!-- </div> -->
+            <ion-item lines="none">
+
+            <ion-icon class="totalIcon" name="calculator-outline" color="primary" slot="start"></ion-icon>
+              <ion-card-title>
+                {{ purchase.totalAmt | number:'1.2-2' }}
+              </ion-card-title>
+            </ion-item>
             <div>
               <ion-button class="ion-no-padding ion-no-margin" expand="full" mode="ios" color="secondary" fill="clear"
                 (click)="onEditPurchase(purchase.purchaseId)">

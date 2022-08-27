@@ -37,7 +37,7 @@ ion-spinner {
 }
 
 .favCard {
-  height: 255px;
+  height: 260px;
   // border-radius: 10px;
   // box-shadow: 1px 01px 3px 1px rgba(0,0,0,0.19);
   box-shadow: 0px 2px 3px 1px rgba(0,0,0,0.19);
@@ -55,6 +55,11 @@ ion-spinner {
   .contactIcon {
     font-size: 15px;
     margin-left: 15px;
+  }
+
+  .totalIcon {
+    // font-size: 15px;
+    margin-left: 10px;
   }
 
   .menuDetail {
