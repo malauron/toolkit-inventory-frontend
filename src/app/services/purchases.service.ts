@@ -39,9 +39,10 @@ export class PurchasesService {
     return this._purchasePrintPreview;
   }
 
-  getPurchase(purchaseId: number): Observable<Purchase> {
-    this.apiUrl = `${this.config.urlPurchases}/${purchaseId}?projection=purchaseView`;
-    return this.http.get<Purchase>(this.apiUrl);
+  getPurchase(purchaseId: number): Observable<PurchaseDto> {
+    // this.apiUrl = `${this.config.urlPurchases}/${purchaseId}?projection=purchaseView`;
+    this.apiUrl = `${this.config.urlV1Purchases}?purchaseId=${purchaseId}`;
+    return this.http.get<PurchaseDto>(this.apiUrl);
   }
 
   getPurchases(
@@ -53,13 +54,13 @@ export class PurchasesService {
       searchDesc = '';
     }
 
-    let orderId: number;
+    let purchaseId: number;
     const purchaseStatus = ['Unposted'];
 
     if (isNaN(searchDesc)) {
-      orderId = 0;
+      purchaseId = 0;
     } else {
-      orderId = searchDesc;
+      purchaseId = searchDesc;
     }
 
     searchDesc = String(searchDesc).replace('%','');
@@ -72,7 +73,7 @@ export class PurchasesService {
     // eslint-disable-next-line max-len
     this.apiUrl =
       `${this.config.urlPurchasesSearch}` +
-      `?purchaseId=${orderId}&vendorName=${searchDesc}&address=${searchDesc}` +
+      `?purchaseId=${purchaseId}&vendorName=${searchDesc}&address=${searchDesc}` +
       `&contactNo=${searchDesc}&purchaseStatus=${purchaseStatus}&page=${pageNumber}&size=${pageSize}`;
     return this.http.get<ResponsePurchases>(this.apiUrl);
   }

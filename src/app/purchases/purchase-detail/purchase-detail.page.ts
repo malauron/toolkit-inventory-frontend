@@ -41,7 +41,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private purchaseService: PurchasesService,
     private purchaseItemService: PurchaseItemService,
-    private modalCustomerSearch: ModalController,
+    private modalSearch: ModalController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController
   ) {}
@@ -61,25 +61,27 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       }
 
       const purchaseId = Number(paramMap.get('purchaseId'));
-
-      this.purchaseService.getPurchase(purchaseId).subscribe((resData) => {
-        this.purchase = resData;
-        this.vendor = resData.vendor;
-        // this.orderDetailsConfig.setParams(this.order.orderStatus);
-      });
-
-      // this.orderService.getOrderMenus(orderId).subscribe((resData) => {
-      //   this.orderMenus = this.orderMenus.concat(resData);
-      //   this.isFetching = false;
-      // });
+      if (purchaseId > 0) {
+        this.purchaseService.getPurchase(purchaseId).subscribe((resData) => {
+          this.purchase.purchaseId = resData.purchaseId;
+          this.purchase.totalAmt = resData.totalAmt;
+          this.purchase.purchaseStatus = resData.purchaseStatus;
+          this.purchase.dateCreated = resData.dateCreated;
+          this.vendor = resData.vendor;
+          this.purchaseItems = resData.purchaseItems;
+          this.totalAmt = this.purchase.totalAmt;
+          this.isFetching = false;
+        });
+      } else {
+        this.isFetching = false;
+      }
     });
-
   }
 
   onCustomerSearch() {
     if (!this.modalOpen) {
       this.modalOpen = true;
-      this.modalCustomerSearch
+      this.modalSearch
         .create({ component: VendorSearchComponent })
         .then((modalSearch) => {
           modalSearch.present();
@@ -88,11 +90,10 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
         .then((resultData) => {
           if (resultData.role === 'vendor') {
             if (this.purchase.purchaseId) {
-              const purchaseDto = new PurchaseDto(
-                this.purchase.purchaseId,
-                undefined,
-                resultData.data
-              );
+              const purchaseDto = new PurchaseDto();
+              purchaseDto.purchaseId = this.purchase.purchaseId;
+              purchaseDto.vendor = resultData.data;
+
               this.purchaseService
                 .putPurchaseSetVendor(purchaseDto)
                 .subscribe((res) => {
@@ -113,7 +114,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.purchaseItemService.purchaseItemDetail.next(undefined);
-      this.modalCustomerSearch
+      this.modalSearch
         .create({ component: PurchasedItemComponent })
         .then((modalSearch) => {
           modalSearch.present();
@@ -140,16 +141,13 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
                 .subscribe((res) => {
                   this.purchaseItems = this.purchaseItems.concat(res);
                   this.dataHaveChanged = true;
+                  this.getTotalAmt();
                   this.messageBox('New purchased item has been added.');
                 });
             } else {
               this.purchaseItems = this.purchaseItems.concat(purchaseItem);
+              this.getTotalAmt();
             }
-
-            this.totalAmt = 0;
-            this.purchaseItems.forEach((itm) => {
-              this.totalAmt += itm.cost * itm.purchasedQty;
-            });
           }
           this.modalOpen = false;
         });
@@ -166,12 +164,11 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       return;
     }
 
-    const purchaseDto = new PurchaseDto(
-      undefined,
-      this.totalAmt,
-      this.vendor,
-      this.purchaseItems
-    );
+    const purchaseDto = new PurchaseDto();
+
+    purchaseDto.totalAmt = this.totalAmt;
+    purchaseDto.vendor = this.vendor;
+    purchaseDto.purchaseItems = this.purchaseItems;
 
     this.purchaseService
       .postPurhcase(purchaseDto)
@@ -199,7 +196,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       );
       this.purchaseItemService.purchaseItemDetail.next(purchaseItemDetail);
 
-      this.modalCustomerSearch
+      this.modalSearch
         .create({ component: PurchasedItemComponent })
         .then((modalSearch) => {
           modalSearch.present();
@@ -226,15 +223,14 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
                 .putPurchaseItem(purchaseItem)
                 .subscribe((res) => {
                   this.dataHaveChanged = true;
+                  this.updatePurchaseItemObj(pItem, purchaseItem);
+                  this.getTotalAmt();
                   this.messageBox('Purchased item has been updated.');
                 });
+            } else {
+              this.updatePurchaseItemObj(pItem, purchaseItem);
+              this.getTotalAmt();
             }
-            this.updatePurchaseItemObj(pItem, purchaseItem);
-
-            this.totalAmt = 0;
-            this.purchaseItems.forEach((itm) => {
-              this.totalAmt += itm.cost * itm.purchasedQty;
-            });
           }
           this.modalOpen = false;
         });
@@ -289,7 +285,10 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
         this.purchaseItems.splice(Number(key), 1);
       }
     }
+    this.getTotalAmt();
+  }
 
+  getTotalAmt() {
     this.totalAmt = 0;
     this.purchaseItems.forEach((itm) => {
       this.totalAmt += itm.cost * itm.purchasedQty;

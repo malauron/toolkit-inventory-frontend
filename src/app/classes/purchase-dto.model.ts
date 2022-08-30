@@ -5,7 +5,9 @@ export class PurchaseDto {
   constructor(
     public purchaseId?: number,
     public totalAmt?: number,
+    public purchaseStatus?: string,
     public vendor?: Vendor,
-    public purchaseItems?: PurchaseItem[]
+    public purchaseItems?: PurchaseItem[],
+    public dateCreated?: string,
   ){}
 }
