@@ -1,0 +1,200 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/customers"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Customer Details</ion-title>
+    <ion-buttons slot="primary" *ngIf="!customer.customerId">
+      <ion-button (click)="onSaveCustomer()">
+        <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="spinner">
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
+  </div>
+
+  <ion-card class="card-holder">
+    <div class="card-top"></div>
+    <ion-grid class="primary-info">
+      <ion-row>
+        <ion-col size-xs="12" size-xl="4" push-xl="8">
+
+          <ion-item fill="outline">
+            <ion-avatar slot="start">
+              <img src="../../assets/icons/blood.svg" class="blood" />
+            </ion-avatar>
+
+            <!-- <ion-icon slot="start" src="../../assets/icons/blood.svg" class="blood">
+            </ion-icon> -->
+            <ion-input></ion-input>
+          </ion-item>
+
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="calendar-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-input></ion-input>
+          </ion-item>
+
+          <ion-item fill="outline">
+            <ion-icon
+              class="cartIcon"
+              name="receipt-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-input placeholder="sample"></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size-xs="12" size-xl="7" pull-xl="4">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="person-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-input placeholder="Customer's name"></ion-input>
+          </ion-item>
+
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="call-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-input placeholder="Contact number(s)"></ion-input>
+          </ion-item>
+
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="location-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-textarea wrap="hard" placeholder="Address" auto-grow></ion-textarea>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div class="separator"></div>
+
+    <ion-accordion-group>
+      <ion-accordion value="statutoryIds">
+        <ion-item slot="header" color="medium">
+          <ion-label>Gov't. Issued ID Nos.</ion-label>
+        </ion-item>
+        <ion-grid slot="content" class="primary-info">
+          <ion-row>
+            <ion-col size-xs="12" size-xl="7">
+              <ion-item fill="outline">
+                <ion-label>SSS #</ion-label>
+                <ion-input></ion-input>
+              </ion-item>
+
+              <ion-item fill="outline">
+                <ion-label>HDMF #</ion-label>
+                <ion-input placeholder="Contact number(s)"></ion-input>
+              </ion-item>
+
+              <ion-item fill="outline">
+                <ion-label>PHIC #</ion-label>
+                <ion-input placeholder="Address"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-accordion>
+    </ion-accordion-group>
+
+    <div class="separator"></div>
+
+    <ion-accordion-group>
+      <ion-accordion value="erContactDetails">
+        <ion-item slot="header" color="medium">
+          <ion-label>In Case Of Emergency</ion-label>
+        </ion-item>
+        <ion-grid slot="content" class="primary-info">
+          <ion-row>
+            <ion-col size-xs="12" size-xl="4" push-xl="8">
+
+              <ion-item fill="outline">
+                <ion-avatar slot="start">
+                  <img src="../../assets/icons/items.svg" class="icon" />
+                </ion-avatar>
+                <ion-input></ion-input>
+              </ion-item>
+
+              <ion-item fill="outline">
+                <ion-icon
+                  class="contactIcon"
+                  name="calendar-outline"
+                  color="primary"
+                  slot="start"
+                ></ion-icon>
+                <ion-input></ion-input>
+              </ion-item>
+
+              <ion-item fill="outline">
+                <ion-icon
+                  class="cartIcon"
+                  name="receipt-outline"
+                  color="primary"
+                  slot="start"
+                ></ion-icon>
+                <ion-input placeholder="sample"></ion-input>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size-xs="12" size-xl="7" pull-xl="4">
+              <ion-item fill="outline">
+                <ion-icon
+                  class="contactIcon"
+                  name="person-outline"
+                  color="primary"
+                  slot="start"
+                ></ion-icon>
+                <ion-input placeholder="Customer's name"></ion-input>
+              </ion-item>
+
+              <ion-item fill="outline">
+                <ion-icon
+                  class="contactIcon"
+                  name="call-outline"
+                  color="primary"
+                  slot="start"
+                ></ion-icon>
+                <ion-input placeholder="Contact number(s)"></ion-input>
+              </ion-item>
+
+              <ion-item fill="outline">
+                <ion-icon
+                  class="contactIcon"
+                  name="location-outline"
+                  color="primary"
+                  slot="start"
+                ></ion-icon>
+                <ion-textarea placeholder="Address"></ion-textarea>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card>
+</ion-content>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customers',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomersPage implements OnInit {
 
-  constructor() { }
+  isFetching = false;
+
+  constructor(
+    private router: Router,
+  ) { }
 
   ngOnInit() {
+  }
+
+  onAddCustomer() {
+    this.router.navigate(['/', 'tabs', 'customers', 'customer-detail', 0]);
   }
 
 }

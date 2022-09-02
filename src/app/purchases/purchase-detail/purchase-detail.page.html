@@ -1,7 +1,10 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/purchases"></ion-back-button>
+      <ion-back-button
+        icon="chevron-back-outline"
+        defaultHref="/tabs/purchases"
+      ></ion-back-button>
     </ion-buttons>
     <ion-title>Purchase Details</ion-title>
     <ion-buttons slot="primary" *ngIf="!purchase.purchaseId">
@@ -14,7 +17,11 @@
 
 <ion-content class="ion-padding">
   <div class="spinner">
-    <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
   </div>
 
   <ion-card class="card-holder purchase-header">
@@ -23,33 +30,67 @@
       <ion-row>
         <ion-col size-xs="12" size-xl="4" push-xl="8">
           <ion-item lines="none" *ngIf="purchase.purchaseId">
-            <ion-icon class="contactIcon" name="calendar-outline" color="primary" slot="start"></ion-icon>
+            <ion-icon
+              class="contactIcon"
+              name="calendar-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
             <ion-label>
-              <ion-label class="ion-text-wrap">{{ purchase.dateCreated | date:'MMM dd, yyyy hh:mm a' }}</ion-label>
+              <ion-label class="ion-text-wrap"
+                >{{ purchase.dateCreated | date:'MMM dd, yyyy hh:mm a'
+                }}</ion-label
+              >
             </ion-label>
           </ion-item>
 
           <ion-item lines="none" *ngIf="purchase.purchaseId">
-            <ion-icon class="cartIcon" name="receipt-outline" color="primary" slot="start"></ion-icon>
-            <ion-label>{{ purchase.purchaseId.toString().padStart(8, "0") }}</ion-label>
+            <ion-icon
+              class="cartIcon"
+              name="receipt-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label
+              >{{ purchase.purchaseId.toString().padStart(8, "0") }}</ion-label
+            >
 
             <!-- Button to change the status of the purchase -->
-            <ion-button #statusButton *ngIf="purchase.purchaseStatus === 'Unposted'" fill="clear" size="small"
-              mode="ios" (click)="onShowPopOver($event)">
+            <ion-button
+              #statusButton
+              *ngIf="purchase.purchaseStatus === 'Unposted'"
+              fill="clear"
+              size="small"
+              mode="ios"
+              (click)="onShowPopOver($event)"
+            >
               <ion-badge color="warning">Unposted</ion-badge>
             </ion-button>
 
-            <ion-popover #statusPopover triggerAction="click" dismissOnSelect="true" [isOpen]="statusPopoverOpen"
-              (didDismiss)="statusPopoverOpen = false">
+            <ion-popover
+              #statusPopover
+              triggerAction="click"
+              dismissOnSelect="true"
+              [isOpen]="statusPopoverOpen"
+              (didDismiss)="statusPopoverOpen = false"
+            >
               <ng-template>
                 <ion-content>
                   <ion-list>
-                    <ion-item #deliveredStatus class="ion-text-center ion-no-padding ion-no-margin" lines="full"
-                      [button]="true">
+                    <ion-item
+                      #deliveredStatus
+                      class="ion-text-center ion-no-padding ion-no-margin"
+                      lines="full"
+                      [button]="true"
+                    >
                       <ion-label>Post</ion-label>
                     </ion-item>
-                    <ion-item #cancelledStatus class="ion-text-center ion-no-padding ion-no-margin" lines="none"
-                      [button]="true">
+                    <ion-item
+                      #cancelledStatus
+                      class="ion-text-center ion-no-padding ion-no-margin"
+                      lines="none"
+                      [button]="true"
+                    >
                       <ion-label color="primary">Cancel</ion-label>
                     </ion-item>
                   </ion-list>
@@ -66,23 +107,45 @@
 
         <ion-col size-xs="12" size-xl="7" pull-xl="4">
           <ion-item lines="none">
-            <ion-icon class="contactIcon" name="storefront-outline" color="primary" slot="start"></ion-icon>
+            <ion-icon
+              class="contactIcon"
+              name="storefront-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
             <ion-label class="ion-text-wrap">
               <ion-card-title>{{ vendor.vendorName }}</ion-card-title>
             </ion-label>
-            <ion-button #statusButton *ngIf="purchase.purchaseStatus === 'Unposted'" (click)="onCustomerSearch()"
-              fill="clear" size="small" mode="ios" id="click-trigger">
+            <ion-button
+              #statusButton
+              *ngIf="purchase.purchaseStatus === 'Unposted' || purchase.purchaseStatus === undefined"
+              (click)="onCustomerSearch()"
+              fill="clear"
+              size="small"
+              mode="ios"
+              id="click-trigger"
+            >
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon class="contactIcon" name="call-outline" color="primary" slot="start"></ion-icon>
+            <ion-icon
+              class="contactIcon"
+              name="call-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
             <ion-label class="ion-text-wrap">{{ vendor.contactNo }}</ion-label>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon class="contactIcon" name="location-outline" color="primary" slot="start"></ion-icon>
+            <ion-icon
+              class="contactIcon"
+              name="location-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
             <ion-label class="ion-text-wrap">{{ vendor.address }}</ion-label>
           </ion-item>
         </ion-col>
@@ -91,13 +154,20 @@
   </ion-card>
 
   <ion-card class="card-holder purchased-items">
-
     <div class="card-top"></div>
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
         <ion-card-title>Items - {{ totalAmt | number:'1.2-2' }}</ion-card-title>
-        <ion-button *ngIf="purchase.purchaseStatus === 'Unposted'" class="ion-no-padding ion-no-margin"
-          (click)="onAddPurchasedItem()" slot="end" mode="ios" fill="clear" size="large" color="success">
+        <ion-button
+          *ngIf="purchase.purchaseStatus === 'Unposted' || purchase.purchaseStatus === undefined"
+          class="ion-no-padding ion-no-margin"
+          (click)="onAddPurchasedItem()"
+          slot="end"
+          mode="ios"
+          fill="clear"
+          size="large"
+          color="success"
+        >
           <ion-icon name="add"></ion-icon>
         </ion-button>
         <!-- <ion-card-title class="ion-no-padding ion-no-margin" slot="end">{{ totalAmt | number:'1.2-2' }}</ion-card-title> -->
@@ -107,7 +177,12 @@
 
     <ion-grid>
       <ion-row>
-        <ion-col size-xs="12" size-md="6" size-lg="4" *ngFor="let item of purchaseItems">
+        <ion-col
+          size-xs="12"
+          size-md="6"
+          size-lg="4"
+          *ngFor="let item of purchaseItems"
+        >
           <ion-card class="card-item">
             <ion-item lines="none">
               <ion-avatar slot="start">
@@ -118,26 +193,42 @@
                 item.requiredUom.uomCode }}
               </ion-card-subtitle>
               <ion-card-subtitle slot="end">
-                @ {{ item.cost | number:'1.2-2' }}/{{ item.requiredUom.uomCode }}
+                @ {{ item.cost | number:'1.2-2' }}/{{ item.requiredUom.uomCode
+                }}
               </ion-card-subtitle>
             </ion-item>
             <ion-item class="total-cost" lines="none">
               <ion-label>
                 {{ item.purchasedQty * item.cost | number:'1.2-2' }}
               </ion-label>
-              <ion-button *ngIf="purchase.purchaseStatus === 'Unposted'" (click)="onDeletePurchaseItem(item)"
-                class="ion-no-margin" mode="ios" slot="end" fill="clear" color="medium" size="default">
+              <ion-button
+                *ngIf="purchase.purchaseStatus === 'Unposted'  || purchase.purchaseStatus === undefined"
+                (click)="onDeletePurchaseItem(item)"
+                class="ion-no-margin"
+                mode="ios"
+                slot="end"
+                fill="clear"
+                color="medium"
+                size="default"
+              >
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
-              <ion-button *ngIf="purchase.purchaseStatus === 'Unposted'" (click)="onUpdatePurchaseItem(item)"
-                #deleteIngredientButton class="ion-no-padding ion-no-margin" mode="ios" fill="clear" color="success"
-                size="default" slot="end">
+              <ion-button
+                *ngIf="purchase.purchaseStatus === 'Unposted'  || purchase.purchaseStatus === undefined"
+                (click)="onUpdatePurchaseItem(item)"
+                #deleteIngredientButton
+                class="ion-no-padding ion-no-margin"
+                mode="ios"
+                fill="clear"
+                color="success"
+                size="default"
+                slot="end"
+              >
                 <ion-icon name="create-outline"></ion-icon>
               </ion-button>
             </ion-item>
           </ion-card>
         </ion-col>
-
       </ion-row>
     </ion-grid>
   </ion-card>
