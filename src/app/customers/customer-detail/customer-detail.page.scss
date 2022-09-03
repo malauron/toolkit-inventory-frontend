@@ -13,8 +13,44 @@ ion-card {
 .card-holder {
   margin: 20px 20px 0 20px;
 
-  .primary-info ion-item {
-    margin: 20px 10px;
+  .primary-info {
+    .images {
+      margin: 20px auto -10px auto;
+      padding: 20px auto;
+
+      ion-thumbnail {
+        --size: 150px;
+        margin: auto;
+      }
+
+      ion-img {
+        // primary
+        filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg)
+          brightness(89%) contrast(108%);
+      }
+    }
+
+    ion-item {
+      margin: 20px 10px;
+    }
+  }
+
+  .statutory-info {
+    ion-row {
+      margin: 20px auto;
+    }
+    ion-item {
+      margin: 5px 10px;
+    }
+  }
+
+  .er-info {
+    ion-row {
+      margin: 20px auto;
+    }
+    ion-item {
+      margin: 5px 10px;
+    }
   }
 }
 
@@ -33,7 +69,6 @@ ion-card {
     stroke: var(--ion-color-primary);
     fill: var(--ion-color-primary);
     transform: scale(3);
-
   }
 }
 
@@ -56,15 +91,6 @@ ion-card {
   }
 }
 
-.blood {
-  // primary
-   filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg) brightness(89%) contrast(108%);
-}
-
-ion-avatar {
-  width: 25px;
-  height: 25px;
-  padding: 0;
-  margin: 0 6px 0 0;
-  left: 0;
+.statutory-label {
+  min-width: 70px;
 }
