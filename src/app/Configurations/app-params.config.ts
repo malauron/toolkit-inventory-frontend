@@ -41,6 +41,7 @@ export class AppParamsConfig {
   urlV1Purchases: any;
   urlV1PurchaseSetVendor: any;
   urlV1PurchaseItems: any;
+  urlV1Customers: any;
 
   waitTime: number;
   pageSize: number;
@@ -91,6 +92,7 @@ export class AppParamsConfig {
     this.urlV1Purchases = `${this.urlV1}/purchases`;
     this.urlV1PurchaseSetVendor = `${this.urlV1Purchases}/vendor`;
     this.urlV1PurchaseItems = `${this.urlV1}/purchaseItems`;
+    this.urlV1Customers = `${this.urlV1}/customers`;
 
     this.waitTime = 500;
     this.pageSize = 20;

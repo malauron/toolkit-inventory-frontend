@@ -26,47 +26,41 @@
 
         <ion-col class="images" size-xs="12" size-md="4" push-md="8">
           <ion-thumbnail>
-            <ion-img src="../../assets/icons/personv02.svg"></ion-img>
+            <ion-img [src]="selectedPicImg"></ion-img>
           </ion-thumbnail>
-          <div class="ion-text-center">
-            <ion-button
-                class="ion-no-margin"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
-                <ion-icon name="close-circle"></ion-icon>
-              </ion-button>
-              <ion-button
-                class="ion-no-margin"
-                mode="ios"
-                fill="clear"
-                color="success"
-                size="default"
-                slot="end"
-              >
-                <ion-icon name="create-outline"></ion-icon>
-              </ion-button>
+          <!-- <img [src]=selectedPicImg> -->
+          <!-- <div class="ion-text-center">
+            <ion-button class="ion-no-margin" mode="ios" slot="end" fill="clear" color="medium" size="default">
+              <ion-icon name="close-circle"></ion-icon>
+            </ion-button>
+            <ion-button class="ion-no-margin" mode="ios" fill="clear" color="success" size="default" slot="end">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+          </div> -->
+          <div class="changePicFile ion-text-center">
+            <ion-item lines="none" fill="outline">
+              <input type="file" (change)="onPictureFileChange($event)">
+            </ion-item>
           </div>
         </ion-col>
 
         <ion-col size-xs="12" size-md="8" pull-md="4">
-          <ion-item fill="outline">
-            <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
-            <ion-input placeholder="Customer's name"></ion-input>
-          </ion-item>
+          <form [formGroup]="customerForm">
+            <ion-item fill="outline">
+              <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
+              <ion-input formControlName="customerName" placeholder="Customer's name"></ion-input>
+            </ion-item>
 
-          <ion-item fill="outline">
-            <ion-icon class="contactIcon" name="call-outline" color="primary" slot="start"></ion-icon>
-            <ion-input placeholder="Contact number(s)"></ion-input>
-          </ion-item>
+            <ion-item fill="outline">
+              <ion-icon class="contactIcon" name="call-outline" color="primary" slot="start"></ion-icon>
+              <ion-input formControlName="contactNo" placeholder="Contact number(s)"></ion-input>
+            </ion-item>
 
-          <ion-item fill="outline">
-            <ion-icon class="contactIcon" name="location-outline" color="primary" slot="start"></ion-icon>
-            <ion-textarea wrap="hard" placeholder="Address"></ion-textarea>
-          </ion-item>
+            <ion-item fill="outline">
+              <ion-icon class="contactIcon" name="location-outline" color="primary" slot="start"></ion-icon>
+              <ion-textarea formControlName="address" wrap="hard" placeholder="Address"></ion-textarea>
+            </ion-item>
+          </form>
         </ion-col>
 
       </ion-row>
@@ -80,37 +74,39 @@
           <ion-label>Gov't. Issued ID Nos.</ion-label>
         </ion-item>
         <ion-grid slot="content" class="statutory-info">
-          <ion-row>
+          <form [formGroup]="customerForm">
+            <ion-row>
 
-            <ion-col size-xs="12" size-md="6">
-              <ion-item fill="outline">
-                <ion-label class="statutory-label" color="primary">SSS #</ion-label>
-                <ion-input></ion-input>
-              </ion-item>
-            </ion-col>
+              <ion-col size-xs="12" size-md="6">
+                <ion-item fill="outline">
+                  <ion-label class="statutory-label" color="primary">SSS #</ion-label>
+                  <ion-input formControlName="sssNo"></ion-input>
+                </ion-item>
+              </ion-col>
 
-            <ion-col size-xs="12" size-md="6">
-              <ion-item fill="outline">
-                <ion-label class="statutory-label" color="primary">HDMF #</ion-label>
-                <ion-input></ion-input>
-              </ion-item>
-            </ion-col>
+              <ion-col size-xs="12" size-md="6">
+                <ion-item fill="outline">
+                  <ion-label class="statutory-label" color="primary">HDMF #</ion-label>
+                  <ion-input formControlName="hdmfNo"></ion-input>
+                </ion-item>
+              </ion-col>
 
-            <ion-col size-xs="12" size-md="6">
-              <ion-item fill="outline">
-                <ion-label class="statutory-label" color="primary">PHIC #</ion-label>
-                <ion-input></ion-input>
-              </ion-item>
-            </ion-col>
+              <ion-col size-xs="12" size-md="6">
+                <ion-item fill="outline">
+                  <ion-label class="statutory-label" color="primary">PHIC #</ion-label>
+                  <ion-input formControlName="phicNo"></ion-input>
+                </ion-item>
+              </ion-col>
 
-            <ion-col size-xs="12" size-md="6">
-              <ion-item fill="outline">
-                <ion-label class="statutory-label" color="primary">TIN #</ion-label>
-                <ion-input></ion-input>
-              </ion-item>
-            </ion-col>
+              <ion-col size-xs="12" size-md="6">
+                <ion-item fill="outline">
+                  <ion-label class="statutory-label" color="primary">TIN #</ion-label>
+                  <ion-input formControlName="tinNo"></ion-input>
+                </ion-item>
+              </ion-col>
 
-          </ion-row>
+            </ion-row>
+          </form>
         </ion-grid>
       </ion-accordion>
     </ion-accordion-group>
@@ -123,37 +119,39 @@
           <ion-label>In Case Of Emergency</ion-label>
         </ion-item>
         <ion-grid slot="content" class="er-info">
-          <ion-row>
+          <form [formGroup]="customerForm">
+            <ion-row>
 
-            <ion-col size-xs="12" size-lg="6">
-              <ion-item fill="outline">
-                <ion-icon slot="start" src="../../assets/icons/blood.svg" color="primary"></ion-icon>
-                <ion-input placeholder="Customer's blood type"></ion-input>
-              </ion-item>
-            </ion-col>
+              <ion-col size-xs="12" size-lg="6">
+                <ion-item fill="outline">
+                  <ion-icon slot="start" src="../../assets/icons/blood.svg" color="primary"></ion-icon>
+                  <ion-input formControlName="bloodType" placeholder="Customer's blood type"></ion-input>
+                </ion-item>
+              </ion-col>
 
-            <ion-col size-xs="12" size-lg="6">
-              <ion-item fill="outline">
-                <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
-                <ion-input placeholder="Contact person"></ion-input>
-              </ion-item>
-            </ion-col>
+              <ion-col size-xs="12" size-lg="6">
+                <ion-item fill="outline">
+                  <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
+                  <ion-input formControlName="erContactPerson" placeholder="Contact person"></ion-input>
+                </ion-item>
+              </ion-col>
 
-            <ion-col size-xs="12" size-lg="6">
-              <ion-item fill="outline">
-                <ion-icon class="contactIcon" name="call-outline" color="primary" slot="start"></ion-icon>
-                <ion-input placeholder="Contact person's number(s)"></ion-input>
-              </ion-item>
-            </ion-col>
+              <ion-col size-xs="12" size-lg="6">
+                <ion-item fill="outline">
+                  <ion-icon class="contactIcon" name="call-outline" color="primary" slot="start"></ion-icon>
+                  <ion-input formControlName="erContactNo" placeholder="Contact person's number(s)"></ion-input>
+                </ion-item>
+              </ion-col>
 
-            <ion-col size-xs="12" size-lg="6">
-              <ion-item fill="outline">
-                <ion-icon class="contactIcon" name="location-outline" color="primary" slot="start"></ion-icon>
-                <ion-textarea placeholder="Contact person's Address"></ion-textarea>
-              </ion-item>
-            </ion-col>
+              <ion-col size-xs="12" size-lg="6">
+                <ion-item fill="outline">
+                  <ion-icon class="contactIcon" name="location-outline" color="primary" slot="start"></ion-icon>
+                  <ion-textarea formControlName="erContactAddress" placeholder="Contact person's Address"></ion-textarea>
+                </ion-item>
+              </ion-col>
 
-          </ion-row>
+            </ion-row>
+          </form>
         </ion-grid>
       </ion-accordion>
     </ion-accordion-group>

@@ -2,6 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { CustomerDto } from '../classes/customer-dto.model';
 import { Customer } from '../classes/customer.model';
 import { AppParamsConfig } from '../Configurations/app-params.config';
 
@@ -43,6 +44,11 @@ export class CustomersService {
     }
 
     return this.http.get<ResponseCustomers>(this.apiUrl);
+  }
+
+  postCustomer(customerDto: CustomerDto){
+    this.apiUrl = `${this.config.urlV1Customers}`;
+    return this.http.post(this.apiUrl, customerDto);
   }
 
 }

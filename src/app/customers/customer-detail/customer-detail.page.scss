@@ -19,19 +19,23 @@ ion-card {
       padding: 20px auto;
 
       ion-thumbnail {
-        --size: 150px;
+        --size: 140px;
         margin: auto;
       }
 
       ion-img {
         // primary
-        filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg)
-          brightness(89%) contrast(108%);
+        // filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg)
+        //   brightness(89%) contrast(108%);
       }
     }
 
     ion-item {
       margin: 20px 10px;
+    }
+
+    .changePictureFile {
+      margin: auto;
     }
   }
 
