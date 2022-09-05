@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
@@ -11,15 +12,15 @@ import { CustomersService } from 'src/app/services/customers.service';
   styleUrls: ['./customer-detail.page.scss'],
 })
 export class CustomerDetailPage implements OnInit {
-
   selectedPicture: any;
   selectedSignature: any;
   displayPicture: any;
   displaySignature: any;
   displayImg: any;
-  selectedSegment: 'picture';
+  selectedSegment: string;
   customer = new Customer();
   isFetching = false;
+  isUploading = false;
   customerForm: FormGroup;
 
   constructor(
@@ -28,7 +29,8 @@ export class CustomerDetailPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.displayPicture = '../../assets/icons/personv05.svg';
+    this.selectedSegment = 'picture';
+    this.displayPicture = '../../assets/icons/personv06.svg';
     this.displaySignature = '../../assets/icons/signaturev04.svg';
     this.displayImg = this.displayPicture;
     this.customerForm = new FormGroup({
@@ -49,27 +51,30 @@ export class CustomerDetailPage implements OnInit {
   }
 
   onSegmentChanged(event) {
-    if (event.target.value === 'picture') {
+    this.selectedSegment = event.target.value;
+    if (this.selectedSegment === 'picture') {
       this.displayImg = this.displayPicture;
     } else {
       this.displayImg = this.displaySignature;
     }
-    this.selectedSegment = event.target.value;
   }
 
   onPictureFileChange(event) {
     if (event.target.files[0] !== undefined) {
-      this.selectedPicture = event.target.files[0];
+      if (this.selectedSegment === 'picture') {
+        this.selectedPicture = event.target.files[0];
+      } else {
+        this.selectedSignature = event.target.files[0];
+      }
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
       reader.onload = (event2) => {
-        this.displayImg = reader.result;
         if (this.selectedSegment === 'picture') {
           this.displayPicture = reader.result;
-          this.selectedPicture =  reader.result;
+          this.displayImg = this.displayPicture;
         } else {
           this.displaySignature = reader.result;
-          this.selectedSignature =  reader.result;
+          this.displayImg = this.displaySignature;
         }
       };
     }
@@ -79,6 +84,7 @@ export class CustomerDetailPage implements OnInit {
     if (!this.customerForm.valid) {
       this.messageBox('Please provide a valid customer information');
     } else {
+      this.isUploading = true;
       const customerDto = new CustomerDto();
       const tmpCustomer = new Customer();
 
@@ -100,54 +106,50 @@ export class CustomerDetailPage implements OnInit {
         customerDto.customer.customerId = this.customer.customerId;
       }
 
+      const customerData = new FormData();
+
+      customerData.append(
+        'customerDto',
+        new Blob([JSON.stringify(customerDto)], {
+          type: 'application/json',
+        })
+      );
+
       if (this.selectedPicture !== undefined) {
-        const customerData = new FormData();
-
-        customerData.append(
-          'customerDto',
-          new Blob([JSON.stringify(customerDto)], {
-            type: 'application/json',
-          })
-        );
-
         customerData.append(
           'pictureFile',
           this.selectedPicture,
           this.selectedPicture.name
         );
+      }
 
-        this.customersService.postCustomerwdPic(customerData).subscribe(
-          (res) => {
-            if (this.customer.customerId === undefined) {
-              this.customer = tmpCustomer;
-              this.customer.customerId = res;
-            }
-            this.messageBox('Customer inormation has been saved successfully.');
-          },
-          (err) => {
-            this.messageBox(
-              // eslint-disable-next-line max-len
-              'An error occured while trying to save the information. Please check your network connection and attached a picture with 1048576 bytes or less.'
-            );
-          }
-        );
-      } else {
-        this.customersService.postCustomer(customerDto).subscribe(
-          (res) => {
-            if (this.customer.customerId === undefined) {
-              this.customer = tmpCustomer;
-              this.customer.customerId = res;
-            }
-            this.messageBox('Customer inormation has been saved successfully.');
-          },
-          (err) => {
-            this.messageBox(
-              // eslint-disable-next-line max-len
-              'An error occured while trying to save the information. Please check your network connection and attached a picture with 1048576 bytes or less.'
-            );
-          }
+      if (this.selectedSignature !== undefined) {
+        customerData.append(
+          'signatureFile',
+          this.selectedSignature,
+          this.selectedSignature.name
         );
       }
+
+      this.customersService.postCustomer(customerData).subscribe(
+        (res) => {
+          if (this.customer.customerId === undefined) {
+            this.customer = tmpCustomer;
+            this.customer.customerId = res;
+          }
+          this.selectedPicture = undefined;
+          this.selectedSignature = undefined;
+          this.messageBox('Customer inormation has been saved successfully.');
+          this.isUploading = false;
+        },
+        (err) => {
+          this.messageBox(
+            'An error occured while trying to save the information. Please check your network connection and attached a picture with 1048576 bytes or less.'
+          );
+          this.isUploading = false;
+        }
+      );
+
     }
   }
 

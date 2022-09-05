@@ -19,20 +19,37 @@ ion-card {
       padding: 20px auto;
 
       ion-segment {
-        padding: 10px auto;
-        margin: 20px auto;
-        width: 300px;
+        margin: -10px auto 20px auto;
+        width: 250px;
       }
 
       ion-thumbnail {
         --size: 140px;
         margin: auto;
       }
+
       ion-avatar {
         border: 5px solid var(--ion-color-medium);
         width: 140px;
         height: 140px;
         margin: auto;
+      }
+
+      .file-upload-holder {
+        width: 100px;
+        margin: 20px auto;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      .custom-file-upload {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
       }
     }
 

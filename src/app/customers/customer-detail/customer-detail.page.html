@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Customer Details</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="onSaveCustomer()">
+      <ion-button (click)="onSaveCustomer()" *ngIf="!isUploading">
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -49,15 +49,23 @@
               <ion-icon name="create-outline"></ion-icon>
             </ion-button>
           </div> -->
-          <div class="changePicFile ion-text-center">
-            <ion-item lines="none" fill="outline">
-              <input type="file" (change)="onPictureFileChange($event)">
-            </ion-item>
+          <!-- <div class="changePicFile ion-text-center">
+            <ion-item lines="none" fill="outline"> -->
+          <div class="file-upload-holder">
+            <label for="file-upload" class="custom-file-upload">
+              File Upload
+            </label>
+            <input id="file-upload" type="file" (change)="onPictureFileChange($event)">
           </div>
+          <!-- </ion-item>
+          </div> -->
         </ion-col>
 
         <ion-col size-xs="12" size-md="8" pull-md="4">
           <form [formGroup]="customerForm">
+            <ion-item lines="none" *ngIf="customer.customerId">
+            </ion-item>
+
             <ion-item fill="outline">
               <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
               <ion-input formControlName="customerName" placeholder="Customer's name"></ion-input>
@@ -158,7 +166,8 @@
               <ion-col size-xs="12" size-lg="6">
                 <ion-item fill="outline">
                   <ion-icon class="contactIcon" name="location-outline" color="primary" slot="start"></ion-icon>
-                  <ion-textarea formControlName="erContactAddress" placeholder="Contact person's Address"></ion-textarea>
+                  <ion-textarea formControlName="erContactAddress" placeholder="Contact person's Address">
+                  </ion-textarea>
                 </ion-item>
               </ion-col>
 

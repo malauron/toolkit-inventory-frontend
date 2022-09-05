@@ -46,13 +46,13 @@ export class CustomersService {
     return this.http.get<ResponseCustomers>(this.apiUrl);
   }
 
-  postCustomer(customerDto: CustomerDto){
-    this.apiUrl = `${this.config.urlV1Customers}`;
-    return this.http.put<number>(this.apiUrl, customerDto);
-  }
+  // postCustomer(customerDto: CustomerDto){
+  //   this.apiUrl = `${this.config.urlV1Customers}`;
+  //   return this.http.put<number>(this.apiUrl, customerDto);
+  // }
 
-  postCustomerwdPic(customerData: FormData){
-    this.apiUrl = `${this.config.urlV1Customers}/pictures`;
+  postCustomer(customerData: FormData){
+    this.apiUrl = `${this.config.urlV1Customers}`;
     return this.http.put<number>(this.apiUrl, customerData );
   }
 
