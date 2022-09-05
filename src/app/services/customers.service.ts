@@ -1,5 +1,5 @@
 /* eslint-disable id-blacklist */
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { CustomerDto } from '../classes/customer-dto.model';
@@ -48,7 +48,12 @@ export class CustomersService {
 
   postCustomer(customerDto: CustomerDto){
     this.apiUrl = `${this.config.urlV1Customers}`;
-    return this.http.post(this.apiUrl, customerDto);
+    return this.http.put<number>(this.apiUrl, customerDto);
+  }
+
+  postCustomerwdPic(customerData: FormData){
+    this.apiUrl = `${this.config.urlV1Customers}/pictures`;
+    return this.http.put<number>(this.apiUrl, customerData );
   }
 
 }

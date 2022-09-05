@@ -4,7 +4,7 @@
       <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/customers"></ion-back-button>
     </ion-buttons>
     <ion-title>Customer Details</ion-title>
-    <ion-buttons slot="primary" *ngIf="!customer.customerId">
+    <ion-buttons slot="primary">
       <ion-button (click)="onSaveCustomer()">
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
@@ -25,9 +25,21 @@
       <ion-row>
 
         <ion-col class="images" size-xs="12" size-md="4" push-md="8">
-          <ion-thumbnail>
+          <!-- <ion-thumbnail>
             <ion-img [src]="selectedPicImg"></ion-img>
-          </ion-thumbnail>
+          </ion-thumbnail> -->
+          <ion-segment value="picture" (ionChange)="onSegmentChanged($event)">
+            <ion-segment-button value="picture">
+              <ion-label>Picture</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="signature">
+              <ion-label>Signature</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+
+          <ion-avatar>
+            <ion-img [src]="displayImg"></ion-img>
+          </ion-avatar>
           <!-- <img [src]=selectedPicImg> -->
           <!-- <div class="ion-text-center">
             <ion-button class="ion-no-margin" mode="ios" slot="end" fill="clear" color="medium" size="default">

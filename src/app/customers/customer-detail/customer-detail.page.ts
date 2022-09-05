@@ -11,8 +11,13 @@ import { CustomersService } from 'src/app/services/customers.service';
   styleUrls: ['./customer-detail.page.scss'],
 })
 export class CustomerDetailPage implements OnInit {
+
   selectedPicture: any;
-  selectedPicImg: any;
+  selectedSignature: any;
+  displayPicture: any;
+  displaySignature: any;
+  displayImg: any;
+  selectedSegment: 'picture';
   customer = new Customer();
   isFetching = false;
   customerForm: FormGroup;
@@ -23,7 +28,9 @@ export class CustomerDetailPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.selectedPicImg = '../../assets/icons/personv02.svg';
+    this.displayPicture = '../../assets/icons/personv05.svg';
+    this.displaySignature = '../../assets/icons/signaturev04.svg';
+    this.displayImg = this.displayPicture;
     this.customerForm = new FormGroup({
       customerName: new FormControl(null, {
         validators: [Validators.required],
@@ -41,47 +48,107 @@ export class CustomerDetailPage implements OnInit {
     });
   }
 
+  onSegmentChanged(event) {
+    if (event.target.value === 'picture') {
+      this.displayImg = this.displayPicture;
+    } else {
+      this.displayImg = this.displaySignature;
+    }
+    this.selectedSegment = event.target.value;
+  }
+
+  onPictureFileChange(event) {
+    if (event.target.files[0] !== undefined) {
+      this.selectedPicture = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (event2) => {
+        this.displayImg = reader.result;
+        if (this.selectedSegment === 'picture') {
+          this.displayPicture = reader.result;
+          this.selectedPicture =  reader.result;
+        } else {
+          this.displaySignature = reader.result;
+          this.selectedSignature =  reader.result;
+        }
+      };
+    }
+  }
+
   onSaveCustomer() {
     if (!this.customerForm.valid) {
       this.messageBox('Please provide a valid customer information');
     } else {
       const customerDto = new CustomerDto();
-      const customer = new Customer();
+      const tmpCustomer = new Customer();
 
-      customer.customerName = this.customerForm.value.customerName;
-      customer.contactNo = this.customerForm.value.contactNo;
-      customer.address = this.customerForm.value.address;
-      customer.sssNo = this.customerForm.value.sssNo;
-      customer.hdmfNo = this.customerForm.value.hdmfNo;
-      customer.phicNo = this.customerForm.value.phicNo;
-      customer.tinNo = this.customerForm.value.tinNo;
-      customer.bloodType = this.customerForm.value.bloodType;
-      customer.erContactPerson = this.customerForm.value.erContactPerson;
-      customer.erContactNo = this.customerForm.value.erContactNo;
-      customer.erContactAddress = this.customerForm.value.erContactAddress;
+      tmpCustomer.customerName = this.customerForm.value.customerName;
+      tmpCustomer.contactNo = this.customerForm.value.contactNo;
+      tmpCustomer.address = this.customerForm.value.address;
+      tmpCustomer.sssNo = this.customerForm.value.sssNo;
+      tmpCustomer.hdmfNo = this.customerForm.value.hdmfNo;
+      tmpCustomer.phicNo = this.customerForm.value.phicNo;
+      tmpCustomer.tinNo = this.customerForm.value.tinNo;
+      tmpCustomer.bloodType = this.customerForm.value.bloodType;
+      tmpCustomer.erContactPerson = this.customerForm.value.erContactPerson;
+      tmpCustomer.erContactNo = this.customerForm.value.erContactNo;
+      tmpCustomer.erContactAddress = this.customerForm.value.erContactAddress;
 
-      customerDto.customer = customer;
+      customerDto.customer = tmpCustomer;
 
-      if (this.selectedPicture !== undefined) {
-        const pic = new FormData();
-        pic.append('picture', this.selectedPicture, this.selectedPicture.name);
-        customerDto.origCustomerPicture = pic;
+      if (this.customer.customerId !== undefined) {
+        customerDto.customer.customerId = this.customer.customerId;
       }
 
-      this.customersService.postCustomer(customerDto).subscribe((res) => {
-        console.log(res);
-      });
-    }
-  }
+      if (this.selectedPicture !== undefined) {
+        const customerData = new FormData();
 
-  onPictureFileChange(event) {
-    console.log(event.target.files[0]);
-    this.selectedPicture = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onload = (event2) => {
-      this.selectedPicImg = reader.result;
-    };
+        customerData.append(
+          'customerDto',
+          new Blob([JSON.stringify(customerDto)], {
+            type: 'application/json',
+          })
+        );
+
+        customerData.append(
+          'pictureFile',
+          this.selectedPicture,
+          this.selectedPicture.name
+        );
+
+        this.customersService.postCustomerwdPic(customerData).subscribe(
+          (res) => {
+            if (this.customer.customerId === undefined) {
+              this.customer = tmpCustomer;
+              this.customer.customerId = res;
+            }
+            this.messageBox('Customer inormation has been saved successfully.');
+          },
+          (err) => {
+            this.messageBox(
+              // eslint-disable-next-line max-len
+              'An error occured while trying to save the information. Please check your network connection and attached a picture with 1048576 bytes or less.'
+            );
+          }
+        );
+      } else {
+        this.customersService.postCustomer(customerDto).subscribe(
+          (res) => {
+            if (this.customer.customerId === undefined) {
+              this.customer = tmpCustomer;
+              this.customer.customerId = res;
+            }
+            this.messageBox('Customer inormation has been saved successfully.');
+          },
+          (err) => {
+            this.messageBox(
+              // eslint-disable-next-line max-len
+              'An error occured while trying to save the information. Please check your network connection and attached a picture with 1048576 bytes or less.'
+            );
+          }
+        );
+      }
+    }
   }
 
   messageBox(msg: string) {

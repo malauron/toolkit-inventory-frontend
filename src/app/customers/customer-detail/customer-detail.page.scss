@@ -18,15 +18,21 @@ ion-card {
       margin: 20px auto -10px auto;
       padding: 20px auto;
 
+      ion-segment {
+        padding: 10px auto;
+        margin: 20px auto;
+        width: 300px;
+      }
+
       ion-thumbnail {
         --size: 140px;
         margin: auto;
       }
-
-      ion-img {
-        // primary
-        // filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg)
-        //   brightness(89%) contrast(108%);
+      ion-avatar {
+        border: 5px solid var(--ion-color-medium);
+        width: 140px;
+        height: 140px;
+        margin: auto;
       }
     }
 
