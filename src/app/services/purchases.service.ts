@@ -40,9 +40,10 @@ export class PurchasesService {
   }
 
   getPurchase(purchaseId: number): Observable<PurchaseDto> {
-    // this.apiUrl = `${this.config.urlPurchases}/${purchaseId}?projection=purchaseView`;
+
     this.apiUrl = `${this.config.urlV1Purchases}?purchaseId=${purchaseId}`;
     return this.http.get<PurchaseDto>(this.apiUrl);
+
   }
 
   getPurchases(

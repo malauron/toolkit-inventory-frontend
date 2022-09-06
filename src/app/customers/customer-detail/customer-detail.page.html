@@ -25,9 +25,7 @@
       <ion-row>
 
         <ion-col class="images" size-xs="12" size-md="4" push-md="8">
-          <!-- <ion-thumbnail>
-            <ion-img [src]="selectedPicImg"></ion-img>
-          </ion-thumbnail> -->
+
           <ion-segment value="picture" (ionChange)="onSegmentChanged($event)">
             <ion-segment-button value="picture">
               <ion-label>Picture</ion-label>
@@ -40,30 +38,23 @@
           <ion-avatar>
             <ion-img [src]="displayImg"></ion-img>
           </ion-avatar>
-          <!-- <img [src]=selectedPicImg> -->
-          <!-- <div class="ion-text-center">
-            <ion-button class="ion-no-margin" mode="ios" slot="end" fill="clear" color="medium" size="default">
-              <ion-icon name="close-circle"></ion-icon>
-            </ion-button>
-            <ion-button class="ion-no-margin" mode="ios" fill="clear" color="success" size="default" slot="end">
-              <ion-icon name="create-outline"></ion-icon>
-            </ion-button>
-          </div> -->
-          <!-- <div class="changePicFile ion-text-center">
-            <ion-item lines="none" fill="outline"> -->
+
           <div class="file-upload-holder">
             <label for="file-upload" class="custom-file-upload">
               File Upload
             </label>
             <input id="file-upload" type="file" (change)="onPictureFileChange($event)">
           </div>
-          <!-- </ion-item>
-          </div> -->
+
         </ion-col>
 
         <ion-col size-xs="12" size-md="8" pull-md="4">
           <form [formGroup]="customerForm">
-            <ion-item lines="none" *ngIf="customer.customerId">
+            <ion-item fill="outline" lines="none" *ngIf="customer.customerId">
+              <ion-icon class="contactIcon" name="id-card-outline" color="primary" slot="start"></ion-icon>
+              <ion-label
+              >{{ customer.customerId.toString().padStart(8, "0")
+              }}</ion-label>
             </ion-item>
 
             <ion-item fill="outline">

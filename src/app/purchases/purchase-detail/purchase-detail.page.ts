@@ -48,7 +48,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isFetching = true;
-    // this.statusButton = 'false';
+
     this.route.paramMap.subscribe((paramMap) => {
       if (!paramMap.has('purchaseId')) {
         this.navCtrl.navigateBack('/tabs/purchases');

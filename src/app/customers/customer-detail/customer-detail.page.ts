@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
+import { NavController, ToastController } from '@ionic/angular';
 import { CustomerDto } from 'src/app/classes/customer-dto.model';
 import { Customer } from 'src/app/classes/customer.model';
 import { CustomersService } from 'src/app/services/customers.service';
@@ -11,43 +12,99 @@ import { CustomersService } from 'src/app/services/customers.service';
   templateUrl: './customer-detail.page.html',
   styleUrls: ['./customer-detail.page.scss'],
 })
-export class CustomerDetailPage implements OnInit {
+export class CustomerDetailPage implements OnInit, OnDestroy {
   selectedPicture: any;
   selectedSignature: any;
   displayPicture: any;
   displaySignature: any;
   displayImg: any;
   selectedSegment: string;
+
   customer = new Customer();
+
+  dataHaveChanged = false;
   isFetching = false;
   isUploading = false;
   customerForm: FormGroup;
 
   constructor(
+    private route: ActivatedRoute,
+    private navCtrl: NavController,
     private customersService: CustomersService,
     private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
-    this.selectedSegment = 'picture';
-    this.displayPicture = '../../assets/icons/personv06.svg';
-    this.displaySignature = '../../assets/icons/signaturev04.svg';
-    this.displayImg = this.displayPicture;
-    this.customerForm = new FormGroup({
-      customerName: new FormControl(null, {
-        validators: [Validators.required],
-      }),
-      contactNo: new FormControl(''),
-      address: new FormControl(''),
-      sssNo: new FormControl(''),
-      hdmfNo: new FormControl(''),
-      phicNo: new FormControl(''),
-      tinNo: new FormControl(''),
-      bloodType: new FormControl(''),
-      erContactPerson: new FormControl(''),
-      erContactNo: new FormControl(''),
-      erContactAddress: new FormControl(''),
+
+    this.isFetching = true;
+
+    this.route.paramMap.subscribe((paramMap) => {
+      if (!paramMap.has('customerId')) {
+        this.navCtrl.navigateBack('/tabs/customers');
+        return;
+      }
+
+      if (isNaN(Number(paramMap.get('customerId')))) {
+        this.navCtrl.navigateBack('/tabs/customers');
+        return;
+      }
+
+      this.selectedSegment = 'picture';
+      this.displayPicture = '../../assets/icons/personv06.svg';
+      this.displaySignature = '../../assets/icons/signaturev04.svg';
+      this.displayImg = this.displayPicture;
+      this.customerForm = new FormGroup({
+        customerName: new FormControl(null, {
+          validators: [Validators.required],
+        }),
+        contactNo: new FormControl(''),
+        address: new FormControl(''),
+        sssNo: new FormControl(''),
+        hdmfNo: new FormControl(''),
+        phicNo: new FormControl(''),
+        tinNo: new FormControl(''),
+        bloodType: new FormControl(''),
+        erContactPerson: new FormControl(''),
+        erContactNo: new FormControl(''),
+        erContactAddress: new FormControl(''),
+      });
+
+      const customerId = Number(paramMap.get('customerId'));
+      if (customerId > 0) {
+        this.customersService.getCustomer(customerId).subscribe((resData) => {
+          this.customer.customerId = resData.customerId;
+          this.customerForm.patchValue({
+            customerName: resData.customerName,
+            contactNo: resData.contactNo,
+            address: resData.address,
+            sssNo: resData.sssNo,
+            hdmfNo: resData.hdmfNo,
+            phicNo: resData.phicNo,
+            tinNo: resData.tinNo,
+            bloodType: resData.bloodType,
+            erContactPerson: resData.erContactPerson,
+            erContactNo: resData.erContactNo,
+            erContactAddress: resData.erContactAddress,
+          });
+
+          if (resData.customerPicture) {
+            this.displayPicture = 'data:' + resData.customerPicture.type +
+            ';base64,' + resData.customerPicture.file;
+            this.displayImg = this.displayPicture;
+          }
+
+          if (resData.customerSignature) {
+            this.displaySignature = 'data:' + resData.customerSignature.type +
+            ';base64,' + resData.customerSignature.file;
+          }
+
+          this.isFetching = false;
+        });
+      } else {
+        this.isFetching = false;
+      }
     });
+
   }
 
   onSegmentChanged(event) {
@@ -133,6 +190,7 @@ export class CustomerDetailPage implements OnInit {
 
       this.customersService.postCustomer(customerData).subscribe(
         (res) => {
+          this.dataHaveChanged = true;
           if (this.customer.customerId === undefined) {
             this.customer = tmpCustomer;
             this.customer.customerId = res;
@@ -165,4 +223,11 @@ export class CustomerDetailPage implements OnInit {
         res.present();
       });
   }
+
+  ngOnDestroy(): void {
+      if (this.dataHaveChanged) {
+        this.customersService.customersHaveChanged.next(true);
+      }
+  }
+
 }

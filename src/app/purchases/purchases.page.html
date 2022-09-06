@@ -1,17 +1,17 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="end">
-      <!-- <ion-button (click)="openFirst()">
+    <!-- <ion-buttons slot="end">
+      <ion-button (click)="openFirst()">
         <ion-icon
           slot="icon-only"
           ios="ellipsis-horizontal"
           md="ellipsis-vertical"
         ></ion-icon>
-      </ion-button> -->
+      </ion-button>
       <ion-button>
         <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
     <ion-searchbar #purchaseSearchBar></ion-searchbar>
   </ion-toolbar>
 </ion-header>
@@ -63,26 +63,6 @@
           <div class="separator"></div>
 
           <div class="action-buttons">
-            <!-- <div> -->
-            <!-- <ion-button
-                [disabled]="purchasePrintPreview.orderId.includes(order.orderId)"
-                class="ion-no-padding ion-no-margin"
-                expand="full"
-                mode="ios"
-                color="success"
-                (click)="onAddToPurchaseList(order.orderId)"
-                ><ion-icon
-                  slot="start"
-                  src="../../assets/icons/list-add.svg"
-                ></ion-icon>
-                Add to Purchase List</ion-button
-              > -->
-            <!-- <ion-item class="ion-padding-start ion-margin-start">
-              <ion-card-title class="ion-padding-start ion-margin-start">
-                {{ purchase.totalAmt | number:'1.2-2' }}
-              </ion-card-title>
-            </ion-item> -->
-            <!-- </div> -->
             <ion-item lines="none">
 
             <ion-icon class="totalIcon" name="calculator-outline" color="primary" slot="start"></ion-icon>

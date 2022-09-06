@@ -11,6 +11,7 @@ export class AppParamsConfig {
   urlItemUomSearch: any;
   urlCustomers: any;
   urlCustomerSearch: any;
+  urlCustomerFindByNameOrId: any;
   urlUoms: any;
   urlMenus: any;
   urlMenuSearch: any;
@@ -51,8 +52,8 @@ export class AppParamsConfig {
 
   constructor() {
 
-    // this.url = 'http://122.52.134.244:8443/api';
-    this.url = 'http://localhost:8443/api';
+    this.url = 'http://122.52.134.244:8443/api';
+    // this.url = 'http://localhost:8443/api';
 
     this.urlItems = this.url + '/items';
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;
@@ -60,6 +61,7 @@ export class AppParamsConfig {
     this.urlItemUomSearch = `${this.urlItemUoms}/search/findByItemId`;
     this.urlCustomers = `${this.url}/customers`;
     this.urlCustomerSearch = `${this.urlCustomers}/search/findByCustomerNameContainingOrderByCustomerName`;
+    this.urlCustomerFindByNameOrId = `${this.urlCustomers}/search/findByNameOrId`;
     this.urlUoms = this.url + '/uoms';
     this.urlMenus = `${this.url}/menus`;
     this.urlMenuSearch = `${this.urlMenus}/search/findByMenuNameContainingOrderByMenuName`;
@@ -74,8 +76,8 @@ export class AppParamsConfig {
     this.urlPurchases = `${this.url}/purchases`;
     this.urlPurchasesSearch = `${this.urlPurchases}/search/findUnpostedPurchases`;
 
-    // this.urlV1 = 'http://122.52.134.244:8443/api/v1';
-    this.urlV1 = 'http://localhost:8443/api/v1';
+    this.urlV1 = 'http://122.52.134.244:8443/api/v1';
+    // this.urlV1 = 'http://localhost:8443/api/v1';
 
     this.urlV1Items = this.urlV1 + '/items';
     this.urlV1ItemUoms = this.urlV1 + '/itemUoms';

@@ -1,4 +1,5 @@
 import { CustomerPicture } from './customer-picture.model';
+import { CustomerSignature } from './customer-signature.model';
 
 export class Customer {
   constructor(
@@ -14,6 +15,9 @@ export class Customer {
     public erContactPerson?: string,
     public erContactNo?: string,
     public erContactAddress?: string,
-    public customerPicture?: CustomerPicture
+    public customerPicture?: CustomerPicture,
+    public customerSignature?: CustomerSignature,
+    public convertedPicture?: any,
+    public convertedSignature?: any,
   ){}
 }
