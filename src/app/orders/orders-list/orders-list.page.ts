@@ -120,7 +120,7 @@ export class OrdersListPage implements OnInit, OnDestroy {
   processOrderResult(event?) {
     return (data) => {
       this.orders = this.orders.concat(data._embedded.orders);
-
+      console.log(this.orders);
       this.totalPages = data.page.totalPages;
       this.isFetching = false;
       if (event) {

@@ -1,5 +1,7 @@
+/* eslint-disable quote-props */
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-underscore-dangle */
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { OrderDto } from '../classes/order-dto.model';
@@ -38,7 +40,18 @@ export class OrdersService {
 
   getOrder(orderId: number): Observable<Order> {
     this.apiUrl = `${this.config.urlOrders}/${orderId}?projection=orderView`;
-    return this.http.get<Order>(this.apiUrl);
+
+    const options = {
+      headers: new HttpHeaders({
+        'Cache-Control':
+          'no-cache, no-store, must-revalidate, post-check=0, pre-check=0',
+        Pragma: 'no-cache',
+        Expires: '0',
+        'Content-Type': 'application/json',
+      }),
+    };
+
+    return this.http.get<Order>(this.apiUrl, options);
   }
 
   getOrders(
@@ -59,12 +72,12 @@ export class OrdersService {
       orderId = searchDesc;
     }
 
-    searchDesc = String(searchDesc).replace('%','');
-    searchDesc = String(searchDesc).replace('^','');
-    searchDesc = String(searchDesc).replace('[','');
-    searchDesc = String(searchDesc).replace(']','');
-    searchDesc = String(searchDesc).replace('|','');
-    searchDesc = String(searchDesc).replace('\\','');
+    searchDesc = String(searchDesc).replace('%', '');
+    searchDesc = String(searchDesc).replace('^', '');
+    searchDesc = String(searchDesc).replace('[', '');
+    searchDesc = String(searchDesc).replace(']', '');
+    searchDesc = String(searchDesc).replace('|', '');
+    searchDesc = String(searchDesc).replace('\\', '');
 
     // eslint-disable-next-line max-len
     this.apiUrl =
@@ -83,6 +96,11 @@ export class OrdersService {
   postOrders(order: OrderDto) {
     this.apiUrl = `${this.config.urlV1Orders}`;
     return this.http.post(this.apiUrl, order);
+  }
+
+  putOrderSetStatus(orderdDto: OrderDto): Observable<OrderDto> {
+    this.apiUrl = `${this.config.urlV1OrderSetStatus}`;
+    return this.http.put<OrderDto>(this.apiUrl, orderdDto);
   }
 
   patchOrders(order: Order) {

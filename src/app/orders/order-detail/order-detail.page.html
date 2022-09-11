@@ -93,6 +93,15 @@
                   <ion-list>
                     <ion-item
                       #inTransitStatus
+                      *ngIf="orderDetailsConfig.packedStatus"
+                      class="ion-text-center ion-no-padding ion-no-margin"
+                      lines="none"
+                      [button]="true"
+                      (click)="onUpdateStatus('Packed')"
+                      ><ion-label>Packed</ion-label></ion-item
+                    >
+                    <ion-item
+                      #inTransitStatus
                       *ngIf="orderDetailsConfig.inTransitStatus"
                       class="ion-text-center ion-no-padding ion-no-margin"
                       lines="none"

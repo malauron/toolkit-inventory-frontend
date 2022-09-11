@@ -8,6 +8,7 @@ export class PurchaseDto {
     public purchaseStatus?: string,
     public vendor?: Vendor,
     public purchaseItems?: PurchaseItem[],
+    public purchaseItem?: PurchaseItem,
     public dateCreated?: string,
   ){}
 }

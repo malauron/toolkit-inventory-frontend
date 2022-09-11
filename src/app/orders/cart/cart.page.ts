@@ -67,11 +67,11 @@ export class CartPage implements OnInit {
 
   onSaveMenu() {
     if (this.customer.customerId !== undefined && this.cartMenus.length > 0) {
-      const orderDto = new OrderDto(
-        this.customer,
-        this.processOrderMenus(this.cartMenus),
-        this.processCartMenu(this.cartMenus)
-      );
+      const orderDto = new OrderDto();
+        orderDto.customer = this.customer;
+        orderDto.orderMenus = this.processOrderMenus(this.cartMenus);
+        orderDto.cartMenus = this.processCartMenu(this.cartMenus);
+
 
       this.orderService.postOrders(orderDto).subscribe(
         (res) => {

@@ -30,6 +30,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   vendor = new Vendor();
   purchaseItems: PurchaseItem[] = [];
 
+  isUploading = false;
   dataHaveChanged = false;
   isFetching = false;
   modalOpen = false;
@@ -78,6 +79,39 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
     });
   }
 
+  onUpdateStatus(newStatus: string) {
+    if (!this.isUploading) {
+      this.isFetching = true;
+      const purchaseDto = new PurchaseDto();
+
+      purchaseDto.purchaseId = this.purchase.purchaseId;
+      purchaseDto.purchaseStatus = newStatus;
+
+      this.purchaseService.putPurchaseSetStatus(purchaseDto).subscribe(
+        (res) => {
+          this.dataHaveChanged = true;
+          if (res.purchaseStatus === 'Unposted') {
+            this.purchase.purchaseStatus = newStatus;
+            this.messageBox(
+              `Purchase has been ${newStatus.toLowerCase()} successfully.`
+            );
+          } else {
+            this.purchase.purchaseStatus = res.purchaseStatus;
+            this.messageBox(
+              'Unable to update the purchase since its status has been tagged as ' +
+                this.purchase.purchaseStatus
+            );
+          }
+          this.isUploading = false;
+        },
+        (err) => {
+          this.messageBox('An error occured while trying to update the purchase detail.');
+          this.isUploading = false;
+        }
+      );
+    }
+  }
+
   onCustomerSearch() {
     if (!this.modalOpen) {
       this.modalOpen = true;
@@ -98,12 +132,22 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
                 .putPurchaseSetVendor(purchaseDto)
                 .subscribe((res) => {
                   this.dataHaveChanged = true;
-                  this.messageBox(
-                    'You have successfully assigned a new vendor.'
-                  );
+                  this.purchase.purchaseStatus = res.purchaseStatus;
+                  if (this.purchase.purchaseStatus === 'Unposted') {
+                    this.vendor = resultData.data;
+                    this.messageBox(
+                      'You have successfully assigned a new vendor.'
+                    );
+                  } else {
+                    this.messageBox(
+                      'Unable to update the purchase since its status has been tagged as ' +
+                        this.purchase.purchaseStatus
+                    );
+                  }
                 });
+            } else {
+              this.vendor = resultData.data;
             }
-            this.vendor = resultData.data;
           }
           this.modalOpen = false;
         });
@@ -139,10 +183,20 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
               this.purchaseService
                 .putPurchaseItem(purchaseItem)
                 .subscribe((res) => {
-                  this.purchaseItems = this.purchaseItems.concat(res);
                   this.dataHaveChanged = true;
-                  this.getTotalAmt();
-                  this.messageBox('New purchased item has been added.');
+                  this.purchase.purchaseStatus = res.purchaseStatus;
+                  if (this.purchase.purchaseStatus === 'Unposted') {
+                    this.purchaseItems = this.purchaseItems.concat(
+                      res.purchaseItem
+                    );
+                    this.getTotalAmt();
+                    this.messageBox('New purchased item has been added.');
+                  } else {
+                    this.messageBox(
+                      'Unable to update the purchase since its status has been tagged as ' +
+                        this.purchase.purchaseStatus
+                    );
+                  }
                 });
             } else {
               this.purchaseItems = this.purchaseItems.concat(purchaseItem);
@@ -178,6 +232,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   onProcessSavedPurchase() {
     return (res: Purchase) => {
       this.purchase.purchaseId = res.purchaseId;
+      this.purchase.purchaseStatus = res.purchaseStatus;
       this.purchase.dateCreated = res.dateCreated;
       this.purchaseItems = res.purchaseItems;
       this.dataHaveChanged = true;
@@ -223,9 +278,17 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
                 .putPurchaseItem(purchaseItem)
                 .subscribe((res) => {
                   this.dataHaveChanged = true;
-                  this.updatePurchaseItemObj(pItem, purchaseItem);
-                  this.getTotalAmt();
-                  this.messageBox('Purchased item has been updated.');
+                  this.purchase.purchaseStatus = res.purchaseStatus;
+                  if (this.purchase.purchaseStatus === 'Unposted') {
+                    this.updatePurchaseItemObj(pItem, purchaseItem);
+                    this.getTotalAmt();
+                    this.messageBox('Purchased item has been updated.');
+                  } else {
+                    this.messageBox(
+                      'Unable to update the purchase since its status has been tagged as ' +
+                        this.purchase.purchaseStatus
+                    );
+                  }
                 });
             } else {
               this.updatePurchaseItemObj(pItem, purchaseItem);
@@ -261,11 +324,23 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
             text: 'Delete',
             handler: () => {
               if (pItem.purchaseItemId !== undefined) {
+                pItem.purchase = this.purchase;
                 this.purchaseService
                   .deletePurchaseItem(pItem)
                   .subscribe((res) => {
                     this.dataHaveChanged = true;
-                    this.removeMenuObj(pItem);
+                    this.purchase.purchaseStatus = res.purchaseStatus;
+                    if (this.purchase.purchaseStatus === 'Unposted') {
+                      this.removeMenuObj(pItem);
+                      this.messageBox(
+                        'Purchase item has been deleted successfully.'
+                      );
+                    } else {
+                      this.messageBox(
+                        'Unable to delete the purchase item since purchase has been tagged as ' +
+                          this.purchase.purchaseStatus
+                      );
+                    }
                   });
               } else {
                 this.removeMenuObj(pItem);

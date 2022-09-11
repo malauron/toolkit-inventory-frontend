@@ -9,6 +9,7 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { Customer } from 'src/app/classes/customer.model';
+import { OrderDto } from 'src/app/classes/order-dto.model';
 import { OrderMenuDto } from 'src/app/classes/order-menu-dto.model';
 import { OrderMenuIngredient } from 'src/app/classes/order-menu-ingredient.models';
 import { OrderMenuPrintPreviewDto } from 'src/app/classes/order-menu-print-preview.dto.model';
@@ -74,12 +75,19 @@ export class OrderDetailPage implements OnInit {
   }
 
   onUpdateStatus(newStatus: string) {
-    this.order.orderStatus = newStatus;
-    this.orderService.patchOrders(this.order).subscribe(
-      res => this.orderService.ordersHaveChanged.next(true)
-    );
-    this.orderDetailsConfig.setParams(newStatus);
+    // this.order.orderStatus = newStatus;
+    // this.orderService.patchOrders(this.order).subscribe(
+    //   res => this.orderService.ordersHaveChanged.next(true)
+    // );
+    // this.orderDetailsConfig.setParams(newStatus);
 
+    const orderDto = new OrderDto();
+    orderDto.orderId = this.order.orderId;
+    orderDto.orderStatus = newStatus;
+    this.orderService.putOrderSetStatus(orderDto).subscribe((res) => {
+      this.orderDetailsConfig.setParams(newStatus);
+      this.order.orderStatus = newStatus;
+    });
   }
 
   onDeleteMenu(menu: OrderMenu) {

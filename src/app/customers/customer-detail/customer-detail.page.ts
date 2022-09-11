@@ -138,9 +138,14 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
   }
 
   onSaveCustomer() {
+
     if (!this.customerForm.valid) {
       this.messageBox('Please provide a valid customer information');
-    } else {
+      return;
+    }
+
+    if (!this.isUploading) {
+
       this.isUploading = true;
       const customerDto = new CustomerDto();
       const tmpCustomer = new Customer();
@@ -202,13 +207,15 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
         },
         (err) => {
           this.messageBox(
-            'An error occured while trying to save the information. Please check your network connection and attached a picture with 1048576 bytes or less.'
+            'An error occured while trying to save the information. Please check your network ' +
+            'connection and attached a picture having a size of 1MB or less.'
           );
           this.isUploading = false;
         }
       );
 
     }
+
   }
 
   messageBox(msg: string) {

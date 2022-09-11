@@ -37,10 +37,12 @@ export class AppParamsConfig {
   urlV1CartMenuCount: any;
   urlV1Orders: any;
   urlV1OrderMenus: any;
+  urlV1OrderSetStatus: any;
   urlV1OrderMenuIngredients: any;
   urlV1OrderMenuIngredientSummary: any;
   urlV1Purchases: any;
   urlV1PurchaseSetVendor: any;
+  urlV1PurchaseSetStatus: any;
   urlV1PurchaseItems: any;
   urlV1Customers: any;
 
@@ -91,8 +93,10 @@ export class AppParamsConfig {
     this.urlV1OrderMenus = `${this.urlV1Orders}/orderMenus`;
     this.urlV1OrderMenuIngredients = `${this.urlV1OrderMenus}/orderMenuIngredients`;
     this.urlV1OrderMenuIngredientSummary = `${this.urlV1Orders}/orderMenuIngredientSummary`;
+    this.urlV1OrderSetStatus = `${this.urlV1Orders}/orderStatus`;
     this.urlV1Purchases = `${this.urlV1}/purchases`;
     this.urlV1PurchaseSetVendor = `${this.urlV1Purchases}/vendor`;
+    this.urlV1PurchaseSetStatus = `${this.urlV1Purchases}/purchaseStatus`;
     this.urlV1PurchaseItems = `${this.urlV1}/purchaseItems`;
     this.urlV1Customers = `${this.urlV1}/customers`;
 

@@ -91,17 +91,22 @@ export class PurchasesService {
     return this.http.post<Purchase>(this.apiUrl, purchaseDto);
   }
 
-  putPurchaseSetVendor(purchaseDto: PurchaseDto) {
+  putPurchaseSetVendor(purchaseDto: PurchaseDto): Observable<PurchaseDto> {
     this.apiUrl = `${this.config.urlV1PurchaseSetVendor}`;
-    return this.http.put(this.apiUrl, purchaseDto);
+    return this.http.put<PurchaseDto>(this.apiUrl, purchaseDto);
   }
 
-  putPurchaseItem(purchaseItem: PurchaseItem) {
+  putPurchaseSetStatus(purchaseDto: PurchaseDto): Observable<PurchaseDto> {
+    this.apiUrl = `${this.config.urlV1PurchaseSetStatus}`;
+    return this.http.put<PurchaseDto>(this.apiUrl, purchaseDto);
+  }
+
+  putPurchaseItem(purchaseItem: PurchaseItem): Observable<PurchaseDto> {
     this.apiUrl = `${this.config.urlV1PurchaseItems}`;
-    return this.http.put(this.apiUrl, purchaseItem);
+    return this.http.put<PurchaseDto>(this.apiUrl, purchaseItem);
   }
 
-  deletePurchaseItem(purchaseItem: PurchaseItem) {
+  deletePurchaseItem(purchaseItem: PurchaseItem): Observable<PurchaseDto> {
     const options = {
       headers: new HttpHeaders({
         contentType: 'application/json'
@@ -109,6 +114,6 @@ export class PurchasesService {
       body: purchaseItem
     };
     this.apiUrl = `${this.config.urlV1PurchaseItems}`;
-    return this.http.delete(this.apiUrl, options);
+    return this.http.delete<PurchaseDto>(this.apiUrl, options);
   }
 }

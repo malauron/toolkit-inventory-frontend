@@ -1,19 +1,5 @@
 export class OrderDetailsConfig {
 
-  // orderStatusColor: string;
-  // orderStatusButton: boolean;
-  // orderStatusBadge: boolean;
-  // excludedIngredientIcon: boolean;
-  // deleteIngredientButton: boolean;
-  // includedIngredientIcon: boolean;
-  // ingredientsBottomDiv: boolean;
-  // optionButtonsContainer: boolean;
-  // orderStatusPopover: boolean;
-  // preparingStatus: boolean;
-  // inTransitStatus: boolean;
-  // deliveredStatus: boolean;
-  // cancelledStatus: boolean;
-
   constructor(
   public orderStatusColor?: string,
   public orderStatusButton?: boolean,
@@ -25,6 +11,7 @@ export class OrderDetailsConfig {
   public optionButtonsContainer?: boolean,
   public orderStatusPopover?: boolean,
   public preparingStatus?: boolean,
+  public packedStatus?: boolean,
   public inTransitStatus?: boolean,
   public deliveredStatus?: boolean,
   public cancelledStatus?: boolean
@@ -46,6 +33,7 @@ setParams(orderStatus?: string) {
   this.optionButtonsContainer = false;
   this.orderStatusPopover = false;
   this.preparingStatus = false;
+  this.packedStatus = false;
   this.inTransitStatus = false;
   this.deliveredStatus = false;
   this.cancelledStatus = false;
@@ -61,6 +49,24 @@ setParams(orderStatus?: string) {
     this.optionButtonsContainer = true;
     this.orderStatusPopover = true;
     this.preparingStatus = false;
+    this.packedStatus = true;
+    this.inTransitStatus = false;
+    this.deliveredStatus = false;
+    this.cancelledStatus = true;
+  }
+
+  if (orderStatus === 'Packed') {
+    this.orderStatusColor = 'secondary';
+    this.orderStatusButton = true;
+    this.orderStatusBadge = false;
+    this.excludedIngredientIcon = true;
+    this.deleteIngredientButton = false;
+    this.includedIngredientIcon = true;
+    this.ingredientsBottomDiv = false;
+    this.optionButtonsContainer = false;
+    this.orderStatusPopover = true;
+    this.preparingStatus = false;
+    this.packedStatus = false;
     this.inTransitStatus = true;
     this.deliveredStatus = true;
     this.cancelledStatus = true;
@@ -77,6 +83,7 @@ setParams(orderStatus?: string) {
     this.optionButtonsContainer = false;
     this.orderStatusPopover = true;
     this.preparingStatus = false;
+    this.packedStatus = false;
     this.inTransitStatus = false;
     this.deliveredStatus = true;
     this.cancelledStatus = true;
@@ -93,6 +100,7 @@ setParams(orderStatus?: string) {
     this.optionButtonsContainer = false;
     this.orderStatusPopover = false;
     this.preparingStatus = false;
+    this.packedStatus = false;
     this.inTransitStatus = false;
     this.deliveredStatus = false;
     this.cancelledStatus = false;
