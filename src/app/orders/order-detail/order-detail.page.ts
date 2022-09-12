@@ -80,9 +80,6 @@ export class OrderDetailPage implements OnInit {
     this.orderService.putOrderSetStatus(orderDto).subscribe((res) => {
       const oldStatus = res.orderStatus;
 
-      console.log(oldStatus);
-      console.log(newStatus);
-
       if (oldStatus === 'Preparing') {
         this.messageBox('Order has been successfully tagged as ' + newStatus);
         this.orderDetailsConfig.setParams(newStatus);

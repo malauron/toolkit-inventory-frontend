@@ -68,10 +68,9 @@ export class CartPage implements OnInit {
   onSaveMenu() {
     if (this.customer.customerId !== undefined && this.cartMenus.length > 0) {
       const orderDto = new OrderDto();
-        orderDto.customer = this.customer;
-        orderDto.orderMenus = this.processOrderMenus(this.cartMenus);
-        orderDto.cartMenus = this.processCartMenu(this.cartMenus);
-
+      orderDto.customer = this.customer;
+      orderDto.orderMenus = this.processOrderMenus(this.cartMenus);
+      orderDto.cartMenus = this.processCartMenu(this.cartMenus);
 
       this.orderService.postOrders(orderDto).subscribe(
         (res) => {
@@ -143,17 +142,16 @@ export class CartPage implements OnInit {
           ings[key].requiredUom.uomName
         );
 
-        const cartMenuIng = new OrderMenuIngredient(
-          undefined,
-          undefined,
-          item,
-          baseUom,
-          ings[key].baseQty,
-          requiredUom,
-          ings[key].requiredQty,
-          ings[key].orderedQty,
-          ings[key].menuIngredientId
-        );
+        const cartMenuIng = new OrderMenuIngredient();
+
+        cartMenuIng.item = item;
+        cartMenuIng.baseUom = baseUom;
+        cartMenuIng.baseQty = ings[key].baseQty;
+        cartMenuIng.requiredUom = requiredUom;
+        cartMenuIng.requiredQty = ings[key].requiredQty;
+        cartMenuIng.orderedQty = ings[key].orderedQty;
+        cartMenuIng.menuIngredientId = ings[key].menuIngredientId;
+
         orderMenuIngredients = orderMenuIngredients.concat(cartMenuIng);
       }
     }
