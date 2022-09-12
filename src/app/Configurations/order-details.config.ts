@@ -62,8 +62,8 @@ setParams(orderStatus?: string) {
     this.excludedIngredientIcon = true;
     this.deleteIngredientButton = false;
     this.includedIngredientIcon = true;
-    this.ingredientsBottomDiv = false;
-    this.optionButtonsContainer = false;
+    this.ingredientsBottomDiv = true;
+    this.optionButtonsContainer = true;
     this.orderStatusPopover = true;
     this.preparingStatus = false;
     this.packedStatus = false;
@@ -118,6 +118,7 @@ setParams(orderStatus?: string) {
     this.optionButtonsContainer = false;
     this.orderStatusPopover = false;
     this.preparingStatus = false;
+    this.packedStatus = false;
     this.inTransitStatus = false;
     this.deliveredStatus = false;
     this.cancelledStatus = false;

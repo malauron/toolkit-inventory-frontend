@@ -12,6 +12,7 @@ export class OrderMenuIngredient {
     public requiredUom?: Uom,
     public requiredQty?: number,
     public orderedQty?: number,
+    public cost?: number,
     public menuIngredientId?: number
   ){}
 

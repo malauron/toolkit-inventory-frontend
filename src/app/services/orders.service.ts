@@ -64,7 +64,7 @@ export class OrdersService {
     }
 
     let orderId: number;
-    const orderStatus = ['Preparing', 'In Transit'];
+    const orderStatus = ['Preparing', 'Packed', 'In Transit'];
 
     if (isNaN(searchDesc)) {
       orderId = 0;

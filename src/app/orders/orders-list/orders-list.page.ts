@@ -86,6 +86,8 @@ export class OrdersListPage implements OnInit, OnDestroy {
     let statusColor: string;
     if (orderStatus === 'Preparing') {
       statusColor = 'warning';
+    }if (orderStatus === 'Packed') {
+      statusColor = 'secondary';
     }
     if (orderStatus === 'In Transit') {
       statusColor = 'tertiary';
@@ -120,7 +122,6 @@ export class OrdersListPage implements OnInit, OnDestroy {
   processOrderResult(event?) {
     return (data) => {
       this.orders = this.orders.concat(data._embedded.orders);
-      console.log(this.orders);
       this.totalPages = data.page.totalPages;
       this.isFetching = false;
       if (event) {

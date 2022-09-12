@@ -25,7 +25,6 @@ import { OrderMenuPrintPreviewComponent } from '../order-menu-print-preview/orde
   styleUrls: ['./order-detail.page.scss'],
 })
 export class OrderDetailPage implements OnInit {
-
   @ViewChild('orderStatusPopover') orderStatusPopover: IonPopover;
   orderStatusPopoverOpen = false;
 
@@ -75,18 +74,55 @@ export class OrderDetailPage implements OnInit {
   }
 
   onUpdateStatus(newStatus: string) {
-    // this.order.orderStatus = newStatus;
-    // this.orderService.patchOrders(this.order).subscribe(
-    //   res => this.orderService.ordersHaveChanged.next(true)
-    // );
-    // this.orderDetailsConfig.setParams(newStatus);
-
     const orderDto = new OrderDto();
     orderDto.orderId = this.order.orderId;
     orderDto.orderStatus = newStatus;
     this.orderService.putOrderSetStatus(orderDto).subscribe((res) => {
-      this.orderDetailsConfig.setParams(newStatus);
-      this.order.orderStatus = newStatus;
+      const oldStatus = res.orderStatus;
+
+      console.log(oldStatus);
+      console.log(newStatus);
+
+      if (oldStatus === 'Preparing') {
+        this.messageBox('Order has been successfully tagged as ' + newStatus);
+        this.orderDetailsConfig.setParams(newStatus);
+        this.order.orderStatus = newStatus;
+      } else if (oldStatus === 'Packed') {
+        const status = ['In Transit', 'Delivered', 'Cancelled'];
+        if (status.includes(newStatus)) {
+          this.messageBox('Order has been successfully tagged as ' + newStatus);
+          this.orderDetailsConfig.setParams(newStatus);
+          this.order.orderStatus = newStatus;
+        } else {
+          this.messageBox(
+            'Unable to update the order since it has been already tagged as ' +
+              oldStatus
+          );
+          this.orderDetailsConfig.setParams(oldStatus);
+          this.order.orderStatus = oldStatus;
+        }
+      } else if (oldStatus === 'In Transit') {
+        const status = ['Delivered', 'Cancelled'];
+        if (status.includes(newStatus)) {
+          this.messageBox('Order has been successfully tagged as ' + newStatus);
+          this.orderDetailsConfig.setParams(newStatus);
+          this.order.orderStatus = newStatus;
+        } else {
+          this.messageBox(
+            'Unable to update the order since it has been already tagged as ' +
+              oldStatus
+          );
+          this.orderDetailsConfig.setParams(oldStatus);
+          this.order.orderStatus = oldStatus;
+        }
+      } else {
+        this.messageBox(
+          'Unable to update the order since it has been already tagged as ' +
+            oldStatus
+        );
+        this.orderDetailsConfig.setParams(oldStatus);
+        this.order.orderStatus = oldStatus;
+      }
     });
   }
 
@@ -116,7 +152,6 @@ export class OrderDetailPage implements OnInit {
           res.present();
         });
     }
-
   }
 
   removeMenuObj(menu: OrderMenu) {
@@ -163,9 +198,7 @@ export class OrderDetailPage implements OnInit {
     }
   }
 
-
   onPrintPreview(menu: OrderMenuDto) {
-
     const orderMenuPrintPreviewDto = new OrderMenuPrintPreviewDto();
     orderMenuPrintPreviewDto.orderId = this.order.orderId;
     orderMenuPrintPreviewDto.dateCreated = this.order.dateCreated;

@@ -11,6 +11,7 @@ import { PurchaseDto } from 'src/app/classes/purchase-dto.model';
 import { PurchaseItem } from 'src/app/classes/purchase-item.model';
 import { Purchase } from 'src/app/classes/purchase.model';
 import { Vendor } from 'src/app/classes/vendor.model';
+import { PurchaseDetailsConfig } from 'src/app/Configurations/purchase-details.config';
 import { PurchasesService } from 'src/app/services/purchases.service';
 import { VendorSearchComponent } from 'src/app/vendors/vendor-search/vendor-search.component';
 import { PurchaseItemDetail } from '../purchased-item/purchase-item.model';
@@ -29,6 +30,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   purchase = new Purchase();
   vendor = new Vendor();
   purchaseItems: PurchaseItem[] = [];
+  purchaseDetailsConfig: PurchaseDetailsConfig;
 
   isUploading = false;
   dataHaveChanged = false;
@@ -50,6 +52,8 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.isFetching = true;
 
+    this.purchaseDetailsConfig = new PurchaseDetailsConfig();
+
     this.route.paramMap.subscribe((paramMap) => {
       if (!paramMap.has('purchaseId')) {
         this.navCtrl.navigateBack('/tabs/purchases');
@@ -67,6 +71,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
           this.purchase.purchaseId = resData.purchaseId;
           this.purchase.totalAmt = resData.totalAmt;
           this.purchase.purchaseStatus = resData.purchaseStatus;
+          this.purchaseDetailsConfig.setParams(resData.purchaseStatus);
           this.purchase.dateCreated = resData.dateCreated;
           this.vendor = resData.vendor;
           this.purchaseItems = resData.purchaseItems;
@@ -81,7 +86,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
 
   onUpdateStatus(newStatus: string) {
     if (!this.isUploading) {
-      this.isFetching = true;
+      this.isUploading = true;
       const purchaseDto = new PurchaseDto();
 
       purchaseDto.purchaseId = this.purchase.purchaseId;
@@ -92,11 +97,13 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
           this.dataHaveChanged = true;
           if (res.purchaseStatus === 'Unposted') {
             this.purchase.purchaseStatus = newStatus;
+            this.purchaseDetailsConfig.setParams(newStatus);
             this.messageBox(
               `Purchase has been ${newStatus.toLowerCase()} successfully.`
             );
           } else {
             this.purchase.purchaseStatus = res.purchaseStatus;
+            this.purchaseDetailsConfig.setParams(res.purchaseStatus);
             this.messageBox(
               'Unable to update the purchase since its status has been tagged as ' +
                 this.purchase.purchaseStatus
@@ -105,7 +112,9 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
           this.isUploading = false;
         },
         (err) => {
-          this.messageBox('An error occured while trying to update the purchase detail.');
+          this.messageBox(
+            'An error occured while trying to update the purchase detail.'
+          );
           this.isUploading = false;
         }
       );

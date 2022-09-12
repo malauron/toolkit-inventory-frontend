@@ -58,17 +58,20 @@
             <!-- Button to change the status of the purchase -->
             <ion-button
               #statusButton
-              *ngIf="purchase.purchaseStatus === 'Unposted' && !isUploading"
+              *ngIf="purchaseDetailsConfig.purchaseStatusButton && !isUploading"
               fill="clear"
               size="small"
               mode="ios"
               (click)="onShowPopOver($event)"
             >
-              <ion-badge color="warning">Unposted</ion-badge>
+              <ion-badge [color]="purchaseDetailsConfig.purchaseStatusColor"
+                >{{purchase.purchaseStatus}}</ion-badge
+              >
             </ion-button>
 
             <ion-popover
               #statusPopover
+              *ngIf="purchaseDetailsConfig.purchaseStatusPopover"
               triggerAction="click"
               dismissOnSelect="true"
               [isOpen]="statusPopoverOpen"
@@ -78,7 +81,8 @@
                 <ion-content>
                   <ion-list>
                     <ion-item
-                      #deliveredStatus
+                      #postedStatus
+                      *ngIf="purchaseDetailsConfig.postedStatus"
                       class="ion-text-center ion-no-padding ion-no-margin"
                       lines="full"
                       [button]="true"
@@ -88,6 +92,7 @@
                     </ion-item>
                     <ion-item
                       #cancelledStatus
+                      *ngIf="purchaseDetailsConfig.cancelledStatus"
                       class="ion-text-center ion-no-padding ion-no-margin"
                       lines="none"
                       [button]="true"
@@ -102,7 +107,13 @@
             <!-- **************************************** -->
 
             <!-- Badge that indicates the status of the purchase -->
-            <!-- <ion-badge #statusBadge color="primary"> Unposted </ion-badge> -->
+            <ion-badge
+              #statusBadge
+              [color]="purchaseDetailsConfig.purchaseStatusColor"
+              *ngIf="purchaseDetailsConfig.purchaseStatusBadge"
+            >
+              {{purchase.purchaseStatus}}
+            </ion-badge>
             <!-- *************************************** -->
           </ion-item>
         </ion-col>
@@ -218,7 +229,6 @@
               <ion-button
                 *ngIf="purchase.purchaseStatus === 'Unposted'  || purchase.purchaseStatus === undefined"
                 (click)="onUpdatePurchaseItem(item)"
-                #deleteIngredientButton
                 class="ion-no-padding ion-no-margin"
                 mode="ios"
                 fill="clear"
