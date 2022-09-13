@@ -109,6 +109,9 @@ export class ItemsPage implements OnInit, OnDestroy {
       if (event) {
         event.target.complete();
       }
+
+      this.infiniteScroll.disabled = false;
+
     };
   }
 

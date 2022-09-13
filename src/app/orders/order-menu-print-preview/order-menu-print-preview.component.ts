@@ -13,6 +13,7 @@ export class OrderMenuPrintPreviewComponent implements OnInit, OnDestroy {
 
   orderMenuSub: Subscription;
   orderMenuDto = new OrderMenuPrintPreviewDto();
+  totalAmt: number;
 
   constructor(
     private orderService: OrdersService,
@@ -20,8 +21,13 @@ export class OrderMenuPrintPreviewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.totalAmt = 0;
     this.orderMenuSub = this.orderService.orderMenuPrintPreview.subscribe((data) => {
       this.orderMenuDto = data;
+      this.orderMenuDto.orderMenu.orderMenuIngredients.forEach((ing) => {
+        this.totalAmt += (ing.baseQty*ing.orderedQty*ing.requiredQty*ing.cost);
+        console.log(this.totalAmt);
+      });
     });
   }
 

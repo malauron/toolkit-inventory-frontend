@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable id-blacklist */
@@ -36,8 +37,18 @@ export class CustomersService {
 
   getCustomer(customerId: number): Observable<Customer> {
 
+    const options = {
+      headers: new HttpHeaders({
+        'Cache-Control':
+          'no-cache, no-store, must-revalidate, post-check=0, pre-check=0',
+        Pragma: 'no-cache',
+        Expires: '0',
+        'Content-Type': 'application/json',
+      }),
+    };
+
     this.apiUrl = `${this.config.urlCustomers}/${customerId}?projection=customerSingleView`;
-    return this.http.get<Customer>(this.apiUrl);
+    return this.http.get<Customer>(this.apiUrl, options);
 
   }
 
@@ -84,7 +95,17 @@ export class CustomersService {
       `${this.config.urlCustomerFindByNameOrId}?customerId=${id}&customerName=${searchDesc}` +
       `&page=${pageNumber}&size=${pageSize}&projection=customerPageView`;
 
-    return this.http.get<ResponseCustomers>(this.apiUrl);
+    const options = {
+      headers: new HttpHeaders({
+        'Cache-Control':
+          'no-cache, no-store, must-revalidate, post-check=0, pre-check=0',
+        Pragma: 'no-cache',
+        Expires: '0',
+        'Content-Type': 'application/json',
+      }),
+    };
+
+    return this.http.get<ResponseCustomers>(this.apiUrl, options);
   }
 
   postCustomer(customerData: FormData) {

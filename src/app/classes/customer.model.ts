@@ -4,6 +4,7 @@ import { CustomerSignature } from './customer-signature.model';
 export class Customer {
   constructor(
     public customerId?: number,
+    public customerCode?: string,
     public customerName?: string,
     public contactNo?: string,
     public address?: string,

@@ -47,8 +47,8 @@ export class CustomersPage implements OnInit, OnDestroy {
         distinctUntilChanged()
       )
       .subscribe((res) => {
-        this.searchValue = res.trim();
         this.infiniteScroll.disabled = false;
+        this.searchValue = res.trim();
         this.customers = [];
         this.pageNumber = 0;
         this.totalPages = 0;
@@ -60,7 +60,6 @@ export class CustomersPage implements OnInit, OnDestroy {
     this.customerSub = this.customerService.customersHaveChanged.subscribe(
       (data) => {
         this.searchValue = '';
-        this.infiniteScroll.disabled = false;
         this.customers = [];
         this.pageNumber = 0;
         this.totalPages = 0;
@@ -107,6 +106,7 @@ export class CustomersPage implements OnInit, OnDestroy {
           const newCustomer = new Customer();
 
           newCustomer.customerId = data._embedded.customers[key].customerId;
+          newCustomer.customerCode= data._embedded.customers[key].customerCode;
           newCustomer.customerName = data._embedded.customers[key].customerName;
           if (data._embedded.customers[key].customerPicture) {
             newCustomer.convertedPicture =
@@ -124,6 +124,9 @@ export class CustomersPage implements OnInit, OnDestroy {
       if (event) {
         event.target.complete();
       }
+
+      this.infiniteScroll.disabled = false;
+
     };
   }
 

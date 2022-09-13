@@ -54,6 +54,9 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
       this.displaySignature = '../../assets/icons/signaturev04.svg';
       this.displayImg = this.displayPicture;
       this.customerForm = new FormGroup({
+        customerCode: new FormControl(null, {
+          validators: [Validators.required],
+        }),
         customerName: new FormControl(null, {
           validators: [Validators.required],
         }),
@@ -74,6 +77,7 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
         this.customersService.getCustomer(customerId).subscribe((resData) => {
           this.customer.customerId = resData.customerId;
           this.customerForm.patchValue({
+            customerCode: resData.customerCode,
             customerName: resData.customerName,
             contactNo: resData.contactNo,
             address: resData.address,
@@ -150,6 +154,7 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
       const customerDto = new CustomerDto();
       const tmpCustomer = new Customer();
 
+      tmpCustomer.customerCode = this.customerForm.value.customerCode;
       tmpCustomer.customerName = this.customerForm.value.customerName;
       tmpCustomer.contactNo = this.customerForm.value.contactNo;
       tmpCustomer.address = this.customerForm.value.address;

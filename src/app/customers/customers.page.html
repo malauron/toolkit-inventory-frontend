@@ -36,6 +36,10 @@
               >ID #: {{ customer.customerId.toString().padStart(8, "0")
               }}</ion-label
             >
+            <ion-label class="ion-text-right"
+              >Code: {{ customer.customerCode
+              }}</ion-label
+            >
           </ion-item>
 
           <ion-avatar>
@@ -65,9 +69,14 @@
     threshold="5%"
     (ionInfinite)="loadMoreCustomers($event)"
   >
-    <ion-infinite-scroll-content
+    <!-- <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more menus..."
+      loadingText="Loading more customers..."
+    >
+    </ion-infinite-scroll-content> -->
+    <ion-infinite-scroll-content
+      loadingSpinner="none"
+      loadingText="Loading more customers..."
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

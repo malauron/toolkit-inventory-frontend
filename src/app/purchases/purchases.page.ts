@@ -101,6 +101,9 @@ export class PurchasesPage implements OnInit, OnDestroy {
       if (event) {
         event.target.complete();
       }
+
+      this.infiniteScroll.disabled = false;
+
     };
   }
 
