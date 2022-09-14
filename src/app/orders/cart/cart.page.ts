@@ -15,9 +15,11 @@ import { OrderDto } from 'src/app/classes/order-dto.model';
 import { OrderMenuIngredient } from 'src/app/classes/order-menu-ingredient.models';
 import { OrderMenu } from 'src/app/classes/order-menu.model';
 import { Uom } from 'src/app/classes/uom.model';
+import { Warehouse } from 'src/app/classes/warehouse.model';
 import { CustomerSearchComponent } from 'src/app/customers/customer-search/customer-search.component';
 import { CartsService } from 'src/app/services/carts.service';
 import { OrdersService } from 'src/app/services/orders.service';
+import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
 
 @Component({
   selector: 'app-cart',
@@ -26,7 +28,8 @@ import { OrdersService } from 'src/app/services/orders.service';
 })
 export class CartPage implements OnInit {
   cartMenus: CartMenu[] = [];
-  customer = new Customer();
+  customer: Customer;
+  warehouse: Warehouse;
 
   isFetching = false;
   modalOpen = false;
@@ -37,11 +40,13 @@ export class CartPage implements OnInit {
     private orderService: OrdersService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
-    private modalCustomerSearch: ModalController
+    private modalSearch: ModalController
   ) {}
 
   ngOnInit() {
     this.isFetching = true;
+    this.customer = new Customer();
+    this.warehouse = new Warehouse();
     this.cartService.getCartMenus().subscribe((resData) => {
       this.cartMenus = resData._embedded.cartMenus;
       this.isFetching = false;
@@ -50,7 +55,7 @@ export class CartPage implements OnInit {
 
   onCustomerSearch() {
     if (!this.modalOpen) {
-      this.modalCustomerSearch
+      this.modalSearch
         .create({ component: CustomerSearchComponent })
         .then((modalSearch) => {
           modalSearch.present();
@@ -65,10 +70,32 @@ export class CartPage implements OnInit {
     }
   }
 
+  onWarehouseSearch() {
+    if (!this.modalOpen) {
+      this.modalSearch
+        .create({ component: WarehouseSearchComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'warehouse') {
+            this.warehouse = resultData.data;
+          }
+          this.modalOpen = false;
+        });
+    }
+  }
+
   onSaveMenu() {
-    if (this.customer.customerId !== undefined && this.cartMenus.length > 0) {
+    if (
+      this.customer.customerId &&
+      this.warehouse.warehouseId &&
+      this.cartMenus.length > 0
+    ) {
       const orderDto = new OrderDto();
       orderDto.customer = this.customer;
+      orderDto.warehouse = this.warehouse;
       orderDto.orderMenus = this.processOrderMenus(this.cartMenus);
       orderDto.cartMenus = this.processCartMenu(this.cartMenus);
 
@@ -83,8 +110,10 @@ export class CartPage implements OnInit {
     } else {
       if (this.cartMenus.length <= 0) {
         this.messageBox('Cart is empty.');
-      } else {
+      } else if (!this.customer.customerId) {
         this.messageBox('Please assign a customer for the order.');
+      } else {
+        this.messageBox('Please choose a warehouse.');
       }
     }
   }

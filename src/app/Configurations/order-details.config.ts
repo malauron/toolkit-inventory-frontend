@@ -9,6 +9,8 @@ export class OrderDetailsConfig {
   public includedIngredientIcon?: boolean,
   public ingredientsBottomDiv?: boolean,
   public optionButtonsContainer?: boolean,
+  public printPreviewButton?: boolean,
+  public removeMenuButton?: boolean,
   public orderStatusPopover?: boolean,
   public preparingStatus?: boolean,
   public packedStatus?: boolean,
@@ -31,6 +33,8 @@ setParams(orderStatus?: string) {
   this.includedIngredientIcon = false;
   this.ingredientsBottomDiv = false;
   this.optionButtonsContainer = false;
+  this.printPreviewButton = false;
+  this.removeMenuButton = false;
   this.orderStatusPopover = false;
   this.preparingStatus = false;
   this.packedStatus = false;
@@ -47,6 +51,8 @@ setParams(orderStatus?: string) {
     this.includedIngredientIcon = false;
     this.ingredientsBottomDiv = true;
     this.optionButtonsContainer = true;
+    this.printPreviewButton = true;
+    this.removeMenuButton = true;
     this.orderStatusPopover = true;
     this.preparingStatus = false;
     this.packedStatus = true;
@@ -64,6 +70,8 @@ setParams(orderStatus?: string) {
     this.includedIngredientIcon = true;
     this.ingredientsBottomDiv = true;
     this.optionButtonsContainer = true;
+    this.printPreviewButton = true;
+    this.removeMenuButton = false;
     this.orderStatusPopover = true;
     this.preparingStatus = false;
     this.packedStatus = false;
@@ -80,7 +88,9 @@ setParams(orderStatus?: string) {
     this.deleteIngredientButton = false;
     this.includedIngredientIcon = true;
     this.ingredientsBottomDiv = false;
-    this.optionButtonsContainer = false;
+    this.optionButtonsContainer = true;
+    this.printPreviewButton = true;
+    this.removeMenuButton = false;
     this.orderStatusPopover = true;
     this.preparingStatus = false;
     this.packedStatus = false;
@@ -97,7 +107,9 @@ setParams(orderStatus?: string) {
     this.deleteIngredientButton = false;
     this.includedIngredientIcon = true;
     this.ingredientsBottomDiv = false;
-    this.optionButtonsContainer = false;
+    this.optionButtonsContainer = true;
+    this.printPreviewButton = true;
+    this.removeMenuButton = false;
     this.orderStatusPopover = false;
     this.preparingStatus = false;
     this.packedStatus = false;
@@ -116,6 +128,8 @@ setParams(orderStatus?: string) {
     this.includedIngredientIcon = true;
     this.ingredientsBottomDiv = false;
     this.optionButtonsContainer = false;
+    this.printPreviewButton = false;
+    this.removeMenuButton = false;
     this.orderStatusPopover = false;
     this.preparingStatus = false;
     this.packedStatus = false;

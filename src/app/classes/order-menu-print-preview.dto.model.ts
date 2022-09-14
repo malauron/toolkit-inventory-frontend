@@ -5,6 +5,7 @@ export class OrderMenuPrintPreviewDto {
     public orderId?: number,
     public dateCreated?: string,
     public customerName?: string,
+    public warehouseName?: string,
     public contactNo?: string,
     public address?: string,
     public orderMenu?: OrderMenuDto

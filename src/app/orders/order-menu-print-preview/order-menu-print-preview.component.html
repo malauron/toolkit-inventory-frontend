@@ -33,6 +33,10 @@
           <img src="../../../assets/icons/map.svg" />
           {{ orderMenuDto.address }}
         </div>
+        <div class="order-detail">
+          <img src="../../../assets/icons/warehouse.svg" />
+          {{ orderMenuDto.warehouseName }}
+        </div>
       </div>
 
       <div class="menu-header">
@@ -65,7 +69,7 @@
             <td>{{ ing.item.itemName }}</td>
             <td class="right-aligned">{{ ing.requiredQty  | number:'1.0-3' }} {{ ing.requiredUom.uomCode }}</td>
             <td class="right-aligned">{{ ing.cost*ing.baseQty | number:'1.0-4' }}/{{ ing.requiredUom.uomCode }}</td>
-            <td class="right-aligned">{{ ing.cost*ing.baseQty*ing.requiredQty | number:'1.0-4' }}</td>
+            <td class="right-aligned">{{ ing.cost*ing.baseQty*ing.requiredQty | number:'1.2-4' }}</td>
           </tr>
         </tbody>
       </table>

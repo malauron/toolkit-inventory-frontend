@@ -185,6 +185,20 @@
               >
             </ion-label>
           </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="business-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label>
+              <ion-card-title class="ion-text-wrap"
+                >{{ warehouse.warehouseName }}</ion-card-title
+              >
+            </ion-label>
+          </ion-item>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -280,6 +294,7 @@
             *ngIf="orderDetailsConfig.optionButtonsContainer"
           >
             <ion-button
+              *ngIf="orderDetailsConfig.printPreviewButton"
               mode="ios"
               color="secondary"
               (click)="onPrintPreview(menu)"
@@ -290,7 +305,12 @@
               ></ion-icon>
               <ion-label>Preview</ion-label>
             </ion-button>
-            <ion-button mode="ios" color="medium" (click)="onDeleteMenu(menu)">
+            <ion-button
+              *ngIf="orderDetailsConfig.removeMenuButton"
+              mode="ios"
+              color="medium"
+              (click)="onDeleteMenu(menu)"
+            >
               <ion-icon name="trash-sharp" slot="start"></ion-icon>
               <ion-label>Remove</ion-label>
             </ion-button>

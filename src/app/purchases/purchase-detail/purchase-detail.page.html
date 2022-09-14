@@ -161,6 +161,30 @@
             ></ion-icon>
             <ion-label class="ion-text-wrap">{{ vendor.address }}</ion-label>
           </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="business-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-title>{{ warehouse.warehouseName }}</ion-card-title>
+            </ion-label>
+            <ion-button
+              #statusButton
+              *ngIf="purchase.purchaseStatus === 'Unposted' || purchase.purchaseStatus === undefined"
+              (click)="onWarehouseSearch()"
+              fill="clear"
+              size="small"
+              mode="ios"
+              id="click-trigger"
+            >
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+
         </ion-col>
       </ion-row>
     </ion-grid>

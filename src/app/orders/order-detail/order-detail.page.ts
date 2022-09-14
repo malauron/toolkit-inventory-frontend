@@ -15,6 +15,7 @@ import { OrderMenuIngredient } from 'src/app/classes/order-menu-ingredient.model
 import { OrderMenuPrintPreviewDto } from 'src/app/classes/order-menu-print-preview.dto.model';
 import { OrderMenu } from 'src/app/classes/order-menu.model';
 import { Order } from 'src/app/classes/order.model';
+import { Warehouse } from 'src/app/classes/warehouse.model';
 import { OrderDetailsConfig } from 'src/app/Configurations/order-details.config';
 import { OrdersService } from 'src/app/services/orders.service';
 import { OrderMenuPrintPreviewComponent } from '../order-menu-print-preview/order-menu-print-preview.component';
@@ -28,11 +29,11 @@ export class OrderDetailPage implements OnInit {
   @ViewChild('orderStatusPopover') orderStatusPopover: IonPopover;
   orderStatusPopoverOpen = false;
 
-  orderMenus: OrderMenuDto[] = [];
-  customer = new Customer();
-  order = new Order();
-  orderDetailsConfig = new OrderDetailsConfig();
-  // orderStatusButton: string;
+  orderMenus: OrderMenuDto[];
+  customer: Customer;
+  warehouse: Warehouse;
+  order: Order;
+  orderDetailsConfig: OrderDetailsConfig;
   isFetching = false;
 
   constructor(
@@ -46,7 +47,11 @@ export class OrderDetailPage implements OnInit {
 
   ngOnInit() {
     this.isFetching = true;
-    // this.orderStatusButton = 'false';
+    this.orderMenus = [];
+    this.customer = new Customer();
+    this.warehouse = new Warehouse();
+    this.order = new Order();
+    this.orderDetailsConfig = new OrderDetailsConfig();
     this.route.paramMap.subscribe((paramMap) => {
       if (!paramMap.has('orderId')) {
         this.navCtrl.navigateBack('/tabs/orders/orders-list');
@@ -63,6 +68,7 @@ export class OrderDetailPage implements OnInit {
       this.orderService.getOrder(orderId).subscribe((resData) => {
         this.order = resData;
         this.customer = resData.customer;
+        this.warehouse = resData.warehouse;
         this.orderDetailsConfig.setParams(this.order.orderStatus);
       });
 
@@ -200,6 +206,7 @@ export class OrderDetailPage implements OnInit {
     orderMenuPrintPreviewDto.orderId = this.order.orderId;
     orderMenuPrintPreviewDto.dateCreated = this.order.dateCreated;
     orderMenuPrintPreviewDto.customerName = this.customer.customerName;
+    orderMenuPrintPreviewDto.warehouseName = this.warehouse.warehouseName;
     orderMenuPrintPreviewDto.contactNo = this.customer.contactNo;
     orderMenuPrintPreviewDto.address = this.customer.address;
     orderMenuPrintPreviewDto.orderMenu = menu;

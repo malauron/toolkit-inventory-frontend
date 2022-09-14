@@ -16,7 +16,6 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <div class="spinner">
     <ion-spinner
       name="bubbles"
@@ -29,10 +28,10 @@
     <div class="card-top"></div>
     <ion-grid>
       <ion-row class="customer-info">
-        <ion-col
-        class="ion-text-center">
+        <!-- <ion-col
+        class="ion-text-center"> -->
 
-          <ion-item lines="none">
+        <!-- <ion-item lines="none">
             <ion-label class="ion-text-center">
               <h6>-- Customer --</h6>
               <ion-label class="ion-text-wrap"><ion-card-title>{{ customer.customerName }}</ion-card-title></ion-label>
@@ -62,8 +61,54 @@
               <ion-icon name="search-outline" slot="start"></ion-icon>
               <ion-label>Search</ion-label>
             </ion-button>
-          </ion-card-content>
+          </ion-card-content> -->
 
+        <ion-col size-xs="12" size-xl="6">
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="person-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-title>{{ customer.customerName }}</ion-card-title>
+              <h2>{{ customer.contactNo }}</h2>
+              <h2>{{ customer.address }}</h2>
+            </ion-label>
+            <ion-button
+              (click)="onCustomerSearch()"
+              fill="clear"
+              size="small"
+              mode="ios"
+              id="click-trigger"
+            >
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size-xs="12" size-xl="6">
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="business-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-title>{{ warehouse.warehouseName }}</ion-card-title>
+            </ion-label>
+            <ion-button
+              (click)="onWarehouseSearch()"
+              fill="clear"
+              size="small"
+              mode="ios"
+              id="click-trigger"
+            >
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
         </ion-col>
       </ion-row>
     </ion-grid>

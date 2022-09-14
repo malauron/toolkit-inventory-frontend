@@ -25,6 +25,8 @@ export class AppParamsConfig {
   urlVendorSearch: any;
   urlPurchases: any;
   urlPurchasesSearch: any;
+  urlWarehouse: any;
+  urlWarehouseSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -77,6 +79,8 @@ export class AppParamsConfig {
     this.urlVendorSearch = `${this.urlVendors}/search/findByVendorNameContainingOrderByVendorName`;
     this.urlPurchases = `${this.url}/purchases`;
     this.urlPurchasesSearch = `${this.urlPurchases}/search/findUnpostedPurchases`;
+    this.urlWarehouse = `${this.url}/warehouses`;
+    this.urlWarehouseSearch = `${this.urlWarehouse}/search/findByWarehouseNameContainingOrderByWarehouseName`;
 
     // this.urlV1 = 'http://122.52.134.244:8443/api/v1';
     this.urlV1 = 'http://localhost:8443/api/v1';

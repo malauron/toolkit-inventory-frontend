@@ -26,7 +26,6 @@ export class OrderMenuPrintPreviewComponent implements OnInit, OnDestroy {
       this.orderMenuDto = data;
       this.orderMenuDto.orderMenu.orderMenuIngredients.forEach((ing) => {
         this.totalAmt += (ing.baseQty*ing.orderedQty*ing.requiredQty*ing.cost);
-        console.log(this.totalAmt);
       });
     });
   }

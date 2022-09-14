@@ -1,5 +1,6 @@
 import { PurchaseItem } from './purchase-item.model';
 import { Vendor } from './vendor.model';
+import { Warehouse } from './warehouse.model';
 
 export class Purchase{
   constructor(
@@ -7,6 +8,7 @@ export class Purchase{
     public vendor?: Vendor,
     public purchaseItems?: PurchaseItem[],
     public totalAmt?: number,
+    public warehouse?: Warehouse,
     public purchaseStatus?: string,
     public dateCreated?: string,
   ){}

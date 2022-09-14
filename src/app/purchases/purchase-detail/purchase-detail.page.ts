@@ -11,9 +11,11 @@ import { PurchaseDto } from 'src/app/classes/purchase-dto.model';
 import { PurchaseItem } from 'src/app/classes/purchase-item.model';
 import { Purchase } from 'src/app/classes/purchase.model';
 import { Vendor } from 'src/app/classes/vendor.model';
+import { Warehouse } from 'src/app/classes/warehouse.model';
 import { PurchaseDetailsConfig } from 'src/app/Configurations/purchase-details.config';
 import { PurchasesService } from 'src/app/services/purchases.service';
 import { VendorSearchComponent } from 'src/app/vendors/vendor-search/vendor-search.component';
+import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
 import { PurchaseItemDetail } from '../purchased-item/purchase-item.model';
 import { PurchaseItemService } from '../purchased-item/purchase-item.service';
 import { PurchasedItemComponent } from '../purchased-item/purchased-item.component';
@@ -27,10 +29,12 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   @ViewChild('statusPopover') statusPopover: IonPopover;
   statusPopoverOpen = false;
 
-  purchase = new Purchase();
+  purchase: Purchase;
   vendor = new Vendor();
+  warehouse: Warehouse;
   purchaseItems: PurchaseItem[] = [];
   purchaseDetailsConfig: PurchaseDetailsConfig;
+
 
   isUploading = false;
   dataHaveChanged = false;
@@ -52,6 +56,10 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.isFetching = true;
 
+    this.purchase = new Purchase();
+
+    this.warehouse = new Warehouse();
+
     this.purchaseDetailsConfig = new PurchaseDetailsConfig();
 
     this.route.paramMap.subscribe((paramMap) => {
@@ -68,12 +76,14 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       const purchaseId = Number(paramMap.get('purchaseId'));
       if (purchaseId > 0) {
         this.purchaseService.getPurchase(purchaseId).subscribe((resData) => {
+          console.log(resData);
           this.purchase.purchaseId = resData.purchaseId;
           this.purchase.totalAmt = resData.totalAmt;
           this.purchase.purchaseStatus = resData.purchaseStatus;
           this.purchaseDetailsConfig.setParams(resData.purchaseStatus);
           this.purchase.dateCreated = resData.dateCreated;
           this.vendor = resData.vendor;
+          this.warehouse = resData.warehouse;
           this.purchaseItems = resData.purchaseItems;
           this.totalAmt = this.purchase.totalAmt;
           this.isFetching = false;
@@ -156,6 +166,48 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
                 });
             } else {
               this.vendor = resultData.data;
+            }
+          }
+          this.modalOpen = false;
+        });
+    }
+  }
+
+  onWarehouseSearch() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.modalSearch
+        .create({ component: WarehouseSearchComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'warehouse') {
+            if (this.purchase.purchaseId) {
+              const purchaseDto = new PurchaseDto();
+              purchaseDto.purchaseId = this.purchase.purchaseId;
+              purchaseDto.vendor = resultData.data;
+
+              this.purchaseService
+                .putPurchaseSetVendor(purchaseDto)
+                .subscribe((res) => {
+                  this.dataHaveChanged = true;
+                  this.purchase.purchaseStatus = res.purchaseStatus;
+                  if (this.purchase.purchaseStatus === 'Unposted') {
+                    this.vendor = resultData.data;
+                    this.messageBox(
+                      'You have successfully assigned a new vendor.'
+                    );
+                  } else {
+                    this.messageBox(
+                      'Unable to update the purchase since its status has been tagged as ' +
+                        this.purchase.purchaseStatus
+                    );
+                  }
+                });
+            } else {
+              this.warehouse = resultData.data;
             }
           }
           this.modalOpen = false;

@@ -43,7 +43,10 @@
 
           <ion-item lines="none">
             <ion-icon class="contactIcon" name="storefront-outline" color="primary" slot="start"></ion-icon>
-            {{ purchase.vendor.vendorName }}
+            <ion-card-title>
+              <p>{{ purchase.vendor.vendorName }}</p>
+
+            </ion-card-title>
           </ion-item>
 
           <ion-item lines="none" class="contact-no">
