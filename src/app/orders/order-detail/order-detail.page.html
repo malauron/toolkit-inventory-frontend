@@ -211,6 +211,8 @@
           <div class="card-top"></div>
           <ion-card-header>
             <ion-label class="ion-text-center">
+              <ion-card-subtitle>{{ menu.orderMenuId.toString().padStart(8, "0")  }}</ion-card-subtitle>
+              <br />
               <ion-card-title>{{ menu.menu.menuName }}</ion-card-title>
               <br />
               <ion-card-subtitle>{{ menu.menu.remarks }}</ion-card-subtitle>

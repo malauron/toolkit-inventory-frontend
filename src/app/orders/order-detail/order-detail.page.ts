@@ -85,11 +85,18 @@ export class OrderDetailPage implements OnInit {
     orderDto.orderStatus = newStatus;
     this.orderService.putOrderSetStatus(orderDto).subscribe((res) => {
       const oldStatus = res.orderStatus;
-
       if (oldStatus === 'Preparing') {
         this.messageBox('Order has been successfully tagged as ' + newStatus);
         this.orderDetailsConfig.setParams(newStatus);
         this.order.orderStatus = newStatus;
+
+        this.orderService
+          .getOrderMenus(this.order.orderId)
+          .subscribe((resData) => {
+            this.orderMenus = [];
+            this.orderMenus = this.orderMenus.concat(resData);
+            this.isFetching = false;
+          });
       } else if (oldStatus === 'Packed') {
         const status = ['In Transit', 'Delivered', 'Cancelled'];
         if (status.includes(newStatus)) {
@@ -103,6 +110,14 @@ export class OrderDetailPage implements OnInit {
           );
           this.orderDetailsConfig.setParams(oldStatus);
           this.order.orderStatus = oldStatus;
+
+          this.orderService
+            .getOrderMenus(this.order.orderId)
+            .subscribe((resData) => {
+              this.orderMenus = [];
+              this.orderMenus = this.orderMenus.concat(resData);
+              this.isFetching = false;
+            });
         }
       } else if (oldStatus === 'In Transit') {
         const status = ['Delivered', 'Cancelled'];
@@ -117,6 +132,14 @@ export class OrderDetailPage implements OnInit {
           );
           this.orderDetailsConfig.setParams(oldStatus);
           this.order.orderStatus = oldStatus;
+
+          this.orderService
+            .getOrderMenus(this.order.orderId)
+            .subscribe((resData) => {
+              this.orderMenus = [];
+              this.orderMenus = this.orderMenus.concat(resData);
+              this.isFetching = false;
+            });
         }
       } else {
         this.messageBox(
@@ -125,6 +148,14 @@ export class OrderDetailPage implements OnInit {
         );
         this.orderDetailsConfig.setParams(oldStatus);
         this.order.orderStatus = oldStatus;
+
+        this.orderService
+          .getOrderMenus(this.order.orderId)
+          .subscribe((resData) => {
+            this.orderMenus = [];
+            this.orderMenus = this.orderMenus.concat(resData);
+            this.isFetching = false;
+          });
       }
     });
   }

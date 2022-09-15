@@ -91,8 +91,8 @@ export class PurchasesService {
     return this.http.post<Purchase>(this.apiUrl, purchaseDto);
   }
 
-  putPurchaseSetVendor(purchaseDto: PurchaseDto): Observable<PurchaseDto> {
-    this.apiUrl = `${this.config.urlV1PurchaseSetVendor}`;
+  putPurchase(purchaseDto: PurchaseDto): Observable<PurchaseDto> {
+    this.apiUrl = `${this.config.urlV1Purchases}`;
     return this.http.put<PurchaseDto>(this.apiUrl, purchaseDto);
   }
 

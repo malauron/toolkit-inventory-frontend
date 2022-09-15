@@ -76,7 +76,6 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       const purchaseId = Number(paramMap.get('purchaseId'));
       if (purchaseId > 0) {
         this.purchaseService.getPurchase(purchaseId).subscribe((resData) => {
-          console.log(resData);
           this.purchase.purchaseId = resData.purchaseId;
           this.purchase.totalAmt = resData.totalAmt;
           this.purchase.purchaseStatus = resData.purchaseStatus;
@@ -148,7 +147,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
               purchaseDto.vendor = resultData.data;
 
               this.purchaseService
-                .putPurchaseSetVendor(purchaseDto)
+                .putPurchase(purchaseDto)
                 .subscribe((res) => {
                   this.dataHaveChanged = true;
                   this.purchase.purchaseStatus = res.purchaseStatus;
@@ -187,17 +186,17 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
             if (this.purchase.purchaseId) {
               const purchaseDto = new PurchaseDto();
               purchaseDto.purchaseId = this.purchase.purchaseId;
-              purchaseDto.vendor = resultData.data;
+              purchaseDto.warehouse = resultData.data;
 
               this.purchaseService
-                .putPurchaseSetVendor(purchaseDto)
+                .putPurchase(purchaseDto)
                 .subscribe((res) => {
                   this.dataHaveChanged = true;
                   this.purchase.purchaseStatus = res.purchaseStatus;
                   if (this.purchase.purchaseStatus === 'Unposted') {
-                    this.vendor = resultData.data;
+                    this.warehouse = resultData.data;
                     this.messageBox(
-                      'You have successfully assigned a new vendor.'
+                      `Purchased items will be delivered to ${this.warehouse.warehouseName}.`
                     );
                   } else {
                     this.messageBox(
