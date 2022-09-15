@@ -35,7 +35,6 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   purchaseItems: PurchaseItem[] = [];
   purchaseDetailsConfig: PurchaseDetailsConfig;
 
-
   isUploading = false;
   dataHaveChanged = false;
   isFetching = false;
@@ -75,18 +74,28 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
 
       const purchaseId = Number(paramMap.get('purchaseId'));
       if (purchaseId > 0) {
-        this.purchaseService.getPurchase(purchaseId).subscribe((resData) => {
-          this.purchase.purchaseId = resData.purchaseId;
-          this.purchase.totalAmt = resData.totalAmt;
-          this.purchase.purchaseStatus = resData.purchaseStatus;
-          this.purchaseDetailsConfig.setParams(resData.purchaseStatus);
-          this.purchase.dateCreated = resData.dateCreated;
-          this.vendor = resData.vendor;
-          this.warehouse = resData.warehouse;
-          this.purchaseItems = resData.purchaseItems;
-          this.totalAmt = this.purchase.totalAmt;
-          this.isFetching = false;
-        });
+        this.purchaseService.getPurchase(purchaseId).subscribe(
+          (resData) => {
+            if (!resData.purchaseId) {
+              this.navCtrl.navigateBack('/tabs/purchases');
+              return;
+            }
+            this.purchase.purchaseId = resData.purchaseId;
+            this.purchase.totalAmt = resData.totalAmt;
+            this.purchase.purchaseStatus = resData.purchaseStatus;
+            this.purchaseDetailsConfig.setParams(resData.purchaseStatus);
+            this.purchase.dateCreated = resData.dateCreated;
+            this.vendor = resData.vendor;
+            this.warehouse = resData.warehouse;
+            this.purchaseItems = resData.purchaseItems;
+            this.totalAmt = this.purchase.totalAmt;
+            this.isFetching = false;
+          },
+          (err) => {
+            this.navCtrl.navigateBack('/tabs/purchases');
+            return;
+          }
+        );
       } else {
         this.isFetching = false;
       }
@@ -121,6 +130,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
           this.isUploading = false;
         },
         (err) => {
+          this.dataHaveChanged = true;
           this.messageBox(
             'An error occured while trying to update the purchase detail.'
           );
@@ -145,24 +155,22 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
               const purchaseDto = new PurchaseDto();
               purchaseDto.purchaseId = this.purchase.purchaseId;
               purchaseDto.vendor = resultData.data;
+              this.dataHaveChanged = true;
 
-              this.purchaseService
-                .putPurchase(purchaseDto)
-                .subscribe((res) => {
-                  this.dataHaveChanged = true;
-                  this.purchase.purchaseStatus = res.purchaseStatus;
-                  if (this.purchase.purchaseStatus === 'Unposted') {
-                    this.vendor = resultData.data;
-                    this.messageBox(
-                      'You have successfully assigned a new vendor.'
-                    );
-                  } else {
-                    this.messageBox(
-                      'Unable to update the purchase since its status has been tagged as ' +
-                        this.purchase.purchaseStatus
-                    );
-                  }
-                });
+              this.purchaseService.putPurchase(purchaseDto).subscribe((res) => {
+                this.purchase.purchaseStatus = res.purchaseStatus;
+                if (this.purchase.purchaseStatus === 'Unposted') {
+                  this.vendor = resultData.data;
+                  this.messageBox(
+                    'You have successfully assigned a new vendor.'
+                  );
+                } else {
+                  this.messageBox(
+                    'Unable to update the purchase since its status has been tagged as ' +
+                      this.purchase.purchaseStatus
+                  );
+                }
+              });
             } else {
               this.vendor = resultData.data;
             }
@@ -187,24 +195,22 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
               const purchaseDto = new PurchaseDto();
               purchaseDto.purchaseId = this.purchase.purchaseId;
               purchaseDto.warehouse = resultData.data;
+              this.dataHaveChanged = true;
 
-              this.purchaseService
-                .putPurchase(purchaseDto)
-                .subscribe((res) => {
-                  this.dataHaveChanged = true;
-                  this.purchase.purchaseStatus = res.purchaseStatus;
-                  if (this.purchase.purchaseStatus === 'Unposted') {
-                    this.warehouse = resultData.data;
-                    this.messageBox(
-                      `Purchased items will be delivered to ${this.warehouse.warehouseName}.`
-                    );
-                  } else {
-                    this.messageBox(
-                      'Unable to update the purchase since its status has been tagged as ' +
-                        this.purchase.purchaseStatus
-                    );
-                  }
-                });
+              this.purchaseService.putPurchase(purchaseDto).subscribe((res) => {
+                this.purchase.purchaseStatus = res.purchaseStatus;
+                if (this.purchase.purchaseStatus === 'Unposted') {
+                  this.warehouse = resultData.data;
+                  this.messageBox(
+                    `Purchased items will be delivered to ${this.warehouse.warehouseName}.`
+                  );
+                } else {
+                  this.messageBox(
+                    'Unable to update the purchase since its status has been tagged as ' +
+                      this.purchase.purchaseStatus
+                  );
+                }
+              });
             } else {
               this.warehouse = resultData.data;
             }
@@ -273,6 +279,12 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       this.messageBox('Please provide a vendor');
       return;
     }
+
+    if (!this.warehouse.warehouseId) {
+      this.messageBox('Please choose a warehouse.');
+      return;
+    }
+
     if (this.purchaseItems.length <= 0) {
       this.messageBox('Please provide at least 1 purchased item.');
       return;
@@ -282,6 +294,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
 
     purchaseDto.totalAmt = this.totalAmt;
     purchaseDto.vendor = this.vendor;
+    purchaseDto.warehouse = this.warehouse;
     purchaseDto.purchaseItems = this.purchaseItems;
 
     this.purchaseService
@@ -293,6 +306,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
     return (res: Purchase) => {
       this.purchase.purchaseId = res.purchaseId;
       this.purchase.purchaseStatus = res.purchaseStatus;
+      this.purchaseDetailsConfig.setParams(res.purchaseStatus);
       this.purchase.dateCreated = res.dateCreated;
       this.purchaseItems = res.purchaseItems;
       this.dataHaveChanged = true;

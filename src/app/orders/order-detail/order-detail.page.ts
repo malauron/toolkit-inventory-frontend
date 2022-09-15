@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   AlertController,
@@ -25,7 +25,7 @@ import { OrderMenuPrintPreviewComponent } from '../order-menu-print-preview/orde
   templateUrl: './order-detail.page.html',
   styleUrls: ['./order-detail.page.scss'],
 })
-export class OrderDetailPage implements OnInit {
+export class OrderDetailPage implements OnInit, OnDestroy {
   @ViewChild('orderStatusPopover') orderStatusPopover: IonPopover;
   orderStatusPopoverOpen = false;
 
@@ -34,6 +34,7 @@ export class OrderDetailPage implements OnInit {
   warehouse: Warehouse;
   order: Order;
   orderDetailsConfig: OrderDetailsConfig;
+  dataHaveChanged = false;
   isFetching = false;
 
   constructor(
@@ -65,17 +66,34 @@ export class OrderDetailPage implements OnInit {
 
       const orderId = Number(paramMap.get('orderId'));
 
-      this.orderService.getOrder(orderId).subscribe((resData) => {
-        this.order = resData;
-        this.customer = resData.customer;
-        this.warehouse = resData.warehouse;
-        this.orderDetailsConfig.setParams(this.order.orderStatus);
-      });
+      this.orderService.getOrder(orderId).subscribe(
+        (resData) => {
+          if (!resData.orderId) {
+            console.log(resData);
+            this.navCtrl.navigateBack('/tabs/orders/orders-list');
+            return;
+          }
+          this.order = resData;
+          this.customer = resData.customer;
+          this.warehouse = resData.warehouse;
+          this.orderDetailsConfig.setParams(this.order.orderStatus);
 
-      this.orderService.getOrderMenus(orderId).subscribe((resData) => {
-        this.orderMenus = this.orderMenus.concat(resData);
-        this.isFetching = false;
-      });
+          this.orderService.getOrderMenus(orderId).subscribe((resDataOM) => {
+            this.orderMenus = this.orderMenus.concat(resDataOM);
+            this.isFetching = false;
+          });
+        },
+        (err) => {
+          console.log(err);
+          this.navCtrl.navigateBack('/tabs/orders/orders-list');
+          return;
+        }
+      );
+
+      // this.orderService.getOrderMenus(orderId).subscribe((resDataOM) => {
+      //   this.orderMenus = this.orderMenus.concat(resDataOM);
+      //   this.isFetching = false;
+      // });
     });
   }
 
@@ -84,6 +102,7 @@ export class OrderDetailPage implements OnInit {
     orderDto.orderId = this.order.orderId;
     orderDto.orderStatus = newStatus;
     this.orderService.putOrderSetStatus(orderDto).subscribe((res) => {
+      this.dataHaveChanged = true;
       const oldStatus = res.orderStatus;
       if (oldStatus === 'Preparing') {
         this.messageBox('Order has been successfully tagged as ' + newStatus);
@@ -273,4 +292,11 @@ export class OrderDetailPage implements OnInit {
         res.present();
       });
   }
+
+  ngOnDestroy(): void {
+    if (this.dataHaveChanged) {
+      this.orderService.ordersHaveChanged.next(true);
+    }
+  }
+
 }

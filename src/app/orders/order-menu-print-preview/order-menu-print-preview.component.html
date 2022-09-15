@@ -48,7 +48,7 @@
         <p class="remarks">
           {{ orderMenuDto.orderMenu.menu.remarks }}
         </p>
-        <h5>Total costs: {{ totalAmt | number:'1.2-2' }}</h5>
+        <!-- <h5>Total costs: {{ totalAmt | number:'1.2-2' }}</h5> -->
       </div>
 
       <table id="ingredients">
@@ -73,6 +73,11 @@
           </tr>
         </tbody>
       </table>
+
+      <div class="menu-footer">
+        <h3>Total cost: </h3>
+        <h3 class="total-cost">{{ totalAmt | number:'1.2-2' }}</h3>
+      </div>
 
     </div>
   </div>

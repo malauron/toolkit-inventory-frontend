@@ -89,3 +89,13 @@
   text-align: right;
   width: 100px;
 }
+
+.menu-footer{
+  margin: 0 5px;
+  display: grid;
+  grid-template-columns: auto 120px;
+}
+
+.menu-footer .total-cost {
+  text-align: end;
+}

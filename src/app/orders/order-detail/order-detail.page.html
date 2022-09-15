@@ -19,7 +19,7 @@
     ></ion-spinner>
   </div>
 
-  <ion-card *ngIf="orderMenus.length>0">
+  <ion-card *ngIf="orderMenus.length>0 && !isFetching">
     <div class="card-top"></div>
     <ion-grid>
       <ion-row>

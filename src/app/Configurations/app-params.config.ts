@@ -56,8 +56,8 @@ export class AppParamsConfig {
 
   constructor() {
 
-    // this.url = 'http://122.52.134.244:8443/api';
-    this.url = 'http://localhost:8443/api';
+    this.url = 'http://122.52.134.244:8443/api';
+    // this.url = 'http://localhost:8443/api';
 
     this.urlItems = this.url + '/items';
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;
@@ -82,8 +82,8 @@ export class AppParamsConfig {
     this.urlWarehouse = `${this.url}/warehouses`;
     this.urlWarehouseSearch = `${this.urlWarehouse}/search/findByWarehouseNameContainingOrderByWarehouseName`;
 
-    // this.urlV1 = 'http://122.52.134.244:8443/api/v1';
-    this.urlV1 = 'http://localhost:8443/api/v1';
+    this.urlV1 = 'http://122.52.134.244:8443/api/v1';
+    // this.urlV1 = 'http://localhost:8443/api/v1';
 
     this.urlV1Items = this.urlV1 + '/items';
     this.urlV1ItemUoms = this.urlV1 + '/itemUoms';

@@ -24,7 +24,7 @@
     ></ion-spinner>
   </div>
 
-  <ion-card class="card-holder purchase-header">
+  <ion-card *ngIf="!isFetching" class="card-holder purchase-header">
     <div class="card-top"></div>
     <ion-grid>
       <ion-row>
