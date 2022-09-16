@@ -10,6 +10,7 @@ import {
 import { Subscription } from 'rxjs';
 import { ItemUom } from 'src/app/classes/item-uom.model';
 import { Item } from 'src/app/classes/item.model';
+import { ItemUomId } from 'src/app/classes/ItemUomId.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemsService } from 'src/app/services/items.service';
 import { UomsService } from 'src/app/services/uoms.service';
@@ -27,7 +28,7 @@ export class ItemDetailPage implements OnInit {
   item: Item;
   uoms: Uom[] = [];
   itemUoms: ItemUom[] = [];
-  uom: Uom;
+  baseUom: Uom;
 
   private itemSubscription: Subscription;
   private uomSubscription: Subscription;
@@ -55,10 +56,8 @@ export class ItemDetailPage implements OnInit {
 
     this.itemUomForm = new FormGroup({
       itemUomId: new FormGroup({
-        itemId: new FormControl(null, {
-          validators: [Validators.required],
-        }),
-        uomId: new FormControl(null, {
+        item: new FormControl(null),
+        uom: new FormControl(null, {
           updateOn: 'blur',
           validators: [Validators.required],
         }),
@@ -159,6 +158,7 @@ export class ItemDetailPage implements OnInit {
   processResult() {
     return (data) => {
       this.itemUoms = data._embedded.itemUoms;
+      console.log(this.itemUoms);
     };
   }
 
@@ -190,6 +190,34 @@ export class ItemDetailPage implements OnInit {
         this.navCtrl.navigateBack('/tabs/items');
       }
     };
+  }
+
+  onBaseUomChange(baseUom: Uom) {
+    console.log(this.baseUom);
+    this.baseUom = baseUom;
+  }
+
+  onAddUom() {
+    if (this.baseUom === undefined) {
+      this.messageBox('Please specify a base UoM.');
+      return;
+    }
+    if (this.itemUomForm.valid) {
+      if (isNaN(this.itemUomForm.value.quantity)) {
+        this.messageBox('Invalid quantity.');
+      } else {
+        const itemUom = new ItemUom();
+        const itemItemUomId = new ItemUomId();
+
+        itemItemUomId.uom = this.itemUomForm.value.itemUomId.uom;
+        itemUom.itemUomId = itemItemUomId;
+        itemUom.quantity = this.itemUomForm.value.quantity;
+
+        this.itemUoms = this.itemUoms.concat(itemUom);
+      }
+    } else {
+      this.messageBox('Invalid UoM details.');
+    }
   }
 
   onSaveUom() {
@@ -232,9 +260,10 @@ export class ItemDetailPage implements OnInit {
             text: 'Delete',
             handler: () => {
               const itemUomId = data.itemUomId;
-              const uom = data.uom;
+              // const uom = data.itemUomId.uom;
               const quantity = data.quantity;
-              const itemUom = new ItemUom(itemUomId, quantity, uom);
+              // const itemUom = new ItemUom(itemUomId, quantity, uom);
+              const itemUom = new ItemUom(itemUomId, quantity);
               this.itemService.deleteItemUoms(itemUom).subscribe((res) => {
                 this.messageBox('Unit of measure has been deleted.');
                 this.getItemUoms(this.item.itemId);

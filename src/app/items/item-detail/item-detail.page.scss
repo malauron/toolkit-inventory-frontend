@@ -10,7 +10,11 @@ ion-card {
   border-top: 5px solid var(--ion-color-primary);
 }
 
-ion-row {
-  padding-top: 20px;
-  padding-bottom: 20px;
+ion-item {
+  // padding: 20px;
+  margin: 25px;
 }
+
+ion-select::part(icon) {
+  display: none !important;
+ }
