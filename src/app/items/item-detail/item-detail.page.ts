@@ -8,6 +8,7 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { ItemDto } from 'src/app/classes/item-dto.model';
 import { ItemUom } from 'src/app/classes/item-uom.model';
 import { Item } from 'src/app/classes/item.model';
 import { ItemUomId } from 'src/app/classes/ItemUomId.model';
@@ -49,6 +50,14 @@ export class ItemDetailPage implements OnInit {
         validators: [Validators.required, Validators.maxLength(50)],
       }),
       uom: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required],
+      }),
+      itemClass: new FormControl('Stock', {
+        updateOn: 'blur',
+        validators: [Validators.required],
+      }),
+      isActive: new FormControl(true, {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
@@ -102,7 +111,10 @@ export class ItemDetailPage implements OnInit {
             (itemApiData) => {
               this.item.itemName = itemApiData.itemName;
               this.item.dateCreated = itemApiData.dateCreated;
-
+              this.item.itemClass = itemApiData.itemClass;
+              this.item.isActive = itemApiData.isActive;
+              console.log(itemApiData);
+              this.baseUom = itemApiData.uom;
               // // Fetch all UoMs
               this.fetchAllUoms(itemApiData);
 
@@ -146,6 +158,8 @@ export class ItemDetailPage implements OnInit {
           this.itemForm.patchValue({
             itemName: itemResData.itemName,
             uom: this.item.uom,
+            itemClass: itemResData.itemClass,
+            isActive: itemResData.isActive,
           });
         }
       });
@@ -157,24 +171,27 @@ export class ItemDetailPage implements OnInit {
 
   processResult() {
     return (data) => {
-      this.itemUoms = data._embedded.itemUoms;
+      console.log(data);
+      this.itemUoms = data.itemUoms;
       console.log(this.itemUoms);
     };
   }
 
   onSave() {
     if (this.itemForm.valid) {
-      // this.uom = new Uom();
-
       this.item.itemName = this.itemForm.value.itemName;
-      // this.uom.setUomId = this.itemForm.value.uomId;
-      // this.item.uom = this.uom;
       this.item.uom = this.itemForm.value.uom;
+      this.item.itemClass = this.itemForm.value.itemClass;
+      this.item.isActive = this.itemForm.value.isActive;
+
+      const itemDto = new ItemDto();
+      itemDto.item = this.item;
 
       if (this.item.itemId > 0) {
-        this.itemService.putItem(this.item).subscribe(this.processSaveItem());
+        this.itemService.putItem(itemDto).subscribe(this.processSaveItem());
       } else {
-        this.itemService.postItem(this.item).subscribe(this.processSaveItem());
+        itemDto.itemUoms = this.itemUoms;
+        this.itemService.postItem(itemDto).subscribe(this.processSaveItem());
       }
     } else {
       this.messageBox('Invalid item information.');
@@ -187,13 +204,15 @@ export class ItemDetailPage implements OnInit {
       if (this.item.itemId) {
         this.messageBox('Item details has been updated.');
       } else {
-        this.navCtrl.navigateBack('/tabs/items');
+        // this.navCtrl.navigateBack('/tabs/items');
+        console.log(itemData);
+        this.item.itemId = itemData.item.itemId;
+        this.messageBox('Item has been saved successfully.');
       }
     };
   }
 
   onBaseUomChange(baseUom: Uom) {
-    console.log(this.baseUom);
     this.baseUom = baseUom;
   }
 
@@ -207,10 +226,8 @@ export class ItemDetailPage implements OnInit {
         this.messageBox('Invalid quantity.');
       } else {
         const itemUom = new ItemUom();
-        const itemItemUomId = new ItemUomId();
 
-        itemItemUomId.uom = this.itemUomForm.value.itemUomId.uom;
-        itemUom.itemUomId = itemItemUomId;
+        itemUom.uom = this.itemUomForm.value.itemUomId.uom;
         itemUom.quantity = this.itemUomForm.value.quantity;
 
         this.itemUoms = this.itemUoms.concat(itemUom);
@@ -259,15 +276,13 @@ export class ItemDetailPage implements OnInit {
           {
             text: 'Delete',
             handler: () => {
-              const itemUomId = data.itemUomId;
-              // const uom = data.itemUomId.uom;
-              const quantity = data.quantity;
-              // const itemUom = new ItemUom(itemUomId, quantity, uom);
-              const itemUom = new ItemUom(itemUomId, quantity);
-              this.itemService.deleteItemUoms(itemUom).subscribe((res) => {
-                this.messageBox('Unit of measure has been deleted.');
-                this.getItemUoms(this.item.itemId);
-              });
+              // const itemUomId = data.itemUomId;
+              // const quantity = data.quantity;
+              // const itemUom = new ItemUom(itemUomId, quantity);
+              // this.itemService.deleteItemUoms(itemUom).subscribe((res) => {
+              //   this.messageBox('Unit of measure has been deleted.');
+              //   this.getItemUoms(this.item.itemId);
+              // });
             },
           },
         ],

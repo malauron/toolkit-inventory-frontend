@@ -3,6 +3,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { ItemDto } from '../classes/item-dto.model';
 import { ItemUom } from '../classes/item-uom.model';
 import { Item } from '../classes/item.model';
 import { AppParamsConfig } from '../Configurations/app-params.config';
@@ -20,9 +21,7 @@ interface ResponseItems {
 }
 
 interface ResponseItemUoms {
-  _embedded: {
-    itemUoms: ItemUom[];
-  };
+  itemUoms: ItemUom[];
 }
 
 @Injectable({
@@ -59,17 +58,18 @@ export class ItemsService {
     return this.http.get<Item>(this.apiUrl);
   }
 
-  postItem(item: Item): Observable<Item> {
-    return this.http.post<Item>(this.config.urlV1Items, item);
+  postItem(itemDto: ItemDto): Observable<Item> {
+    return this.http.post<Item>(this.config.urlV1Items, itemDto);
   }
 
-  putItem(item: Item): Observable<Item> {
-    return this.http.put<Item>(this.config.urlV1Items, item);
+  putItem(itemDto: ItemDto): Observable<Item> {
+    return this.http.put<Item>(this.config.urlV1Items, itemDto);
   }
 
-  getItemUoms(itemId: number): Observable<ResponseItemUoms>{
-    this.apiUrl = `${this.config.urlItemUomSearch}?itemId=${itemId}`;
-    return this.http.get<ResponseItemUoms>(this.apiUrl);
+  getItemUoms(itemId: number): Observable<ItemDto>{
+    this.apiUrl = `${this.config.urlV1ItemUoms}?itemId=${itemId}`;
+
+    return this.http.get<ItemDto>(this.apiUrl);
   }
 
   postItemUoms(itemUom: ItemUom): Observable<ItemUom> {
