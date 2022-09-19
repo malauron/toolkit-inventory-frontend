@@ -113,8 +113,8 @@ export class ItemDetailPage implements OnInit {
               this.item.dateCreated = itemApiData.dateCreated;
               this.item.itemClass = itemApiData.itemClass;
               this.item.isActive = itemApiData.isActive;
-              console.log(itemApiData);
               this.baseUom = itemApiData.uom;
+
               // // Fetch all UoMs
               this.fetchAllUoms(itemApiData);
 
@@ -171,9 +171,7 @@ export class ItemDetailPage implements OnInit {
 
   processResult() {
     return (data) => {
-      console.log(data);
       this.itemUoms = data.itemUoms;
-      console.log(this.itemUoms);
     };
   }
 
@@ -204,8 +202,6 @@ export class ItemDetailPage implements OnInit {
       if (this.item.itemId) {
         this.messageBox('Item details has been updated.');
       } else {
-        // this.navCtrl.navigateBack('/tabs/items');
-        console.log(itemData);
         this.item.itemId = itemData.item.itemId;
         this.messageBox('Item has been saved successfully.');
       }
@@ -229,6 +225,16 @@ export class ItemDetailPage implements OnInit {
 
         itemUom.uom = this.itemUomForm.value.itemUomId.uom;
         itemUom.quantity = this.itemUomForm.value.quantity;
+
+        if (this.item.itemId > 0) {
+          itemUom.item = this.item;
+
+          this.itemService
+            .postItemUoms(itemUom)
+            .subscribe(this.processSaveUom());
+        } else {
+
+        }
 
         this.itemUoms = this.itemUoms.concat(itemUom);
       }
@@ -257,9 +263,7 @@ export class ItemDetailPage implements OnInit {
       this.messageBox('UoM has been saved.');
       this.itemUomForm.reset();
       this.itemUomForm.patchValue({
-        itemUomId: {
-          itemId: this.item.itemId,
-        },
+        item: this.item,
       });
     };
   }
