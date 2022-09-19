@@ -187,15 +187,14 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
   processResult(selectedUom?: Uom) {
     return (data) => {
       const itemUoms = [];
-      for (const key in data._embedded.itemUoms) {
-        if (data._embedded.itemUoms.hasOwnProperty(key)) {
-          // this.uoms = this.uoms.concat(data._embedded.itemUoms[key].uom);
+      for (const key in data.itemUoms) {
+        if (data.itemUoms.hasOwnProperty(key)) {
 
           const newUom = new Uom();
 
-          newUom.uomId = data._embedded.itemUoms[key].uom.uomId;
-          newUom.uomName = data._embedded.itemUoms[key].uom.uomName;
-          newUom.uomCode = data._embedded.itemUoms[key].uom.uomCode;
+          newUom.uomId = data.itemUoms[key].uom.uomId;
+          newUom.uomName = data.itemUoms[key].uom.uomName;
+          newUom.uomCode = data.itemUoms[key].uom.uomCode;
 
           this.uoms.push(newUom);
 

@@ -223,20 +223,21 @@ export class ItemDetailPage implements OnInit {
       } else {
         const itemUom = new ItemUom();
 
+        itemUom.uomId = this.itemUomForm.value.itemUomId.uom.uomId;
         itemUom.uom = this.itemUomForm.value.itemUomId.uom;
         itemUom.quantity = this.itemUomForm.value.quantity;
 
         if (this.item.itemId > 0) {
+          itemUom.itemId = this.item.itemId;
           itemUom.item = this.item;
 
           this.itemService
             .postItemUoms(itemUom)
             .subscribe(this.processSaveUom());
         } else {
-
+          this.itemUoms = this.itemUoms.concat(itemUom);
+          this.itemUomForm.reset();
         }
-
-        this.itemUoms = this.itemUoms.concat(itemUom);
       }
     } else {
       this.messageBox('Invalid UoM details.');
@@ -258,13 +259,11 @@ export class ItemDetailPage implements OnInit {
   }
 
   processSaveUom() {
-    return (postData) => {
+    return (itemUom) => {
       this.getItemUoms(this.item.itemId);
       this.messageBox('UoM has been saved.');
       this.itemUomForm.reset();
-      this.itemUomForm.patchValue({
-        item: this.item,
-      });
+      // this.itemUoms = this.itemUoms.concat(itemUom);
     };
   }
 
@@ -280,13 +279,21 @@ export class ItemDetailPage implements OnInit {
           {
             text: 'Delete',
             handler: () => {
-              // const itemUomId = data.itemUomId;
-              // const quantity = data.quantity;
-              // const itemUom = new ItemUom(itemUomId, quantity);
-              // this.itemService.deleteItemUoms(itemUom).subscribe((res) => {
-              //   this.messageBox('Unit of measure has been deleted.');
-              //   this.getItemUoms(this.item.itemId);
-              // });
+              if (this.item.itemId > 0) {
+                const itemUom = new ItemUom();
+                itemUom.itemId = data.itemId;
+                itemUom.uomId = data.uomId;
+                this.itemService.deleteItemUoms(itemUom).subscribe((res) => {
+                  this.messageBox('Unit of measure has been deleted.');
+                  this.getItemUoms(this.item.itemId);
+                });
+              } else {
+                for (const key in this.itemUoms) {
+                  if (data === this.itemUoms[key]) {
+                    this.itemUoms.splice(Number(key), 1);
+                  }
+                }
+              }
             },
           },
         ],
