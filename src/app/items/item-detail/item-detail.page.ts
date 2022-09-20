@@ -40,7 +40,7 @@ export class ItemDetailPage implements OnInit {
   uoms: Uom[];
   uomsForBom: Uom[];
   itemUoms: ItemUom[];
-  bomUoms: ItemUom[];
+  itemBoms: ItemUom[];
 
   modalOpen = false;
 
@@ -60,7 +60,7 @@ export class ItemDetailPage implements OnInit {
   ngOnInit() {
     this.uoms = [];
     this.itemUoms = [];
-    this.bomUoms = [];
+    this.itemBoms = [];
 
     this.itemForm = new FormGroup({
       itemName: new FormControl(null, {

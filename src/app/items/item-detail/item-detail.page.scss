@@ -10,6 +10,10 @@ ion-card {
   border-top: 5px solid var(--ion-color-primary);
 }
 
+.uom-accordion {
+  margin: 10px !important;
+}
+
 .item-header ion-item {
   // padding: 20px;
   margin: 25px;
@@ -21,6 +25,10 @@ ion-card {
 
 .item-bom ion-item {
   margin: 25px;
+}
+
+.item-uom-header, .item-bom-header {
+  margin: 10px !important;
 }
 
 ion-select {

@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar color="danger">
     <ion-buttons slot="start">
-      <ion-back-button
-        icon="chevron-back-outline"
-        defaultHref="/tabs/items"
-      ></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/items"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
     <ion-buttons slot="primary" *ngIf="!this.item.itemId">
@@ -24,55 +21,25 @@
           <form [formGroup]="itemForm">
             <ion-item fill="outline">
               <!-- <ion-label position="floating">Description</ion-label> -->
-              <ion-icon
-                slot="start"
-                src="../../assets/icons/items.svg"
-                color="primary"
-              ></ion-icon>
-              <ion-input
-                placeholder="Description"
-                type="text"
-                formControlName="itemName"
-              >
+              <ion-icon slot="start" src="../../assets/icons/items.svg" color="primary"></ion-icon>
+              <ion-input placeholder="Description" type="text" formControlName="itemName">
               </ion-input>
             </ion-item>
 
             <!-- UOMs -->
             <ion-item fill="outline">
-              <ion-icon
-                slot="start"
-                name="scale-outline"
-                color="primary"
-              ></ion-icon>
-              <ion-select
-                #baseUom
-                placeholder="Base UoM"
-                interface="popover"
-                [disabled]="item.itemId>0"
-                (ionChange)="onBaseUomChange(baseUom.value)"
-                formControlName="uom"
-                *ngIf="uoms.length"
-              >
-                <ion-select-option *ngFor="let uom of uoms" [value]="uom"
-                  >{{ uom.uomName }}
+              <ion-icon slot="start" name="scale-outline" color="primary"></ion-icon>
+              <ion-select #baseUom placeholder="Base UoM" interface="popover" [disabled]="item.itemId>0"
+                (ionChange)="onBaseUomChange(baseUom.value)" formControlName="uom" *ngIf="uoms.length">
+                <ion-select-option *ngFor="let uom of uoms" [value]="uom">{{ uom.uomName }}
                 </ion-select-option>
               </ion-select>
             </ion-item>
 
             <ion-item fill="outline">
-              <ion-icon
-                slot="start"
-                name="pricetag-outline"
-                color="primary"
-              ></ion-icon>
-              <ion-select
-                #itemClass
-                class="disabledInput"
-                placeholder="Item Classification"
-                formControlName="itemClass"
-                interface="popover"
-                [disabled]="item.itemId>0"
-              >
+              <ion-icon slot="start" name="pricetag-outline" color="primary"></ion-icon>
+              <ion-select #itemClass class="disabledInput" placeholder="Item Classification" formControlName="itemClass"
+                interface="popover" [disabled]="item.itemId>0">
                 <ion-select-option>Stock</ion-select-option>
                 <ion-select-option>Assembly</ion-select-option>
               </ion-select>
@@ -85,12 +52,7 @@
             </ion-item>
 
             <ion-item lines="none" *ngIf="this.item.itemId">
-              <ion-button
-                (click)="onSave()"
-                color="success"
-                slot="end"
-                size="default"
-              >
+              <ion-button (click)="onSave()" color="success" slot="end" size="default">
                 Save
                 <ion-icon name="{{ postButton }}" slot="start"></ion-icon>
               </ion-button>
@@ -99,60 +61,46 @@
         </ion-card>
       </ion-col>
 
+      <!-- Unit of Measure -->
       <ion-col size-xs="12" size-xl="6">
         <!-- <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemId"> -->
         <ion-card class="item-uom">
           <div class="card-top"></div>
-          <form [formGroup]="itemUomForm">
-            <!-- UOMs -->
-            <div formGroupName="itemUomId">
-              <ion-item fill="outline">
-                <!-- <ion-label position="floating">Uom</ion-label> -->
-                <ion-icon
-                  slot="start"
-                  name="pie-chart-outline"
-                  color="primary"
-                ></ion-icon>
-                <ion-select
-                  formControlName="uom"
-                  placeholder="Alternative UoM"
-                  interface="popover"
-                  *ngIf="uoms.length"
-                >
-                  <ion-select-option *ngFor="let uom of uoms" [value]="uom"
-                    >{{ uom.uomName }}</ion-select-option
-                  >
-                </ion-select>
-              </ion-item>
-            </div>
-            <ion-item fill="outline">
-              <ion-icon
-                slot="start"
-                name="flask-outline"
-                color="primary"
-              ></ion-icon>
-              <!-- <ion-label position="floating">Equivalent Quantity</ion-label> -->
-              <ion-input
-                formControlName="quantity"
-                placeholder="Equivalent Quantity"
-                type="number"
-              >
-              </ion-input>
-            </ion-item>
-          </form>
 
-          <ion-item>
-            <label>UoM Group</label>
-            <ion-button
-              (click)="onAddUom()"
-              color="success"
-              slot="end"
-              size="default"
-            >
-              Add
-              <ion-icon name="add" slot="start"></ion-icon>
-            </ion-button>
-          </ion-item>
+          <ion-accordion-group>
+            <ion-accordion value="uoms">
+              <ion-item class="uom-accordion" slot="header">
+                <ion-card-title>Alternative Unit Of Measures</ion-card-title>
+              </ion-item>
+              <ion-grid slot="content">
+                <form [formGroup]="itemUomForm">
+                  <div formGroupName="itemUomId">
+                    <ion-item fill="outline">
+                      <ion-icon slot="start" name="pie-chart-outline" color="primary"></ion-icon>
+                      <ion-select formControlName="uom" placeholder="Alternative UoM" interface="popover"
+                        *ngIf="uoms.length">
+                        <ion-select-option *ngFor="let uom of uoms" [value]="uom">{{ uom.uomName }}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                  </div>
+                  <ion-item fill="outline">
+                    <ion-icon slot="start" name="flask-outline" color="primary"></ion-icon>
+                    <ion-input formControlName="quantity" placeholder="Equivalent Quantity" type="number">
+                    </ion-input>
+                  </ion-item>
+                </form>
+
+                <ion-item lines="none">
+                  <ion-button (click)="onAddUom()" color="success" slot="end" size="default">
+                    Add
+                    <ion-icon name="add" slot="start"></ion-icon>
+                  </ion-button>
+                </ion-item>
+
+              </ion-grid>
+            </ion-accordion>
+          </ion-accordion-group>
+          <div class="separator"></div>
 
           <!-- Item UoMs -->
           <ion-list>
@@ -166,14 +114,8 @@
                   itemUom.quantity }}{{ baseUom.uomCode}}
                 </p>
               </ion-label>
-              <ion-button
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-                (click)="onDeleteItemUom(itemUom)"
-              >
+              <ion-button mode="ios" slot="end" fill="clear" color="medium" size="default"
+                (click)="onDeleteItemUom(itemUom)">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
@@ -181,87 +123,66 @@
         </ion-card>
       </ion-col>
 
+      <!-- Bill of Materials -->
       <ion-col size-xs="12" size-xl="6">
         <ion-card class="item-bom">
           <div class="card-top"></div>
-          <ion-card-header class="ion-no-padding">
-            <ion-item lines="none">
-              <ion-card-title>Bill Of Materials</ion-card-title>
-              <ion-button
-                class="ion-no-padding ion-no-margin"
-                slot="end"
-                mode="ios"
-                fill="clear"
-                size="large"
-                color="success"
-              >
-                <ion-icon name="add"></ion-icon>
-              </ion-button>
-            </ion-item>
-          </ion-card-header>
+
+          <ion-accordion-group>
+            <ion-accordion value="boms">
+              <ion-item class="uom-accordion" slot="header">
+                <ion-card-title>Bill Of Materials</ion-card-title>
+              </ion-item>
+              <ion-grid slot="content">
+                <form [formGroup]="itemBomForm">
+                  <ion-item fill="outline">
+                    <ion-label position="floating">Item</ion-label>
+                    <ion-input (click)="onItemSearch()" readonly="true" formControlName="itemName"></ion-input>
+                    <ion-button mode="ios" class="search-button" slot="end" size="small" fill="clear"
+                      (click)="onItemSearch()">
+                      <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+                    </ion-button>
+                  </ion-item>
+                  <ion-item fill="outline">
+                    <!-- <ion-label position="floating">Uom</ion-label> -->
+                    <ion-select #uomSelect formControlName="uom" placeholder="Uom">
+                      <ion-select-option *ngFor="let uom of uomsForBom" [value]="uom">{{ uom.uomName }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                  <ion-item fill="outline">
+                    <ion-label position="floating">Quantity</ion-label>
+                    <ion-input #quantityInput formControlName="quantity" type="number" inputmode="decimal" min="0"
+                      value="0">
+                    </ion-input>
+                  </ion-item>
+                </form>
+
+                <ion-item lines="none">
+                  <ion-button (click)="onAddUom()" color="success" slot="end" size="default">
+                    Add
+                    <ion-icon name="add" slot="start"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ion-grid>
+            </ion-accordion>
+          </ion-accordion-group>
           <div class="separator"></div>
 
-          <form [formGroup]="itemBomForm">
-            <ion-item fill="outline">
-              <ion-label position="floating">Item</ion-label>
-              <ion-input
-                (click)="onItemSearch()"
-                readonly="true"
-                formControlName="itemName"
-              ></ion-input>
-              <ion-button
-                mode="ios"
-                class="search-button"
-                slot="end"
-                size="small"
-                fill="clear"
-                (click)="onItemSearch()"
-              >
-                <ion-icon name="search-outline" slot="icon-only"></ion-icon>
-              </ion-button>
-            </ion-item>
-            <ion-item fill="outline">
-              <!-- <ion-label position="floating">Uom</ion-label> -->
-              <ion-select #uomSelect formControlName="uom" placeholder="Uom">
-                <ion-select-option
-                  *ngFor="let uom of uomsForBom"
-                  [value]="uom"
-                >{{ uom.uomName }}</ion-select-option>
-              </ion-select>
-            </ion-item>
-            <ion-item fill="outline">
-              <ion-label position="floating">Quantity</ion-label>
-              <ion-input
-                #quantityInput
-                formControlName="quantity"
-                type="number"
-                inputmode="decimal"
-                min="0"
-                value="0"
-              ></ion-input>
-            </ion-item>
-          </form>
-
-          <!-- Item UoMs -->
+          <!-- Item BoMs -->
           <ion-list>
             <!-- This is to prevent an error in displaying the uomCode per item uom-->
             <!-- <ion-list *ngIf="this.item.uom"> -->
-            <ion-item *ngFor="let itemUom of itemUoms">
+            <ion-item *ngFor="let itemBom of itemBoms">
               <ion-label>
-                <h2>{{ itemUom.uom.uomName }}</h2>
+                <h2>{{ itemBom.uom.uomName }}</h2>
                 <p>
-                  1{{ itemUom.uom.uomCode }} is equivalent to {{
-                  itemUom.quantity }}{{ baseUom.uomCode}}
+                  1{{ itemBom.uom.uomCode }} is equivalent to {{
+                  itemBom.quantity }}{{ baseUom.uomCode}}
                 </p>
               </ion-label>
-              <ion-button
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-                (click)="onDeleteItemUom(itemUom)"
-              >
+              <ion-button mode="ios" slot="end" fill="clear" color="medium" size="default"
+                (click)="onDeleteItemUom(itemBom)">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
