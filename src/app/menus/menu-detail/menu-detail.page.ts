@@ -184,9 +184,9 @@ export class MenuDetailPage implements OnInit, OnDestroy {
   processResult() {
     return (data) => {
       const itemUoms = [];
-      for (const key in data._embedded.itemUoms) {
-        if (data._embedded.itemUoms.hasOwnProperty(key)) {
-          this.uoms = this.uoms.concat(data._embedded.itemUoms[key].uom);
+      for (const key in data.itemUoms) {
+        if (data.itemUoms.hasOwnProperty(key)) {
+          this.uoms = this.uoms.concat(data.itemUoms[key].uom);
         }
       }
     };

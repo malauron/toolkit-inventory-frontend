@@ -233,16 +233,12 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
         .then((resultData) => {
           if (resultData.role === 'item') {
             const item: PurchaseItemDetail = resultData.data;
-            const purchaseItem = new PurchaseItem(
-              undefined,
-              undefined,
-              item.item,
-              undefined,
-              undefined,
-              item.uom,
-              item.quantity,
-              item.cost
-            );
+            const purchaseItem = new PurchaseItem();
+
+            purchaseItem.item = item.item;
+            purchaseItem.requiredUom = item.uom;
+            purchaseItem.purchasedQty = item.quantity;
+            purchaseItem.cost = item.cost;
 
             if (this.purchase.purchaseId) {
               purchaseItem.purchase = this.purchase;

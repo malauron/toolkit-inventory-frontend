@@ -1,9 +1,11 @@
 /* eslint-disable no-underscore-dangle */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AlertController,
+  IonInput,
+  ModalController,
   NavController,
   ToastController,
 } from '@ionic/angular';
@@ -15,6 +17,7 @@ import { ItemUomId } from 'src/app/classes/ItemUomId.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemsService } from 'src/app/services/items.service';
 import { UomsService } from 'src/app/services/uoms.service';
+import { ItemSearchComponent } from '../item-search/item-search.component';
 
 @Component({
   selector: 'app-item-detail',
@@ -22,14 +25,24 @@ import { UomsService } from 'src/app/services/uoms.service';
   styleUrls: ['./item-detail.page.scss'],
 })
 export class ItemDetailPage implements OnInit {
+  @ViewChild('quantityInput', { static: true }) quantityInput: IonInput;
+
   pageLabel = 'Item Detail';
   postButton = 'checkmark-outline';
+
   itemForm: FormGroup;
   itemUomForm: FormGroup;
+  itemBomForm: FormGroup;
+
   item: Item;
-  uoms: Uom[] = [];
-  itemUoms: ItemUom[] = [];
   baseUom: Uom;
+
+  uoms: Uom[];
+  uomsForBom: Uom[];
+  itemUoms: ItemUom[];
+  bomUoms: ItemUom[];
+
+  modalOpen = false;
 
   private itemSubscription: Subscription;
   private uomSubscription: Subscription;
@@ -40,10 +53,15 @@ export class ItemDetailPage implements OnInit {
     private itemService: ItemsService,
     private uomService: UomsService,
     private toastController: ToastController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private modalItemSearch: ModalController
   ) {}
 
   ngOnInit() {
+    this.uoms = [];
+    this.itemUoms = [];
+    this.bomUoms = [];
+
     this.itemForm = new FormGroup({
       itemName: new FormControl(null, {
         updateOn: 'blur',
@@ -74,6 +92,23 @@ export class ItemDetailPage implements OnInit {
       quantity: new FormControl({
         updateOn: 'blur',
         validators: [Validators.required],
+      }),
+    });
+
+    this.itemBomForm = new FormGroup({
+      item: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+      itemName: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+      uom: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required],
+      }),
+      quantity: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(1)],
       }),
     });
 
@@ -303,6 +338,52 @@ export class ItemDetailPage implements OnInit {
       });
   }
 
+  onItemSearch() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.modalItemSearch
+        .create({ component: ItemSearchComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'item') {
+            const itemData = new Item();
+            const uomData = new Uom();
+
+            itemData.itemId = resultData.data.itemId;
+            itemData.itemName = resultData.data.itemName;
+
+            uomData.uomId = resultData.data.uom.uomId;
+            uomData.uomName = resultData.data.uom.uomName;
+            uomData.uomCode = resultData.data.uom.uomCode;
+
+            this.uomsForBom = [uomData];
+
+            this.itemService.getItemUoms(itemData.itemId).subscribe((res) => {
+              const itemUoms = [];
+              for (const key in res.itemUoms) {
+                if (res.itemUoms.hasOwnProperty(key)) {
+                  this.uomsForBom = this.uomsForBom.concat(res.itemUoms[key].uom);
+                }
+              }
+            });
+
+            this.itemBomForm.patchValue({
+              item: itemData,
+              itemName: itemData.itemName,
+              uom: uomData,
+              quantity: 1,
+            });
+
+            const qtyElem = this.quantityInput.getInputElement();
+            qtyElem.then((res) => res.focus());
+          }
+          this.modalOpen = false;
+        });
+    }
+  }
   async messageBox(msg: string) {
     const toast = await this.toastController.create({
       color: 'dark',
