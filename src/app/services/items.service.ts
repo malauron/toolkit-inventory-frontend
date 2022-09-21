@@ -3,6 +3,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { ItemBom } from '../classes/item-bom.model';
 import { ItemDto } from '../classes/item-dto.model';
 import { ItemUom } from '../classes/item-uom.model';
 import { Item } from '../classes/item.model';
@@ -72,8 +73,18 @@ export class ItemsService {
     return this.http.get<ItemDto>(this.apiUrl);
   }
 
+  getItemBoms(itemId: number): Observable<ItemDto>{
+    this.apiUrl = `${this.config.urlV1ItemBoms}?itemId=${itemId}`;
+
+    return this.http.get<ItemDto>(this.apiUrl);
+  }
+
   postItemUoms(itemUom: ItemUom): Observable<ItemUom> {
     return this.http.post<ItemUom>(this.config.urlV1ItemUoms, itemUom);
+  }
+
+  postItemBoms(itemBom: ItemBom): Observable<ItemBom> {
+    return this.http.post<ItemBom>(this.config.urlV1ItemBoms, itemBom);
   }
 
   deleteItemUoms(itemUom: ItemUom){
@@ -84,5 +95,10 @@ export class ItemsService {
       body: itemUom,
     };
     return this.http.delete(this.config.urlV1ItemUoms, options);
+  }
+
+  deleteItemBoms(itemBomId: number) {
+    this.apiUrl = `${this.config.urlV1ItemBoms}?itemBomId=${itemBomId}`;
+    return this.http.delete(this.apiUrl);
   }
 }

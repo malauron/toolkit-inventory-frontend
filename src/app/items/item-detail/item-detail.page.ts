@@ -10,6 +10,7 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { ItemBom } from 'src/app/classes/item-bom.model';
 import { ItemDto } from 'src/app/classes/item-dto.model';
 import { ItemUom } from 'src/app/classes/item-uom.model';
 import { Item } from 'src/app/classes/item.model';
@@ -40,7 +41,7 @@ export class ItemDetailPage implements OnInit {
   uoms: Uom[];
   uomsForBom: Uom[];
   itemUoms: ItemUom[];
-  itemBoms: ItemUom[];
+  itemBoms: ItemBom[];
 
   modalOpen = false;
 
@@ -96,17 +97,17 @@ export class ItemDetailPage implements OnInit {
     });
 
     this.itemBomForm = new FormGroup({
-      item: new FormControl(null, {
+      subItem: new FormControl(null, {
         validators: [Validators.required],
       }),
-      itemName: new FormControl(null, {
+      subItemName: new FormControl(null, {
         validators: [Validators.required],
       }),
-      uom: new FormControl(null, {
+      requiredUom: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
-      quantity: new FormControl(null, {
+      requiredQty: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(1)],
       }),
@@ -155,6 +156,9 @@ export class ItemDetailPage implements OnInit {
 
               // Fecth all uoms for this item
               this.getItemUoms(this.item.itemId);
+
+              // Featch all boms for this item
+              this.getItemBoms(this.item.itemId);
             },
             (error) => {
               this.navCtrl.navigateBack('/tabs/items');
@@ -204,6 +208,12 @@ export class ItemDetailPage implements OnInit {
     this.itemService.getItemUoms(itemId).subscribe(this.processResult());
   }
 
+  getItemBoms(itemId: number) {
+    this.itemService.getItemBoms(itemId).subscribe((res) => {
+      this.itemBoms = res.itemBoms;
+    });
+  }
+
   processResult() {
     return (data) => {
       this.itemUoms = data.itemUoms;
@@ -224,6 +234,7 @@ export class ItemDetailPage implements OnInit {
         this.itemService.putItem(itemDto).subscribe(this.processSaveItem());
       } else {
         itemDto.itemUoms = this.itemUoms;
+        itemDto.itemBoms = this.itemBoms;
         this.itemService.postItem(itemDto).subscribe(this.processSaveItem());
       }
     } else {
@@ -247,7 +258,7 @@ export class ItemDetailPage implements OnInit {
     this.baseUom = baseUom;
   }
 
-  onAddUom() {
+  onAddItemUom() {
     if (this.baseUom === undefined) {
       this.messageBox('Please specify a base UoM.');
       return;
@@ -266,9 +277,11 @@ export class ItemDetailPage implements OnInit {
           itemUom.itemId = this.item.itemId;
           itemUom.item = this.item;
 
-          this.itemService
-            .postItemUoms(itemUom)
-            .subscribe(this.processSaveUom());
+          this.itemService.postItemUoms(itemUom).subscribe((res) => {
+            this.getItemUoms(this.item.itemId);
+            this.messageBox('UoM has been saved.');
+            this.itemUomForm.reset();
+          });
         } else {
           this.itemUoms = this.itemUoms.concat(itemUom);
           this.itemUomForm.reset();
@@ -279,27 +292,34 @@ export class ItemDetailPage implements OnInit {
     }
   }
 
-  onSaveUom() {
-    if (this.itemUomForm.valid) {
-      if (isNaN(this.itemUomForm.value.quantity)) {
+  onAddItemBom() {
+    if (this.itemBomForm.valid) {
+      if (isNaN(this.itemBomForm.value.requiredQty)) {
         this.messageBox('Invalid quantity.');
       } else {
-        this.itemService
-          .postItemUoms(this.itemUomForm.value)
-          .subscribe(this.processSaveUom());
+        const itemBom = new ItemBom();
+
+        itemBom.subItem = this.itemBomForm.value.subItem;
+        itemBom.requiredUom = this.itemBomForm.value.requiredUom;
+        itemBom.requiredQty = this.itemBomForm.value.requiredQty;
+
+        if (this.item.itemId > 0) {
+          itemBom.mainItem = this.item;
+
+          this.itemService.postItemBoms(itemBom).subscribe((res) => {
+            itemBom.itemBomId = res.itemBomId;
+            this.itemBoms = this.itemBoms.concat(itemBom);
+            this.messageBox('BoM has been saved.');
+            this.itemBomForm.reset();
+          });
+        } else {
+          this.itemBoms = this.itemBoms.concat(itemBom);
+          this.itemBomForm.reset();
+        }
       }
     } else {
-      this.messageBox('Invalid UoM details.');
+      this.messageBox('Invalid BoM details.');
     }
-  }
-
-  processSaveUom() {
-    return (itemUom) => {
-      this.getItemUoms(this.item.itemId);
-      this.messageBox('UoM has been saved.');
-      this.itemUomForm.reset();
-      // this.itemUoms = this.itemUoms.concat(itemUom);
-    };
   }
 
   onDeleteItemUom(data: ItemUom) {
@@ -326,6 +346,43 @@ export class ItemDetailPage implements OnInit {
                 for (const key in this.itemUoms) {
                   if (data === this.itemUoms[key]) {
                     this.itemUoms.splice(Number(key), 1);
+                  }
+                }
+              }
+            },
+          },
+        ],
+      })
+      .then((res) => {
+        res.present();
+      });
+  }
+
+  onDeleteItemBom(itemBom: ItemBom) {
+    this.alertCtrl
+      .create({
+        header: 'Confirm',
+        message: 'This will be deleted permanently .',
+        buttons: [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'Delete',
+            handler: () => {
+              if (this.item.itemId > 0) {
+                this.itemService.deleteItemBoms(itemBom.itemBomId).subscribe((res) => {
+                  this.messageBox('BoM has been deleted.');
+                  for (const key in this.itemBoms) {
+                    if (itemBom === this.itemBoms[key]) {
+                      this.itemBoms.splice(Number(key), 1);
+                    }
+                  }
+                });
+              } else {
+                for (const key in this.itemBoms) {
+                  if (itemBom === this.itemBoms[key]) {
+                    this.itemBoms.splice(Number(key), 1);
                   }
                 }
               }
@@ -365,16 +422,18 @@ export class ItemDetailPage implements OnInit {
               const itemUoms = [];
               for (const key in res.itemUoms) {
                 if (res.itemUoms.hasOwnProperty(key)) {
-                  this.uomsForBom = this.uomsForBom.concat(res.itemUoms[key].uom);
+                  this.uomsForBom = this.uomsForBom.concat(
+                    res.itemUoms[key].uom
+                  );
                 }
               }
             });
 
             this.itemBomForm.patchValue({
-              item: itemData,
-              itemName: itemData.itemName,
-              uom: uomData,
-              quantity: 1,
+              subItem: itemData,
+              subItemName: itemData.itemName,
+              requriedUom: uomData,
+              requiredQty: 1,
             });
 
             const qtyElem = this.quantityInput.getInputElement();
