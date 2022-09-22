@@ -4,7 +4,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ToastController } from '@ionic/angular';
 import { CustomerDto } from 'src/app/classes/customer-dto.model';
+import { CustomerGroup } from 'src/app/classes/customer-group.model';
 import { Customer } from 'src/app/classes/customer.model';
+import { CustomerGroupsService } from 'src/app/services/customer-groups.service';
 import { CustomersService } from 'src/app/services/customers.service';
 
 @Component({
@@ -21,6 +23,7 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
   selectedSegment: string;
 
   customer = new Customer();
+  customerGroups: CustomerGroup[];
 
   dataHaveChanged = false;
   isFetching = false;
@@ -31,12 +34,15 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private customersService: CustomersService,
+    private customerGroupsService: CustomerGroupsService,
     private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
 
     this.isFetching = true;
+
+    this.customerGroups = [];
 
     this.route.paramMap.subscribe((paramMap) => {
       if (!paramMap.has('customerId')) {
@@ -60,6 +66,9 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
         customerName: new FormControl(null, {
           validators: [Validators.required],
         }),
+        customerGroup: new FormControl(null,{
+          validators: [Validators.required]
+        }),
         contactNo: new FormControl(''),
         address: new FormControl(''),
         sssNo: new FormControl(''),
@@ -72,13 +81,20 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
         erContactAddress: new FormControl(''),
       });
 
+      this.customerGroupsService.getCustomerGroups().subscribe(res => {
+        this.customerGroups = res;
+        console.log(res);
+      });
+
       const customerId = Number(paramMap.get('customerId'));
       if (customerId > 0) {
         this.customersService.getCustomer(customerId).subscribe((resData) => {
+          console.log(resData.customerGroup);
           this.customer.customerId = resData.customerId;
           this.customerForm.patchValue({
             customerCode: resData.customerCode,
             customerName: resData.customerName,
+            customerGroup: resData.customerGroup,
             contactNo: resData.contactNo,
             address: resData.address,
             sssNo: resData.sssNo,

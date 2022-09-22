@@ -192,7 +192,7 @@ export class ItemDetailPage implements OnInit {
             this.uoms = this.uoms.concat(uom);
           }
         }
-
+        console.log(this.uoms);
         if (itemResData) {
           this.itemForm.patchValue({
             itemName: itemResData.itemName,

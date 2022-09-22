@@ -1,3 +1,4 @@
+import { CustomerGroup } from './customer-group.model';
 import { CustomerPicture } from './customer-picture.model';
 import { CustomerSignature } from './customer-signature.model';
 
@@ -6,6 +7,7 @@ export class Customer {
     public customerId?: number,
     public customerCode?: string,
     public customerName?: string,
+    public customerGroup?: CustomerGroup,
     public contactNo?: string,
     public address?: string,
     public bloodType?: string,

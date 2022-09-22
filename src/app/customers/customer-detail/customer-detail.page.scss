@@ -10,6 +10,14 @@ ion-card {
   --ion-background-color: #ffffff;
 }
 
+ion-select::part(icon) {
+  display: none !important;
+}
+
+ion-popover {
+  --width: 500px;
+}
+
 .card-holder {
   margin: 20px 20px 0 20px;
 
