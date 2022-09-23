@@ -395,7 +395,7 @@ export class ItemDetailPage implements OnInit {
       });
   }
 
-  onItemSearch() {
+  onItemSearch(itemClass?: string) {
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.modalItemSearch

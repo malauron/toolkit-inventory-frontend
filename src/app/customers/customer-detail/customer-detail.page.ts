@@ -141,7 +141,10 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
           this.isFetching = false;
         });
       } else {
-        this.isFetching = false;
+        this.customerGroupsService.getCustomerGroups().subscribe((res) => {
+          this.customerGroups = res;
+          this.isFetching = false;
+        });
       }
     });
   }

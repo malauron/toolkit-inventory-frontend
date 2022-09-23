@@ -27,7 +27,11 @@ ion-card {
   margin: 25px;
 }
 
-.item-uom-header, .item-bom-header {
+.item-generic ion-item {
+  margin: 25px;
+}
+
+.item-generic-header {
   margin: 10px !important;
 }
 
