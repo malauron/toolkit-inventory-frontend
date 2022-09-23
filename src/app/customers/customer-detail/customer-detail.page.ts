@@ -39,7 +39,6 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-
     this.isFetching = true;
 
     this.customerGroups = [];
@@ -66,8 +65,8 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
         customerName: new FormControl(null, {
           validators: [Validators.required],
         }),
-        customerGroup: new FormControl(null,{
-          validators: [Validators.required]
+        customerGroup: new FormControl(null, {
+          validators: [Validators.required],
         }),
         contactNo: new FormControl(''),
         address: new FormControl(''),
@@ -81,20 +80,14 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
         erContactAddress: new FormControl(''),
       });
 
-      this.customerGroupsService.getCustomerGroups().subscribe(res => {
-        this.customerGroups = res;
-        console.log(res);
-      });
-
       const customerId = Number(paramMap.get('customerId'));
       if (customerId > 0) {
         this.customersService.getCustomer(customerId).subscribe((resData) => {
-          console.log(resData.customerGroup);
           this.customer.customerId = resData.customerId;
+
           this.customerForm.patchValue({
             customerCode: resData.customerCode,
             customerName: resData.customerName,
-            customerGroup: resData.customerGroup,
             contactNo: resData.contactNo,
             address: resData.address,
             sssNo: resData.sssNo,
@@ -107,15 +100,42 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
             erContactAddress: resData.erContactAddress,
           });
 
+          this.customerGroupsService.getCustomerGroups().subscribe((res) => {
+            for (const key in res) {
+              if (res.hasOwnProperty(key)) {
+                const customerGroup = new CustomerGroup();
+                customerGroup.customerGroupId = res[key].customerGroupId;
+                customerGroup.customerGroupName = res[key].customerGroupName;
+                if (
+                  resData.customerGroup.customerGroupId ===
+                  customerGroup.customerGroupId
+                ) {
+                  this.customer.customerGroup = customerGroup;
+                }
+                this.customerGroups = this.customerGroups.concat(customerGroup);
+              }
+            }
+
+            this.customerForm.patchValue({
+              customerGroup: this.customer.customerGroup,
+            });
+          });
+
           if (resData.customerPicture) {
-            this.displayPicture = 'data:' + resData.customerPicture.type +
-            ';base64,' + resData.customerPicture.file;
+            this.displayPicture =
+              'data:' +
+              resData.customerPicture.type +
+              ';base64,' +
+              resData.customerPicture.file;
             this.displayImg = this.displayPicture;
           }
 
           if (resData.customerSignature) {
-            this.displaySignature = 'data:' + resData.customerSignature.type +
-            ';base64,' + resData.customerSignature.file;
+            this.displaySignature =
+              'data:' +
+              resData.customerSignature.type +
+              ';base64,' +
+              resData.customerSignature.file;
           }
 
           this.isFetching = false;
@@ -124,7 +144,6 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
         this.isFetching = false;
       }
     });
-
   }
 
   onSegmentChanged(event) {
@@ -158,20 +177,19 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
   }
 
   onSaveCustomer() {
-
     if (!this.customerForm.valid) {
       this.messageBox('Please provide a valid customer information');
       return;
     }
 
     if (!this.isUploading) {
-
       this.isUploading = true;
       const customerDto = new CustomerDto();
       const tmpCustomer = new Customer();
 
       tmpCustomer.customerCode = this.customerForm.value.customerCode;
       tmpCustomer.customerName = this.customerForm.value.customerName;
+      tmpCustomer.customerGroup = this.customerForm.value.customerGroup;
       tmpCustomer.contactNo = this.customerForm.value.contactNo;
       tmpCustomer.address = this.customerForm.value.address;
       tmpCustomer.sssNo = this.customerForm.value.sssNo;
@@ -229,14 +247,12 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
         (err) => {
           this.messageBox(
             'An error occured while trying to save the information. Please check your network ' +
-            'connection and attached a picture having a size of 1MB or less.'
+              'connection and attached a picture having a size of 1MB or less.'
           );
           this.isUploading = false;
         }
       );
-
     }
-
   }
 
   messageBox(msg: string) {
@@ -253,9 +269,8 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-      if (this.dataHaveChanged) {
-        this.customersService.customersHaveChanged.next(true);
-      }
+    if (this.dataHaveChanged) {
+      this.customersService.customersHaveChanged.next(true);
+    }
   }
-
 }

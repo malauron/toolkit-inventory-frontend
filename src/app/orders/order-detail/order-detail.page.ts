@@ -69,7 +69,7 @@ export class OrderDetailPage implements OnInit, OnDestroy {
       this.orderService.getOrder(orderId).subscribe(
         (resData) => {
           if (!resData.orderId) {
-            console.log(resData);
+
             this.navCtrl.navigateBack('/tabs/orders/orders-list');
             return;
           }
