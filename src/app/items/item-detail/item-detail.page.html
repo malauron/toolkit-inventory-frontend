@@ -211,7 +211,7 @@
                       color="primary"
                     ></ion-icon>
                     <ion-input
-                      (click)="onItemSearch()"
+                      (click)="onItemSearch('bom')"
                       readonly="true"
                       formControlName="subItemName"
                       placeholder="Item"
@@ -316,7 +316,7 @@
           </ion-item>
           <div class="separator"></div>
           <ion-grid>
-            <form [formGroup]="itemBomForm">
+            <form [formGroup]="itemGenericForm">
               <ion-item fill="outline">
                 <ion-icon
                   slot="start"
@@ -353,7 +353,7 @@
                   interface="popover"
                 >
                   <ion-select-option
-                    *ngFor="let uom of uomsForBom"
+                    *ngFor="let uom of uomsForGeneric"
                     [value]="uom"
                     >{{ uom.uomName }}
                   </ion-select-option>
@@ -389,6 +389,7 @@
                 <ion-icon name="checkmark-outline" slot="start"></ion-icon>
               </ion-button>
             </ion-item>
+
           </ion-grid>
         </ion-card>
       </ion-col>

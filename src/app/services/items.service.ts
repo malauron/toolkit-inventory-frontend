@@ -79,6 +79,12 @@ export class ItemsService {
     return this.http.get<ItemDto>(this.apiUrl);
   }
 
+  getItemGenerics(itemId: number): Observable<ItemDto>{
+    this.apiUrl = `${this.config.urlV1ItemGenerics}?itemId=${itemId}`;
+
+    return this.http.get<ItemDto>(this.apiUrl);
+  }
+
   postItemUoms(itemUom: ItemUom): Observable<ItemUom> {
     return this.http.post<ItemUom>(this.config.urlV1ItemUoms, itemUom);
   }

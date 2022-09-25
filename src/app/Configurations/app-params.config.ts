@@ -32,6 +32,7 @@ export class AppParamsConfig {
   urlV1Items: any;
   urlV1ItemUoms: any;
   urlV1ItemBoms: any;
+  urlV1ItemGenerics: any;
   urlV1Menus: any;
   urlV1MenuIngredients: any;
   urlV1CartMenus: any;
@@ -90,6 +91,7 @@ export class AppParamsConfig {
     this.urlV1Items = this.urlV1 + '/items';
     this.urlV1ItemUoms = this.urlV1 + '/itemUoms';
     this.urlV1ItemBoms = `${this.urlV1}/itemBoms`;
+    this.urlV1ItemGenerics = `${this.urlV1}/itemGenerics`;
     this.urlV1Menus = this.urlV1 + '/menus';
     this.urlV1MenuIngredients = `${this.urlV1}/menuIngredients`;
     this.urlV1CartMenus = `${this.urlV1}/cartMenus`;

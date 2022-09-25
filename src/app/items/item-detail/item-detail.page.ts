@@ -9,9 +9,10 @@ import {
   NavController,
   ToastController,
 } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { ItemBom } from 'src/app/classes/item-bom.model';
 import { ItemDto } from 'src/app/classes/item-dto.model';
+import { ItemGeneric } from 'src/app/classes/item-generic.model';
 import { ItemUom } from 'src/app/classes/item-uom.model';
 import { Item } from 'src/app/classes/item.model';
 import { ItemUomId } from 'src/app/classes/ItemUomId.model';
@@ -34,19 +35,24 @@ export class ItemDetailPage implements OnInit {
   itemForm: FormGroup;
   itemUomForm: FormGroup;
   itemBomForm: FormGroup;
+  itemGenericForm: FormGroup;
 
   item: Item;
   baseUom: Uom;
+  itemGeneric: ItemGeneric;
 
   uoms: Uom[];
   uomsForBom: Uom[];
+  uomsForGeneric: Uom[];
   itemUoms: ItemUom[];
   itemBoms: ItemBom[];
 
   modalOpen = false;
 
+  private subjectGenericUom = new Subject<Uom>();
   private itemSubscription: Subscription;
   private uomSubscription: Subscription;
+  private genericUomSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -62,6 +68,7 @@ export class ItemDetailPage implements OnInit {
     this.uoms = [];
     this.itemUoms = [];
     this.itemBoms = [];
+    this.itemGeneric = new ItemGeneric();
 
     this.itemForm = new FormGroup({
       itemName: new FormControl(null, {
@@ -113,6 +120,29 @@ export class ItemDetailPage implements OnInit {
       }),
     });
 
+    this.itemGenericForm = new FormGroup({
+      subItem: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+      subItemName: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+      requiredUom: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required],
+      }),
+      requiredQty: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(1)],
+      }),
+    });
+
+    this.genericUomSubscription = this.subjectGenericUom.subscribe((uom) => {
+      this.itemGenericForm.patchValue({
+        requiredUom: uom,
+      });
+    });
+
     this.route.paramMap.subscribe((paramMap) => {
       // Check whether paramMap is empty or not
       if (!paramMap.has('itemId')) {
@@ -151,14 +181,17 @@ export class ItemDetailPage implements OnInit {
               this.item.isActive = itemApiData.isActive;
               this.baseUom = itemApiData.uom;
 
-              // // Fetch all UoMs
-              this.fetchAllUoms(itemApiData);
+              // // Fetch base uoms
+              this.getBaseUom(itemApiData);
 
-              // Fecth all uoms for this item
+              // Fecth alternative uoms for this item
               this.getItemUoms(this.item.itemId);
 
               // Featch all boms for this item
               this.getItemBoms(this.item.itemId);
+
+              //Fetch generic item
+              this.getItemGeneric(this.item.itemId);
             },
             (error) => {
               this.navCtrl.navigateBack('/tabs/items');
@@ -167,13 +200,13 @@ export class ItemDetailPage implements OnInit {
           );
       } else {
         this.pageLabel = 'New Item';
-        this.fetchAllUoms();
+        this.getBaseUom();
       }
     });
   }
 
   // Fetch all UoMs
-  fetchAllUoms(itemResData?: Item) {
+  getBaseUom(itemResData?: Item) {
     this.uomSubscription = this.uomService
       .findAllUoms()
       .subscribe((uomApiData) => {
@@ -214,6 +247,48 @@ export class ItemDetailPage implements OnInit {
     });
   }
 
+  getItemGeneric(itemId: number) {
+    this.itemService.getItemGenerics(itemId).subscribe((res1) => {
+      console.log(res1);
+
+      if (res1.itemGeneric) {
+        this.itemGenericForm.patchValue({
+          subItem: res1.itemGeneric.subItem,
+          subItemName: res1.itemGeneric.subItem.itemName,
+          requiredQty: res1.itemGeneric.requiredQty,
+        });
+
+        this.uomsForGeneric = [];
+
+        const requriedUom = res1.itemGeneric.requiredUom;
+        const defaultUom = res1.itemGeneric.subItem.uom;
+
+        if (requriedUom.uomId === defaultUom.uomId) {
+          this.subjectGenericUom.next(defaultUom);
+        }
+
+        this.uomsForGeneric = this.uomsForGeneric.concat(defaultUom);
+
+        this.itemService
+          .getItemUoms(res1.itemGeneric.subItem.itemId)
+          .subscribe((res2) => {
+            console.log(res2);
+            for (const key in res2.itemUoms) {
+              if (res2.itemUoms.hasOwnProperty(key)) {
+                let uom = new Uom();
+                uom = res2.itemUoms[key].uom;
+                if (requriedUom.uomId === uom.uomId) {
+                  this.subjectGenericUom.next(uom);
+                  console.log('selected uom : ' + uom.uomName);
+                }
+                this.uomsForGeneric = this.uomsForGeneric.concat(uom);
+              }
+            }
+          });
+      }
+    });
+  }
+
   processResult() {
     return (data) => {
       this.itemUoms = data.itemUoms;
@@ -222,6 +297,15 @@ export class ItemDetailPage implements OnInit {
 
   onSave() {
     if (this.itemForm.valid) {
+      if (!this.itemGenericForm.valid) {
+        this.messageBox('Invalid stock item details.');
+        return;
+      }
+
+      this.itemGeneric.subItem = this.itemGenericForm.value.subItem;
+      this.itemGeneric.requiredUom = this.itemGenericForm.value.requiredUom;
+      this.itemGeneric.requiredQty = this.itemGenericForm.value.requiredQty;
+
       this.item.itemName = this.itemForm.value.itemName;
       this.item.uom = this.itemForm.value.uom;
       this.item.itemClass = this.itemForm.value.itemClass;
@@ -235,6 +319,7 @@ export class ItemDetailPage implements OnInit {
       } else {
         itemDto.itemUoms = this.itemUoms;
         itemDto.itemBoms = this.itemBoms;
+        itemDto.itemGeneric = this.itemGeneric;
         this.itemService.postItem(itemDto).subscribe(this.processSaveItem());
       }
     } else {
@@ -371,14 +456,16 @@ export class ItemDetailPage implements OnInit {
             text: 'Delete',
             handler: () => {
               if (this.item.itemId > 0) {
-                this.itemService.deleteItemBoms(itemBom.itemBomId).subscribe((res) => {
-                  this.messageBox('BoM has been deleted.');
-                  for (const key in this.itemBoms) {
-                    if (itemBom === this.itemBoms[key]) {
-                      this.itemBoms.splice(Number(key), 1);
+                this.itemService
+                  .deleteItemBoms(itemBom.itemBomId)
+                  .subscribe((res) => {
+                    this.messageBox('BoM has been deleted.');
+                    for (const key in this.itemBoms) {
+                      if (itemBom === this.itemBoms[key]) {
+                        this.itemBoms.splice(Number(key), 1);
+                      }
                     }
-                  }
-                });
+                  });
               } else {
                 for (const key in this.itemBoms) {
                   if (itemBom === this.itemBoms[key]) {
@@ -416,28 +503,48 @@ export class ItemDetailPage implements OnInit {
             uomData.uomName = resultData.data.uom.uomName;
             uomData.uomCode = resultData.data.uom.uomCode;
 
-            this.uomsForBom = [uomData];
+            if (itemClass === 'bom') {
+              this.uomsForBom = [uomData];
 
-            this.itemService.getItemUoms(itemData.itemId).subscribe((res) => {
-              const itemUoms = [];
-              for (const key in res.itemUoms) {
-                if (res.itemUoms.hasOwnProperty(key)) {
-                  this.uomsForBom = this.uomsForBom.concat(
-                    res.itemUoms[key].uom
-                  );
+              this.itemService.getItemUoms(itemData.itemId).subscribe((res) => {
+                for (const key in res.itemUoms) {
+                  if (res.itemUoms.hasOwnProperty(key)) {
+                    this.uomsForBom = this.uomsForBom.concat(
+                      res.itemUoms[key].uom
+                    );
+                  }
                 }
-              }
-            });
+              });
 
-            this.itemBomForm.patchValue({
-              subItem: itemData,
-              subItemName: itemData.itemName,
-              requriedUom: uomData,
-              requiredQty: 1,
-            });
+              this.itemBomForm.patchValue({
+                subItem: itemData,
+                subItemName: itemData.itemName,
+                requiredUom: uomData,
+                requiredQty: 1,
+              });
 
-            const qtyElem = this.quantityInput.getInputElement();
-            qtyElem.then((res) => res.focus());
+              const qtyElem = this.quantityInput.getInputElement();
+              qtyElem.then((res) => res.focus());
+            } else {
+              this.uomsForGeneric = [uomData];
+
+              this.itemService.getItemUoms(itemData.itemId).subscribe((res) => {
+                for (const key in res.itemUoms) {
+                  if (res.itemUoms.hasOwnProperty(key)) {
+                    this.uomsForGeneric = this.uomsForGeneric.concat(
+                      res.itemUoms[key].uom
+                    );
+                  }
+                }
+              });
+
+              this.itemGenericForm.patchValue({
+                subItem: itemData,
+                subItemName: itemData.itemName,
+                requiredUom: uomData,
+                requiredQty: 1,
+              });
+            }
           }
           this.modalOpen = false;
         });
