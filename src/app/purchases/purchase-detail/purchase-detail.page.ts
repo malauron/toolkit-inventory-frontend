@@ -238,7 +238,8 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
             purchaseItem.item = item.item;
             purchaseItem.requiredUom = item.uom;
             purchaseItem.purchasedQty = item.quantity;
-            purchaseItem.cost = item.cost;
+            purchaseItem.purchasePrice = item.price;
+            purchaseItem.totalAmount = item.quantity * item.price;
 
             if (this.purchase.purchaseId) {
               purchaseItem.purchase = this.purchase;
@@ -313,12 +314,13 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
     if (!this.modalOpen) {
       this.modalOpen = true;
 
-      const purchaseItemDetail = new PurchaseItemDetail(
-        pItem.item,
-        pItem.requiredUom,
-        pItem.purchasedQty,
-        pItem.cost
-      );
+      const purchaseItemDetail = new PurchaseItemDetail();
+
+      purchaseItemDetail.item = pItem.item;
+      purchaseItemDetail.uom = pItem.requiredUom;
+      purchaseItemDetail.quantity = pItem.purchasedQty;
+      purchaseItemDetail.price = pItem.purchasePrice;
+
       this.purchaseItemService.purchaseItemDetail.next(purchaseItemDetail);
 
       this.modalSearch
@@ -330,16 +332,14 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
         .then((resultData) => {
           if (resultData.role === 'item') {
             const item: PurchaseItemDetail = resultData.data;
-            const purchaseItem = new PurchaseItem(
-              undefined,
-              undefined,
-              item.item,
-              undefined,
-              undefined,
-              item.uom,
-              item.quantity,
-              item.cost
-            );
+            const purchaseItem = new PurchaseItem();
+
+            purchaseItem.item = item.item;
+            purchaseItem.requiredUom = item.uom;
+            purchaseItem.purchasedQty = item.quantity;
+            purchaseItem.purchasePrice = item.price;
+            purchaseItem.totalAmount = item.quantity * item.price;
+
 
             if (this.purchase.purchaseId) {
               purchaseItem.purchaseItemId = pItem.purchaseItemId;
@@ -376,7 +376,8 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
         this.purchaseItems[key].item = purchaseItem.item;
         this.purchaseItems[key].requiredUom = purchaseItem.requiredUom;
         this.purchaseItems[key].purchasedQty = purchaseItem.purchasedQty;
-        this.purchaseItems[key].cost = purchaseItem.cost;
+        this.purchaseItems[key].purchasePrice = purchaseItem.purchasePrice;
+        this.purchaseItems[key].totalAmount  = purchaseItem.totalAmount;
       }
     }
   }
@@ -436,7 +437,8 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   getTotalAmt() {
     this.totalAmt = 0;
     this.purchaseItems.forEach((itm) => {
-      this.totalAmt += itm.cost * itm.purchasedQty;
+      this.totalAmt += itm.totalAmount;
+
     });
   }
 

@@ -230,13 +230,13 @@
                 item.requiredUom.uomCode }}
               </ion-card-subtitle>
               <ion-card-subtitle slot="end">
-                @ {{ item.cost | number:'1.2-2' }}/{{ item.requiredUom.uomCode
+                @ {{ item.purchasePrice| number:'1.2-2' }}/{{ item.requiredUom.uomCode
                 }}
               </ion-card-subtitle>
             </ion-item>
             <ion-item class="total-cost" lines="none">
               <ion-label>
-                {{ item.purchasedQty * item.cost | number:'1.2-2' }}
+                {{ item.totalAmount| number:'1.2-2' }}
               </ion-label>
               <ion-button
                 *ngIf="purchase.purchaseStatus === 'Unposted'  || purchase.purchaseStatus === undefined"

@@ -249,7 +249,6 @@ export class ItemDetailPage implements OnInit {
 
   getItemGeneric(itemId: number) {
     this.itemService.getItemGenerics(itemId).subscribe((res1) => {
-      console.log(res1);
 
       if (res1.itemGeneric) {
         this.itemGenericForm.patchValue({
@@ -272,14 +271,12 @@ export class ItemDetailPage implements OnInit {
         this.itemService
           .getItemUoms(res1.itemGeneric.subItem.itemId)
           .subscribe((res2) => {
-            console.log(res2);
             for (const key in res2.itemUoms) {
               if (res2.itemUoms.hasOwnProperty(key)) {
                 let uom = new Uom();
                 uom = res2.itemUoms[key].uom;
                 if (requriedUom.uomId === uom.uomId) {
                   this.subjectGenericUom.next(uom);
-                  console.log('selected uom : ' + uom.uomName);
                 }
                 this.uomsForGeneric = this.uomsForGeneric.concat(uom);
               }

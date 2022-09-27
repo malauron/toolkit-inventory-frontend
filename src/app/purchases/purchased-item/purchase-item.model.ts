@@ -6,6 +6,6 @@ export class PurchaseItemDetail{
     public item?: Item,
     public uom?: Uom,
     public quantity?: number,
-    public cost?: number,
+    public price?: number,
   ){}
 }

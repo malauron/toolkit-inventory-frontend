@@ -66,7 +66,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.001)],
       }),
-      cost: new FormControl(null, {
+      price: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.001)],
       }),
@@ -105,14 +105,14 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
               itemName: itemData.itemName,
               uom: uomData,
               quantity: res.quantity,
-              cost: res.cost,
+              price: res.price,
             });
           } else {
             this.itemForm.patchValue({
               item: itemData,
               itemName: itemData.itemName,
               quantity: res.quantity,
-              cost: res.cost,
+              price: res.price,
             });
           }
 
@@ -167,7 +167,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
               itemName: itemData.itemName,
               uom: uomData,
               quantity: 1.0,
-              cost: 1.0,
+              price: 1.0,
             });
 
             const qtyElem = this.quantityInput.getInputElement();
@@ -218,7 +218,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
         this.itemForm.value.item,
         this.itemForm.value.uom,
         this.itemForm.value.quantity,
-        this.itemForm.value.cost
+        this.itemForm.value.price
       );
       this.modalController.dismiss(purchaseItemDetail, 'item');
     }
