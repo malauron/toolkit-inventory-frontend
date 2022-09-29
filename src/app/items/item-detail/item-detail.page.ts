@@ -11,11 +11,11 @@ import {
 } from '@ionic/angular';
 import { Subject, Subscription } from 'rxjs';
 import { ItemBom } from 'src/app/classes/item-bom.model';
+import { ItemClass } from 'src/app/classes/item-class.model';
 import { ItemDto } from 'src/app/classes/item-dto.model';
 import { ItemGeneric } from 'src/app/classes/item-generic.model';
 import { ItemUom } from 'src/app/classes/item-uom.model';
 import { Item } from 'src/app/classes/item.model';
-import { ItemUomId } from 'src/app/classes/ItemUomId.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemsService } from 'src/app/services/items.service';
 import { UomsService } from 'src/app/services/uoms.service';
@@ -48,6 +48,7 @@ export class ItemDetailPage implements OnInit {
   itemBoms: ItemBom[];
 
   modalOpen = false;
+  isUploading = false;
 
   private subjectGenericUom = new Subject<Uom>();
   private itemSubscription: Subscription;
@@ -64,6 +65,10 @@ export class ItemDetailPage implements OnInit {
     private modalItemSearch: ModalController
   ) {}
 
+  get theItemClass() {
+    return ItemClass;
+  }
+
   ngOnInit() {
     this.uoms = [];
     this.itemUoms = [];
@@ -79,7 +84,7 @@ export class ItemDetailPage implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
-      itemClass: new FormControl('Stock', {
+      itemClass: new FormControl(ItemClass.Stock, {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
@@ -116,11 +121,12 @@ export class ItemDetailPage implements OnInit {
       }),
       requiredQty: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.min(1)],
+        validators: [Validators.required, Validators.min(0.001)],
       }),
     });
 
     this.itemGenericForm = new FormGroup({
+      itemGenericId: new FormControl(null),
       subItem: new FormControl(null, {
         validators: [Validators.required],
       }),
@@ -133,7 +139,7 @@ export class ItemDetailPage implements OnInit {
       }),
       requiredQty: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.min(1)],
+        validators: [Validators.required, Validators.min(0.001)],
       }),
     });
 
@@ -158,6 +164,7 @@ export class ItemDetailPage implements OnInit {
 
       this.item = new Item();
       this.item.itemId = Number(paramMap.get('itemId'));
+      this.item.itemClass = ItemClass.Stock;
 
       // Assign the item id to each
       // new item uom
@@ -249,9 +256,9 @@ export class ItemDetailPage implements OnInit {
 
   getItemGeneric(itemId: number) {
     this.itemService.getItemGenerics(itemId).subscribe((res1) => {
-
       if (res1.itemGeneric) {
         this.itemGenericForm.patchValue({
+          itemGenericId: res1.itemGeneric.itemGenericId,
           subItem: res1.itemGeneric.subItem,
           subItemName: res1.itemGeneric.subItem.itemName,
           requiredQty: res1.itemGeneric.requiredQty,
@@ -293,34 +300,46 @@ export class ItemDetailPage implements OnInit {
   }
 
   onSave() {
-    if (this.itemForm.valid) {
-      if (!this.itemGenericForm.valid) {
-        this.messageBox('Invalid stock item details.');
-        return;
-      }
+    if (!this.isUploading) {
+      this.isUploading = true;
 
-      this.itemGeneric.subItem = this.itemGenericForm.value.subItem;
-      this.itemGeneric.requiredUom = this.itemGenericForm.value.requiredUom;
-      this.itemGeneric.requiredQty = this.itemGenericForm.value.requiredQty;
+      if (this.itemForm.valid) {
+        this.item.itemName = this.itemForm.value.itemName;
+        this.item.uom = this.itemForm.value.uom;
+        this.item.itemClass = this.itemForm.value.itemClass;
+        this.item.isActive = this.itemForm.value.isActive;
 
-      this.item.itemName = this.itemForm.value.itemName;
-      this.item.uom = this.itemForm.value.uom;
-      this.item.itemClass = this.itemForm.value.itemClass;
-      this.item.isActive = this.itemForm.value.isActive;
+        const itemDto = new ItemDto();
+        itemDto.item = this.item;
 
-      const itemDto = new ItemDto();
-      itemDto.item = this.item;
+        if (this.item.itemId > 0) {
+          this.itemService.putItem(itemDto).subscribe(this.processSaveItem());
+        } else {
+          if (this.item.itemClass === ItemClass.Stock) {
+            itemDto.itemUoms = this.itemUoms;
+          } else if (this.item.itemClass === ItemClass.Assembly) {
+            itemDto.itemBoms = this.itemBoms;
+          } else if (this.item.itemClass === ItemClass.Branded) {
+            if (!this.itemGenericForm.valid) {
+              this.messageBox('Invalid stock item details.');
+              return;
+            }
 
-      if (this.item.itemId > 0) {
-        this.itemService.putItem(itemDto).subscribe(this.processSaveItem());
+            this.itemGeneric.subItem = this.itemGenericForm.value.subItem;
+            this.itemGeneric.requiredUom =
+              this.itemGenericForm.value.requiredUom;
+            this.itemGeneric.requiredQty =
+              this.itemGenericForm.value.requiredQty;
+
+            itemDto.itemGeneric = this.itemGeneric;
+          }
+
+          this.itemService.postItem(itemDto).subscribe(this.processSaveItem());
+        }
       } else {
-        itemDto.itemUoms = this.itemUoms;
-        itemDto.itemBoms = this.itemBoms;
-        itemDto.itemGeneric = this.itemGeneric;
-        this.itemService.postItem(itemDto).subscribe(this.processSaveItem());
+        this.messageBox('Invalid item information.');
+        this.isUploading = false;
       }
-    } else {
-      this.messageBox('Invalid item information.');
     }
   }
 
@@ -333,11 +352,16 @@ export class ItemDetailPage implements OnInit {
         this.item.itemId = itemData.item.itemId;
         this.messageBox('Item has been saved successfully.');
       }
+      this.isUploading = false;
     };
   }
 
   onBaseUomChange(baseUom: Uom) {
     this.baseUom = baseUom;
+  }
+
+  itemClassChange(itemClass: ItemClass) {
+    this.item.itemClass = itemClass;
   }
 
   onAddItemUom() {
@@ -401,6 +425,27 @@ export class ItemDetailPage implements OnInit {
       }
     } else {
       this.messageBox('Invalid BoM details.');
+    }
+  }
+
+  updateItemGeneric() {
+    if (!this.isUploading) {
+      this.isUploading = true;
+
+    if (!this.itemGenericForm.valid) {
+      this.messageBox('Invalid stock item details.');
+      return;
+    }
+
+    this.itemGeneric.itemGenericId = this.itemGenericForm.value.itemGenericId;
+    this.itemGeneric.subItem = this.itemGenericForm.value.subItem;
+    this.itemGeneric.requiredUom = this.itemGenericForm.value.requiredUom;
+    this.itemGeneric.requiredQty = this.itemGenericForm.value.requiredQty;
+
+    this.itemService.putItemGenerics(this.itemGeneric).subscribe((res) => {
+      this.messageBox('Stock item has been updated.');
+      this.isUploading = false;
+    });
     }
   }
 
@@ -520,8 +565,8 @@ export class ItemDetailPage implements OnInit {
                 requiredQty: 1,
               });
 
-              const qtyElem = this.quantityInput.getInputElement();
-              qtyElem.then((res) => res.focus());
+              // const qtyElem = this.quantityInput.getInputElement();
+              // qtyElem.then((res) => res.focus());
             } else {
               this.uomsForGeneric = [uomData];
 

@@ -72,10 +72,12 @@
                 formControlName="itemClass"
                 interface="popover"
                 [disabled]="item.itemId>0"
+                (ionChange)="itemClassChange(itemClass.value)"
               >
-                <ion-select-option>Stock</ion-select-option>
-                <ion-select-option>Assembly</ion-select-option>
-                <ion-select-option>Branded</ion-select-option>
+                <ion-select-option *ngFor="let itmClass of theItemClass | keyvalue">{{ itmClass.key }}</ion-select-option>
+                <!-- <ion-select-option>{{ theItemClass.Stock }}</ion-select-option>
+                <ion-select-option>{{ theItemClass.Assembly }}</ion-select-option>
+                <ion-select-option>{{ theItemClass.Branded }}</ion-select-option> -->
               </ion-select>
             </ion-item>
 
@@ -91,6 +93,7 @@
                 color="success"
                 slot="end"
                 size="default"
+                [disabled]="isUploading"
               >
                 Save
                 <ion-icon name="{{ postButton }}" slot="start"></ion-icon>
@@ -101,7 +104,7 @@
       </ion-col>
 
       <!-- Unit of Measure -->
-      <ion-col size-xs="12" size-xl="6">
+      <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemClass === this.theItemClass.Stock">
         <!-- <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemId"> -->
         <ion-card class="item-uom">
           <div class="card-top"></div>
@@ -193,7 +196,7 @@
       </ion-col>
 
       <!-- Bill of Materials -->
-      <ion-col size-xs="12" size-xl="6">
+      <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemClass === theItemClass.Assembly">
         <ion-card class="item-bom">
           <div class="card-top"></div>
 
@@ -222,7 +225,7 @@
                       slot="end"
                       size="small"
                       fill="clear"
-                      (click)="onItemSearch()"
+                      (click)="onItemSearch('bom')"
                     >
                       <ion-icon
                         name="search-outline"
@@ -307,7 +310,7 @@
       </ion-col>
 
       <!-- Generic Item -->
-      <ion-col size-xs="12" size-xl="6">
+      <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemClass === theItemClass.Branded">
         <ion-card class="item-generic">
           <div class="card-top"></div>
 
@@ -378,12 +381,13 @@
               </ion-item>
             </form>
 
-            <ion-item lines="none">
+            <ion-item lines="none"  *ngIf="this.item.itemId">
               <ion-button
-                (click)="onAddItemBom()"
+                (click)="updateItemGeneric()"
                 color="success"
                 slot="end"
                 size="default"
+                [disabled]="isUploading"
               >
                 Save
                 <ion-icon name="checkmark-outline" slot="start"></ion-icon>

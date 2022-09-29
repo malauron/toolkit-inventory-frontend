@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ItemBom } from '../classes/item-bom.model';
 import { ItemDto } from '../classes/item-dto.model';
+import { ItemGeneric } from '../classes/item-generic.model';
 import { ItemUom } from '../classes/item-uom.model';
 import { Item } from '../classes/item.model';
 import { AppParamsConfig } from '../Configurations/app-params.config';
@@ -83,6 +84,12 @@ export class ItemsService {
     this.apiUrl = `${this.config.urlV1ItemGenerics}?itemId=${itemId}`;
 
     return this.http.get<ItemDto>(this.apiUrl);
+  }
+
+  putItemGenerics(itemGeneric: ItemGeneric): Observable<ItemGeneric>{
+    this.apiUrl = `${this.config.urlV1ItemGenerics}`;
+
+    return this.http.put<ItemGeneric>(this.apiUrl, itemGeneric);
   }
 
   postItemUoms(itemUom: ItemUom): Observable<ItemUom> {
