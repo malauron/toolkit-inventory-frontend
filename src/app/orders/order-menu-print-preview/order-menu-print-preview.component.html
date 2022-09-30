@@ -40,7 +40,7 @@
       </div>
 
       <div class="menu-header">
-        <h3>{{ orderMenuDto.orderMenu.menu.menuName }}</h3>
+        <p>{{ orderMenuDto.orderMenu.menu.menuName }}</p>
         <p class="menuId">
           <img src="../../../assets/icons/spoonfork.svg" />
           {{ orderMenuDto.orderMenu.orderMenuId.toString().padStart(8, "0") }}
@@ -75,8 +75,8 @@
       </table>
 
       <div class="menu-footer">
-        <h3>Total cost: </h3>
-        <h3 class="total-cost">{{ totalAmt | number:'1.2-2' }}</h3>
+        <p>Total cost: </p>
+        <p class="total-cost">{{ totalAmt | number:'1.2-2' }}</p>
       </div>
 
     </div>
