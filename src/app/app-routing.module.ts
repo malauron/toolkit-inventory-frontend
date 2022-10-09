@@ -19,9 +19,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'tabs',
     pathMatch: 'full'
-  },  {
-    path: 'warehouses',
-    loadChildren: () => import('./warehouses/warehouses.module').then( m => m.WarehousesPageModule)
   },
 
 

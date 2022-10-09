@@ -37,6 +37,26 @@ const routes: Routes = [
         loadChildren: () => import('../vendors/vendors.module').then( m => m.VendorsPageModule)
       },
       {
+        path: 'warehouses',
+        loadChildren: () => import('../warehouses/warehouses.module').then( m => m.WarehousesPageModule)
+      },
+      {
+        path: 'options',
+        loadChildren: () => import('../options/options.module').then( m => m.OptionsPageModule)
+      },
+      {
+        path: 'receiving',
+        loadChildren: () => import('../butchery/receiving/receiving.module').then( m => m.ReceivingPageModule)
+      },
+      {
+        path: 'production',
+        loadChildren: () => import('../butchery/production/production.module').then( m => m.ProductionPageModule)
+      },
+      {
+        path: 'releasing',
+        loadChildren: () => import('../butchery/releasing/releasing.module').then( m => m.ReleasingPageModule)
+      },
+      {
         path: '',
         redirectTo: 'orders',
         pathMatch: 'full'

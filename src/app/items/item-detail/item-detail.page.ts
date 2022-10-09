@@ -76,6 +76,10 @@ export class ItemDetailPage implements OnInit {
     this.itemGeneric = new ItemGeneric();
 
     this.itemForm = new FormGroup({
+      itemCode: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(15)],
+      }),
       itemName: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(50)],
@@ -87,6 +91,10 @@ export class ItemDetailPage implements OnInit {
       itemClass: new FormControl(ItemClass.Stock, {
         updateOn: 'blur',
         validators: [Validators.required],
+      }),
+      price: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(0.01)]
       }),
       isActive: new FormControl(true, {
         updateOn: 'blur',
@@ -182,9 +190,11 @@ export class ItemDetailPage implements OnInit {
           .getItem(this.item.itemId)
           .subscribe(
             (itemApiData) => {
+              this.item.itemCode = itemApiData.itemCode;
               this.item.itemName = itemApiData.itemName;
               this.item.dateCreated = itemApiData.dateCreated;
               this.item.itemClass = itemApiData.itemClass;
+              this.item.price = itemApiData.price;
               this.item.isActive = itemApiData.isActive;
               this.baseUom = itemApiData.uom;
 
@@ -235,9 +245,11 @@ export class ItemDetailPage implements OnInit {
 
         if (itemResData) {
           this.itemForm.patchValue({
+            itemCode: itemResData.itemCode,
             itemName: itemResData.itemName,
             uom: this.item.uom,
             itemClass: itemResData.itemClass,
+            price: itemResData.price,
             isActive: itemResData.isActive,
           });
         }
@@ -304,9 +316,11 @@ export class ItemDetailPage implements OnInit {
       this.isUploading = true;
 
       if (this.itemForm.valid) {
+        this.item.itemCode = this.itemForm.value.itemCode;
         this.item.itemName = this.itemForm.value.itemName;
         this.item.uom = this.itemForm.value.uom;
         this.item.itemClass = this.itemForm.value.itemClass;
+        this.item.price = this.itemForm.value.price;
         this.item.isActive = this.itemForm.value.isActive;
 
         const itemDto = new ItemDto();

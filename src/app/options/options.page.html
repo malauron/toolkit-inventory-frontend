@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-title>Options</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <div class="card-top"></div>
+    <ion-item class="header-label" lines="none">
+      <ion-card-title>Butchery</ion-card-title>
+    </ion-item>
+    <div class="separator"></div>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size-xs="12" size-sm="4">
+          <ion-card class="card-button" button="true" (click)="onReceiving()">
+            <ion-icon name="log-in-outline" color="success"></ion-icon>
+            <ion-card-title>Receiving</ion-card-title>
+          </ion-card>
+        </ion-col>
+        <ion-col size-xs="12" size-sm="4">
+          <ion-card class="card-button" button="true" (click)="onProduction()">
+            <ion-icon name="copy-outline" color="success"></ion-icon>
+            <ion-card-title>Production</ion-card-title>
+          </ion-card>
+        </ion-col>
+        <ion-col size-xs="12" size-sm="4">
+          <ion-card class="card-button" button="true" (click)="onReleasing()">
+            <ion-icon name="log-out-outline" color="success"></ion-icon>
+            <ion-card-title>Releasing</ion-card-title>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+</ion-content>

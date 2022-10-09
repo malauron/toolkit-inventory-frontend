@@ -22,6 +22,21 @@
         <ion-card class="item-header">
           <div class="card-top"></div>
           <form [formGroup]="itemForm">
+
+            <ion-item fill="outline">
+              <ion-icon
+                slot="start"
+                name="barcode-outline"
+                color="primary"
+              ></ion-icon>
+              <ion-input
+                placeholder="Code"
+                type="text"
+                formControlName="itemCode"
+              >
+              </ion-input>
+            </ion-item>
+
             <ion-item fill="outline">
               <!-- <ion-label position="floating">Description</ion-label> -->
               <ion-icon
@@ -62,7 +77,7 @@
             <ion-item fill="outline">
               <ion-icon
                 slot="start"
-                name="pricetag-outline"
+                name="cube-outline"
                 color="primary"
               ></ion-icon>
               <ion-select
@@ -79,6 +94,21 @@
                 <ion-select-option>{{ theItemClass.Assembly }}</ion-select-option>
                 <ion-select-option>{{ theItemClass.Branded }}</ion-select-option> -->
               </ion-select>
+            </ion-item>
+
+
+            <ion-item fill="outline">
+              <ion-icon
+                slot="start"
+                name="pricetag-outline"
+                color="primary"
+              ></ion-icon>
+              <ion-input
+                formControlName="price"
+                placeholder="Price"
+                type="number"
+              >
+              </ion-input>
             </ion-item>
 
             <!-- Item Status -->

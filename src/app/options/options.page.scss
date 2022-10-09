@@ -1,0 +1,36 @@
+ion-content {
+  --ion-background-color: #f6f6f6;
+}
+
+ion-card {
+  --ion-background-color: #FFFFFF;
+}
+
+.card-top {
+  border-top: 5px solid var(--ion-color-primary);
+}
+
+.header-label {
+  margin: 10px;
+}
+
+.card-holder {
+  margin: 20px 20px 0 20px;
+}
+
+.separator {
+  border-top: 1px solid var(--ion-color-medium);
+}
+
+.card-button {
+  ion-icon {
+    zoom: 5;
+    width: 100%;
+    margin: 3px auto;
+    pointer-events: none;
+  }
+  ion-card-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
