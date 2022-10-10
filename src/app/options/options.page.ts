@@ -16,15 +16,15 @@ export class OptionsPage implements OnInit {
   }
 
   onReceiving() {
-    this.router.navigate(['/','tabs','receiving']);
+    this.router.navigate(['/','tabs','receivings']);
   }
 
   onProduction() {
-    this.router.navigate(['/','tabs','production']);
+    this.router.navigate(['/','tabs','productions']);
   }
 
   onReleasing() {
-    this.router.navigate(['/','tabs','releasing']);
+    this.router.navigate(['/','tabs','releasings']);
   }
 
 }

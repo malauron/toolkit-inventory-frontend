@@ -1,0 +1,235 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button
+        icon="chevron-back-outline"
+        defaultHref="/tabs/productions"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>Production Details</ion-title>
+    <ion-buttons slot="primary" *ngIf="!production.butcheryProductionId">
+      <ion-button (click)="onSaveProduction()">
+        <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="spinner">
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
+  </div>
+
+  <ion-card *ngIf="!isFetching" class="card-holder">
+    <div class="card-top"></div>
+    <ion-grid>
+      <ion-row>
+        <ion-col size-xs="12" size-xl="4" push-xl="8">
+          <ion-item lines="none" *ngIf="production.butcheryProductionId">
+            <ion-icon
+              class="contactIcon"
+              name="calendar-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label>
+              <ion-label class="ion-text-wrap"
+                >{{ production.dateCreated | date:'MMM dd, yyyy hh:mm a'
+                }}</ion-label
+              >
+            </ion-label>
+          </ion-item>
+
+          <ion-item lines="none" *ngIf="production.butcheryProductionId">
+            <ion-icon
+              class="cartIcon"
+              name="receipt-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label
+              >{{ production.butcheryProductionId.toString().padStart(8, "0")
+              }}</ion-label
+            >
+
+            <!-- Button to change the status of the production -->
+            <ion-button
+              #statusButton
+              *ngIf="productionDetailsConfig.productionStatusButton && !isUploading"
+              fill="clear"
+              size="small"
+              mode="ios"
+              (click)="onShowPopOver($event)"
+            >
+              <ion-badge [color]="productionDetailsConfig.productionStatusColor"
+                >{{production.productionStatus}}</ion-badge
+              >
+            </ion-button>
+
+            <ion-popover
+              #statusPopover
+              *ngIf="productionDetailsConfig.productionStatusPopover"
+              triggerAction="click"
+              dismissOnSelect="true"
+              [isOpen]="statusPopoverOpen"
+              (didDismiss)="statusPopoverOpen = false"
+            >
+              <ng-template>
+                <ion-content>
+                  <ion-list>
+                    <ion-item
+                      #postedStatus
+                      *ngIf="productionDetailsConfig.postedStatus"
+                      class="ion-text-center ion-no-padding ion-no-margin"
+                      lines="full"
+                      [button]="true"
+                      (click)="onUpdateStatus('Posted')"
+                    >
+                      <ion-label>Post</ion-label>
+                    </ion-item>
+                    <ion-item
+                      #cancelledStatus
+                      *ngIf="productionDetailsConfig.cancelledStatus"
+                      class="ion-text-center ion-no-padding ion-no-margin"
+                      lines="none"
+                      [button]="true"
+                      (click)="onUpdateStatus('Cancelled')"
+                    >
+                      <ion-label color="primary">Cancel</ion-label>
+                    </ion-item>
+                  </ion-list>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
+            <!-- **************************************** -->
+
+            <!-- Badge that indicates the status of the production -->
+            <ion-badge
+              #statusBadge
+              [color]="productionDetailsConfig.productionStatusColor"
+              *ngIf="productionDetailsConfig.productionStatusBadge"
+            >
+              {{production.productionStatus}}
+            </ion-badge>
+            <!-- *************************************** -->
+          </ion-item>
+        </ion-col>
+
+        <ion-col size-xs="12" size-xl="7" pull-xl="4">
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="business-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-title>{{ warehouse.warehouseName }}</ion-card-title>
+            </ion-label>
+            <ion-button
+              #statusButton
+              *ngIf="production.productionStatus === 'Unposted' || production.productionStatus === undefined"
+              (click)="onWarehouseSearch()"
+              fill="clear"
+              size="small"
+              mode="ios"
+              id="click-trigger"
+            >
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="scale-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-card-title>{{ totalWeight | number:'1.2-2' }}</ion-card-title>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-card class="card-holder">
+    <div class="card-top"></div>
+    <ion-card-header class="ion-no-padding">
+      <ion-item lines="none">
+        <ion-searchbar #itemSearchBar></ion-searchbar>
+        <ion-button
+          *ngIf="production.productionStatus === 'Unposted' || production.productionStatus === undefined"
+          class="ion-no-padding ion-no-margin"
+          (click)="onAddProductionItem()"
+          slot="end"
+          mode="ios"
+          fill="clear"
+          size="large"
+          color="success"
+        >
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card-header>
+    <div class="separator"></div>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col
+          size-xs="12"
+          size-md="6"
+          size-lg="4"
+          *ngFor="let item of productionItems"
+        >
+          <ion-card class="card-item">
+            <ion-item lines="none">
+              <ion-avatar slot="start">
+                <img src="../../assets/icons/items.svg" class="icon" />
+              </ion-avatar>
+              <ion-card-subtitle class="ion-no-padding ion-no-margin">
+                {{ item.item.itemName }} - {{ item.producedQty }}{{
+                item.requiredUom.uomCode }}
+              </ion-card-subtitle>
+              <ion-card-subtitle slot="end">
+                @ {{ item.productionCost| number:'1.2-2' }}/{{
+                item.requiredUom.uomCode }}
+              </ion-card-subtitle>
+            </ion-item>
+            <ion-item class="total-cost" lines="none">
+              <ion-label> {{ item.totalAmount| number:'1.2-2' }} </ion-label>
+              <ion-button
+                *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined"
+                (click)="onDeleteProductionItem(item)"
+                class="ion-no-margin"
+                mode="ios"
+                slot="end"
+                fill="clear"
+                color="medium"
+                size="default"
+              >
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+              <ion-button
+                *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined"
+                (click)="onUpdateProductionItem(item)"
+                class="ion-no-padding ion-no-margin"
+                mode="ios"
+                fill="clear"
+                color="success"
+                size="default"
+                slot="end"
+              >
+                <ion-icon name="create-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-content>

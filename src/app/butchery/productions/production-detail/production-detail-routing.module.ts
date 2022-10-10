@@ -5,8 +5,18 @@ import { ProductionDetailPage } from './production-detail.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':butcheryProductionId',
     component: ProductionDetailPage
+  },
+  {
+    path: '',
+    redirectTo: '/tabs/productions',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: '/tabs/productions',
+    pathMatch: 'full'
   }
 ];
 

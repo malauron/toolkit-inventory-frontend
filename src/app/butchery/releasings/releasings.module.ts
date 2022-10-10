@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ProductionPageRoutingModule } from './production-routing.module';
+import { ReleasingsPageRoutingModule } from './releasings-routing.module';
 
-import { ProductionPage } from './production.page';
+import { ReleasingsPage } from './releasings.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProductionPageRoutingModule
+    ReleasingsPageRoutingModule
   ],
-  declarations: [ProductionPage]
+  declarations: [ReleasingsPage]
 })
-export class ProductionPageModule {}
+export class ReleasingsPageModule {}

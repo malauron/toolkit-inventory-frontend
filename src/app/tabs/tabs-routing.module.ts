@@ -45,16 +45,16 @@ const routes: Routes = [
         loadChildren: () => import('../options/options.module').then( m => m.OptionsPageModule)
       },
       {
-        path: 'receiving',
-        loadChildren: () => import('../butchery/receiving/receiving.module').then( m => m.ReceivingPageModule)
+        path: 'receivings',
+        loadChildren: () => import('../butchery/receivings/receivings.module').then( m => m.ReceivingsPageModule)
       },
       {
-        path: 'production',
-        loadChildren: () => import('../butchery/production/production.module').then( m => m.ProductionPageModule)
+        path: 'productions',
+        loadChildren: () => import('../butchery/productions/productions.module').then( m => m.ProductionsPageModule)
       },
       {
-        path: 'releasing',
-        loadChildren: () => import('../butchery/releasing/releasing.module').then( m => m.ReleasingPageModule)
+        path: 'releasings',
+        loadChildren: () => import('../butchery/releasings/releasings.module').then( m => m.ReleasingsPageModule)
       },
       {
         path: '',

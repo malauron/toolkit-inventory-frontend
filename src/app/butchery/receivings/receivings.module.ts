@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ReceivingPageRoutingModule } from './receiving-routing.module';
+import { ReceivingsPageRoutingModule } from './receivings-routing.module';
 
-import { ReceivingPage } from './receiving.page';
+import { ReceivingsPage } from './receivings.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReceivingPageRoutingModule
+    ReceivingsPageRoutingModule
   ],
-  declarations: [ReceivingPage]
+  declarations: [ReceivingsPage]
 })
-export class ReceivingPageModule {}
+export class ReceivingsPageModule {}
