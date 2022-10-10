@@ -32,6 +32,7 @@ export class AppParamsConfig {
 
   urlV1: any;
   urlV1Items: any;
+  urlV1ItemsFindByItemCode: any;
   urlV1ItemUoms: any;
   urlV1ItemBoms: any;
   urlV1ItemGenerics: any;
@@ -96,6 +97,7 @@ export class AppParamsConfig {
     this.urlV1 = 'http://localhost:8443/api/v1';
 
     this.urlV1Items = this.urlV1 + '/items';
+    this.urlV1ItemsFindByItemCode = `${this.urlV1Items}?itemCode=`;
     this.urlV1ItemUoms = this.urlV1 + '/itemUoms';
     this.urlV1ItemBoms = `${this.urlV1}/itemBoms`;
     this.urlV1ItemGenerics = `${this.urlV1}/itemGenerics`;

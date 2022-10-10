@@ -1,6 +1,13 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, IonPopover, ModalController, NavController, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  IonPopover,
+  IonSearchbar,
+  ModalController,
+  NavController,
+  ToastController,
+} from '@ionic/angular';
 import { Warehouse } from 'src/app/classes/warehouse.model';
 import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
 import { ButcheryProductionDto } from '../../classes/butchery-production-dto.model';
@@ -16,6 +23,8 @@ import { ProductionsService } from '../../services/productions.service';
 })
 export class ProductionDetailPage implements OnInit, OnDestroy {
   @ViewChild('statusPopover') statusPopover: IonPopover;
+  @ViewChild('itemSearchBar', { static: true }) itemSearchBar: IonSearchbar;
+
   statusPopoverOpen = false;
 
   production: ButcheryProduction;
@@ -86,6 +95,23 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
         this.isFetching = false;
       }
     });
+  }
+
+  onGetItemByItemCode(event) {
+    if (event && event.key === 'Enter') {
+      const searchDesc = this.itemSearchBar.value;
+
+      console.log(Number(searchDesc));
+
+      if (searchDesc.length >= 12 && !isNaN(Number(searchDesc))) {
+        const barCode = searchDesc.substring(1,6);
+        const itemPrice = searchDesc.substring(6,8).concat('.',searchDesc.substring(8,11));
+      console.log(barCode);
+      console.log(itemPrice);
+      }
+
+      this.itemSearchBar.value = '';
+    }
   }
 
   onUpdateStatus(newStatus: string) {
@@ -176,24 +202,27 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           if (resultData.role === 'warehouse') {
             if (this.production.butcheryProductionId) {
               const productionDto = new ButcheryProductionDto();
-              productionDto.butcheryProductionId = this.production.butcheryProductionId;
+              productionDto.butcheryProductionId =
+                this.production.butcheryProductionId;
               productionDto.warehouse = resultData.data;
               this.dataHaveChanged = true;
 
-              this.productionsService.putProduction(productionDto).subscribe((res) => {
-                this.production.productionStatus = res.productionStatus;
-                if (this.production.productionStatus === 'Unposted') {
-                  this.warehouse = resultData.data;
-                  this.messageBox(
-                    `Produced items will be stored to ${this.warehouse.warehouseName}.`
-                  );
-                } else {
-                  this.messageBox(
-                    'Unable to update the production since its status has been tagged as ' +
-                      this.production.productionStatus
-                  );
-                }
-              });
+              this.productionsService
+                .putProduction(productionDto)
+                .subscribe((res) => {
+                  this.production.productionStatus = res.productionStatus;
+                  if (this.production.productionStatus === 'Unposted') {
+                    this.warehouse = resultData.data;
+                    this.messageBox(
+                      `Produced items will be stored to ${this.warehouse.warehouseName}.`
+                    );
+                  } else {
+                    this.messageBox(
+                      'Unable to update the production since its status has been tagged as ' +
+                        this.production.productionStatus
+                    );
+                  }
+                });
             } else {
               this.warehouse = resultData.data;
             }
@@ -217,13 +246,11 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     //       if (resultData.role === 'item') {
     //         const item: PurchaseItemDetail = resultData.data;
     //         const productionItem = new ButcheryProductionItem();
-
     //         productionItem.item = item.item;
     //         productionItem.requiredUom = item.uom;
     //         productionItem.producedQty = item.quantity;
     //         productionItem.productionCost = item.price;
     //         productionItem.totalAmount = item.quantity * item.price;
-
     //         if (this.production.butcheryProductionId) {
     //           productionItem.butcheryProduction = this.production;
     //           this.productionsService
@@ -255,7 +282,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   }
 
   onSaveProduction() {
-
     if (!this.warehouse.warehouseId) {
       this.messageBox('Please choose a warehouse.');
       return;
@@ -291,16 +317,12 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   onUpdateProductionItem(pItem?: ButcheryProductionItem) {
     // if (!this.modalOpen) {
     //   this.modalOpen = true;
-
     //   const purchaseItemDetail = new PurchaseItemDetail();
-
     //   purchaseItemDetail.item = pItem.item;
     //   purchaseItemDetail.uom = pItem.requiredUom;
     //   purchaseItemDetail.quantity = pItem.producedQty;
     //   purchaseItemDetail.price = pItem.productionCost;
-
     //   this.purchaseItemService.purchaseItemDetail.next(purchaseItemDetail);
-
     //   this.modalSearch
     //     .create({ component: PurchasedItemComponent })
     //     .then((modalSearch) => {
@@ -311,14 +333,11 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     //       if (resultData.role === 'item') {
     //         const item: PurchaseItemDetail = resultData.data;
     //         const productionItem = new ButcheryProductionItem();
-
     //         productionItem.item = item.item;
     //         productionItem.requiredUom = item.uom;
     //         productionItem.producedQty = item.quantity;
     //         productionItem.productionCost = item.price;
     //         productionItem.totalAmount = item.quantity * item.price;
-
-
     //         if (this.production.butcheryProductionId) {
     //           productionItem.butcheryProductionItemId = pItem.butcheryProductionItemId;
     //           productionItem.butcheryProduction = this.production;
@@ -348,14 +367,18 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     // }
   }
 
-  updateProductionItemObj(pItem: ButcheryProductionItem, productionItem: ButcheryProductionItem) {
+  updateProductionItemObj(
+    pItem: ButcheryProductionItem,
+    productionItem: ButcheryProductionItem
+  ) {
     for (const key in this.productionItems) {
       if (pItem === this.productionItems[key]) {
         this.productionItems[key].item = productionItem.item;
         this.productionItems[key].requiredUom = productionItem.requiredUom;
         this.productionItems[key].producedQty = productionItem.producedQty;
-        this.productionItems[key].productionCost = productionItem.productionCost;
-        this.productionItems[key].totalAmount  = productionItem.totalAmount;
+        this.productionItems[key].productionCost =
+          productionItem.productionCost;
+        this.productionItems[key].totalAmount = productionItem.totalAmount;
       }
     }
   }
@@ -416,7 +439,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     this.totalWeight = 0;
     this.productionItems.forEach((itm) => {
       this.totalWeight += itm.totalAmount;
-
     });
   }
 

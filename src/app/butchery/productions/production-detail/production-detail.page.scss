@@ -10,6 +10,14 @@ ion-card {
   --ion-background-color: #ffffff;
 }
 
+ion-searchbar {
+  --box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.19);
+  --background: #f6f6f6;
+  --border-radius: 5px;
+  padding-inline-start: 1px;
+  padding-inline-end: 15px;
+}
+
 .card-holder {
   margin: 20px 20px 0 20px;
 }

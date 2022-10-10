@@ -40,6 +40,25 @@ export class ItemsService {
     return this._item;
   }
 
+  getItemByItemCode(
+    searchDesc?: any
+  ): Observable<ItemDto> {
+    if (searchDesc === undefined) {
+      searchDesc = '';
+    }
+
+    searchDesc = String(searchDesc).replace('%','');
+    searchDesc = String(searchDesc).replace('^','');
+    searchDesc = String(searchDesc).replace('[','');
+    searchDesc = String(searchDesc).replace(']','');
+    searchDesc = String(searchDesc).replace('|','');
+    searchDesc = String(searchDesc).replace('\\','');
+
+    this.apiUrl =
+      `${this.config.urlV1ItemsFindByItemCode}searchDesc`;
+    return this.http.get<ItemDto>(this.apiUrl);
+  }
+
   getItems(
     pageNumber?: number,
     pageSize?: number,
