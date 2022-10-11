@@ -98,19 +98,19 @@ export class ButcheryProductionsService {
     return this.http.put<ButcheryProductionDto>(this.apiUrl, productionDto);
   }
 
-  // putProductionItem(purchaseItem: ButcheryProductionItem): Observable<ButcheryProductionDto> {
-  //   this.apiUrl = `${this.config.urlV1ProductionItems}`;
-  //   return this.http.put<ButcheryProductionDto>(this.apiUrl, purchaseItem);
-  // }
+  putProductionItem(productionItem: ButcheryProductionItem): Observable<ButcheryProductionDto> {
+    this.apiUrl = `${this.config.urlV1ButcheryProductionItems}`;
+    return this.http.put<ButcheryProductionDto>(this.apiUrl, productionItem);
+  }
 
-  // deleteProductionItem(purchaseItem: ButcheryProductionItem): Observable<ButcheryProductionDto> {
-  //   const options = {
-  //     headers: new HttpHeaders({
-  //       contentType: 'application/json'
-  //     }),
-  //     body: purchaseItem
-  //   };
-  //   this.apiUrl = `${this.config.urlV1ProductionItems}`;
-  //   return this.http.delete<ButcheryProductionDto>(this.apiUrl, options);
-  // }
+  deleteProductionItem(productionItem: ButcheryProductionItem): Observable<ButcheryProductionDto> {
+    const options = {
+      headers: new HttpHeaders({
+        contentType: 'application/json'
+      }),
+      body: productionItem
+    };
+    this.apiUrl = `${this.config.urlV1ButcheryProductionItems}`;
+    return this.http.delete<ButcheryProductionDto>(this.apiUrl, options);
+  }
 }

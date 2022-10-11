@@ -105,10 +105,12 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
       const fullBarcode = this.itemSearchBar.value;
 
       if (fullBarcode.length >= 12 && !isNaN(Number(fullBarcode))) {
-        const partialBarcode = fullBarcode.substring(1,6);
-        const itemQty = Number(fullBarcode.substring(6,8).concat('.',fullBarcode.substring(8,11)));
+        const partialBarcode = fullBarcode.substring(1, 6);
+        const itemQty = Number(
+          fullBarcode.substring(6, 8).concat('.', fullBarcode.substring(8, 11))
+        );
 
-        this.itemsService.getItemByItemCode(partialBarcode).subscribe(res => {
+        this.itemsService.getItemByItemCode(partialBarcode).subscribe((res) => {
           if (res.item) {
             this.addProductionItem(res, fullBarcode, itemQty);
           } else {
@@ -122,7 +124,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   }
 
   addProductionItem(itemDto: ItemDto, barcode = '', itemQty = 0) {
-
     const productionItem = new ButcheryProductionItem();
     const cost = itemDto.item.price;
     const baseQty = 1;
@@ -137,10 +138,30 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     productionItem.productionCost = cost;
     productionItem.totalAmount = baseQty * itemQty * cost;
 
-    this.productionItems = this.productionItems.concat(productionItem);
-
-    this.getTotalAmt();
-
+    if (this.production.butcheryProductionId) {
+      productionItem.butcheryProduction = this.production;
+      this.productionsService
+        .putProductionItem(productionItem)
+        .subscribe((res) => {
+          this.dataHaveChanged = true;
+          this.production.productionStatus = res.productionStatus;
+          if (this.production.productionStatus === 'Unposted') {
+            this.productionItems = this.productionItems.concat(
+              res.butcheryProductionItem
+            );
+            this.getTotalAmt();
+            this.messageBox('New production item has been added.');
+          } else {
+            this.messageBox(
+              'Unable to update the production since its status has been tagged as ' +
+                this.production.productionStatus
+            );
+          }
+        });
+    } else {
+      this.productionItems = this.productionItems.concat(productionItem);
+      this.getTotalAmt();
+    }
   }
 
   onUpdateStatus(newStatus: string) {
@@ -262,7 +283,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   }
 
   onAddProductionItem() {
-
     // if (!this.modalOpen) {
     //   this.modalOpen = true;
     //   this.purchaseItemService.purchaseItemDetail.next(undefined);
@@ -415,46 +435,46 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   }
 
   onDeleteProductionItem(pItem: ButcheryProductionItem) {
-    // this.alertCtrl
-    //   .create({
-    //     header: 'Confirm',
-    //     message: 'This will be deleted permanently .',
-    //     buttons: [
-    //       {
-    //         text: 'Cancel',
-    //       },
-    //       {
-    //         text: 'Delete',
-    //         handler: () => {
-    //           if (pItem.butcheryProductionItemId !== undefined) {
-    //             pItem.butcheryProduction = this.production;
-    //             this.productionsService
-    //               .deleteProductionItem(pItem)
-    //               .subscribe((res) => {
-    //                 this.dataHaveChanged = true;
-    //                 this.production.productionStatus = res.productionStatus;
-    //                 if (this.production.productionStatus === 'Unposted') {
-    //                   this.removeMenuObj(pItem);
-    //                   this.messageBox(
-    //                     'ButcheryProduction item has been deleted successfully.'
-    //                   );
-    //                 } else {
-    //                   this.messageBox(
-    //                     'Unable to delete the production item since production has been tagged as ' +
-    //                       this.production.productionStatus
-    //                   );
-    //                 }
-    //               });
-    //           } else {
-    //             this.removeMenuObj(pItem);
-    //           }
-    //         },
-    //       },
-    //     ],
-    //   })
-    //   .then((res) => {
-    //     res.present();
-    //   });
+    this.alertCtrl
+      .create({
+        header: 'Confirm',
+        message: 'This will be deleted permanently .',
+        buttons: [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'Delete',
+            handler: () => {
+              if (pItem.butcheryProductionItemId !== undefined) {
+                pItem.butcheryProduction = this.production;
+                this.productionsService
+                  .deleteProductionItem(pItem)
+                  .subscribe((res) => {
+                    this.dataHaveChanged = true;
+                    this.production.productionStatus = res.productionStatus;
+                    if (this.production.productionStatus === 'Unposted') {
+                      this.removeMenuObj(pItem);
+                      this.messageBox(
+                        'ButcheryProduction item has been deleted successfully.'
+                      );
+                    } else {
+                      this.messageBox(
+                        'Unable to delete the production item since production has been tagged as ' +
+                          this.production.productionStatus
+                      );
+                    }
+                  });
+              } else {
+                this.removeMenuObj(pItem);
+              }
+            },
+          },
+        ],
+      })
+      .then((res) => {
+        res.present();
+      });
   }
 
   removeMenuObj(pItem: ButcheryProductionItem) {

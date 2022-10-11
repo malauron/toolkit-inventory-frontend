@@ -56,6 +56,7 @@ export class AppParamsConfig {
   urlV1ButcheryProductions: any;
   urlV1ButcheryProductionsSearch: any;
   urlV1ButcheryProductionsSetStatus: any;
+  urlV1ButcheryProductionItems: any;
 
   waitTime: number;
   pageSize: number;
@@ -120,6 +121,7 @@ export class AppParamsConfig {
     this.urlV1CustomerGroups = `${this.urlV1}/customerGroups`;
     this.urlV1ButcheryProductions = `${this.urlV1}/butcheryProductions`;
     this.urlV1ButcheryProductionsSetStatus = `${this.urlV1ButcheryProductions}/productionStatus`;
+    this.urlV1ButcheryProductionItems = `${this.urlV1}/butcheryProductionItems`;
 
     this.waitTime = 500;
     this.pageSize = 20;

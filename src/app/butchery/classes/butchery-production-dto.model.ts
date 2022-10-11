@@ -7,6 +7,7 @@ export class ButcheryProductionDto {
     public productionStatus?: string,
     public warehouse?: Warehouse,
     public butcheryProductionItems?: ButcheryProductionItem[],
+    public butcheryProductionItem?: ButcheryProductionItem,
     public totalAmount?: number,
     public dateCreated?: string,
   ) {}
