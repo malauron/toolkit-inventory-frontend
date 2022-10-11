@@ -46,6 +46,7 @@ ion-searchbar {
 }
 
 .card-item {
+  height: 165px;
   margin: auto;
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.19);
 
@@ -62,6 +63,23 @@ ion-searchbar {
   .total-cost {
     padding-left: 50px;
   }
+}
+
+.card-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.item-icon {
+  margin-right: 20px;
+}
+
+.item-info {
+ --min-height: 10px;
+ --padding-top: 0px;
+ --padding-bottom: 0px;
+ --padding-start: 60px;
 }
 
 ion-popover {

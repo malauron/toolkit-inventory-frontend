@@ -55,7 +55,7 @@ export class ItemsService {
     searchDesc = String(searchDesc).replace('\\','');
 
     this.apiUrl =
-      `${this.config.urlV1ItemsFindByItemCode}searchDesc`;
+      `${this.config.urlV1ItemsFindByItemCode}${searchDesc}`;
     return this.http.get<ItemDto>(this.apiUrl);
   }
 

@@ -8,13 +8,15 @@ import {
   NavController,
   ToastController,
 } from '@ionic/angular';
+import { ItemDto } from 'src/app/classes/item-dto.model';
 import { Warehouse } from 'src/app/classes/warehouse.model';
+import { ItemsService } from 'src/app/services/items.service';
 import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
 import { ButcheryProductionDto } from '../../classes/butchery-production-dto.model';
 import { ButcheryProductionItem } from '../../classes/butchery-production-item.model';
 import { ButcheryProduction } from '../../classes/butchery-production.model';
 import { ProductionDetailsConfig } from '../../config/production-details.config';
-import { ProductionsService } from '../../services/productions.service';
+import { ButcheryProductionsService } from '../../services/butchery-productions.service';
 
 @Component({
   selector: 'app-production-detail',
@@ -37,12 +39,13 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   isFetching = false;
   modalOpen = false;
 
-  totalWeight = 0;
+  totalAmount = 0;
 
   constructor(
+    private itemsService: ItemsService,
     private route: ActivatedRoute,
     private navCtrl: NavController,
-    private productionsService: ProductionsService,
+    private productionsService: ButcheryProductionsService,
     private modalSearch: ModalController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController
@@ -77,13 +80,13 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
               return;
             }
             this.production.butcheryProductionId = resData.butcheryProductionId;
-            this.production.totalWeight = resData.totalWeight;
+            this.production.totalAmount = resData.totalAmount;
             this.production.productionStatus = resData.productionStatus;
             this.productionDetailsConfig.setParams(resData.productionStatus);
             this.production.dateCreated = resData.dateCreated;
             this.warehouse = resData.warehouse;
             this.productionItems = resData.butcheryProductionItems;
-            this.totalWeight = this.production.totalWeight;
+            this.totalAmount = this.production.totalAmount;
             this.isFetching = false;
           },
           (err) => {
@@ -99,19 +102,45 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
   onGetItemByItemCode(event) {
     if (event && event.key === 'Enter') {
-      const searchDesc = this.itemSearchBar.value;
+      const fullBarcode = this.itemSearchBar.value;
 
-      console.log(Number(searchDesc));
+      if (fullBarcode.length >= 12 && !isNaN(Number(fullBarcode))) {
+        const partialBarcode = fullBarcode.substring(1,6);
+        const itemQty = Number(fullBarcode.substring(6,8).concat('.',fullBarcode.substring(8,11)));
 
-      if (searchDesc.length >= 12 && !isNaN(Number(searchDesc))) {
-        const barCode = searchDesc.substring(1,6);
-        const itemPrice = searchDesc.substring(6,8).concat('.',searchDesc.substring(8,11));
-      console.log(barCode);
-      console.log(itemPrice);
+        this.itemsService.getItemByItemCode(partialBarcode).subscribe(res => {
+          if (res.item) {
+            this.addProductionItem(res, fullBarcode, itemQty);
+          } else {
+            this.messageBox('Item not found!');
+          }
+        });
       }
 
       this.itemSearchBar.value = '';
     }
+  }
+
+  addProductionItem(itemDto: ItemDto, barcode = '', itemQty = 0) {
+
+    const productionItem = new ButcheryProductionItem();
+    const cost = itemDto.item.price;
+    const baseQty = 1;
+
+    productionItem.item = itemDto.item;
+    productionItem.barcode = barcode;
+    productionItem.itemClass = itemDto.item.itemClass;
+    productionItem.baseUom = itemDto.item.uom;
+    productionItem.baseQty = baseQty;
+    productionItem.requiredUom = itemDto.item.uom;
+    productionItem.producedQty = itemQty;
+    productionItem.productionCost = cost;
+    productionItem.totalAmount = baseQty * itemQty * cost;
+
+    this.productionItems = this.productionItems.concat(productionItem);
+
+    this.getTotalAmt();
+
   }
 
   onUpdateStatus(newStatus: string) {
@@ -233,6 +262,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   }
 
   onAddProductionItem() {
+
     // if (!this.modalOpen) {
     //   this.modalOpen = true;
     //   this.purchaseItemService.purchaseItemDetail.next(undefined);
@@ -288,13 +318,13 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     }
 
     if (this.productionItems.length <= 0) {
-      this.messageBox('Please provide at least 1 produced item.');
+      this.messageBox('Please add at least 1 production item.');
       return;
     }
 
     const productionDto = new ButcheryProductionDto();
 
-    productionDto.totalWeight = this.totalWeight;
+    productionDto.totalAmount = this.totalAmount;
     productionDto.warehouse = this.warehouse;
     productionDto.butcheryProductionItems = this.productionItems;
 
@@ -307,6 +337,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     return (res: ButcheryProduction) => {
       this.production.butcheryProductionId = res.butcheryProductionId;
       this.production.productionStatus = res.productionStatus;
+      this.production.totalAmount = res.totalAmount;
       this.productionDetailsConfig.setParams(res.productionStatus);
       this.production.dateCreated = res.dateCreated;
       this.productionItems = res.butcheryProductionItems;
@@ -436,9 +467,9 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   }
 
   getTotalAmt() {
-    this.totalWeight = 0;
+    this.totalAmount = 0;
     this.productionItems.forEach((itm) => {
-      this.totalWeight += itm.totalAmount;
+      this.totalAmount += itm.totalAmount;
     });
   }
 
@@ -461,7 +492,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('exiting...');
     if (this.dataHaveChanged) {
       this.productionsService.productionsHaveChanged.next(true);
     }

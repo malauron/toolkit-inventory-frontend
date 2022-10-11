@@ -18,7 +18,7 @@ interface ResponseProductions {
 @Injectable({
   providedIn: 'root',
 })
-export class ProductionsService {
+export class ButcheryProductionsService {
   private apiUrl: string;
 
   private _productionsHaveChanged = new Subject<boolean>();
@@ -54,7 +54,7 @@ export class ProductionsService {
     }
 
     let productionId: number;
-    const purchaseStatus = ['Unposted'];
+    const productionStatus = ['Unposted','Posted','Cancelled'];
 
     if (isNaN(searchDesc)) {
       productionId = 0;
@@ -71,7 +71,8 @@ export class ProductionsService {
 
     this.apiUrl =
       `${this.config.urlButcheryProductionsSearch}` +
-      `?butcheryProductionId=${productionId}&purchaseStatus=${purchaseStatus}&page=${pageNumber}&size=${pageSize}`;
+      `?butcheryProductionId=${productionId}&warehouseName=${searchDesc}` +
+      `&productionStatus=${productionStatus}&page=${pageNumber}&size=${pageSize}`;
     return this.http.get<ResponseProductions>(this.apiUrl);
   }
 

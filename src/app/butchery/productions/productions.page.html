@@ -1,15 +1,6 @@
 <ion-header>
-  <ion-toolbar color="danger">
-    <!-- <ion-buttons slot="end">
-      <ion-button (click)="openCustom()">
-        <ion-icon
-          slot="icon-only"
-          ios="ellipsis-horizontal"
-          md="ellipsis-vertical"
-        ></ion-icon>
-      </ion-button>
-    </ion-buttons> -->
-    <ion-searchbar #itemSearchBar></ion-searchbar>
+  <ion-toolbar color="primary">
+    <ion-searchbar #productionSearchBar placeholder="Butchery Productions Search"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -28,4 +19,86 @@
     ></ion-spinner>
   </div>
 
+  <ion-grid *ngIf="productions.length>0">
+    <ion-row>
+      <ion-col
+        size-xs="12"
+        size-sm="6"
+        size-lg="4"
+        size-xl="3"
+        *ngFor="let production of productions"
+      >
+        <ion-card class="favCard">
+          <div class="card-top"></div>
+
+          <ion-item class="order-id">
+            <ion-icon
+              class="cartIcon"
+              name="receipt-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label
+              >{{ production.butcheryProductionId.toString().padStart(8, "0") }}</ion-label
+            >
+            <ion-badge [color]="getStatusColor(production.productionStatus)"
+              >{{ production.productionStatus }}</ion-badge
+            >
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="business-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+              <p>{{ production.warehouse.warehouseName }}</p>
+          </ion-item>
+
+          <div class="separator"></div>
+
+          <div class="action-buttons">
+            <ion-item lines="none">
+              <ion-icon
+                class="totalIcon"
+                name="calculator-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-card-title>
+                {{ production.totalAmount | number:'1.2-2' }}
+              </ion-card-title>
+            </ion-item>
+            <div>
+              <ion-button
+                class="ion-no-padding ion-no-margin"
+                expand="full"
+                mode="ios"
+                color="secondary"
+                fill="clear"
+                (click)="onEditProduction(production.butcheryProductionId)"
+              >
+                <ion-icon name="chevron-forward-sharp"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreProductions($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more menus..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <div class="empty-space"></div>
 </ion-content>

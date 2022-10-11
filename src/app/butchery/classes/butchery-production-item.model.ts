@@ -7,6 +7,7 @@ export class ButcheryProductionItem {
     public butcheryProductionItemId?: number,
     public butcheryProduction?: ButcheryProduction,
     public item?: Item,
+    public barcode?: string,
     public itemClass?: string,
     public baseUom?: Uom,
     public baseQty?: number,
