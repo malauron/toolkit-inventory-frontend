@@ -29,6 +29,8 @@ export class AppParamsConfig {
   urlWarehouseSearch: any;
   urlButcheryProductions: any;
   urlButcheryProductionsSearch: any;
+  urlButcheryReleasings: any;
+  urlButcheryReleasingsSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -54,9 +56,12 @@ export class AppParamsConfig {
   urlV1Customers: any;
   urlV1CustomerGroups: any;
   urlV1ButcheryProductions: any;
-  urlV1ButcheryProductionsSearch: any;
   urlV1ButcheryProductionsSetStatus: any;
   urlV1ButcheryProductionItems: any;
+  urlV1ButcheryReleasings: any;
+  urlV1ButcheryReleasingsSearch: any;
+  urlV1ButcheryReleasingsSetStatus: any;
+  urlV1ButcheryReleasingItems: any;
 
   waitTime: number;
   pageSize: number;
@@ -93,6 +98,8 @@ export class AppParamsConfig {
     this.urlWarehouseSearch = `${this.urlWarehouse}/search/findByWarehouseNameContainingOrderByWarehouseName`;
     this.urlButcheryProductions = `${this.url}/butcheryProductions`;
     this.urlButcheryProductionsSearch = `${this.urlButcheryProductions}/search/findByCustomParam`;
+    this.urlButcheryReleasings = `${this.url}/butcheryReleasings`;
+    this.urlButcheryReleasingsSearch = `${this.urlButcheryReleasings}/search/findByCustomParam`;
 
     // this.urlV1 = 'http://122.52.134.244:8443/api/v1';
     this.urlV1 = 'http://localhost:8443/api/v1';
@@ -122,6 +129,9 @@ export class AppParamsConfig {
     this.urlV1ButcheryProductions = `${this.urlV1}/butcheryProductions`;
     this.urlV1ButcheryProductionsSetStatus = `${this.urlV1ButcheryProductions}/productionStatus`;
     this.urlV1ButcheryProductionItems = `${this.urlV1}/butcheryProductionItems`;
+    this.urlV1ButcheryReleasings = `${this.urlV1}/butcheryReleasings`;
+    this.urlV1ButcheryReleasingsSetStatus = `${this.urlV1ButcheryReleasings}/releasingStatus`;
+    this.urlV1ButcheryReleasingItems = `${this.urlV1}/butcheryReleasingItems`;
 
     this.waitTime = 500;
     this.pageSize = 20;

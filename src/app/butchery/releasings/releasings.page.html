@@ -1,12 +1,12 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-searchbar #productionSearchBar placeholder="Butchery Productions Search"></ion-searchbar>
+    <ion-searchbar #releasingSearchBar placeholder="Butchery Releasings Search"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
-    <ion-fab-button color="success" (click)="onAddProduction()">
+    <ion-fab-button color="success" (click)="onAddReleasing()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
@@ -19,14 +19,14 @@
     ></ion-spinner>
   </div>
 
-  <ion-grid *ngIf="productions.length>0">
+  <ion-grid *ngIf="releasings.length>0">
     <ion-row>
       <ion-col
         size-xs="12"
         size-sm="6"
         size-lg="4"
         size-xl="3"
-        *ngFor="let production of productions"
+        *ngFor="let releasing of releasings"
       >
         <ion-card class="favCard">
           <div class="card-top"></div>
@@ -39,10 +39,10 @@
               slot="start"
             ></ion-icon>
             <ion-label
-              >{{ production.butcheryProductionId.toString().padStart(8, "0") }}</ion-label
+              >{{ releasing.butcheryReleasingId.toString().padStart(8, "0") }}</ion-label
             >
-            <ion-badge [color]="getStatusColor(production.productionStatus)"
-              >{{ production.productionStatus }}</ion-badge
+            <ion-badge [color]="getStatusColor(releasing.releasingStatus)"
+              >{{ releasing.releasingStatus }}</ion-badge
             >
           </ion-item>
 
@@ -53,7 +53,7 @@
               color="primary"
               slot="start"
             ></ion-icon>
-              <p>{{ production.warehouse.warehouseName }}</p>
+              <p>{{ releasing.warehouse.warehouseName }}</p>
           </ion-item>
 
           <div class="separator"></div>
@@ -67,7 +67,7 @@
                 slot="start"
               ></ion-icon>
               <ion-card-title>
-                {{ production.totalAmount | number:'1.2-2' }}
+                {{ releasing.totalAmount | number:'1.2-2' }}
               </ion-card-title>
             </ion-item>
             <div>
@@ -77,7 +77,7 @@
                 mode="ios"
                 color="secondary"
                 fill="clear"
-                (click)="onEditProduction(production.butcheryProductionId)"
+                (click)="onEditReleasing(releasing.butcheryReleasingId)"
               >
                 <ion-icon name="chevron-forward-sharp"></ion-icon>
               </ion-button>
@@ -91,11 +91,11 @@
   <ion-infinite-scroll
     #infiniteScroll
     threshold="5%"
-    (ionInfinite)="loadMoreProductions($event)"
+    (ionInfinite)="loadMoreReleasings($event)"
   >
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more menus..."
+      loadingText="Loading more data..."
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

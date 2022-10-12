@@ -1,7 +1,12 @@
+/* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IonSearchbar } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { IonSearchbar, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ButcheryReleasing } from '../classes/butchery-releasing.model';
+import { ButcheryReleasingsService } from '../services/butchery-releasing.service';
 
 @Component({
   selector: 'app-releasings',
@@ -12,10 +17,10 @@ export class ReleasingsPage implements OnInit, OnDestroy {
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('releasingSearchBar', { static: true }) releasingSearchBar: IonSearchbar;
 
-  productionSearchSub: Subscription;
-  productionSub: Subscription;
+  releasingSearchSub: Subscription;
+  releasingSub: Subscription;
 
-  productions: ButcheryReleasing[] = [];
+  releasings: ButcheryReleasing[] = [];
 
   searchValue = '';
 
@@ -25,7 +30,7 @@ export class ReleasingsPage implements OnInit, OnDestroy {
   isFetching = false;
 
   constructor(
-    private productionsService: ButcheryProductionsService,
+    private releasingsService: ButcheryReleasingsService,
     private router: Router,
     private config: AppParamsConfig,
     private toastController: ToastController,
@@ -34,7 +39,7 @@ export class ReleasingsPage implements OnInit, OnDestroy {
   ngOnInit() {
 
 
-    this.productionSearchSub = this.releasingSearchBar.ionInput
+    this.releasingSearchSub = this.releasingSearchBar.ionInput
     .pipe(
       map((event) => (event.target as HTMLInputElement).value),
       debounceTime(this.config.waitTime),
@@ -43,33 +48,33 @@ export class ReleasingsPage implements OnInit, OnDestroy {
     .subscribe((res) => {
       this.searchValue = res.trim();
       this.infiniteScroll.disabled = false;
-      this.productions = [];
+      this.releasings = [];
       this.pageNumber = 0;
       this.totalPages = 0;
       if (this.searchValue) {
-        this.getProductions(undefined, 0, this.config.pageSize, this.searchValue);
+        this.getReleasings(undefined, 0, this.config.pageSize, this.searchValue);
       } else {
-        this.getProductions(undefined, 0, this.config.pageSize);
+        this.getReleasings(undefined, 0, this.config.pageSize);
       }
     });
 
     // Retrieves a new set of data from the server
     // after adding or updating
-    this.productionSub = this.productionsService.productionsHaveChanged.subscribe((data) => {
+    this.releasingSub = this.releasingsService.releasingsHaveChanged.subscribe((data) => {
       this.searchValue = '';
       this.infiniteScroll.disabled = false;
-      this.productions = [];
+      this.releasings = [];
       this.pageNumber = 0;
       this.totalPages = 0;
-      this.getProductions(undefined, 0, this.config.pageSize);
+      this.getReleasings(undefined, 0, this.config.pageSize);
     });
 
     // Retrieves a partial list from the server
     // upon component initialization
-    this.getProductions(undefined, 0, this.config.pageSize);
+    this.getReleasings(undefined, 0, this.config.pageSize);
   }
 
-  getProductions(
+  getReleasings(
     event?,
     pageNumber?: number,
     pageSize?: number,
@@ -80,17 +85,16 @@ export class ReleasingsPage implements OnInit, OnDestroy {
     if (searchDesc === undefined) {
       searchDesc = '';
     }
-    this.productionsService
-      .getProductions(pageNumber, pageSize, searchDesc)
-      .subscribe(this.processProductionResult(event), (error) => {
+    this.releasingsService
+      .getReleasings(pageNumber, pageSize, searchDesc)
+      .subscribe(this.processReleasingResult(event), (error) => {
         this.messageBox('Unable to communicate with the server.');
       });
   }
 
-  processProductionResult(event?) {
+  processReleasingResult(event?) {
     return (data) => {
-
-      this.productions = this.productions.concat(data._embedded.butcheryProductions);
+      this.releasings = this.releasings.concat(data._embedded.butcheryReleasings);
       this.totalPages = data.page.totalPages;
       this.isFetching = false;
       if (event) {
@@ -102,29 +106,29 @@ export class ReleasingsPage implements OnInit, OnDestroy {
     };
   }
 
-  onAddProduction() {
-    this.router.navigate(['/', 'tabs', 'productions', 'releasing-detail', 0]);
+  onAddReleasing() {
+    this.router.navigate(['/', 'tabs', 'releasings', 'releasing-detail', 0]);
   }
 
-  onEditProduction(productionId: number) {
-    this.router.navigate(['/','tabs','productions','releasing-detail', productionId]);
+  onEditReleasing(releasingId: number) {
+    this.router.navigate(['/','tabs','releasings','releasing-detail', releasingId]);
   }
 
-  getStatusColor(productionStatus): string {
+  getStatusColor(releasingStatus): string {
     let statusColor: string;
-    if (productionStatus === 'Unposted') {
+    if (releasingStatus === 'Unposted') {
       statusColor = 'warning';
     }
-    if (productionStatus === 'Posted') {
+    if (releasingStatus === 'Posted') {
       statusColor = 'success';
     }
-    if (productionStatus === 'Cancelled') {
+    if (releasingStatus === 'Cancelled') {
       statusColor = 'primary';
     }
     return statusColor;
   }
 
-  loadMoreProductions(event) {
+  loadMoreReleasings(event) {
     if (this.pageNumber + 1 >= this.totalPages) {
       event.target.disabled = true;
       return;
@@ -133,14 +137,14 @@ export class ReleasingsPage implements OnInit, OnDestroy {
     this.pageNumber++;
 
     if (this.searchValue) {
-      this.getProductions(
+      this.getReleasings(
         event,
         this.pageNumber,
         this.config.pageSize,
         this.searchValue
       );
     } else {
-      this.getProductions(event, this.pageNumber, this.config.pageSize);
+      this.getReleasings(event, this.pageNumber, this.config.pageSize);
     }
   }
 
@@ -155,8 +159,8 @@ export class ReleasingsPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.productionSearchSub.unsubscribe();
-    this.productionSub.unsubscribe();
+    this.releasingSearchSub.unsubscribe();
+    this.releasingSub.unsubscribe();
   }
 
 }

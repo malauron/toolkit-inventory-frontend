@@ -71,7 +71,7 @@ export class ButcheryReleasingsService {
 
     this.apiUrl =
       `${this.config.urlButcheryReleasingsSearch}` +
-      `?butcheryReleasingId=${releasingId}&warehouseName=${searchDesc}` +
+      `?butcheryReleasingId=${releasingId}&warehouseName=${searchDesc}&customerName=${searchDesc}` +
       `&releasingStatus=${releasingStatus}&page=${pageNumber}&size=${pageSize}`;
     return this.http.get<ResponseReleasings>(this.apiUrl);
   }
