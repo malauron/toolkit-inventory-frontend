@@ -1,0 +1,14 @@
+import { Warehouse } from 'src/app/classes/warehouse.model';
+import { ButcheryReleasingItem } from './butchery-releasing-item.model';
+
+export class ButcheryReleasingDto {
+  constructor(
+    public butcheryReleasingId?: number,
+    public releasingStatus?: string,
+    public warehouse?: Warehouse,
+    public butcheryReleasingItems?: ButcheryReleasingItem[],
+    public butcheryReleasingItem?: ButcheryReleasingItem,
+    public totalAmount?: number,
+    public dateCreated?: string,
+  ) {}
+}
