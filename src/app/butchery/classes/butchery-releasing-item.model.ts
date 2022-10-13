@@ -11,9 +11,10 @@ export class ButcheryReleasingItem {
     public itemClass?: string,
     public baseUom?: Uom,
     public baseQty?: number,
+    public cost?: number,
     public requiredUom?: Uom,
-    public producedQty?: number,
-    public productionCost?: number,
+    public releasedQty?: number,
+    public itemPrice?: number,
     public totalAmount?: number,
   ){}
 }

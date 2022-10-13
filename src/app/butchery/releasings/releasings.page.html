@@ -34,7 +34,7 @@
           <ion-item class="order-id">
             <ion-icon
               class="cartIcon"
-              name="copy-outline"
+              name="log-out-outline"
               color="primary"
               slot="start"
             ></ion-icon>
@@ -44,6 +44,16 @@
             <ion-badge [color]="getStatusColor(releasing.releasingStatus)"
               >{{ releasing.releasingStatus }}</ion-badge
             >
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="person-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+              <p>{{ releasing.customer.customerName }}</p>
           </ion-item>
 
           <ion-item lines="none">

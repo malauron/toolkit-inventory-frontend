@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ReleasingsPage } from './releasings.page';
+import { ReleasingDetailPage } from './releasing-detail.page';
 
 const routes: Routes = [
   {
-    path: 'releasing-detail',
-    loadChildren: () => import('./releasing-detail/releasing-detail.module').then( m => m.ReleasingDetailPageModule)
+    path: ':butcheryReleasingId',
+    component: ReleasingDetailPage
   },
   {
     path: '',
-    component: ReleasingsPage
+    redirectTo: '/tabs/releasings',
+    pathMatch: 'full'
   },
   {
     path: '**',
@@ -23,4 +24,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ReleasingsPageRoutingModule {}
+export class ReleasingDetailPageRoutingModule {}

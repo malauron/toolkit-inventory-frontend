@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ButcheryReleasing } from '../classes/butchery-releasing.model';
-import { ButcheryReleasingsService } from '../services/butchery-releasing.service';
+import { ButcheryReleasingsService } from '../services/butchery-releasings.service';
 
 @Component({
   selector: 'app-releasings',
