@@ -181,6 +181,11 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
 
       this.releasingsService.putReleasingSetStatus(releasingDto).subscribe(
         (res) => {
+          if (res.errorDescription) {
+            this.messageBox(res.errorDescription);
+            this.isUploading = false;
+            return;
+          }
           this.dataHaveChanged = true;
           if (res.releasingStatus === 'Unposted') {
             this.releasing.releasingStatus = newStatus;
@@ -558,6 +563,10 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
   onShowPopOver(event: Event) {
     this.statusPopover.event = event;
     this.statusPopoverOpen = true;
+  }
+
+  printPage() {
+    window.print();
   }
 
   messageBox(msg: string) {

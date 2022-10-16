@@ -61,6 +61,7 @@ export class ReleasingsPage implements OnInit, OnDestroy {
     // Retrieves a new set of data from the server
     // after adding or updating
     this.releasingSub = this.releasingsService.releasingsHaveChanged.subscribe((data) => {
+      this.releasingSearchBar.value = '';
       this.searchValue = '';
       this.infiniteScroll.disabled = false;
       this.releasings = [];

@@ -61,6 +61,7 @@ export class ProductionsPage implements OnInit, OnDestroy {
     // Retrieves a new set of data from the server
     // after adding or updating
     this.productionSub = this.productionsService.productionsHaveChanged.subscribe((data) => {
+      this.productionSearchBar.value = '';
       this.searchValue = '';
       this.infiniteScroll.disabled = false;
       this.productions = [];

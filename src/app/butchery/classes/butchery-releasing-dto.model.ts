@@ -12,5 +12,6 @@ export class ButcheryReleasingDto {
     public butcheryReleasingItem?: ButcheryReleasingItem,
     public totalAmount?: number,
     public dateCreated?: string,
+    public errorDescription?: string,
   ) {}
 }

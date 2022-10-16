@@ -15,5 +15,6 @@ export class ButcheryProductionItem {
     public producedQty?: number,
     public productionCost?: number,
     public totalAmount?: number,
+    public isAvailable?: boolean,
   ){}
 }

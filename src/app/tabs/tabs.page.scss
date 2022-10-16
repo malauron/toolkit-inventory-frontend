@@ -1,0 +1,10 @@
+
+@media print {
+  /* invert the display (show/hide) properties of the main */
+  /* aplication component and the printing component       */
+
+  .no-print {
+    visibility: hidden;
+  }
+
+}

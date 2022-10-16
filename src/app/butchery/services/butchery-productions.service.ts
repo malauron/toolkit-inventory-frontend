@@ -53,13 +53,13 @@ export class ButcheryProductionsService {
       searchDesc = '';
     }
 
-    let productionId: number;
+    let productionId: string;
     const productionStatus = ['Unposted','Posted','Cancelled'];
 
     if (isNaN(searchDesc)) {
-      productionId = 0;
+      productionId = '-';
     } else {
-      productionId = searchDesc;
+      productionId = String(Number(searchDesc));
     }
 
     searchDesc = String(searchDesc).replace('%','');
