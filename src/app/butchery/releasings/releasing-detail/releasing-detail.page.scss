@@ -103,7 +103,7 @@ ion-popover {
 
 
     .receipt-header {
-      width: 195px;
+      width: 240px;
       margin-top: 5px;
       display: grid;
       grid-template-columns: auto auto;
@@ -123,10 +123,10 @@ ion-popover {
     }
 
     .desc-one {
-      width: 195px;
-      margin-top: 10px;
+      width: 240px;
+      margin-top: 5px;
       display: grid;
-      grid-template-columns: 135px 60px;
+      grid-template-columns: auto 60px;
 
       .barcode {
         text-align: left;
@@ -138,10 +138,10 @@ ion-popover {
     }
 
     .total {
-      width: 195px;
+      width: 240px;
       margin-top: 5px;
       display: grid;
-      grid-template-columns: auto auto;
+      grid-template-columns: 40px auto;
 
       .total-desc {
         text-align: left;

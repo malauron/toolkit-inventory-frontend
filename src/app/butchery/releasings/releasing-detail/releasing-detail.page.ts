@@ -111,9 +111,9 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
       const fullBarcode = this.itemSearchBar.value;
 
       if (fullBarcode.length >= 12 && !isNaN(Number(fullBarcode))) {
-        const partialBarcode = fullBarcode.substring(1, 6);
+        const partialBarcode = fullBarcode.substring(1, 7);
         const itemQty = Number(
-          fullBarcode.substring(6, 8).concat('.', fullBarcode.substring(8, 11))
+          fullBarcode.substring(7, 9).concat('.', fullBarcode.substring(9, 12))
         );
 
         this.itemsService.getItemByItemCode(partialBarcode).subscribe((res) => {
