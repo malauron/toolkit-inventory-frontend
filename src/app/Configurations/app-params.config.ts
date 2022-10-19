@@ -31,6 +31,8 @@ export class AppParamsConfig {
   urlButcheryProductionsSearch: any;
   urlButcheryReleasings: any;
   urlButcheryReleasingsSearch: any;
+  urlButcheryReceivings: any;
+  urlButcheryReceivingsSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -62,6 +64,10 @@ export class AppParamsConfig {
   urlV1ButcheryReleasingsSearch: any;
   urlV1ButcheryReleasingsSetStatus: any;
   urlV1ButcheryReleasingItems: any;
+  urlV1ButcheryReceivings: any;
+  urlV1ButcheryReceivingsSearch: any;
+  urlV1ButcheryReceivingsSetStatus: any;
+  urlV1ButcheryReceivingItems: any;
 
   waitTime: number;
   pageSize: number;
@@ -71,8 +77,8 @@ export class AppParamsConfig {
 
   constructor() {
 
-    this.url = 'http://122.52.134.244:8443/api';
-    // this.url = 'http://localhost:8443/api';
+    // this.url = 'http://122.52.134.244:8443/api';
+    this.url = 'http://localhost:8443/api';
 
     this.urlItems = this.url + '/items';
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;
@@ -100,9 +106,11 @@ export class AppParamsConfig {
     this.urlButcheryProductionsSearch = `${this.urlButcheryProductions}/search/findByCustomParam`;
     this.urlButcheryReleasings = `${this.url}/butcheryReleasings`;
     this.urlButcheryReleasingsSearch = `${this.urlButcheryReleasings}/search/findByCustomParam`;
+    this.urlButcheryReceivings = `${this.url}/butcheryReceivings`;
+    this.urlButcheryReceivingsSearch = `${this.urlButcheryReceivings}/search/findByCustomParam`;
 
-    this.urlV1 = 'http://122.52.134.244:8443/api/v1';
-    // this.urlV1 = 'http://localhost:8443/api/v1';
+    // this.urlV1 = 'http://122.52.134.244:8443/api/v1';
+    this.urlV1 = 'http://localhost:8443/api/v1';
 
     this.urlV1Items = this.urlV1 + '/items';
     this.urlV1ItemsFindByItemCode = `${this.urlV1Items}?itemCode=`;
@@ -132,6 +140,9 @@ export class AppParamsConfig {
     this.urlV1ButcheryReleasings = `${this.urlV1}/butcheryReleasings`;
     this.urlV1ButcheryReleasingsSetStatus = `${this.urlV1ButcheryReleasings}/releasingStatus`;
     this.urlV1ButcheryReleasingItems = `${this.urlV1}/butcheryReleasingItems`;
+    this.urlV1ButcheryReceivings = `${this.urlV1}/butcheryReceivings`;
+    this.urlV1ButcheryReceivingsSetStatus = `${this.urlV1ButcheryReceivings}/receivingStatus`;
+    this.urlV1ButcheryReceivingItems = `${this.urlV1}/butcheryReceivingItems`;
 
     this.waitTime = 500;
     this.pageSize = 20;
