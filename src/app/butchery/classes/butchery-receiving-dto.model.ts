@@ -9,6 +9,7 @@ export class ButcheryReceivingDto {
     public receivingStatus?: string,
     public warehouse?: Warehouse,
     public vendor?: Vendor,
+    public referenceCode?: string,
     public butcheryReceivingItems?: ButcheryReceivingItem[],
     public butcheryReceivingItem?: ButcheryReceivingItem,
     public totalAmount?: number,

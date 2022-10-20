@@ -272,6 +272,11 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
   }
 
   onSavePurchase() {
+
+    if (this.isUploading) {
+      return;
+    }
+
     if (this.vendor.vendorId === undefined) {
       this.messageBox('Please provide a vendor');
       return;
@@ -286,6 +291,8 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       this.messageBox('Please provide at least 1 purchased item.');
       return;
     }
+
+    this.isUploading = true;
 
     const purchaseDto = new PurchaseDto();
 
@@ -307,6 +314,7 @@ export class PurchaseDetailPage implements OnInit, OnDestroy {
       this.purchase.dateCreated = res.dateCreated;
       this.purchaseItems = res.purchaseItems;
       this.dataHaveChanged = true;
+      this.isUploading = false;
     };
   }
 

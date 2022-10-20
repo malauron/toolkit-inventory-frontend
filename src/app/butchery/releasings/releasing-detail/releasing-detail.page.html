@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Releasing Details</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="onSaveReleasing()" *ngIf="!releasing.butcheryReleasingId">
+      <ion-button (click)="onSaveReleasing()" *ngIf="!releasing.butcheryReleasingId" [disabled]="isUploading">
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
       <ion-button (click)="printPage()"
@@ -236,5 +236,6 @@
       <ion-card-subtitle>{{ totalAmount | number:'1.2-2' }}</ion-card-subtitle>
     </div>
   </div>
+  <div class="company-name">A subsidiary of Eight2Eight Inc.</div>
 
 </div>
