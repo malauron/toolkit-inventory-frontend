@@ -191,6 +191,7 @@
               maxlength="20"
               [readonly]="receiving.receivingStatus !== 'Unposted' && receiving.receivingStatus !== undefined"
               #referenceCodeInput
+              [value]="receiving.referenceCode"
               ></ion-input
             >
             <ion-button
@@ -235,6 +236,18 @@
           (keypress)="onGetItemByItemCode($event)"
           #itemSearchBar
         ></ion-searchbar>
+        <ion-button
+          *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
+          class="ion-no-padding ion-no-margin"
+          (click)="onManuallyAddReceivedItem()"
+          slot="end"
+          mode="ios"
+          fill="clear"
+          size="large"
+          color="success"
+        >
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
       </ion-item>
     </ion-card-header>
     <div class="separator"></div>
@@ -280,6 +293,11 @@
                 >{{ item.receivedQty }}{{item.requiredUom.uomCode }} @{{
                 item.itemCost| number:'1.2-2' }}/{{ item.requiredUom.uomCode
                 }}</ion-card-subtitle
+              >
+            </ion-item>
+            <ion-item lines="none" class="item-info">
+              <ion-card-subtitle class="ion-no-padding ion-no-margin"
+                >1,200.33     >>>     1195.03</ion-card-subtitle
               >
             </ion-item>
 

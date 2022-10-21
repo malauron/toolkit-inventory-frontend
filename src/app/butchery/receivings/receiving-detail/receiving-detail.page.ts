@@ -20,6 +20,9 @@ import { ButcheryReceivingItem } from '../../classes/butchery-receiving-item.mod
 import { ButcheryReceiving } from '../../classes/butchery-receiving.model';
 import { ReceivingDetailsConfig } from '../../config/receiving-details.config';
 import { ButcheryReceivingsService } from '../../services/butchery-receivings.service';
+import { ReceivedItemComponent } from '../received-item/received-item.component';
+import { ReceivedItemDetail } from '../received-item/received-item.model';
+import { ReceivedItemService } from '../received-item/received-item.service';
 
 @Component({
   selector: 'app-receiving-detail',
@@ -29,7 +32,7 @@ import { ButcheryReceivingsService } from '../../services/butchery-receivings.se
 export class ReceivingDetailPage implements OnInit, OnDestroy {
   @ViewChild('statusPopover') statusPopover: IonPopover;
   @ViewChild('itemSearchBar', { static: true }) itemSearchBar: IonSearchbar;
-  @ViewChild('referenceCodeInput', { static: true }) referenceCodeInput: IonInput;
+  @ViewChild('referenceCodeInput') referenceCodeInput: IonInput;
 
   statusPopoverOpen = false;
 
@@ -48,6 +51,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
 
   constructor(
     private itemsService: ItemsService,
+    private receivedItemService: ReceivedItemService,
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private receivingsService: ButcheryReceivingsService,
@@ -96,7 +100,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             this.vendor = resData.vendor;
             this.receivingItems = resData.butcheryReceivingItems;
             this.totalAmount = this.receiving.totalAmount;
-            this.referenceCodeInput.value = resData.referenceCode;
             this.isFetching = false;
           },
           (err) => {
@@ -171,6 +174,61 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     } else {
       this.receivingItems = this.receivingItems.concat(receivingItem);
       this.getTotalAmt();
+    }
+  }
+
+  onManuallyAddReceivedItem() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.receivedItemService.receivedItemDetail.next(undefined);
+      this.modalSearch
+        .create({ component: ReceivedItemComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'item') {
+            const item: ReceivedItemDetail = resultData.data;
+            const receivedItem = new ButcheryReceivingItem();
+            console.log();
+            receivedItem.item = item.item;
+            receivedItem.barcode = item.item.itemCode;
+            receivedItem.itemClass = item.item.itemClass;
+            receivedItem.baseUom = item.item.uom;
+            receivedItem.baseQty = 1;
+            receivedItem.requiredUom = item.uom;
+            receivedItem.receivedQty = item.receivedQty;
+            receivedItem.itemCost = item.itemCost;
+            receivedItem.totalAmount = item.receivedQty * item.itemCost;
+
+            if (this.receiving.butcheryReceivingId) {
+              receivedItem.butcheryReceiving = this.receiving;
+              this.receivingsService
+                .putReceivingItem(receivedItem)
+                .subscribe((res) => {
+                  this.dataHaveChanged = true;
+                  this.receiving.receivingStatus = res.receivingStatus;
+                  if (this.receiving.receivingStatus === 'Unposted') {
+                    this.receivingItems = this.receivingItems.concat(
+                      res.butcheryReceivingItem
+                    );
+                    this.getTotalAmt();
+                    this.messageBox('New receivedd item has been added.');
+                  } else {
+                    this.messageBox(
+                      'Unable to update the received since its status has been tagged as ' +
+                        this.receiving.receivingStatus
+                    );
+                  }
+                });
+            } else {
+              this.receivingItems = this.receivingItems.concat(receivedItem);
+              this.getTotalAmt();
+            }
+          }
+          this.modalOpen = false;
+        });
     }
   }
 
@@ -361,6 +419,13 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
       return;
     }
 
+    const refCode = String(this.referenceCodeInput.value);
+
+    if (refCode.trim() === '') {
+      this.messageBox('Please provide a reference code.');
+      return;
+    }
+
     if (this.receivingItems.length <= 0) {
       this.messageBox('Please add at least 1 receiving item.');
       return;
@@ -370,6 +435,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
 
     const receivingDto = new ButcheryReceivingDto();
 
+    receivingDto.referenceCode = refCode;
     receivingDto.totalAmount = this.totalAmount;
     receivingDto.warehouse = this.warehouse;
     receivingDto.vendor = this.vendor;
