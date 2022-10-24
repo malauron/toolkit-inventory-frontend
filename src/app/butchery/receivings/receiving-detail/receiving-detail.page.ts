@@ -133,51 +133,39 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
   }
 
   addReceivingItem(itemDto: ItemDto, barcode = '', itemQty = 0) {
-    const receivingItem = new ButcheryReceivingItem();
+    // const receivingItem = new ButcheryReceivingItem();
 
-    receivingItem.item = itemDto.item;
-    receivingItem.barcode = barcode;
-    receivingItem.itemClass = itemDto.item.itemClass;
-    receivingItem.baseUom = itemDto.item.uom;
-    receivingItem.baseQty = 1;
-    receivingItem.requiredUom = itemDto.item.uom;
-    receivingItem.receivedQty = itemQty;
-    receivingItem.itemCost = 0;
-    receivingItem.documentedWeight = 0;
-    receivingItem.actualWeight = 0;
-    receivingItem.totalAmount = 0;
+    // receivingItem.item = itemDto.item;
+    // receivingItem.barcode = barcode;
+    // receivingItem.itemClass = itemDto.item.itemClass;
+    // receivingItem.baseUom = itemDto.item.uom;
+    // receivingItem.baseQty = 1;
+    // receivingItem.requiredUom = itemDto.item.uom;
+    // receivingItem.receivedQty = itemQty;
+    // receivingItem.itemCost = 0;
+    // receivingItem.documentedWeight = 0;
+    // receivingItem.actualWeight = 0;
+    // receivingItem.totalAmount = 0;
 
-    if (this.receiving.butcheryReceivingId) {
-      receivingItem.butcheryReceiving = this.receiving;
-      // this.receivingsService
-      //   .putReceivingItem(receivingItem)
-      //   .subscribe((res) => {
-      //     this.dataHaveChanged = true;
-      //     this.receiving.receivingStatus = res.receivingStatus;
-      //     if (this.receiving.receivingStatus === 'Unposted') {
-      //       this.receivingItems = this.receivingItems.concat(
-      //         res.butcheryReceivingItem
-      //       );
-      //       this.getTotalAmt();
-      //       this.messageBox('New receiving item has been added.');
-      //     } else {
-      //       this.messageBox(
-      //         'Unable to update the receiving since its status has been tagged as ' +
-      //           this.receiving.receivingStatus
-      //       );
-      //     }
-      //   });
-    } else {
-      // this.receivingItems = this.receivingItems.concat(receivingItem);
-      // this.getTotalAmt();
-    }
-    this.onUpdateReceivedItem(receivingItem);
+    // if (this.receiving.butcheryReceivingId) {
+    //   receivingItem.butcheryReceiving = this.receiving;
+    // }
+
+    const receivedItemDetail = new ReceivedItemDetail();
+
+    receivedItemDetail.item = itemDto.item;
+    receivedItemDetail.uom = itemDto.item.uom;
+    receivedItemDetail.receivedQty = 0;
+    receivedItemDetail.itemCost = 0;
+    receivedItemDetail.documentedWeight = 0;
+    receivedItemDetail.actualWeight = 0;
+    this.onManuallyAddReceivedItem(receivedItemDetail);
   }
 
-  onManuallyAddReceivedItem() {
+  onManuallyAddReceivedItem(receivingItem?: ButcheryReceivingItem) {
     if (!this.modalOpen) {
       this.modalOpen = true;
-      this.receivedItemService.receivedItemDetail.next(undefined);
+      this.receivedItemService.receivedItemDetail.next(receivingItem);
       this.modalSearch
         .create({ component: ReceivedItemComponent })
         .then((modalSearch) => {
