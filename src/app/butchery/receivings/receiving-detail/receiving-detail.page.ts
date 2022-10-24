@@ -200,6 +200,8 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             receivedItem.requiredUom = item.uom;
             receivedItem.receivedQty = item.receivedQty;
             receivedItem.itemCost = item.itemCost;
+            receivedItem.documentedWeight = item.documentedWeight;
+            receivedItem.actualWeight = item.actualWeight;
             receivedItem.totalAmount = item.receivedQty * item.itemCost;
 
             if (this.receiving.butcheryReceivingId) {

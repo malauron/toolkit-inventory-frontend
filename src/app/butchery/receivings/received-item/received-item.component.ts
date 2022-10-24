@@ -253,6 +253,8 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
       receivedItemDetail.uom = this.itemForm.value.uom;
       receivedItemDetail.receivedQty = this.itemForm.value.receivedQty;
       receivedItemDetail.itemCost = this.itemForm.value.itemCost;
+      receivedItemDetail.documentedWeight = this.itemForm.value.documentedWeight;
+      receivedItemDetail.actualWeight = this.itemForm.value.actualWeight;
 
       this.modalController.dismiss(receivedItemDetail, 'item');
     }
