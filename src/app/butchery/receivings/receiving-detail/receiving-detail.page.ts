@@ -23,6 +23,7 @@ import { ButcheryReceivingsService } from '../../services/butchery-receivings.se
 import { ReceivedItemComponent } from '../received-item/received-item.component';
 import { ReceivedItemDetail } from '../received-item/received-item.model';
 import { ReceivedItemService } from '../received-item/received-item.service';
+import { filterString } from '../../utils/utils';
 
 @Component({
   selector: 'app-receiving-detail',
@@ -31,8 +32,8 @@ import { ReceivedItemService } from '../received-item/received-item.service';
 })
 export class ReceivingDetailPage implements OnInit, OnDestroy {
   @ViewChild('statusPopover') statusPopover: IonPopover;
-  @ViewChild('itemSearchBar', { static: true }) itemSearchBar: IonSearchbar;
   @ViewChild('referenceCodeInput') referenceCodeInput: IonInput;
+  @ViewChild('itemSearchBar') itemSearchBar: IonSearchbar;
 
   statusPopoverOpen = false;
 
@@ -115,17 +116,12 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
 
   onGetItemByItemCode(event) {
     if (event && event.key === 'Enter') {
-      const fullBarcode = this.itemSearchBar.value;
+      const fullBarcode = filterString(this.itemSearchBar.value);
 
-      if (fullBarcode.length >= 12 && !isNaN(Number(fullBarcode))) {
-        const partialBarcode = fullBarcode.substring(1, 7);
-        const itemQty = Number(
-          fullBarcode.substring(7, 9).concat('.', fullBarcode.substring(9, 12))
-        );
-
-        this.itemsService.getItemByItemCode(partialBarcode).subscribe((res) => {
+      if (fullBarcode.length >= 1 ) {
+          this.itemsService.getItemByItemCode(fullBarcode).subscribe((res) => {
           if (res.item) {
-            this.addReceivingItem(res, fullBarcode, itemQty);
+            this.addReceivingItem(res, fullBarcode, 1);
           } else {
             this.messageBox('Item not found!');
           }
@@ -138,43 +134,44 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
 
   addReceivingItem(itemDto: ItemDto, barcode = '', itemQty = 0) {
     const receivingItem = new ButcheryReceivingItem();
-    const cost = itemDto.item.price;
-    const baseQty = 1;
 
     receivingItem.item = itemDto.item;
     receivingItem.barcode = barcode;
     receivingItem.itemClass = itemDto.item.itemClass;
     receivingItem.baseUom = itemDto.item.uom;
-    receivingItem.baseQty = baseQty;
+    receivingItem.baseQty = 1;
     receivingItem.requiredUom = itemDto.item.uom;
     receivingItem.receivedQty = itemQty;
-    receivingItem.itemCost = cost;
-    receivingItem.totalAmount = baseQty * itemQty * cost;
+    receivingItem.itemCost = 0;
+    receivingItem.documentedWeight = 0;
+    receivingItem.actualWeight = 0;
+    receivingItem.totalAmount = 0;
 
     if (this.receiving.butcheryReceivingId) {
       receivingItem.butcheryReceiving = this.receiving;
-      this.receivingsService
-        .putReceivingItem(receivingItem)
-        .subscribe((res) => {
-          this.dataHaveChanged = true;
-          this.receiving.receivingStatus = res.receivingStatus;
-          if (this.receiving.receivingStatus === 'Unposted') {
-            this.receivingItems = this.receivingItems.concat(
-              res.butcheryReceivingItem
-            );
-            this.getTotalAmt();
-            this.messageBox('New receiving item has been added.');
-          } else {
-            this.messageBox(
-              'Unable to update the receiving since its status has been tagged as ' +
-                this.receiving.receivingStatus
-            );
-          }
-        });
+      // this.receivingsService
+      //   .putReceivingItem(receivingItem)
+      //   .subscribe((res) => {
+      //     this.dataHaveChanged = true;
+      //     this.receiving.receivingStatus = res.receivingStatus;
+      //     if (this.receiving.receivingStatus === 'Unposted') {
+      //       this.receivingItems = this.receivingItems.concat(
+      //         res.butcheryReceivingItem
+      //       );
+      //       this.getTotalAmt();
+      //       this.messageBox('New receiving item has been added.');
+      //     } else {
+      //       this.messageBox(
+      //         'Unable to update the receiving since its status has been tagged as ' +
+      //           this.receiving.receivingStatus
+      //       );
+      //     }
+      //   });
     } else {
-      this.receivingItems = this.receivingItems.concat(receivingItem);
-      this.getTotalAmt();
+      // this.receivingItems = this.receivingItems.concat(receivingItem);
+      // this.getTotalAmt();
     }
+    this.onUpdateReceivedItem(receivingItem);
   }
 
   onManuallyAddReceivedItem() {
@@ -191,7 +188,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
           if (resultData.role === 'item') {
             const item: ReceivedItemDetail = resultData.data;
             const receivedItem = new ButcheryReceivingItem();
-            console.log();
             receivedItem.item = item.item;
             receivedItem.barcode = item.item.itemCode;
             receivedItem.itemClass = item.item.itemClass;
@@ -462,16 +458,85 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     };
   }
 
+  onUpdateReceivedItem(pItem?: ButcheryReceivingItem) {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+
+      const receivedItemDetail = new ReceivedItemDetail();
+
+      receivedItemDetail.item = pItem.item;
+      receivedItemDetail.uom = pItem.requiredUom;
+      receivedItemDetail.receivedQty = pItem.receivedQty;
+      receivedItemDetail.itemCost = pItem.itemCost;
+      receivedItemDetail.documentedWeight = pItem.documentedWeight;
+      receivedItemDetail.actualWeight = pItem.actualWeight;
+
+      this.receivedItemService.receivedItemDetail.next(receivedItemDetail);
+
+      this.modalSearch
+        .create({ component: ReceivedItemComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'item') {
+            const item: ReceivedItemDetail = resultData.data;
+            const receivedItem = new ButcheryReceivingItem();
+
+            receivedItem.item = item.item;
+            receivedItem.barcode = item.item.itemCode;
+            receivedItem.requiredUom = item.uom;
+            receivedItem.receivedQty = item.receivedQty;
+            receivedItem.itemCost = item.itemCost;
+            receivedItem.documentedWeight = item.documentedWeight;
+            receivedItem.actualWeight = item.actualWeight;
+            receivedItem.totalAmount = item.receivedQty * item.itemCost;
+
+
+            if (this.receiving.butcheryReceivingId) {
+              receivedItem.butcheryReceivingItemId = pItem.butcheryReceivingItemId;
+              receivedItem.butcheryReceiving = this.receiving;
+              this.receivingsService
+                .putReceivingItem(receivedItem)
+                .subscribe((res) => {
+                  this.dataHaveChanged = true;
+                  this.receiving.receivingStatus = res.receivingStatus;
+                  if (this.receiving.receivingStatus === 'Unposted') {
+                    this.updateReceivingItemObj(pItem, receivedItem);
+                    this.getTotalAmt();
+                    this.messageBox('Received item has been updated.');
+                  } else {
+                    this.messageBox(
+                      'Unable to update since its status has been tagged as ' +
+                        this.receiving.receivingStatus
+                    );
+                  }
+                });
+            } else {
+              this.updateReceivingItemObj(pItem, receivedItem);
+              this.getTotalAmt();
+            }
+          }
+          this.modalOpen = false;
+        });
+    }
+  }
+
   updateReceivingItemObj(
     pItem: ButcheryReceivingItem,
     receivingItem: ButcheryReceivingItem
   ) {
+    console.log('exe');
     for (const key in this.receivingItems) {
       if (pItem === this.receivingItems[key]) {
         this.receivingItems[key].item = receivingItem.item;
+        this.receivingItems[key].barcode = receivingItem.barcode;
         this.receivingItems[key].requiredUom = receivingItem.requiredUom;
         this.receivingItems[key].receivedQty = receivingItem.receivedQty;
         this.receivingItems[key].itemCost = receivingItem.itemCost;
+        this.receivingItems[key].documentedWeight = receivingItem.documentedWeight;
+        this.receivingItems[key].actualWeight = receivingItem.actualWeight;
         this.receivingItems[key].totalAmount = receivingItem.totalAmount;
       }
     }

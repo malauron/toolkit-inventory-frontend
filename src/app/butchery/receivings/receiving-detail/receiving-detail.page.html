@@ -192,8 +192,7 @@
               [readonly]="receiving.receivingStatus !== 'Unposted' && receiving.receivingStatus !== undefined"
               #referenceCodeInput
               [value]="receiving.referenceCode"
-              ></ion-input
-            >
+            ></ion-input>
             <ion-button
               #statusButton
               *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
@@ -228,7 +227,10 @@
 
   <ion-card class="card-holder">
     <div class="card-top"></div>
-    <ion-card-header class="ion-no-padding">
+    <ion-card-header
+      class="ion-no-padding"
+      *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
+    >
       <ion-item lines="none">
         <ion-searchbar
           searchIcon="barcode-outline"
@@ -237,7 +239,6 @@
           #itemSearchBar
         ></ion-searchbar>
         <ion-button
-          *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
           class="ion-no-padding ion-no-margin"
           (click)="onManuallyAddReceivedItem()"
           slot="end"
@@ -250,7 +251,10 @@
         </ion-button>
       </ion-item>
     </ion-card-header>
-    <div class="separator"></div>
+    <div
+      class="separator"
+      *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
+    ></div>
 
     <ion-grid>
       <ion-row>
@@ -271,7 +275,7 @@
               <ion-button
                 *ngIf="receiving.receivingStatus === 'Unposted'  || receiving.receivingStatus === undefined"
                 (click)="onDeleteReceivingItem(item)"
-                class="ion-no-margin ion-no-padding"
+                class="ion-no-margin"
                 mode="ios"
                 slot="end"
                 fill="clear"
@@ -279,6 +283,18 @@
                 size="default"
               >
                 <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+              <ion-button
+                *ngIf="receiving.receivingStatus === 'Unposted'  || receiving.receivingStatus === undefined"
+                (click)="onUpdateReceivedItem(item)"
+                class="ion-no-padding ion-no-margin"
+                mode="ios"
+                fill="clear"
+                color="success"
+                size="default"
+                slot="end"
+              >
+                <ion-icon name="create-outline"></ion-icon>
               </ion-button>
               <ion-card-subtitle>{{item.barcode}}</ion-card-subtitle>
             </ion-item>

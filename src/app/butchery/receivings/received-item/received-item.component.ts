@@ -123,6 +123,8 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
               uom: uomData,
               receivedQty: res.receivedQty,
               itemCost: res.itemCost,
+              documentedWeight: res.documentedWeight,
+              actualWeight: res.actualWeight
             });
           } else {
             this.itemForm.patchValue({
@@ -130,6 +132,8 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
               itemName: itemData.itemName,
               receivedQty: res.receivedQty,
               itemCost: res.itemCost,
+              documentedWeight: res.documentedWeight,
+              actualWeight: res.actualWeight
             });
           }
 

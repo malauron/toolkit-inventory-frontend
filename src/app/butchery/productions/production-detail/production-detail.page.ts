@@ -106,12 +106,9 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
       if (fullBarcode.length >= 12 && !isNaN(Number(fullBarcode))) {
         const partialBarcode = fullBarcode.substring(1, 7);
-        console.log(partialBarcode);
         const itemQty = Number(
           fullBarcode.substring(7, 9).concat('.', fullBarcode.substring(9, 12))
         );
-
-        console.log(itemQty);
 
         this.itemsService.getItemByItemCode(partialBarcode).subscribe((res) => {
           if (res.item) {
