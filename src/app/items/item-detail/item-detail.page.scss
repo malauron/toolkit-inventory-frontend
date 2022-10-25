@@ -15,8 +15,8 @@ ion-card {
 }
 
 .item-header ion-item {
-  // padding: 20px;
-  margin: 25px;
+  padding: 10PX 20px;
+  // margin: 25px;
 }
 
 .item-uom ion-item {
@@ -49,4 +49,12 @@ ion-select::part(icon) {
 
 .separator {
   border-top: 1px solid var(--ion-color-medium);
+}
+
+.two-cols {
+  padding: 0;
+
+  ion-col {
+    padding: 0;
+  }
 }

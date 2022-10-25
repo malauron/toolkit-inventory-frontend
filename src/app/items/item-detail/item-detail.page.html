@@ -21,24 +21,40 @@
       <ion-col>
         <ion-card class="item-header">
           <div class="card-top"></div>
-          <form [formGroup]="itemForm">
+          <form [formGroup]="itemForm" class="ion-padding">
+            <ion-grid class="two-cols">
+              <ion-row>
+                <ion-col size-xs="12" size-md="6">
+                  <!-- Barcode -->
+                  <ion-item fill="outline">
+                    <ion-icon
+                      slot="start"
+                      name="barcode-outline"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-input
+                      placeholder="Code"
+                      type="text"
+                      maxlength="20"
+                      formControlName="itemCode"
+                    >
+                    </ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col size-xs="12" size-md="6">
+                  <!-- Item Status -->
+                  <ion-item fill="outline" lines="none">
+                    <ion-label>Active</ion-label>
+                    <ion-toggle
+                      slot="start"
+                      formControlName="isActive"
+                    ></ion-toggle>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
 
             <ion-item fill="outline">
-              <ion-icon
-                slot="start"
-                name="barcode-outline"
-                color="primary"
-              ></ion-icon>
-              <ion-input
-                placeholder="Code"
-                type="text"
-                formControlName="itemCode"
-              >
-              </ion-input>
-            </ion-item>
-
-            <ion-item fill="outline">
-              <!-- <ion-label position="floating">Description</ion-label> -->
               <ion-icon
                 slot="start"
                 src="../../assets/icons/items.svg"
@@ -52,28 +68,7 @@
               </ion-input>
             </ion-item>
 
-            <!-- UOMs -->
-            <ion-item fill="outline">
-              <ion-icon
-                slot="start"
-                name="scale-outline"
-                color="primary"
-              ></ion-icon>
-              <ion-select
-                #baseUom
-                placeholder="Base UoM"
-                interface="popover"
-                [disabled]="item.itemId>0"
-                (ionChange)="onBaseUomChange(baseUom.value)"
-                formControlName="uom"
-                *ngIf="uoms.length"
-              >
-                <ion-select-option *ngFor="let uom of uoms" [value]="uom"
-                  >{{ uom.uomName }}
-                </ion-select-option>
-              </ion-select>
-            </ion-item>
-
+            <!-- Item Classification -->
             <ion-item fill="outline">
               <ion-icon
                 slot="start"
@@ -86,36 +81,57 @@
                 placeholder="Item Classification"
                 formControlName="itemClass"
                 interface="popover"
-                [disabled]="item.itemId>0"
                 (ionChange)="itemClassChange(itemClass.value)"
               >
-                <ion-select-option *ngFor="let itmClass of theItemClass | keyvalue">{{ itmClass.key }}</ion-select-option>
-                <!-- <ion-select-option>{{ theItemClass.Stock }}</ion-select-option>
-                <ion-select-option>{{ theItemClass.Assembly }}</ion-select-option>
-                <ion-select-option>{{ theItemClass.Branded }}</ion-select-option> -->
+                <ion-select-option
+                  *ngFor="let itmClass of theItemClass | keyvalue"
+                  >{{ itmClass.key }}</ion-select-option
+                >
               </ion-select>
             </ion-item>
 
-
-            <ion-item fill="outline">
-              <ion-icon
-                slot="start"
-                name="pricetag-outline"
-                color="primary"
-              ></ion-icon>
-              <ion-input
-                formControlName="price"
-                placeholder="Price"
-                type="number"
-              >
-              </ion-input>
-            </ion-item>
-
-            <!-- Item Status -->
-            <ion-item fill="outline" lines="none">
-              <ion-label>Active</ion-label>
-              <ion-toggle slot="start" formControlName="isActive"></ion-toggle>
-            </ion-item>
+            <ion-grid class="two-cols">
+              <ion-row>
+                <ion-col size-xs="12" size-md="6">
+                  <!-- UOMs -->
+                  <ion-item fill="outline">
+                    <ion-icon
+                      slot="start"
+                      name="scale-outline"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-select
+                      #baseUom
+                      placeholder="Base UoM"
+                      interface="popover"
+                      (ionChange)="onBaseUomChange(baseUom.value)"
+                      formControlName="uom"
+                      *ngIf="uoms.length"
+                    >
+                      <ion-select-option *ngFor="let uom of uoms" [value]="uom"
+                        >{{ uom.uomName }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+                <ion-col size-xs="12" size-md="6">
+                  <!-- Item Price -->
+                  <ion-item fill="outline">
+                    <ion-icon
+                      slot="start"
+                      name="pricetag-outline"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-input
+                      formControlName="price"
+                      placeholder="Price"
+                      type="number"
+                    >
+                    </ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
 
             <ion-item lines="none" *ngIf="this.item.itemId">
               <ion-button
@@ -134,7 +150,11 @@
       </ion-col>
 
       <!-- Unit of Measure -->
-      <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemClass === this.theItemClass.Stock">
+      <ion-col
+        size-xs="12"
+        size-xl="6"
+        *ngIf="this.item.itemClass === this.theItemClass.Stock"
+      >
         <!-- <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemId"> -->
         <ion-card class="item-uom">
           <div class="card-top"></div>
@@ -226,7 +246,11 @@
       </ion-col>
 
       <!-- Bill of Materials -->
-      <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemClass === theItemClass.Assembly">
+      <ion-col
+        size-xs="12"
+        size-xl="6"
+        *ngIf="this.item.itemClass === theItemClass.Assembly"
+      >
         <ion-card class="item-bom">
           <div class="card-top"></div>
 
@@ -340,7 +364,11 @@
       </ion-col>
 
       <!-- Generic Item -->
-      <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemClass === theItemClass.Branded">
+      <ion-col
+        size-xs="12"
+        size-xl="6"
+        *ngIf="this.item.itemClass === theItemClass.Branded"
+      >
         <ion-card class="item-generic">
           <div class="card-top"></div>
 
@@ -411,7 +439,7 @@
               </ion-item>
             </form>
 
-            <ion-item lines="none"  *ngIf="this.item.itemId">
+            <ion-item lines="none" *ngIf="this.item.itemId">
               <ion-button
                 (click)="updateItemGeneric()"
                 color="success"
@@ -423,7 +451,6 @@
                 <ion-icon name="checkmark-outline" slot="start"></ion-icon>
               </ion-button>
             </ion-item>
-
           </ion-grid>
         </ion-card>
       </ion-col>

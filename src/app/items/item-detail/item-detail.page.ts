@@ -49,6 +49,7 @@ export class ItemDetailPage implements OnInit {
 
   modalOpen = false;
   isUploading = false;
+  lockControls = false;
 
   private subjectGenericUom = new Subject<Uom>();
   private itemSubscription: Subscription;
@@ -75,87 +76,6 @@ export class ItemDetailPage implements OnInit {
     this.itemBoms = [];
     this.itemGeneric = new ItemGeneric();
 
-    this.itemForm = new FormGroup({
-      itemCode: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(15)],
-      }),
-      itemName: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(50)],
-      }),
-      uom: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required],
-      }),
-      itemClass: new FormControl(ItemClass.Stock, {
-        updateOn: 'blur',
-        validators: [Validators.required],
-      }),
-      price: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.min(0.01)]
-      }),
-      isActive: new FormControl(true, {
-        updateOn: 'blur',
-        validators: [Validators.required],
-      }),
-    });
-
-    this.itemUomForm = new FormGroup({
-      itemUomId: new FormGroup({
-        item: new FormControl(null),
-        uom: new FormControl(null, {
-          updateOn: 'blur',
-          validators: [Validators.required],
-        }),
-      }),
-      quantity: new FormControl({
-        updateOn: 'blur',
-        validators: [Validators.required],
-      }),
-    });
-
-    this.itemBomForm = new FormGroup({
-      subItem: new FormControl(null, {
-        validators: [Validators.required],
-      }),
-      subItemName: new FormControl(null, {
-        validators: [Validators.required],
-      }),
-      requiredUom: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required],
-      }),
-      requiredQty: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.min(0.001)],
-      }),
-    });
-
-    this.itemGenericForm = new FormGroup({
-      itemGenericId: new FormControl(null),
-      subItem: new FormControl(null, {
-        validators: [Validators.required],
-      }),
-      subItemName: new FormControl(null, {
-        validators: [Validators.required],
-      }),
-      requiredUom: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required],
-      }),
-      requiredQty: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.min(0.001)],
-      }),
-    });
-
-    this.genericUomSubscription = this.subjectGenericUom.subscribe((uom) => {
-      this.itemGenericForm.patchValue({
-        requiredUom: uom,
-      });
-    });
 
     this.route.paramMap.subscribe((paramMap) => {
       // Check whether paramMap is empty or not
@@ -173,6 +93,97 @@ export class ItemDetailPage implements OnInit {
       this.item = new Item();
       this.item.itemId = Number(paramMap.get('itemId'));
       this.item.itemClass = ItemClass.Stock;
+      if (this.item.itemId > 0) {
+        this.lockControls = true;
+      }
+
+      this.itemForm = new FormGroup({
+        itemCode: new FormControl(null, {
+          updateOn: 'blur',
+          validators: [Validators.required, Validators.maxLength(20)],
+        }),
+        itemName: new FormControl(null, {
+          updateOn: 'blur',
+          validators: [Validators.required, Validators.maxLength(50)],
+        }),
+        uom: new FormControl(
+          { value: null, disabled: this.lockControls },
+          {
+            updateOn: 'blur',
+            validators: [Validators.required],
+          }
+        ),
+        itemClass: new FormControl(
+          { value: ItemClass.Stock, disabled: this.lockControls },
+          {
+            updateOn: 'blur',
+            validators: [Validators.required],
+          }
+        ),
+        price: new FormControl(null, {
+          updateOn: 'blur',
+          validators: [Validators.required, Validators.min(0.01)],
+        }),
+        isActive: new FormControl(true, {
+          updateOn: 'blur',
+          validators: [Validators.required],
+        }),
+      });
+
+      this.itemUomForm = new FormGroup({
+        itemUomId: new FormGroup({
+          item: new FormControl(null),
+          uom: new FormControl(null, {
+            updateOn: 'blur',
+            validators: [Validators.required],
+          }),
+        }),
+        quantity: new FormControl({
+          updateOn: 'blur',
+          validators: [Validators.required],
+        }),
+      });
+
+      this.itemBomForm = new FormGroup({
+        subItem: new FormControl(null, {
+          validators: [Validators.required],
+        }),
+        subItemName: new FormControl(null, {
+          validators: [Validators.required],
+        }),
+        requiredUom: new FormControl(null, {
+          updateOn: 'blur',
+          validators: [Validators.required],
+        }),
+        requiredQty: new FormControl(null, {
+          updateOn: 'blur',
+          validators: [Validators.required, Validators.min(0.001)],
+        }),
+      });
+
+      this.itemGenericForm = new FormGroup({
+        itemGenericId: new FormControl(null),
+        subItem: new FormControl(null, {
+          validators: [Validators.required],
+        }),
+        subItemName: new FormControl(null, {
+          validators: [Validators.required],
+        }),
+        requiredUom: new FormControl(null, {
+          updateOn: 'blur',
+          validators: [Validators.required],
+        }),
+        requiredQty: new FormControl(null, {
+          updateOn: 'blur',
+          validators: [Validators.required, Validators.min(0.001)],
+        }),
+      });
+
+      this.genericUomSubscription = this.subjectGenericUom.subscribe((uom) => {
+        this.itemGenericForm.patchValue({
+          requiredUom: uom,
+        });
+      });
 
       // Assign the item id to each
       // new item uom
@@ -446,20 +457,20 @@ export class ItemDetailPage implements OnInit {
     if (!this.isUploading) {
       this.isUploading = true;
 
-    if (!this.itemGenericForm.valid) {
-      this.messageBox('Invalid stock item details.');
-      return;
-    }
+      if (!this.itemGenericForm.valid) {
+        this.messageBox('Invalid stock item details.');
+        return;
+      }
 
-    this.itemGeneric.itemGenericId = this.itemGenericForm.value.itemGenericId;
-    this.itemGeneric.subItem = this.itemGenericForm.value.subItem;
-    this.itemGeneric.requiredUom = this.itemGenericForm.value.requiredUom;
-    this.itemGeneric.requiredQty = this.itemGenericForm.value.requiredQty;
+      this.itemGeneric.itemGenericId = this.itemGenericForm.value.itemGenericId;
+      this.itemGeneric.subItem = this.itemGenericForm.value.subItem;
+      this.itemGeneric.requiredUom = this.itemGenericForm.value.requiredUom;
+      this.itemGeneric.requiredQty = this.itemGenericForm.value.requiredQty;
 
-    this.itemService.putItemGenerics(this.itemGeneric).subscribe((res) => {
-      this.messageBox('Stock item has been updated.');
-      this.isUploading = false;
-    });
+      this.itemService.putItemGenerics(this.itemGeneric).subscribe((res) => {
+        this.messageBox('Stock item has been updated.');
+        this.isUploading = false;
+      });
     }
   }
 
