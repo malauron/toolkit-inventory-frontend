@@ -6,7 +6,7 @@ import { OptionsPage } from './options.page';
 const routes: Routes = [
   {
     path: '',
-    component: OptionsPage
+    component: OptionsPage,
   }
 ];
 

@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/tabs/receivings',
+    redirectTo: 'tabs/receivings',
     pathMatch: 'full'
   }
 ];

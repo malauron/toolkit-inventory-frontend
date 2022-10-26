@@ -76,13 +76,12 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
-      documentedWeight: new FormControl(null, {
+      documentedQty: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
-      actualWeight: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.min(0)],
+      remarks: new FormControl('', {
+        updateOn: 'blur'
       }),
     });
 
@@ -123,8 +122,8 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
               uom: uomData,
               receivedQty: res.receivedQty,
               itemCost: res.itemCost,
-              documentedWeight: res.documentedWeight,
-              actualWeight: res.actualWeight
+              documentedQty: res.documentedQty,
+              remarks: res.remarks
             });
           } else {
             this.itemForm.patchValue({
@@ -132,8 +131,8 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
               itemName: itemData.itemName,
               receivedQty: res.receivedQty,
               itemCost: res.itemCost,
-              documentedWeight: res.documentedWeight,
-              actualWeight: res.actualWeight
+              documentedQty: res.documentedQty,
+              remarks: res.remarks
             });
           }
 
@@ -204,8 +203,8 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
               uom: uomData,
               receivedQty: 1.0,
               itemCost: 0.00,
-              documentedWeight: 0.00,
-              actualWeight: 0.00,
+              documentedQty: 0.00,
+              remarks: '',
             });
 
             const qtyElem = this.receivedQtyInput.getInputElement();
@@ -257,8 +256,8 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
       receivedItemDetail.uom = this.itemForm.value.uom;
       receivedItemDetail.receivedQty = this.itemForm.value.receivedQty;
       receivedItemDetail.itemCost = this.itemForm.value.itemCost;
-      receivedItemDetail.documentedWeight = this.itemForm.value.documentedWeight;
-      receivedItemDetail.actualWeight = this.itemForm.value.actualWeight;
+      receivedItemDetail.documentedQty = this.itemForm.value.documentedQty;
+      receivedItemDetail.remarks = this.itemForm.value.remarks;
 
       this.modalController.dismiss(receivedItemDetail, 'item');
     }

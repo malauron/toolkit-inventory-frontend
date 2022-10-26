@@ -8,7 +8,7 @@ export class ReceivedItemDetail{
     public uom?: Uom,
     public receivedQty?: number,
     public itemCost?: number,
-    public documentedWeight?: number,
-    public actualWeight?: number,
+    public documentedQty?: number,
+    public remarks?: string,
   ){}
 }

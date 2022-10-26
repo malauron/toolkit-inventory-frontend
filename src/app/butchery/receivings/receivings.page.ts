@@ -38,7 +38,6 @@ export class ReceivingsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-
     this.receivingSearchSub = this.receivingSearchBar.ionInput
     .pipe(
       map((event) => (event.target as HTMLInputElement).value),

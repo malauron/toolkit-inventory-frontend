@@ -15,7 +15,7 @@ export class ButcheryReceivingItem {
     public receivedQty?: number,
     public itemCost?: number,
     public totalAmount?: number,
-    public documentedWeight?: number,
-    public actualWeight?: number,
+    public documentedQty?: number,
+    public remarks?: string,
   ){}
 }

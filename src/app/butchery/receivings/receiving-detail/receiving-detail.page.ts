@@ -143,8 +143,8 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     // receivingItem.requiredUom = itemDto.item.uom;
     // receivingItem.receivedQty = itemQty;
     // receivingItem.itemCost = 0;
-    // receivingItem.documentedWeight = 0;
-    // receivingItem.actualWeight = 0;
+    // receivingItem.documentedQty = 0;
+    // receivingItem.remarks = 0;
     // receivingItem.totalAmount = 0;
 
     // if (this.receiving.butcheryReceivingId) {
@@ -157,8 +157,8 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     receivedItemDetail.uom = itemDto.item.uom;
     receivedItemDetail.receivedQty = 0;
     receivedItemDetail.itemCost = 0;
-    receivedItemDetail.documentedWeight = 0;
-    receivedItemDetail.actualWeight = 0;
+    receivedItemDetail.documentedQty = 0;
+    receivedItemDetail.remarks = '';
     this.onManuallyAddReceivedItem(receivedItemDetail);
   }
 
@@ -184,8 +184,8 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             receivedItem.requiredUom = item.uom;
             receivedItem.receivedQty = item.receivedQty;
             receivedItem.itemCost = item.itemCost;
-            receivedItem.documentedWeight = item.documentedWeight;
-            receivedItem.actualWeight = item.actualWeight;
+            receivedItem.documentedQty = item.documentedQty;
+            receivedItem.remarks = item.remarks;
             receivedItem.totalAmount = item.receivedQty * item.itemCost;
 
             if (this.receiving.butcheryReceivingId) {
@@ -456,8 +456,8 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
       receivedItemDetail.uom = pItem.requiredUom;
       receivedItemDetail.receivedQty = pItem.receivedQty;
       receivedItemDetail.itemCost = pItem.itemCost;
-      receivedItemDetail.documentedWeight = pItem.documentedWeight;
-      receivedItemDetail.actualWeight = pItem.actualWeight;
+      receivedItemDetail.documentedQty = pItem.documentedQty;
+      receivedItemDetail.remarks = pItem.remarks;
 
       this.receivedItemService.receivedItemDetail.next(receivedItemDetail);
 
@@ -477,8 +477,8 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             receivedItem.requiredUom = item.uom;
             receivedItem.receivedQty = item.receivedQty;
             receivedItem.itemCost = item.itemCost;
-            receivedItem.documentedWeight = item.documentedWeight;
-            receivedItem.actualWeight = item.actualWeight;
+            receivedItem.documentedQty = item.documentedQty;
+            receivedItem.remarks = item.remarks;
             receivedItem.totalAmount = item.receivedQty * item.itemCost;
 
 
@@ -523,8 +523,8 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
         this.receivingItems[key].requiredUom = receivingItem.requiredUom;
         this.receivingItems[key].receivedQty = receivingItem.receivedQty;
         this.receivingItems[key].itemCost = receivingItem.itemCost;
-        this.receivingItems[key].documentedWeight = receivingItem.documentedWeight;
-        this.receivingItems[key].actualWeight = receivingItem.actualWeight;
+        this.receivingItems[key].documentedQty = receivingItem.documentedQty;
+        this.receivingItems[key].remarks = receivingItem.remarks;
         this.receivingItems[key].totalAmount = receivingItem.totalAmount;
       }
     }

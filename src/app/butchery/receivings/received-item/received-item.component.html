@@ -36,39 +36,34 @@
 
       <ion-grid class="number-inputs">
         <ion-row>
-          <ion-col size-xs="12" size-sm="6">
+          <ion-col size-xs="12" size-sm="4">
             <ion-item fill="outline">
-              <ion-label position="floating">Quantity</ion-label>
+              <ion-label position="floating">Received Quantity</ion-label>
               <ion-input #receivedQtyInput formControlName="receivedQty" type="number" inputmode="decimal" min="0"
                 value="0">
               </ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-sm="6">
+          <ion-col size-xs="12" size-sm="4">
             <ion-item fill="outline">
               <ion-label position="floating">Cost</ion-label>
               <ion-input #itemCostInput formControlName="itemCost" type="number" inputmode="decimal" min="0" value="0">
               </ion-input>
             </ion-item>
           </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size-xs="12" size-sm="6">
+          <ion-col size-xs="12" size-sm="4">
             <ion-item fill="outline">
-              <ion-label position="floating">Documented Weight in Kg.</ion-label>
-              <ion-input #documentedWeightInput formControlName="documentedWeight" type="number" inputmode="decimal"
+              <ion-label position="floating">Documented Qty.</ion-label>
+              <ion-input #documentedWeightInput formControlName="documentedQty" type="number" inputmode="decimal"
                 min="0" value="0"></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col size-xs="12" size-sm="6">
-            <ion-item fill="outline">
-              <ion-label position="floating">Actual Weight in Kg.</ion-label>
-              <ion-input #actualWeightInput formControlName="actualWeight" type="number" inputmode="decimal" min="0"
-                value="0"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
       </ion-grid>
+      <ion-item fill="outline">
+        <ion-label position="floating">Remarks</ion-label>
+        <ion-input #actualWeightInput formControlName="remarks"></ion-input>
+      </ion-item>
 
     </form>
   </ion-card>
