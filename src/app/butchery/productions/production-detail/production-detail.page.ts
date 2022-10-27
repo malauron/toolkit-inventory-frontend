@@ -94,8 +94,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
             this.productionSources = resData.butcheryProductionSourceViews;
             this.totalAmount = this.production.totalAmount;
             this.isFetching = false;
-
-            console.log(resData);
           },
           (err) => {
             this.navCtrl.navigateBack('/tabs/productions');
@@ -192,7 +190,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
             .getReceivingItem(sourceId)
             .subscribe((res) => {
               if (res !== null) {
-                console.log(res);
                 const pSource = new ButcheryProductionSource();
                 pSource.butcheryReceivingItem = res;
                 pSource.requiredQty = requiredQty;
@@ -216,7 +213,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
       this.productionsService
         .putProductionSource(productionSource)
         .subscribe((res) => {
-          console.log(res);
           this.dataHaveChanged = true;
           this.production.productionStatus = res.productionStatus;
           if (this.production.productionStatus === 'Unposted') {
@@ -341,8 +337,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     productionDto.butcheryProductionItems = this.productionItems;
     productionDto.butcheryProductionSources = this.productionSources;
 
-    console.log(productionDto);
-
     this.productionsService
       .postProduction(productionDto)
       .subscribe(this.onProcessSavedProduction());
@@ -350,6 +344,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
   onProcessSavedProduction() {
     return (res: ButcheryProduction) => {
+      console.log(res);
       this.production.butcheryProductionId = res.butcheryProductionId;
       this.production.productionStatus = res.productionStatus;
       this.production.totalAmount = res.totalAmount;
