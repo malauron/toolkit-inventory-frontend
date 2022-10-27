@@ -76,6 +76,13 @@ export class ButcheryReceivingsService {
     return this.http.get<ResponseReceivings>(this.apiUrl);
   }
 
+  getReceivingItem(receivingItemId: number): Observable<ButcheryReceivingItem> {
+
+    this.apiUrl = `${this.config.urlV1ButcheryReceivingItems}?butcheryReceivingItemId=${receivingItemId}`;
+    return this.http.get<ButcheryReceivingItem>(this.apiUrl);
+
+  }
+
   postReceiving(receivingDto: ButcheryReceivingDto): Observable<ButcheryReceiving> {
     this.apiUrl = `${this.config.urlV1ButcheryReceivings}`;
     return this.http.post<ButcheryReceiving>(this.apiUrl, receivingDto);

@@ -158,7 +158,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     receivedItemDetail.receivedQty = 0;
     receivedItemDetail.itemCost = 0;
     receivedItemDetail.documentedQty = 0;
+    receivedItemDetail.usedQty = 0;
     receivedItemDetail.remarks = '';
+    receivedItemDetail.isAvailable = false;
     this.onManuallyAddReceivedItem(receivedItemDetail);
   }
 
@@ -185,7 +187,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             receivedItem.receivedQty = item.receivedQty;
             receivedItem.itemCost = item.itemCost;
             receivedItem.documentedQty = item.documentedQty;
+            receivedItem.usedQty = item.usedQty;
             receivedItem.remarks = item.remarks;
+            receivedItem.isAvailable = item.isAvailable;
             receivedItem.totalAmount = item.receivedQty * item.itemCost;
 
             if (this.receiving.butcheryReceivingId) {
@@ -457,7 +461,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
       receivedItemDetail.receivedQty = pItem.receivedQty;
       receivedItemDetail.itemCost = pItem.itemCost;
       receivedItemDetail.documentedQty = pItem.documentedQty;
+      receivedItemDetail.usedQty = pItem.usedQty;
       receivedItemDetail.remarks = pItem.remarks;
+      receivedItemDetail.isAvailable = pItem.isAvailable;
 
       this.receivedItemService.receivedItemDetail.next(receivedItemDetail);
 
@@ -478,7 +484,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             receivedItem.receivedQty = item.receivedQty;
             receivedItem.itemCost = item.itemCost;
             receivedItem.documentedQty = item.documentedQty;
+            receivedItem.usedQty = item.usedQty;
             receivedItem.remarks = item.remarks;
+            receivedItem.isAvailable = item.isAvailable;
             receivedItem.totalAmount = item.receivedQty * item.itemCost;
 
 
@@ -524,7 +532,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
         this.receivingItems[key].receivedQty = receivingItem.receivedQty;
         this.receivingItems[key].itemCost = receivingItem.itemCost;
         this.receivingItems[key].documentedQty = receivingItem.documentedQty;
+        this.receivingItems[key].usedQty = receivingItem.usedQty;
         this.receivingItems[key].remarks = receivingItem.remarks;
+        this.receivingItems[key].isAvailable = receivingItem.isAvailable;
         this.receivingItems[key].totalAmount = receivingItem.totalAmount;
       }
     }

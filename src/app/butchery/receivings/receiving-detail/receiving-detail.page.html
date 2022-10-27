@@ -296,7 +296,12 @@
               >
                 <ion-icon name="create-outline"></ion-icon>
               </ion-button>
-              <ion-card-subtitle>{{item.barcode}}</ion-card-subtitle>
+              <ion-card-subtitle>{{item.barcode}}</ion-card-subtitle
+              ><ion-card-subtitle
+                *ngIf="receiving.butcheryReceivingId>0"
+                >-{{item.butcheryReceivingItemId.toString().padStart(8,
+                "0")}}</ion-card-subtitle
+              >
             </ion-item>
 
             <ion-item lines="none" class="item-info">

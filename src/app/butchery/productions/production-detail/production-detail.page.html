@@ -165,17 +165,112 @@
     <div class="card-top"></div>
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
+        <ion-card-title>Production Sources</ion-card-title>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-header
+      class="ion-no-padding"
+      *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined"
+    >
+      <ion-item lines="none">
+        <ion-searchbar
+          searchIcon="barcode-outline"
+          placeholder="Shortcut code"
+          (keypress)="onGetSourceBySourceId($event)"
+          #sourceSearchBar
+        ></ion-searchbar>
+      </ion-item>
+    </ion-card-header>
+    <div class="separator"></div>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col
+          size-xs="12"
+          size-md="6"
+          size-lg="4"
+          *ngFor="let source of productionSources"
+        >
+          <ion-card class="card-item">
+            <ion-item lines="none" class="itme-info">
+              <ion-icon
+                class="item-icon"
+                name="attach-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-button
+                *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined"
+                (click)="onDeleteProductionSource(source)"
+                class="ion-no-margin ion-no-padding"
+                mode="ios"
+                slot="end"
+                fill="clear"
+                color="medium"
+                size="default"
+              >
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+              <ion-card-subtitle
+                >{{
+                source.butcheryReceivingItem.butcheryReceivingItemId.toString().padStart(8,
+                "0") }}</ion-card-subtitle
+              >
+            </ion-item>
+
+            <ion-item lines="none" class="item-info">
+              <ion-card-title mode="md" class="ion-no-padding ion-no-margin"
+                >{{ source.butcheryReceivingItem.item.itemName
+                }}</ion-card-title
+              >
+            </ion-item>
+            <ion-item lines="none" class="item-info">
+              <ion-card-subtitle class="ion-no-padding ion-no-margin"
+                >{{ source.butcheryReceivingItem.butcheryReceiving.dateCreated |
+                date:'MMM dd, yyyy hh:mm a' }}</ion-card-subtitle
+              >
+            </ion-item>
+            <ion-item lines="none" class="item-info">
+              <ion-card-subtitle class="ion-no-padding ion-no-margin"
+                >{{
+                source.butcheryReceivingItem.receivedQty-source.butcheryReceivingItem.usedQty
+                | number:'1.2-2' }}{{
+                source.butcheryReceivingItem.requiredUom.uomCode
+                }}</ion-card-subtitle
+              >
+            </ion-item>
+
+            <ion-item lines="none" class="card-footer">
+              <ion-card-title slot="end" mode="md"
+                >{{ source.requiredQty | number:'1.2-2' }}{{
+                source.butcheryReceivingItem.requiredUom.uomCode
+                }}</ion-card-title
+              >
+            </ion-item>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-card class="card-holder">
+    <div class="card-top"></div>
+    <ion-card-header class="ion-no-padding">
+      <ion-item lines="none">
+        <ion-card-title>Production Items</ion-card-title>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-header
+      class="ion-no-padding"
+      *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined"
+    >
+      <ion-item lines="none">
         <ion-searchbar
           searchIcon="barcode-outline"
           placeholder="Barcode"
           (keypress)="onGetItemByItemCode($event)"
           #itemSearchBar
         ></ion-searchbar>
-        <!-- <ion-button *ngIf="production.productionStatus === 'Unposted' || production.productionStatus === undefined"
-          class="ion-no-padding ion-no-margin" (click)="onAddProductionItem()" slot="end" mode="ios" fill="clear"
-          size="large" color="success">
-          <ion-icon name="add"></ion-icon>
-        </ion-button> -->
       </ion-item>
     </ion-card-header>
     <div class="separator"></div>
@@ -225,40 +320,11 @@
             </ion-item>
 
             <ion-item lines="none" class="card-footer">
-              <ion-card-title slot="end" mode="md">{{ item.totalAmount| number:'1.2-2' }}</ion-card-title>
+              <ion-card-title slot="end" mode="md"
+                >{{ item.totalAmount| number:'1.2-2' }}</ion-card-title
+              >
             </ion-item>
           </ion-card>
-
-          <!-- <ion-card class="card-item">
-            <ion-item lines="none">
-              <ion-avatar slot="start">
-                <img src="../../assets/icons/items.svg" class="icon" />
-              </ion-avatar>
-              <ion-card-subtitle class="ion-no-padding ion-no-margin">
-                {{ item.item.itemName }} - {{ item.producedQty }}{{
-                item.requiredUom.uomCode }}
-              </ion-card-subtitle>
-              <ion-card-subtitle slot="end">
-                @ {{ item.productionCost| number:'1.2-2' }}/{{
-                item.requiredUom.uomCode }}
-              </ion-card-subtitle>
-            </ion-item>
-            <ion-item class="total-cost" lines="none">
-              <ion-label> {{ item.totalAmount| number:'1.2-2' }} </ion-label>
-              <ion-button
-                *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined"
-                (click)="onDeleteProductionItem(item)" class="ion-no-margin" mode="ios" slot="end" fill="clear"
-                color="medium" size="default">
-                <ion-icon name="close-circle"></ion-icon>
-              </ion-button>
-              <ion-button
-                *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined"
-                (click)="onUpdateProductionItem(item)" class="ion-no-padding ion-no-margin" mode="ios" fill="clear"
-                color="success" size="default" slot="end">
-                <ion-icon name="create-outline"></ion-icon>
-              </ion-button>
-            </ion-item>
-          </ion-card> -->
         </ion-col>
       </ion-row>
     </ion-grid>

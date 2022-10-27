@@ -16,6 +16,8 @@ export class ButcheryReceivingItem {
     public itemCost?: number,
     public totalAmount?: number,
     public documentedQty?: number,
+    public usedQty?: number,
     public remarks?: string,
+    public isAvailable?: boolean,
   ){}
 }

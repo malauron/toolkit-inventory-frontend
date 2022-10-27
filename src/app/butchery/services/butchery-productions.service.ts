@@ -6,6 +6,7 @@ import { PageInfo } from 'src/app/classes/page-info.model';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ButcheryProductionDto } from '../classes/butchery-production-dto.model';
 import { ButcheryProductionItem } from '../classes/butchery-production-item.model';
+import { ButcheryProductionSource } from '../classes/butchery-production-source.model';
 import { ButcheryProduction } from '../classes/butchery-production.model';
 
 interface ResponseProductions {
@@ -76,13 +77,6 @@ export class ButcheryProductionsService {
     return this.http.get<ResponseProductions>(this.apiUrl);
   }
 
-  // getProductionList(
-  //   orderIds: number[]
-  // ): Observable<OrderMenuIngredientSummaryDto> {
-  //   this.apiUrl = `${this.config.urlV1OrderMenuIngredientSummary}?orderIds=${orderIds}`;
-  //   return this.http.get<OrderMenuIngredientSummaryDto>(this.apiUrl);
-  // }
-
   postProduction(productionDto: ButcheryProductionDto): Observable<ButcheryProduction> {
     this.apiUrl = `${this.config.urlV1ButcheryProductions}`;
     return this.http.post<ButcheryProduction>(this.apiUrl, productionDto);
@@ -103,6 +97,11 @@ export class ButcheryProductionsService {
     return this.http.put<ButcheryProductionDto>(this.apiUrl, productionItem);
   }
 
+  putProductionSource(productionSource: ButcheryProductionSource): Observable<ButcheryProductionDto> {
+    this.apiUrl = `${this.config.urlV1ButcheryProductionSources}`;
+    return this.http.put<ButcheryProductionDto>(this.apiUrl, productionSource);
+  }
+
   deleteProductionItem(productionItem: ButcheryProductionItem): Observable<ButcheryProductionDto> {
     const options = {
       headers: new HttpHeaders({
@@ -111,6 +110,17 @@ export class ButcheryProductionsService {
       body: productionItem
     };
     this.apiUrl = `${this.config.urlV1ButcheryProductionItems}`;
+    return this.http.delete<ButcheryProductionDto>(this.apiUrl, options);
+  }
+
+  deleteProductionSource(productionSource: ButcheryProductionSource): Observable<ButcheryProductionDto> {
+    const options = {
+      headers: new HttpHeaders({
+        contentType: 'application/json'
+      }),
+      body: productionSource
+    };
+    this.apiUrl = `${this.config.urlV1ButcheryProductionSources}`;
     return this.http.delete<ButcheryProductionDto>(this.apiUrl, options);
   }
 }

@@ -9,6 +9,8 @@ export class ReceivedItemDetail{
     public receivedQty?: number,
     public itemCost?: number,
     public documentedQty?: number,
+    public usedQty?: number,
     public remarks?: string,
+    public isAvailable?: boolean,
   ){}
 }
