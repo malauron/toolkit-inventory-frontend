@@ -27,4 +27,8 @@ export class OptionsPage implements OnInit {
     this.router.navigate(['/','tabs','releasings']);
   }
 
+  onInventory() {
+    this.router.navigate(['/','tabs','inventories']);
+  }
+
 }

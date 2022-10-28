@@ -49,6 +49,10 @@ const routes: Routes = [
         loadChildren: () => import('../butchery/receivings/receivings.module').then( m => m.ReceivingsPageModule)
       },
       {
+        path: 'inventories',
+        loadChildren: () => import('../butchery/inventories/inventories.module').then( m => m.InventoriesPageModule)
+      },
+      {
         path: 'productions',
         loadChildren: () => import('../butchery/productions/productions.module').then( m => m.ProductionsPageModule)
       },

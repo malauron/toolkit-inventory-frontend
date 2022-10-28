@@ -351,7 +351,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
       this.productionDetailsConfig.setParams(res.productionStatus);
       this.production.dateCreated = res.dateCreated;
       this.productionItems = res.butcheryProductionItems;
-      this.productionSources = res.butcheryProductionSources;
+      this.productionSources = res.butcheryProductionSourceViews;
       this.dataHaveChanged = true;
     };
   }

@@ -77,9 +77,9 @@ export class ButcheryProductionsService {
     return this.http.get<ResponseProductions>(this.apiUrl);
   }
 
-  postProduction(productionDto: ButcheryProductionDto): Observable<ButcheryProduction> {
+  postProduction(productionDto: ButcheryProductionDto): Observable<ButcheryProductionDto> {
     this.apiUrl = `${this.config.urlV1ButcheryProductions}`;
-    return this.http.post<ButcheryProduction>(this.apiUrl, productionDto);
+    return this.http.post<ButcheryProductionDto>(this.apiUrl, productionDto);
   }
 
   putProduction(productionDto: ButcheryProductionDto): Observable<ButcheryProductionDto> {

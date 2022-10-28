@@ -311,12 +311,12 @@
             </ion-item>
             <ion-item lines="none" class="item-info">
               <ion-card-subtitle *ngIf="item.documentedQty>0"
-                >({{ item.documentedQty }}{{ item.requiredUom.uomCode
+                >({{ item.documentedQty | number:'1.0-2' }}{{ item.requiredUom.uomCode
                 }})</ion-card-subtitle
               >
               <ion-card-subtitle class="ion-no-padding ion-no-margin"
-                >{{ item.receivedQty }}{{ item.requiredUom.uomCode }}@{{
-                item.itemCost| number:'1.2-2' }}/{{ item.requiredUom.uomCode
+                >{{ item.receivedQty | number:'1.0-2' }}{{ item.requiredUom.uomCode }}@{{
+                item.itemCost | number:'1.0-2' }}/{{ item.requiredUom.uomCode
                 }}</ion-card-subtitle
               >
             </ion-item>

@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ItemBom } from '../classes/item-bom.model';
+import { ItemCost } from '../classes/item-cost.model';
 import { ItemDto } from '../classes/item-dto.model';
 import { ItemGeneric } from '../classes/item-generic.model';
 import { ItemUom } from '../classes/item-uom.model';
@@ -77,6 +78,11 @@ export class ItemsService {
     this.apiUrl = `${this.config.urlItems}/${itemId}?projection=itemView`;
 
     return this.http.get<Item>(this.apiUrl);
+  }
+
+  getItemCosts(warehouseId: number): Observable<ItemCost> {
+    this.apiUrl = `${this.config.urlV1ItemCosts}?warehouseId=${warehouseId}`;
+    return this.http.get<ItemCost>(this.apiUrl);
   }
 
   postItem(itemDto: ItemDto): Observable<Item> {

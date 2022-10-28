@@ -1,0 +1,154 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button
+        icon="chevron-back-outline"
+        defaultHref="/tabs/options"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inventory Report</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="printPage()">
+        <ion-icon name="print-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" id="print">
+  <!-- <div class="spinner">
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
+  </div> -->
+
+  <ion-card class="card-holder">
+    <div class="card-top"></div>
+    <ion-grid>
+      <ion-row>
+        <ion-col size-xs="12">
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="business-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-title mode="md"
+                >{{ warehouse.warehouseName }}</ion-card-title
+              >
+            </ion-label>
+            <ion-button
+              #statusButton
+              (click)="onWarehouseSearch()"
+              fill="clear"
+              size="small"
+              mode="ios"
+              id="click-trigger"
+            >
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-xs="12" size-sm="5" size-md="7"
+          ><ion-card-subtitle class="ion-text-start"
+            >ITEM DESCRIPTION</ion-card-subtitle
+          ></ion-col
+        >
+        <ion-col size-xs="5" size-sm="3" size-md="2"
+          ><ion-card-subtitle class="ion-text-end"
+            >QUANTITY</ion-card-subtitle
+          ></ion-col
+        >
+        <ion-col size-xs="3" size-sm="2" size-md="2"
+          ><ion-card-subtitle class="ion-text-start"
+            >UOM CODE</ion-card-subtitle
+          ></ion-col
+        >
+        <ion-col size-xs="4" size-sm="2" size-md="1"
+          ><ion-card-subtitle class="ion-text-end"
+            >COST</ion-card-subtitle
+          ></ion-col
+        >
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-grid>
+    <ion-row *ngFor="let itemCost of itemCosts">
+      <ion-col>
+        <ion-card-subtitle>{{ itemCost.item.itemName }}</ion-card-subtitle>
+      </ion-col>
+      <ion-col>
+        <ion-card-subtitle>{{ itemCost.qty }}</ion-card-subtitle>
+      </ion-col>
+      <ion-col>
+        <ion-card-subtitle>{{ itemCost.item.uom.uomCode }}</ion-card-subtitle>
+      </ion-col>
+      <ion-col>
+        <ion-card-subtitle>{{ itemCost.cost }}</ion-card-subtitle>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<!-- <div id="print">
+  <div class="receipt-header">
+    <div class="receipt-info">************************</div>
+    <div class="receipt-info">
+      <ion-card-subtitle>RECEIVING</ion-card-subtitle>
+    </div>
+    <div class="receipt-info">************************</div>
+  </div>
+
+  <div class="receipt-header">
+    <div class="receipt-info">
+      <ion-card-subtitle>{{ warehouse.warehouseName }}</ion-card-subtitle>
+    </div>
+    <div class="receipt-info">Warehouse</div>
+  </div>
+
+  <div class="receipt-header">
+    <div class="receipt-info">
+      <ion-card-subtitle>{{ vendor.vendorName }}</ion-card-subtitle>
+    </div>
+    <div class="receipt-info">Supplier</div>
+  </div>
+
+  <div class="receipt-header">
+    <div class="receipt-date">Oct 14, 2022 06:22 AM</div>
+    <div class="receipt-no">00000001</div>
+  </div>
+
+  <div class="separator"></div>
+  <div class="desc-one" *ngFor="let item of receivingItems">
+    <div class="barcode">{{ item.barcode }}</div>
+    <div class="price">{{ item.totalAmount| number:'1.2-2' }}</div>
+    <div>
+      <div>{{ item.item.itemName }}</div>
+      <div>
+        {{ item.receivedQty }}{{item.requiredUom.uomCode }} @{{ item.itemCost|
+        number:'1.2-2' }}/{{ item.requiredUom.uomCode }}
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <div class="separator"></div>
+  <div class="separator"></div>
+  <div class="total">
+    <div class="total-desc">
+      <ion-card-subtitle>Total</ion-card-subtitle>
+    </div>
+    <div class="total-amt">
+      <ion-card-subtitle>{{ totalAmount | number:'1.2-2' }}</ion-card-subtitle>
+    </div>
+  </div>
+  <div class="company-name">A subsidiary of Eight2Eight Inc.</div>
+</div> -->

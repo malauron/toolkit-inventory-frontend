@@ -230,11 +230,15 @@
                 date:'MMM dd, yyyy hh:mm a' }}</ion-card-subtitle
               >
             </ion-item>
-            <ion-item lines="none" class="item-info">
+            <ion-item
+              lines="none"
+              class="item-info"
+              *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined"
+            >
               <ion-card-subtitle class="ion-no-padding ion-no-margin"
                 >{{
                 source.butcheryReceivingItem.receivedQty-source.butcheryReceivingItem.usedQty
-                | number:'1.2-2' }}{{
+                | number:'1.0-2' }}{{
                 source.butcheryReceivingItem.requiredUom.uomCode
                 }}</ion-card-subtitle
               >
@@ -314,7 +318,7 @@
             <ion-item lines="none" class="item-info">
               <ion-card-subtitle class="ion-no-padding ion-no-margin"
                 >{{ item.producedQty }}{{item.requiredUom.uomCode }} @{{
-                item.productionCost| number:'1.2-2' }}/{{
+                item.productionCost | number:'1.2-2' }}/{{
                 item.requiredUom.uomCode }}</ion-card-subtitle
               >
             </ion-item>
