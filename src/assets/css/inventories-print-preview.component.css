@@ -1,0 +1,71 @@
+/* Removes page title and date when printing the report. */
+@page { size: auto;  margin: 0mm; }
+
+* {
+  font-family: 'Lato';
+}
+
+.inventory-report {
+  padding: 20px;
+}
+
+.inventory-header {
+  /* border-top: 1px solid #ddd; */
+  border-bottom: 1px solid #ddd;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+}
+
+.inventory-detail {
+  padding: 1px;
+}
+
+.inventory-detail img {
+  float: left;
+  margin: 0 10px ;
+  width: 10px;
+  height: 10px;
+}
+
+#inventories {
+  margin-top: 50px;
+  font-size: small;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#inventories th {
+  border-bottom: 3px solid #ddd;
+  padding: 0 5px;
+}
+
+#inventories td {
+  border-bottom: 0.1px solid #ddd ;
+  padding: 0 5px;
+}
+
+.left-aligned {
+  text-align: left;
+}
+
+.centered {
+  text-align: center;
+  width: 10px;
+}
+
+.right-aligned {
+  text-align: right;
+  width: 70px;
+}
+
+.grand-total{
+  margin: -10px 20px 0 20px;
+  display: grid;
+  grid-template-columns: auto 120px;
+}
+
+.grand-total .total-cost {
+  text-align: end;
+}

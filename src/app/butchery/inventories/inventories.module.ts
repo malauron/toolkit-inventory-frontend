@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { InventoriesPageRoutingModule } from './inventories-routing.module';
 
 import { InventoriesPage } from './inventories.page';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    InventoriesPageRoutingModule
+    InventoriesPageRoutingModule,
+    NgxPrintModule,
   ],
   declarations: [InventoriesPage]
 })

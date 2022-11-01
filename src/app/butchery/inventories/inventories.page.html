@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button
-        icon="chevron-back-outline"
-        defaultHref="/tabs/options"
-      ></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/options"></ion-back-button>
     </ion-buttons>
     <ion-title>Inventory Report</ion-title>
     <ion-buttons slot="primary">
@@ -15,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" id="print">
+<ion-content class="ion-padding">
   <!-- <div class="spinner">
     <ion-spinner
       name="bubbles"
@@ -30,32 +27,19 @@
       <ion-row>
         <ion-col size-xs="12">
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="business-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="business-outline" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-text-wrap">
-              <ion-card-title mode="md"
-                >{{ warehouse.warehouseName }}</ion-card-title
-              >
+              <ion-card-title mode="md">{{ warehouse.warehouseName }}</ion-card-title>
             </ion-label>
-            <ion-button
-              #statusButton
-              (click)="onWarehouseSearch()"
-              fill="clear"
-              size="small"
-              mode="ios"
-              id="click-trigger"
-            >
+            <ion-button #statusButton (click)="onWarehouseSearch()" fill="clear" size="small" mode="ios"
+              id="click-trigger">
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
         </ion-col>
       </ion-row>
 
-      <ion-row>
+      <!-- <ion-row>
         <ion-col size-xs="12" size-sm="5" size-md="7"
           ><ion-card-subtitle class="ion-text-start"
             >ITEM DESCRIPTION</ion-card-subtitle
@@ -76,11 +60,11 @@
             >COST</ion-card-subtitle
           ></ion-col
         >
-      </ion-row>
+      </ion-row> -->
     </ion-grid>
   </ion-card>
 
-  <ion-grid>
+  <!-- <ion-grid>
     <ion-row *ngFor="let itemCost of itemCosts">
       <ion-col>
         <ion-card-subtitle>{{ itemCost.item.itemName }}</ion-card-subtitle>
@@ -95,60 +79,55 @@
         <ion-card-subtitle>{{ itemCost.cost }}</ion-card-subtitle>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
 </ion-content>
 
-<!-- <div id="print">
-  <div class="receipt-header">
-    <div class="receipt-info">************************</div>
-    <div class="receipt-info">
-      <ion-card-subtitle>RECEIVING</ion-card-subtitle>
-    </div>
-    <div class="receipt-info">************************</div>
-  </div>
+<div id="printDiv" class="navbar">
+  <button #printButton styleSheetFile="assets/css/inventories-print-preview.component.css" printSectionId="print"
+    ngxPrint class="split">
+    <img src="../../../assets/icons/printer.svg" />
+  </button>
+</div>
 
-  <div class="receipt-header">
-    <div class="receipt-info">
-      <ion-card-subtitle>{{ warehouse.warehouseName }}</ion-card-subtitle>
-    </div>
-    <div class="receipt-info">Warehouse</div>
-  </div>
+<div id="print">
 
-  <div class="receipt-header">
-    <div class="receipt-info">
-      <ion-card-subtitle>{{ vendor.vendorName }}</ion-card-subtitle>
-    </div>
-    <div class="receipt-info">Supplier</div>
-  </div>
-
-  <div class="receipt-header">
-    <div class="receipt-date">Oct 14, 2022 06:22 AM</div>
-    <div class="receipt-no">00000001</div>
-  </div>
-
-  <div class="separator"></div>
-  <div class="desc-one" *ngFor="let item of receivingItems">
-    <div class="barcode">{{ item.barcode }}</div>
-    <div class="price">{{ item.totalAmount| number:'1.2-2' }}</div>
-    <div>
-      <div>{{ item.item.itemName }}</div>
-      <div>
-        {{ item.receivedQty }}{{item.requiredUom.uomCode }} @{{ item.itemCost|
-        number:'1.2-2' }}/{{ item.requiredUom.uomCode }}
+  <div class="inventory-report">
+    <div class="inventory-header">
+      <div class="inventory-detail">
+        <!-- <img src="../../../assets/icons/calendar.svg" /> -->
+        {{ warehouse.warehouseName }} Inventory
       </div>
     </div>
+
+    <table id="inventories">
+      <thead>
+        <tr>
+          <th class="left-aligned">ITEM DESCRIPTION</th>
+          <th class="right-aligned">QUANTITY</th>
+          <th class="right-aligned">COST</th>
+          <th class="right-aligned">TOTAL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let itemCost of itemCosts">
+          <td class="left-aligned">{{ itemCost.item.itemName}}</td>
+          <td class="right-aligned">
+            <div *ngIf="itemCost.qty>0">{{ itemCost.qty | number:'1.0-3' }} {{ itemCost.item.uom.uomCode }}</div>
+          </td>
+          <td class="right-aligned">
+            <div *ngIf="itemCost.cost>0">{{ itemCost.cost | number:'1.0-3' }}</div>
+          </td>
+          <td class="right-aligned">
+            <div *ngIf="itemCost.qty>0">{{ itemCost.qty * itemCost.cost | number:'1.0-3' }}</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="grand-total">
+      <p>Grand Total: </p>
+      <p class="total-cost">{{ 100 | number:'1.2-2' }}</p>
+    </div>
   </div>
 
-  <br />
-  <div class="separator"></div>
-  <div class="separator"></div>
-  <div class="total">
-    <div class="total-desc">
-      <ion-card-subtitle>Total</ion-card-subtitle>
-    </div>
-    <div class="total-amt">
-      <ion-card-subtitle>{{ totalAmount | number:'1.2-2' }}</ion-card-subtitle>
-    </div>
-  </div>
-  <div class="company-name">A subsidiary of Eight2Eight Inc.</div>
-</div> -->
+</div>

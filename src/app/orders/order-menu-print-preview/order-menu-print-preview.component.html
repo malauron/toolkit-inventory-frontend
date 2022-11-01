@@ -1,12 +1,10 @@
 <ion-content>
   <div class="navbar">
     <button (click)="dismissModal()">&#8249;</button>
-    <button
-      styleSheetFile="assets/css/order-menu-print-preview.component.css"
-      printSectionId="print-section" ngxPrint
+    <button styleSheetFile="assets/css/order-menu-print-preview.component.css" printSectionId="print-section" ngxPrint
       class="split">
       <img src="../../../assets/icons/printer.svg" />
-  </button>
+    </button>
   </div>
 
 
@@ -48,7 +46,6 @@
         <p class="remarks">
           {{ orderMenuDto.orderMenu.menu.remarks }}
         </p>
-        <!-- <h5>Total costs: {{ totalAmt | number:'1.2-2' }}</h5> -->
       </div>
 
       <table id="ingredients">
@@ -67,7 +64,7 @@
               <strong *ngIf="ing.orderMenuIngredientId !== 0">&#10004;</strong>
             </td>
             <td>{{ ing.item.itemName }}</td>
-            <td class="right-aligned">{{ ing.requiredQty  | number:'1.0-3' }} {{ ing.requiredUom.uomCode }}</td>
+            <td class="right-aligned">{{ ing.requiredQty | number:'1.0-3' }} {{ ing.requiredUom.uomCode }}</td>
             <td class="right-aligned">{{ ing.cost*ing.baseQty | number:'1.0-4' }}/{{ ing.requiredUom.uomCode }}</td>
             <td class="right-aligned">{{ ing.cost*ing.baseQty*ing.requiredQty | number:'1.2-4' }}</td>
           </tr>

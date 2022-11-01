@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ItemCost } from 'src/app/classes/item-cost.model';
 import { Warehouse } from 'src/app/classes/warehouse.model';
@@ -11,6 +11,7 @@ import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/wa
   styleUrls: ['./inventories.page.scss'],
 })
 export class InventoriesPage implements OnInit {
+  @ViewChild('printButton') printButton: ElementRef;
 
   warehouse: Warehouse;
   itemCosts: ItemCost[] = [];
@@ -52,7 +53,8 @@ export class InventoriesPage implements OnInit {
 
 
   printPage() {
-    window.print();
+    // window.print();
+      this.printButton.nativeElement.click();
   }
 
 }

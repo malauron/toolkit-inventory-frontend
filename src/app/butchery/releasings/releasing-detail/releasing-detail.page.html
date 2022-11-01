@@ -154,37 +154,6 @@
               <ion-card-title slot="end" mode="md">{{ item.totalAmount| number:'1.2-2' }}</ion-card-title>
             </ion-item>
           </ion-card>
-
-          <!-- <ion-card class="card-item">
-            <ion-item lines="none">
-              <ion-avatar slot="start">
-                <img src="../../assets/icons/items.svg" class="icon" />
-              </ion-avatar>
-              <ion-card-subtitle class="ion-no-padding ion-no-margin">
-                {{ item.item.itemName }} - {{ item.producedQty }}{{
-                item.requiredUom.uomCode }}
-              </ion-card-subtitle>
-              <ion-card-subtitle slot="end">
-                @ {{ item.releasingCost| number:'1.2-2' }}/{{
-                item.requiredUom.uomCode }}
-              </ion-card-subtitle>
-            </ion-item>
-            <ion-item class="total-cost" lines="none">
-              <ion-label> {{ item.totalAmount| number:'1.2-2' }} </ion-label>
-              <ion-button
-                *ngIf="releasing.releasingStatus === 'Unposted'  || releasing.releasingStatus === undefined"
-                (click)="onDeleteReleasingItem(item)" class="ion-no-margin" mode="ios" slot="end" fill="clear"
-                color="medium" size="default">
-                <ion-icon name="close-circle"></ion-icon>
-              </ion-button>
-              <ion-button
-                *ngIf="releasing.releasingStatus === 'Unposted'  || releasing.releasingStatus === undefined"
-                (click)="onUpdateReleasingItem(item)" class="ion-no-padding ion-no-margin" mode="ios" fill="clear"
-                color="success" size="default" slot="end">
-                <ion-icon name="create-outline"></ion-icon>
-              </ion-button>
-            </ion-item>
-          </ion-card> -->
         </ion-col>
       </ion-row>
     </ion-grid>
