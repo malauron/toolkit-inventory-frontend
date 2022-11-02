@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable id-blacklist */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -14,6 +15,18 @@ import { AppParamsConfig } from '../Configurations/app-params.config';
 interface ResponseItems {
   _embedded: {
     items: Item[];
+  };
+  page: {
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    number: number;
+  };
+}
+
+interface ResponseItemCosts {
+  _embedded: {
+    itemCosts: ItemCost[];
   };
   page: {
     size: number;
@@ -83,6 +96,29 @@ export class ItemsService {
   getItemCosts(warehouseId: number): Observable<ItemCost> {
     this.apiUrl = `${this.config.urlV1ItemCosts}?warehouseId=${warehouseId}`;
     return this.http.get<ItemCost>(this.apiUrl);
+  }
+
+  getItemCostsByPage(
+    searchDesc?: string,
+    warehouseId?: number,
+    pageNumber?: number,
+    pageSize?: number,
+    itemName?: string): Observable<ResponseItemCosts> {
+
+    if (searchDesc === undefined) {
+      searchDesc = '';
+    }
+
+    searchDesc = String(searchDesc).replace('%','');
+    searchDesc = String(searchDesc).replace('^','');
+    searchDesc = String(searchDesc).replace('[','');
+    searchDesc = String(searchDesc).replace(']','');
+    searchDesc = String(searchDesc).replace('|','');
+    searchDesc = String(searchDesc).replace('\\','');
+
+    this.apiUrl = `${this.config.urlItemCostSearchByWarehouseIdAndItemName}?projection=itemCostView&` +
+                    `warehouseId=${warehouseId}&itemName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+    return this.http.get<ResponseItemCosts>(this.apiUrl);
   }
 
   postItem(itemDto: ItemDto): Observable<Item> {

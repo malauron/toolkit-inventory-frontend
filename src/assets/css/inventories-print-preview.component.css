@@ -30,10 +30,16 @@
 }
 
 #inventories {
+  counter-reset: serial-number; /* Set the serial number counter to 0 */
   margin-top: 50px;
   font-size: small;
   border-collapse: collapse;
   width: 100%;
+}
+
+#inventories td:first-child:before {
+  counter-increment: serial-number; /* Increment the serial number counter */
+  content: counter(serial-number); /* Display the counter */
 }
 
 #inventories th {
@@ -44,6 +50,10 @@
 #inventories td {
   border-bottom: 0.1px solid #ddd ;
   padding: 0 5px;
+}
+
+.auto-number {
+  width: 20px;
 }
 
 .left-aligned {
@@ -57,11 +67,11 @@
 
 .right-aligned {
   text-align: right;
-  width: 70px;
+  width: 90px;
 }
 
 .grand-total{
-  margin: -10px 20px 0 20px;
+  margin: -10px 5px 0 5px;
   display: grid;
   grid-template-columns: auto 120px;
 }

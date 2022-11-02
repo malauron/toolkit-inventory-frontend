@@ -9,6 +9,8 @@ export class AppParamsConfig {
   urlItemSearch: any;
   urlItemUoms: any;
   urlItemUomSearch: any;
+  urlItemCosts: any;
+  urlItemCostSearchByWarehouseIdAndItemName: any;
   urlCustomers: any;
   urlCustomerSearch: any;
   urlCustomerFindByNameOrId: any;
@@ -86,6 +88,8 @@ export class AppParamsConfig {
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;
     this.urlItemUoms = `${this.url}/itemUoms`;
     this.urlItemUomSearch = `${this.urlItemUoms}/search/findByItemId`;
+    this.urlItemCosts = `${this.url}/itemCosts`;
+    this.urlItemCostSearchByWarehouseIdAndItemName = `${this.urlItemCosts}/search/findByWarehouseIdAndItemName`;
     this.urlCustomers = `${this.url}/customers`;
     this.urlCustomerSearch = `${this.urlCustomers}/search/findByCustomerNameContainingOrderByCustomerName`;
     this.urlCustomerFindByNameOrId = `${this.urlCustomers}/search/findByNameOrId`;
