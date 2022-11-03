@@ -85,6 +85,18 @@ ion-popover {
   --backdrop-opacity: 0;
 }
 
+.production-history {
+  padding: 0px 30px;
+
+  .production-items {
+    padding-right: 150px;
+  }
+
+  .production-total {
+    padding-bottom: 30px;
+  }
+}
+
 #print {
   /* hide the printing component from @media screen */
   display: none;

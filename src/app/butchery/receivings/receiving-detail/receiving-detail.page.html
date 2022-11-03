@@ -297,8 +297,7 @@
                 <ion-icon name="create-outline"></ion-icon>
               </ion-button>
               <ion-card-subtitle>{{item.barcode}}</ion-card-subtitle
-              ><ion-card-subtitle
-                *ngIf="receiving.butcheryReceivingId>0"
+              ><ion-card-subtitle *ngIf="receiving.butcheryReceivingId>0"
                 >-{{item.butcheryReceivingItemId.toString().padStart(8,
                 "0")}}</ion-card-subtitle
               >
@@ -311,13 +310,13 @@
             </ion-item>
             <ion-item lines="none" class="item-info">
               <ion-card-subtitle *ngIf="item.documentedQty>0"
-                >({{ item.documentedQty | number:'1.0-2' }}{{ item.requiredUom.uomCode
-                }})</ion-card-subtitle
+                >({{ item.documentedQty | number:'1.0-2' }}{{
+                item.requiredUom.uomCode }})</ion-card-subtitle
               >
               <ion-card-subtitle class="ion-no-padding ion-no-margin"
-                >{{ item.receivedQty | number:'1.0-2' }}{{ item.requiredUom.uomCode }}@{{
-                item.itemCost | number:'1.0-2' }}/{{ item.requiredUom.uomCode
-                }}</ion-card-subtitle
+                >{{ item.receivedQty | number:'1.0-2' }}{{
+                item.requiredUom.uomCode }}@{{ item.itemCost | number:'1.0-2'
+                }}/{{ item.requiredUom.uomCode }}</ion-card-subtitle
               >
             </ion-item>
             <ion-item lines="none" class="item-info">
@@ -332,6 +331,75 @@
               >
             </ion-item>
           </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-card class="card-holder" *ngIf="receiving.receivingStatus === 'Posted'">
+    <div class="card-top"></div>
+    <ion-card-header class="ion-no-padding">
+      <ion-item lines="none">
+        <ion-label>Production History</ion-label>
+      </ion-item>
+    </ion-card-header>
+    <div class="separator"></div>
+
+    <ion-grid class="production-history" *ngFor="let production of productions">
+      <ion-row>
+        <ion-col>
+          <ion-card-subtitle color="primary">
+            Production ID:
+            {{ production.butcheryProductionId.toString().padStart(8, "0") }} -
+            {{ production.dateCreated | date:'MMM dd, yyyy hh:mm a' }}
+          </ion-card-subtitle>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let source of production.butcheryProductionSources">
+        <ion-col>
+          <ion-card-subtitle color="primary"
+            >{{ source.butcheryReceivingItem.item.itemName }} -
+            {{ source.butcheryReceivingItem.butcheryReceivingItemId.toString().padStart(8, "0") }}
+          </ion-card-subtitle>
+        </ion-col>
+        <ion-col
+          ><ion-card-subtitle class="ion-text-end" color="primary">
+            {{ source.requiredQty | number:'1.0-2' }} {{
+            source.butcheryReceivingItem.item.uom.uomCode }}
+          </ion-card-subtitle></ion-col
+        >
+      </ion-row>
+      <ion-row
+        class="production-items"
+        *ngFor="let item of production.butcheryProductionItems"
+      >
+        <ion-col>
+          <ion-card-subtitle>
+            {{ item.item.itemName }}
+          </ion-card-subtitle></ion-col
+        >
+        <ion-col>
+          <ion-card-subtitle class="ion-text-end">
+            {{ item.producedQty | number:'1.0-2' }} {{ item.requiredUom.uomCode
+            }}
+          </ion-card-subtitle></ion-col
+        >
+      </ion-row>
+      <ion-row class="production-total">
+        <ion-col>
+          <ion-card-title>
+            Total
+          </ion-card-title>
+        </ion-col>
+        <ion-col>
+          <ion-card-title class="ion-text-end">
+            {{ totalProductionItemQty | number:'1.0-2'  }}
+          </ion-card-title>
+        </ion-col>
+        <ion-col>
+          <ion-card-title class="ion-text-end">
+            {{ totalProductionSourceQty | number:'1.0-2'  }}
+          </ion-card-title>
         </ion-col>
       </ion-row>
     </ion-grid>

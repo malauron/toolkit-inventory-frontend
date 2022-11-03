@@ -24,6 +24,9 @@ import { ReceivedItemComponent } from '../received-item/received-item.component'
 import { ReceivedItemDetail } from '../received-item/received-item.model';
 import { ReceivedItemService } from '../received-item/received-item.service';
 import { filterString } from '../../utils/utils';
+import { ButcheryProductionsService } from '../../services/butchery-productions.service';
+import { ButcheryProduction } from '../../classes/butchery-production.model';
+import { ButcheryProductionSource } from '../../classes/butchery-production-source.model';
 
 @Component({
   selector: 'app-receiving-detail',
@@ -40,6 +43,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
   receiving: ButcheryReceiving;
   warehouse: Warehouse;
   vendor: Vendor;
+  productions: ButcheryProduction[] = [];
   receivingItems: ButcheryReceivingItem[] = [];
   receivingDetailsConfig: ReceivingDetailsConfig;
 
@@ -49,6 +53,8 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
   modalOpen = false;
 
   totalAmount = 0;
+  totalProductionItemQty = 0;
+  totalProductionSourceQty = 0;
 
   constructor(
     private itemsService: ItemsService,
@@ -56,6 +62,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private receivingsService: ButcheryReceivingsService,
+    private productionsService: ButcheryProductionsService,
     private modalSearch: ModalController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController
@@ -101,7 +108,52 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             this.vendor = resData.vendor;
             this.receivingItems = resData.butcheryReceivingItems;
             this.totalAmount = this.receiving.totalAmount;
-            this.isFetching = false;
+
+            if (this.receiving.receivingStatus === 'Posted') {
+              this.productionsService
+                .getProductionSources(resData.butcheryReceivingId)
+                .subscribe((res) => {
+                  this.productions = [];
+                  for (const key in res.butcheryProductionSourceShortViews) {
+                    if (
+                      res.butcheryProductionSourceShortViews.hasOwnProperty(key)
+                    ) {
+                      this.productions = this.productions.concat(
+                        res.butcheryProductionSourceShortViews[key]
+                          .butcheryProduction
+                      );
+                    }
+                  }
+
+                  for (const key in this.productions) {
+                    if (this.productions.hasOwnProperty(key)) {
+                      const prodSrcs =
+                        this.productions[key].butcheryProductionSources;
+
+                      for (const srcKey in prodSrcs) {
+                        if (prodSrcs.hasOwnProperty(srcKey)) {
+                          this.totalProductionSourceQty +=
+                            prodSrcs[srcKey].requiredQty;
+                        }
+                      }
+
+                      const prodItms =
+                        this.productions[key].butcheryProductionItems;
+
+                      for (const itmKey in prodItms) {
+                        if (prodItms.hasOwnProperty(itmKey)) {
+                          this.totalProductionItemQty +=
+                            prodItms[itmKey].producedQty;
+                        }
+                      }
+                    }
+                  }
+
+                  console.log(this.totalProductionItemQty);
+
+                  this.isFetching = false;
+                });
+            }
           },
           (err) => {
             this.navCtrl.navigateBack('/tabs/receivings');
@@ -118,8 +170,8 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     if (event && event.key === 'Enter') {
       const fullBarcode = filterString(this.itemSearchBar.value);
 
-      if (fullBarcode.length >= 1 ) {
-          this.itemsService.getItemByItemCode(fullBarcode).subscribe((res) => {
+      if (fullBarcode.length >= 1) {
+        this.itemsService.getItemByItemCode(fullBarcode).subscribe((res) => {
           if (res.item) {
             this.addReceivingItem(res, fullBarcode, 1);
           } else {
@@ -353,7 +405,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
   }
 
   onUpdateRefCode() {
-
     if (this.isUploading) {
       return;
     }
@@ -369,29 +420,23 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
 
     if (this.receiving.butcheryReceivingId) {
       const receivingDto = new ButcheryReceivingDto();
-      receivingDto.butcheryReceivingId =
-        this.receiving.butcheryReceivingId;
+      receivingDto.butcheryReceivingId = this.receiving.butcheryReceivingId;
       receivingDto.referenceCode = refCode;
       this.dataHaveChanged = true;
 
-      this.receivingsService
-        .putReceiving(receivingDto)
-        .subscribe((res) => {
-          this.receiving.receivingStatus = res.receivingStatus;
-          if (this.receiving.receivingStatus === 'Unposted') {
-            this.messageBox(
-              `Reference code has been updated successfully.`
-            );
-          } else {
-            this.messageBox(
-              'Unable to update the receiving since its status has been tagged as ' +
-                this.receiving.receivingStatus
-            );
-          }
-          this.isUploading = false;
-        });
+      this.receivingsService.putReceiving(receivingDto).subscribe((res) => {
+        this.receiving.receivingStatus = res.receivingStatus;
+        if (this.receiving.receivingStatus === 'Unposted') {
+          this.messageBox(`Reference code has been updated successfully.`);
+        } else {
+          this.messageBox(
+            'Unable to update the receiving since its status has been tagged as ' +
+              this.receiving.receivingStatus
+          );
+        }
+        this.isUploading = false;
+      });
     }
-
   }
 
   onSaveReceiving() {
@@ -489,9 +534,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             receivedItem.isAvailable = item.isAvailable;
             receivedItem.totalAmount = item.receivedQty * item.itemCost;
 
-
             if (this.receiving.butcheryReceivingId) {
-              receivedItem.butcheryReceivingItemId = pItem.butcheryReceivingItemId;
+              receivedItem.butcheryReceivingItemId =
+                pItem.butcheryReceivingItemId;
               receivedItem.butcheryReceiving = this.receiving;
               this.receivingsService
                 .putReceivingItem(receivedItem)

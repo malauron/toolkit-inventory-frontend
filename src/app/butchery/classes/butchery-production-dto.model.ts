@@ -1,6 +1,7 @@
 import { Warehouse } from 'src/app/classes/warehouse.model';
 import { ButcheryProductionItem } from './butchery-production-item.model';
 import { ButcheryProductionSource } from './butchery-production-source.model';
+import { ButcheryProduction } from './butchery-production.model';
 
 export class ButcheryProductionDto {
   constructor(
@@ -13,6 +14,7 @@ export class ButcheryProductionDto {
     public butcheryProductionSource?: ButcheryProductionSource,
     public butcheryProductionSourceViews?: ButcheryProductionSource[],
     public butcheryProductionSourceView?: ButcheryProductionSource,
+    public butcheryProductionSourceShortViews?: ButcheryProductionSource[],
     public totalAmount?: number,
     public dateCreated?: string,
   ) {}
