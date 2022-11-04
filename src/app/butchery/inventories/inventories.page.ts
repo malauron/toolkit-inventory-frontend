@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { IonSearchbar, ModalController } from '@ionic/angular';
+import { IonSearchbar, ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ItemCost } from 'src/app/classes/item-cost.model';
@@ -45,7 +45,8 @@ export class InventoriesPage implements OnInit, OnDestroy {
   constructor(
     private modalSearch: ModalController,
     private itemsService: ItemsService,
-    private config: AppParamsConfig
+    private config: AppParamsConfig,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {
@@ -89,17 +90,19 @@ export class InventoriesPage implements OnInit, OnDestroy {
         .then((resultData) => {
           if (resultData.role === 'warehouse') {
             this.warehouse = resultData.data;
-            this.itemsService
-              .getItemCosts(this.warehouse.warehouseId)
-              .subscribe((res) => {
-                this.itemCosts = [];
-                this.itemCosts = this.itemCosts.concat(res);
+            // this.itemsService
+            //   .getItemCosts(this.warehouse.warehouseId)
+            //   .subscribe((res) => {
+            //     this.itemCosts = [];
+            //     this.itemCosts = this.itemCosts.concat(res);
 
-                this.totalAmt = 0;
-                this.itemCosts.forEach((itemCost) => {
-                  this.totalAmt += itemCost.qty * itemCost.cost;
-                });
-              });
+            //     this.totalAmt = 0;
+            //     this.itemCosts.forEach((itemCost) => {
+            //       this.totalAmt += itemCost.qty * itemCost.cost;
+            //     });
+            //   });
+
+            this.loadItemCosts(this.warehouse.warehouseId);
 
             this.infiniteScroll.disabled = false;
             this.itemCostsByPage = [];
@@ -116,6 +119,22 @@ export class InventoriesPage implements OnInit, OnDestroy {
           this.modalOpen = false;
         });
     }
+  }
+
+  loadItemCosts(warehouseId: number, print?: boolean) {
+    this.itemsService.getItemCosts(warehouseId).subscribe((res) => {
+      this.itemCosts = [];
+      this.itemCosts = this.itemCosts.concat(res);
+
+      this.totalAmt = 0;
+      this.itemCosts.forEach((itemCost) => {
+        this.totalAmt += itemCost.qty * itemCost.cost;
+      });
+
+      if (print) {
+        this.printButton.nativeElement.click();
+      }
+    });
   }
 
   getItemCostsByPage(
@@ -160,7 +179,21 @@ export class InventoriesPage implements OnInit, OnDestroy {
 
   printPage() {
     // window.print();
-    this.printButton.nativeElement.click();
+    if (this.warehouse.warehouseId) {
+      this.loadItemCosts(this.warehouse.warehouseId, true);
+    } else {
+      this.messageBox('Please select a warehouse.');
+    }
+  }
+
+  async messageBox(messageDescription: string) {
+    const toast = await this.toastController.create({
+      color: 'dark',
+      duration: 2000,
+      position: 'top',
+      message: messageDescription,
+    });
+    await toast.present();
   }
 
   ngOnDestroy(): void {

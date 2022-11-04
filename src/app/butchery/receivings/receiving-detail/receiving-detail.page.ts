@@ -149,10 +149,11 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
                     }
                   }
 
-                  console.log(this.totalProductionItemQty);
-
                   this.isFetching = false;
                 });
+            } else {
+
+              this.isFetching = false;
             }
           },
           (err) => {
@@ -568,7 +569,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     pItem: ButcheryReceivingItem,
     receivingItem: ButcheryReceivingItem
   ) {
-    console.log('exe');
     for (const key in this.receivingItems) {
       if (pItem === this.receivingItems[key]) {
         this.receivingItems[key].item = receivingItem.item;
