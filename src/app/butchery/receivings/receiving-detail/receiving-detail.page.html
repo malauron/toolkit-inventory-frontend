@@ -1,37 +1,23 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button
-        icon="chevron-back-outline"
-        defaultHref="/tabs/receivings"
-      ></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/receivings"></ion-back-button>
     </ion-buttons>
     <ion-title>Receiving Details</ion-title>
     <ion-buttons slot="primary">
-      <ion-button
-        (click)="onSaveReceiving()"
-        *ngIf="!receiving.butcheryReceivingId"
-        [disabled]="isUploading"
-      >
+      <ion-button (click)="onSaveReceiving()" *ngIf="!receiving.butcheryReceivingId" [disabled]="isUploading">
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button
-        (click)="printPage()"
-        *ngIf="receiving.receivingStatus === 'Posted'"
-      >
+      <!-- <ion-button (click)="printPage()" *ngIf="receiving.receivingStatus === 'Posted'">
         <ion-icon name="print-outline" slot="icon-only"></ion-icon>
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <div class="spinner">
-    <ion-spinner
-      name="bubbles"
-      color="primary"
-      *ngIf="isFetching"
-    ></ion-spinner>
+    <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
   </div>
 
   <ion-card *ngIf="!isFetching" class="card-holder">
@@ -40,75 +26,38 @@
       <ion-row>
         <ion-col size-xs="12" size-xl="4" push-xl="8">
           <ion-item lines="none" *ngIf="receiving.butcheryReceivingId">
-            <ion-icon
-              class="contactIcon"
-              name="calendar-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="calendar-outline" color="primary" slot="start"></ion-icon>
             <ion-label>
-              <ion-label class="ion-text-wrap"
-                >{{ receiving.dateCreated | date:'MMM dd, yyyy hh:mm a'
-                }}</ion-label
-              >
+              <ion-label class="ion-text-wrap">{{ receiving.dateCreated | date:'MMM dd, yyyy hh:mm a'
+                }}</ion-label>
             </ion-label>
           </ion-item>
 
           <ion-item lines="none" *ngIf="receiving.butcheryReceivingId">
-            <ion-icon
-              class="cartIcon"
-              name="log-out-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label
-              >{{ receiving.butcheryReceivingId.toString().padStart(8, "0")
-              }}</ion-label
-            >
+            <ion-icon class="cartIcon" name="log-out-outline" color="primary" slot="start"></ion-icon>
+            <ion-label>{{ receiving.butcheryReceivingId.toString().padStart(8, "0")
+              }}</ion-label>
 
             <!-- Button to change the status of the receiving -->
-            <ion-button
-              #statusButton
-              *ngIf="receivingDetailsConfig.receivingStatusButton && !isUploading"
-              fill="clear"
-              size="small"
-              mode="ios"
-              (click)="onShowPopOver($event)"
-            >
-              <ion-badge [color]="receivingDetailsConfig.receivingStatusColor"
-                >{{receiving.receivingStatus}}
+            <ion-button #statusButton *ngIf="receivingDetailsConfig.receivingStatusButton && !isUploading" fill="clear"
+              size="small" mode="ios" (click)="onShowPopOver($event)">
+              <ion-badge [color]="receivingDetailsConfig.receivingStatusColor">{{receiving.receivingStatus}}
               </ion-badge>
             </ion-button>
 
-            <ion-popover
-              #statusPopover
-              *ngIf="receivingDetailsConfig.receivingStatusPopover"
-              triggerAction="click"
-              dismissOnSelect="true"
-              [isOpen]="statusPopoverOpen"
-              (didDismiss)="statusPopoverOpen = false"
-            >
+            <ion-popover #statusPopover *ngIf="receivingDetailsConfig.receivingStatusPopover" triggerAction="click"
+              dismissOnSelect="true" [isOpen]="statusPopoverOpen" (didDismiss)="statusPopoverOpen = false">
               <ng-template>
                 <ion-content>
                   <ion-list>
-                    <ion-item
-                      #postedStatus
-                      *ngIf="receivingDetailsConfig.postedStatus"
-                      class="ion-text-center ion-no-padding ion-no-margin"
-                      lines="full"
-                      [button]="true"
-                      (click)="onUpdateStatus('Posted')"
-                    >
+                    <ion-item #postedStatus *ngIf="receivingDetailsConfig.postedStatus"
+                      class="ion-text-center ion-no-padding ion-no-margin" lines="full" [button]="true"
+                      (click)="onUpdateStatus('Posted')">
                       <ion-label>Post</ion-label>
                     </ion-item>
-                    <ion-item
-                      #cancelledStatus
-                      *ngIf="receivingDetailsConfig.cancelledStatus"
-                      class="ion-text-center ion-no-padding ion-no-margin"
-                      lines="none"
-                      [button]="true"
-                      (click)="onUpdateStatus('Cancelled')"
-                    >
+                    <ion-item #cancelledStatus *ngIf="receivingDetailsConfig.cancelledStatus"
+                      class="ion-text-center ion-no-padding ion-no-margin" lines="none" [button]="true"
+                      (click)="onUpdateStatus('Cancelled')">
                       <ion-label color="primary">Cancel</ion-label>
                     </ion-item>
                   </ion-list>
@@ -118,11 +67,8 @@
             <!-- **************************************** -->
 
             <!-- Badge that indicates the status of the receiving -->
-            <ion-badge
-              #statusBadge
-              [color]="receivingDetailsConfig.receivingStatusColor"
-              *ngIf="receivingDetailsConfig.receivingStatusBadge"
-            >
+            <ion-badge #statusBadge [color]="receivingDetailsConfig.receivingStatusColor"
+              *ngIf="receivingDetailsConfig.receivingStatusBadge">
               {{receiving.receivingStatus}}
             </ion-badge>
             <!-- *************************************** -->
@@ -131,94 +77,45 @@
 
         <ion-col size-xs="12" size-xl="7" pull-xl="4">
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="business-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="business-outline" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-text-wrap">
-              <ion-card-title mode="md"
-                >{{ warehouse.warehouseName }}</ion-card-title
-              >
+              <ion-card-title mode="md">{{ warehouse.warehouseName }}</ion-card-title>
             </ion-label>
-            <ion-button
-              #statusButton
+            <ion-button #statusButton
               *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
-              (click)="onWarehouseSearch()"
-              fill="clear"
-              size="small"
-              mode="ios"
-              id="click-trigger"
-            >
+              (click)="onWarehouseSearch()" fill="clear" size="small" mode="ios" id="click-trigger">
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="storefront-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="storefront-outline" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-text-wrap">
               <ion-card-title>{{ vendor.vendorName }}</ion-card-title>
               <h2>{{ vendor.contactNo }}</h2>
               <h2>{{ vendor.address }}</h2>
             </ion-label>
-            <ion-button
-              *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
-              (click)="onVendorSearch()"
-              fill="clear"
-              size="small"
-              mode="ios"
-              id="click-trigger"
-            >
+            <ion-button *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
+              (click)="onVendorSearch()" fill="clear" size="small" mode="ios" id="click-trigger">
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="document-attach-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-input
-              placeholder="Reference Code"
-              maxlength="20"
+            <ion-icon class="contactIcon" name="document-attach-outline" color="primary" slot="start"></ion-icon>
+            <ion-input placeholder="Reference Code" maxlength="20"
               [readonly]="receiving.receivingStatus !== 'Unposted' && receiving.receivingStatus !== undefined"
-              #referenceCodeInput
-              [value]="receiving.referenceCode"
-            ></ion-input>
-            <ion-button
-              #statusButton
+              #referenceCodeInput [value]="receiving.referenceCode"></ion-input>
+            <ion-button #statusButton
               *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
-              (click)="onUpdateRefCode()"
-              fill="clear"
-              size="small"
-              mode="ios"
-              id="click-trigger"
-            >
-              <ion-icon
-                name="checkmark-circle-outline"
-                *ngIf="receiving.receivingStatus === 'Unposted'"
-              ></ion-icon>
+              (click)="onUpdateRefCode()" fill="clear" size="small" mode="ios" id="click-trigger">
+              <ion-icon name="checkmark-circle-outline" *ngIf="receiving.receivingStatus === 'Unposted'"></ion-icon>
             </ion-button>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="calculator-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-card-title mode="md"
-              >{{ totalAmount | number:'1.2-2' }}</ion-card-title
-            >
+            <ion-icon class="contactIcon" name="calculator-outline" color="primary" slot="start"></ion-icon>
+            <ion-card-title mode="md">{{ totalAmount | number:'1.2-2' }}</ion-card-title>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -227,108 +124,65 @@
 
   <ion-card class="card-holder">
     <div class="card-top"></div>
-    <ion-card-header
-      class="ion-no-padding"
-      *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
-    >
-      <ion-item lines="none">
-        <ion-searchbar
-          searchIcon="barcode-outline"
-          placeholder="Barcode"
-          (keypress)="onGetItemByItemCode($event)"
-          #itemSearchBar
-        ></ion-searchbar>
-        <ion-button
-          class="ion-no-padding ion-no-margin"
-          (click)="onManuallyAddReceivedItem()"
-          slot="end"
-          mode="ios"
-          fill="clear"
-          size="large"
-          color="success"
-        >
+    <ion-card-header class="ion-no-padding">
+      <ion-item lines="none"
+        *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined">
+        <ion-searchbar searchIcon="barcode-outline" placeholder="Barcode" (keypress)="onGetItemByItemCode($event)"
+          #itemSearchBar></ion-searchbar>
+        <ion-button class="ion-no-padding ion-no-margin" (click)="onManuallyAddReceivedItem()" slot="end" mode="ios"
+          fill="clear" size="large" color="success">
           <ion-icon name="add"></ion-icon>
         </ion-button>
       </ion-item>
+      <ion-item lines="none" *ngIf="receiving.receivingStatus === 'Posted'">
+        <ion-label>Received Items</ion-label>
+      </ion-item>
+      <!-- </ion-card-header>
+    <ion-card-header class="ion-no-padding"> -->
+      <!-- <ion-item lines="none">
+        <ion-label>Production History</ion-label>
+      </ion-item> -->
     </ion-card-header>
-    <div
-      class="separator"
-      *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
-    ></div>
+    <div class="separator"></div>
 
     <ion-grid>
       <ion-row>
-        <ion-col
-          size-xs="12"
-          size-md="6"
-          size-lg="4"
-          *ngFor="let item of receivingItems"
-        >
+        <ion-col size-xs="12" size-md="6" size-lg="4" *ngFor="let item of receivingItems">
           <ion-card class="card-item">
             <ion-item lines="none" class="itme-info">
-              <ion-icon
-                class="item-icon"
-                name="barcode-outline"
-                color="primary"
-                slot="start"
-              ></ion-icon>
-              <ion-button
-                *ngIf="receiving.receivingStatus === 'Unposted'  || receiving.receivingStatus === undefined"
-                (click)="onDeleteReceivingItem(item)"
-                class="ion-no-margin"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-icon class="item-icon" name="barcode-outline" color="primary" slot="start"></ion-icon>
+              <ion-button *ngIf="receiving.receivingStatus === 'Unposted'  || receiving.receivingStatus === undefined"
+                (click)="onDeleteReceivingItem(item)" class="ion-no-margin" mode="ios" slot="end" fill="clear"
+                color="medium" size="default">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
-              <ion-button
-                *ngIf="receiving.receivingStatus === 'Unposted'  || receiving.receivingStatus === undefined"
-                (click)="onUpdateReceivedItem(item)"
-                class="ion-no-padding ion-no-margin"
-                mode="ios"
-                fill="clear"
-                color="success"
-                size="default"
-                slot="end"
-              >
+              <ion-button *ngIf="receiving.receivingStatus === 'Unposted'  || receiving.receivingStatus === undefined"
+                (click)="onUpdateReceivedItem(item)" class="ion-no-padding ion-no-margin" mode="ios" fill="clear"
+                color="success" size="default" slot="end">
                 <ion-icon name="create-outline"></ion-icon>
               </ion-button>
-              <ion-card-subtitle>{{item.barcode}}</ion-card-subtitle
-              ><ion-card-subtitle *ngIf="receiving.butcheryReceivingId>0"
-                >-{{item.butcheryReceivingItemId.toString().padStart(8,
-                "0")}}</ion-card-subtitle
-              >
+              <ion-card-subtitle>{{item.barcode}}</ion-card-subtitle>
+              <ion-card-subtitle *ngIf="receiving.butcheryReceivingId>0">
+                -{{item.butcheryReceivingItemId.toString().padStart(8,
+                "0")}}</ion-card-subtitle>
             </ion-item>
 
             <ion-item lines="none" class="item-info">
-              <ion-card-title mode="md" class="ion-no-padding ion-no-margin"
-                >{{ item.item.itemName }}</ion-card-title
-              >
+              <ion-card-title mode="md" class="ion-no-padding ion-no-margin">{{ item.item.itemName }}</ion-card-title>
             </ion-item>
             <ion-item lines="none" class="item-info">
-              <ion-card-subtitle *ngIf="item.documentedQty>0"
-                >({{ item.documentedQty | number:'1.0-2' }}{{
-                item.requiredUom.uomCode }})</ion-card-subtitle
-              >
-              <ion-card-subtitle class="ion-no-padding ion-no-margin"
-                >{{ item.receivedQty | number:'1.0-2' }}{{
+              <ion-card-subtitle *ngIf="item.documentedQty>0">({{ item.documentedQty | number:'1.0-2' }}{{
+                item.requiredUom.uomCode }})</ion-card-subtitle>
+              <ion-card-subtitle class="ion-no-padding ion-no-margin">{{ item.receivedQty | number:'1.0-2' }}{{
                 item.requiredUom.uomCode }}@{{ item.itemCost | number:'1.0-2'
-                }}/{{ item.requiredUom.uomCode }}</ion-card-subtitle
-              >
+                }}/{{ item.requiredUom.uomCode }}</ion-card-subtitle>
             </ion-item>
             <ion-item lines="none" class="item-info">
-              <ion-card-subtitle class="ion-no-padding ion-no-margin"
-                >{{ item.remarks }}</ion-card-subtitle
-              >
+              <ion-card-subtitle class="ion-no-padding ion-no-margin">{{ item.remarks }}</ion-card-subtitle>
             </ion-item>
 
             <ion-item lines="none" class="card-footer">
-              <ion-card-title slot="end" mode="md"
-                >{{ item.totalAmount| number:'1.2-2' }}</ion-card-title
-              >
+              <ion-card-title slot="end" mode="md">{{ item.totalAmount| number:'1.2-2' }}</ion-card-title>
             </ion-item>
           </ion-card>
         </ion-col>
@@ -336,7 +190,7 @@
     </ion-grid>
   </ion-card>
 
-  <ion-card class="card-holder" *ngIf="receiving.receivingStatus === 'Posted'">
+  <ion-card class="card-holder" *ngIf="receiving.receivingStatus === 'Posted' && (productions.length>0)">
     <div class="card-top"></div>
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
@@ -345,60 +199,76 @@
     </ion-card-header>
     <div class="separator"></div>
 
+    <ion-grid class="production-history">
+      <ion-row class="ion-align-items-center">
+        <ion-col size-xs="4" size-sm="6" size-md="8">
+          <ion-card-subtitle>Production ID | Date Created</ion-card-subtitle>
+          <ion-card-subtitle>Item Description</ion-card-subtitle>
+        </ion-col>
+        <ion-col size-xs="4" size-sm="3" size-md="2">
+          <ion-card-subtitle class="ion-text-end">Produced</ion-card-subtitle>
+        </ion-col>
+        <ion-col size-xs="4" size-sm="3" size-md="2">
+          <ion-card-subtitle class="ion-text-end">Required</ion-card-subtitle>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="separator"></div>
+
     <ion-grid class="production-history" *ngFor="let production of productions">
       <ion-row>
-        <ion-col>
+        <ion-col size-xs="4" size-sm="6" size-md="8">
           <ion-card-subtitle color="primary">
-            Production ID:
-            {{ production.butcheryProductionId.toString().padStart(8, "0") }} -
+            {{ production.butcheryProductionId.toString().padStart(8, "0") }} |
             {{ production.dateCreated | date:'MMM dd, yyyy hh:mm a' }}
           </ion-card-subtitle>
         </ion-col>
       </ion-row>
       <ion-row *ngFor="let source of production.butcheryProductionSources">
         <ion-col>
-          <ion-card-subtitle color="primary"
-            >{{ source.butcheryReceivingItem.item.itemName }} -
+          <ion-card-subtitle color="primary">{{ source.butcheryReceivingItem.item.itemName }} -
             {{ source.butcheryReceivingItem.butcheryReceivingItemId.toString().padStart(8, "0") }}
           </ion-card-subtitle>
         </ion-col>
-        <ion-col
-          ><ion-card-subtitle class="ion-text-end" color="primary">
+        <ion-col size-xs="4" size-sm="3" size-md="2">
+          <ion-card-subtitle class="ion-text-end" color="primary">
             {{ source.requiredQty | number:'1.0-2' }} {{
             source.butcheryReceivingItem.item.uom.uomCode }}
-          </ion-card-subtitle></ion-col
-        >
+          </ion-card-subtitle>
+        </ion-col>
       </ion-row>
-      <ion-row
-        class="production-items"
-        *ngFor="let item of production.butcheryProductionItems"
-      >
-        <ion-col>
+      <ion-row class="production-items" *ngFor="let item of production.butcheryProductionItems">
+        <ion-col size-xs="4" size-sm="6" size-md="8">
           <ion-card-subtitle>
             {{ item.item.itemName }}
-          </ion-card-subtitle></ion-col
-        >
-        <ion-col>
+          </ion-card-subtitle>
+        </ion-col>
+        <ion-col size-xs="4" size-sm="3" size-md="2">
           <ion-card-subtitle class="ion-text-end">
             {{ item.producedQty | number:'1.0-2' }} {{ item.requiredUom.uomCode
             }}
-          </ion-card-subtitle></ion-col
-        >
+          </ion-card-subtitle>
+        </ion-col>
+        <ion-col size-xs="4" size-sm="3" size-md="2"></ion-col>
       </ion-row>
+    </ion-grid>
+
+    <div class="separator"></div>
+    <ion-grid class="production-history">
       <ion-row class="production-total">
-        <ion-col>
+        <ion-col size-xs="4" size-sm="6" size-md="8">
           <ion-card-title>
             Total
           </ion-card-title>
         </ion-col>
-        <ion-col>
+        <ion-col size-xs="4" size-sm="3" size-md="2">
           <ion-card-title class="ion-text-end">
-            {{ totalProductionItemQty | number:'1.0-2'  }}
+            {{ totalProductionItemQty | number:'1.0-2' }}
           </ion-card-title>
         </ion-col>
-        <ion-col>
+        <ion-col size-xs="4" size-sm="3" size-md="2">
           <ion-card-title class="ion-text-end">
-            {{ totalProductionSourceQty | number:'1.0-2'  }}
+            {{ totalProductionSourceQty | number:'1.0-2' }}
           </ion-card-title>
         </ion-col>
       </ion-row>
