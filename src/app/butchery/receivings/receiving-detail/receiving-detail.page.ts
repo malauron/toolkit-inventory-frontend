@@ -186,23 +186,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
   }
 
   addReceivingItem(itemDto: ItemDto, barcode = '', itemQty = 0) {
-    // const receivingItem = new ButcheryReceivingItem();
-
-    // receivingItem.item = itemDto.item;
-    // receivingItem.barcode = barcode;
-    // receivingItem.itemClass = itemDto.item.itemClass;
-    // receivingItem.baseUom = itemDto.item.uom;
-    // receivingItem.baseQty = 1;
-    // receivingItem.requiredUom = itemDto.item.uom;
-    // receivingItem.receivedQty = itemQty;
-    // receivingItem.itemCost = 0;
-    // receivingItem.documentedQty = 0;
-    // receivingItem.remarks = 0;
-    // receivingItem.totalAmount = 0;
-
-    // if (this.receiving.butcheryReceivingId) {
-    //   receivingItem.butcheryReceiving = this.receiving;
-    // }
 
     const receivedItemDetail = new ReceivedItemDetail();
 

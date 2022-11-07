@@ -89,18 +89,8 @@ export class InventoriesPage implements OnInit, OnDestroy {
         })
         .then((resultData) => {
           if (resultData.role === 'warehouse') {
+            this.isFetching = true;
             this.warehouse = resultData.data;
-            // this.itemsService
-            //   .getItemCosts(this.warehouse.warehouseId)
-            //   .subscribe((res) => {
-            //     this.itemCosts = [];
-            //     this.itemCosts = this.itemCosts.concat(res);
-
-            //     this.totalAmt = 0;
-            //     this.itemCosts.forEach((itemCost) => {
-            //       this.totalAmt += itemCost.qty * itemCost.cost;
-            //     });
-            //   });
 
             this.loadItemCosts(this.warehouse.warehouseId);
 
@@ -132,7 +122,10 @@ export class InventoriesPage implements OnInit, OnDestroy {
       });
 
       if (print) {
-        this.printButton.nativeElement.click();
+        setTimeout(() => {
+          this.printButton.nativeElement.click();
+          this.isFetching = false;
+        }, 2000);
       }
     });
   }
@@ -178,9 +171,11 @@ export class InventoriesPage implements OnInit, OnDestroy {
   }
 
   printPage() {
-    // window.print();
     if (this.warehouse.warehouseId) {
-      this.loadItemCosts(this.warehouse.warehouseId, true);
+      if (!this.isFetching) {
+        this.isFetching = true;
+        this.loadItemCosts(this.warehouse.warehouseId, true);
+      }
     } else {
       this.messageBox('Please select a warehouse.');
     }
