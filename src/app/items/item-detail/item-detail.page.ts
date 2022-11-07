@@ -329,8 +329,6 @@ export class ItemDetailPage implements OnInit {
       if (this.itemForm.valid) {
         this.item.itemCode = this.itemForm.value.itemCode;
         this.item.itemName = this.itemForm.value.itemName;
-        this.item.uom = this.itemForm.value.uom;
-        this.item.itemClass = this.itemForm.value.itemClass;
         this.item.price = this.itemForm.value.price;
         this.item.isActive = this.itemForm.value.isActive;
 
@@ -340,6 +338,10 @@ export class ItemDetailPage implements OnInit {
         if (this.item.itemId > 0) {
           this.itemService.putItem(itemDto).subscribe(this.processSaveItem());
         } else {
+
+          this.item.itemClass = this.itemForm.value.itemClass;
+          this.item.uom = this.itemForm.value.uom;
+
           if (this.item.itemClass === ItemClass.Stock) {
             itemDto.itemUoms = this.itemUoms;
           } else if (this.item.itemClass === ItemClass.Assembly) {
@@ -347,6 +349,7 @@ export class ItemDetailPage implements OnInit {
           } else if (this.item.itemClass === ItemClass.Branded) {
             if (!this.itemGenericForm.valid) {
               this.messageBox('Invalid stock item details.');
+              this.isUploading = false;
               return;
             }
 

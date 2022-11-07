@@ -248,7 +248,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
             this.production.productionStatus = newStatus;
             this.productionDetailsConfig.setParams(newStatus);
             this.messageBox(
-              `ButcheryProduction has been ${newStatus.toLowerCase()} successfully.`
+              `Butchery Production has been ${newStatus.toLowerCase()} successfully.`
             );
           } else {
             this.production.productionStatus = res.productionStatus;
