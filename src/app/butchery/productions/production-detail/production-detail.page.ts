@@ -19,6 +19,8 @@ import { ButcheryProduction } from '../../classes/butchery-production.model';
 import { ProductionDetailsConfig } from '../../config/production-details.config';
 import { ButcheryProductionsService } from '../../services/butchery-productions.service';
 import { ButcheryReceivingsService } from '../../services/butchery-receivings.service';
+import { ProductionSourceComponent } from '../production-source/production-source.component';
+import { ProductionSourceService } from '../production-source/production-source.service';
 
 @Component({
   selector: 'app-production-detail',
@@ -51,6 +53,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private productionsService: ButcheryProductionsService,
+    private productionSourceService: ProductionSourceService,
     private modalSearch: ModalController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController
@@ -197,7 +200,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
               } else {
                 this.messageBox('Production source not found.');
               }
-
             });
         }
       }
@@ -207,7 +209,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   }
 
   addProductionSource(productionSource: ButcheryProductionSource) {
-
     if (this.production.butcheryProductionId) {
       productionSource.butcheryProduction = this.production;
       this.productionsService
@@ -230,6 +231,31 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
         });
     } else {
       this.productionSources = this.productionSources.concat(productionSource);
+    }
+  }
+
+  onManuallyAddProductionSource() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+
+      if (!this.warehouse.warehouseId) {
+        this.messageBox('Please choose a warehouse.');
+        this.modalOpen = false;
+        return;
+      }
+
+      this.modalSearch
+        .create({ component: ProductionSourceComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'item') {
+            this.addProductionSource(resultData.data);
+          }
+          this.modalOpen = false;
+        });
     }
   }
 
@@ -295,6 +321,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
                   this.production.productionStatus = res.productionStatus;
                   if (this.production.productionStatus === 'Unposted') {
                     this.warehouse = resultData.data;
+                    this.productionSourceService.warehouse.next(this.warehouse);
                     this.messageBox(
                       `Produced items will be stored to ${this.warehouse.warehouseName}.`
                     );
@@ -307,6 +334,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
                 });
             } else {
               this.warehouse = resultData.data;
+              this.productionSourceService.warehouse.next(this.warehouse);
             }
           }
           this.modalOpen = false;

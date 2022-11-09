@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar #itemSearchBar placeholder="Search Received Item"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="itemList.length > 0">
+    <ion-card class="favCard" *ngFor="let item of itemList">
+      <ion-item lines="none" detail button (click)="onSelectItem(item)">
+        <ion-avatar slot="start">
+          <img src="../../assets/icons/items.svg" class="icon" />
+        </ion-avatar>
+        <ion-card-subtitle>{{ item.itemName }}</ion-card-subtitle>
+      </ion-item>
+    </ion-card>
+  </ion-grid>
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreItems($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more items..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

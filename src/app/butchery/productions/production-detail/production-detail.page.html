@@ -179,6 +179,10 @@
           (keypress)="onGetSourceBySourceId($event)"
           #sourceSearchBar
         ></ion-searchbar>
+        <ion-button class="ion-no-padding ion-no-margin" (click)="onManuallyAddProductionSource()" slot="end" mode="ios"
+          fill="clear" size="large" color="success">
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
       </ion-item>
     </ion-card-header>
     <div class="separator"></div>

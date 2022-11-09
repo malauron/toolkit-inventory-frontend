@@ -146,7 +146,6 @@ export class AppParamsConfig {
     this.urlV1ButcheryProductionsSetStatus = `${this.urlV1ButcheryProductions}/productionStatus`;
     this.urlV1ButcheryProductionItems = `${this.urlV1}/butcheryProductionItems`;
     this.urlV1ButcheryProductionSources = `${this.urlV1}/butcheryProductionSources`;
-    // this.urlV1ButcheryProductionAggregate = `${this.urlV1}/aggregateButcheryProductions`;
     this.urlV1ButcheryReleasings = `${this.urlV1}/butcheryReleasings`;
     this.urlV1ButcheryReleasingsSetStatus = `${this.urlV1ButcheryReleasings}/releasingStatus`;
     this.urlV1ButcheryReleasingItems = `${this.urlV1}/butcheryReleasingItems`;

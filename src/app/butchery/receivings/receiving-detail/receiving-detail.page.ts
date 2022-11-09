@@ -26,7 +26,6 @@ import { ReceivedItemService } from '../received-item/received-item.service';
 import { filterString } from '../../utils/utils';
 import { ButcheryProductionsService } from '../../services/butchery-productions.service';
 import { ButcheryProduction } from '../../classes/butchery-production.model';
-import { ButcheryProductionSource } from '../../classes/butchery-production-source.model';
 
 @Component({
   selector: 'app-receiving-detail',
