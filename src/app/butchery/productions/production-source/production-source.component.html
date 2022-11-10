@@ -18,23 +18,30 @@
   <ion-card class="card-holder">
     <div class="card-top"></div>
     <form [formGroup]="itemForm">
-      <ion-item fill="outline">
-        <ion-label position="floating">Item</ion-label>
-        <ion-input (click)="onItemSearch()" readonly="true" formControlName="itemName"></ion-input>
+      <ion-item fill="outline" lines="none">
+        <!-- <ion-label position="floating">Item</ion-label> -->
+        <ng-container >
+          <ion-label>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reiciendis, molestiae.</ion-label></ng-container>
         <ion-button mode="ios" class="search-button" slot="end" size="small" fill="clear" (click)="onItemSearch()">
           <ion-icon name="search-outline" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-item>
+
       <ion-item fill="outline">
+        <ion-label position="floating">Documented Qty.</ion-label>
+        <ion-input #documentedWeightInput formControlName="documentedQty" type="number" inputmode="decimal"
+          min="0" value="0"></ion-input>
+      </ion-item>
+      <!-- <ion-item fill="outline">
         <ion-label position="floating">Uom</ion-label>
         <ion-select #uomSelect formControlName="uom">
           <ion-select-option *ngFor="let uom of uoms" [value]="uom">{{
             uom.uomName
             }}</ion-select-option>
         </ion-select>
-      </ion-item>
+      </ion-item> -->
 
-      <ion-grid class="number-inputs">
+      <!-- <ion-grid class="number-inputs">
         <ion-row>
           <ion-col size-xs="12" size-sm="4">
             <ion-item fill="outline">
@@ -63,7 +70,7 @@
       <ion-item fill="outline">
         <ion-label position="floating">Remarks</ion-label>
         <ion-input #actualWeightInput formControlName="remarks"></ion-input>
-      </ion-item>
+      </ion-item> -->
 
     </form>
   </ion-card>

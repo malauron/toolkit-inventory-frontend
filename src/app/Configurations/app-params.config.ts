@@ -35,6 +35,8 @@ export class AppParamsConfig {
   urlButcheryReleasingsSearch: any;
   urlButcheryReceivings: any;
   urlButcheryReceivingsSearch: any;
+  urlButcheryReceivingItems: any;
+  urlButcheryReceivingItemsSearchByWarehouseId: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -64,7 +66,6 @@ export class AppParamsConfig {
   urlV1ButcheryProductionsSetStatus: any;
   urlV1ButcheryProductionItems: any;
   urlV1ButcheryProductionSources: any;
-  // urlV1ButcheryProductionAggregate: any;
   urlV1ButcheryReleasings: any;
   urlV1ButcheryReleasingsSearch: any;
   urlV1ButcheryReleasingsSetStatus: any;
@@ -115,6 +116,9 @@ export class AppParamsConfig {
     this.urlButcheryReleasingsSearch = `${this.urlButcheryReleasings}/search/findByCustomParam`;
     this.urlButcheryReceivings = `${this.url}/butcheryReceivings`;
     this.urlButcheryReceivingsSearch = `${this.urlButcheryReceivings}/search/findByCustomParam`;
+    this.urlButcheryReceivingItems = `${this.url}/butcheryReceivingItems`;
+    this.urlButcheryReceivingItemsSearchByWarehouseId = `${this.urlButcheryReceivingItems}/search/findByWarehouseAndIsAvailablePageable?` +
+                                                    `projection=butcheryReceivingItemView&warehouseId=`;
 
     // this.urlV1 = 'http://122.52.134.244:8443/api/v1';
     this.urlV1 = 'http://localhost:8443/api/v1';

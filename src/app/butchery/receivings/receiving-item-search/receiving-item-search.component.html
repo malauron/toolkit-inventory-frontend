@@ -5,18 +5,34 @@
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-searchbar #itemSearchBar placeholder="Search Received Item"></ion-searchbar>
+    <ion-searchbar
+      #searchBar
+      placeholder="Search Received Item"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid *ngIf="itemList.length > 0">
-    <ion-card class="favCard" *ngFor="let item of itemList">
+  <ion-grid *ngIf="receivedItemList.length > 0">
+    <ion-card class="favCard" *ngFor="let item of receivedItemList">
       <ion-item lines="none" detail button (click)="onSelectItem(item)">
-        <ion-avatar slot="start">
-          <img src="../../assets/icons/items.svg" class="icon" />
-        </ion-avatar>
-        <ion-card-subtitle>{{ item.itemName }}</ion-card-subtitle>
+        <ion-icon
+          class="receivedItemIcon"
+          slot="start"
+          color="primary"
+          name="log-in-outline"
+        ></ion-icon>
+        <ion-label>
+          <p>
+            {{ item.butcheryReceivingItemId.toString().padStart(8, "0") }} -
+            {{
+              item.butcheryReceiving.dateCreated | date: "MMM dd, yyyy hh:mm a"
+            }}
+          </p>
+          <h3>{{ item.item.itemName }}</h3>
+          <h5>{{ item.receivedQty | number:'1.0-2' }}{{ item.requiredUom.uomCode }}</h5>
+          <p>{{ item.butcheryReceiving.warehouse.warehouseName }}</p>
+        </ion-label>
       </ion-item>
     </ion-card>
   </ion-grid>

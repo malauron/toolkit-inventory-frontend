@@ -1,16 +1,13 @@
 /* eslint-disable no-underscore-dangle */
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSearchbar, ModalController, ViewDidEnter } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Item } from 'src/app/classes/item.model';
+import { Warehouse } from 'src/app/classes/warehouse.model';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ItemsService } from 'src/app/services/items.service';
+import { ButcheryReceivingItem } from '../../classes/butchery-receiving-item.model';
 import { ButcheryReceivingsService } from '../../services/butchery-receivings.service';
 import { ReceivingItemSearchService } from './receiving-item-search.service';
 
@@ -19,14 +16,18 @@ import { ReceivingItemSearchService } from './receiving-item-search.service';
   templateUrl: './receiving-item-search.component.html',
   styleUrls: ['./receiving-item-search.component.scss'],
 })
-export class ReceivingItemSearchComponent implements OnInit, OnDestroy,ViewDidEnter {
+export class ReceivingItemSearchComponent
+  implements OnInit, OnDestroy, ViewDidEnter
+{
   @ViewChild('infiniteScroll') infiniteScroll;
-  @ViewChild('itemSearchBar', { static: true }) itemSearchBar: IonSearchbar;
+  @ViewChild('searchBar', { static: true }) searchBar: IonSearchbar;
 
-  itemSearchBarSubscription: Subscription;
+  searchBarSub: Subscription;
   warehouseSub: Subscription;
 
-  itemList: Item[] = [];
+  warehouse: Warehouse;
+
+  receivedItemList: ButcheryReceivingItem[] = [];
 
   searchValue = '';
 
@@ -36,7 +37,7 @@ export class ReceivingItemSearchComponent implements OnInit, OnDestroy,ViewDidEn
   isFetching = false;
 
   constructor(
-    private itemService: ButcheryReceivingsService,
+    private butcheryReceivingsService: ButcheryReceivingsService,
     private receivingItemSearchService: ReceivingItemSearchService,
     private config: AppParamsConfig,
     private modalController: ModalController
@@ -47,11 +48,13 @@ export class ReceivingItemSearchComponent implements OnInit, OnDestroy,ViewDidEn
   }
 
   ngOnInit() {
+    this.warehouseSub = this.receivingItemSearchService.warehouse.subscribe(
+      (res) => {
+        this.warehouse = res;
+      }
+    );
 
-    this.warehouseSub = this.receivingItemSearchService.warehouse.subscribe(res => {
-      console.log(res);
-    });
-    this.itemSearchBarSubscription = this.itemSearchBar.ionInput
+    this.searchBarSub = this.searchBar.ionInput
       .pipe(
         map((event) => (event.target as HTMLInputElement).value),
         debounceTime(this.config.waitTime),
@@ -60,46 +63,40 @@ export class ReceivingItemSearchComponent implements OnInit, OnDestroy,ViewDidEn
       .subscribe((res) => {
         this.searchValue = res.trim();
         this.infiniteScroll.disabled = false;
-        this.itemList = [];
+        this.receivedItemList = [];
         this.pageNumber = 0;
         this.totalPages = 0;
-        if (this.searchValue) {
-          this.getItems(undefined, 0, this.config.pageSize, this.searchValue);
-        } else {
-          this.getItems(undefined, 0, this.config.pageSize);
-        }
+        this.getItems(undefined, 0, this.config.pageSize, this.searchValue);
       });
+
+    this.getItems(undefined, 0, this.config.pageSize);
   }
 
   ionViewDidEnter(): void {
     setTimeout(() => {
-      this.itemSearchBar.setFocus();
+      this.searchBar.setFocus();
     }, 5);
   }
 
   getItems(event?, pageNumber?: number, pageSize?: number, itemName?: string) {
     this.isFetching = true;
 
-    // if (itemName === undefined) {
-    //   this.itemService
-    //     .getItems(pageNumber, pageSize)
-    //     .subscribe(this.processResult(event), (error) => {
-    //       // this.messageBox('Unable to communicate with the server.');
-    //       this.isFetching = false;
-    //     });
-    // } else {
-    //   this.itemService
-    //     .getItems(pageNumber, pageSize, itemName)
-    //     .subscribe(this.processResult(event), (error) => {
-    //       // this.messageBox('Unable to communicate with the server.');
-    //       this.isFetching = false;
-    //     });
-    // }
+    this.butcheryReceivingsService
+      .getReceivingItemsByWarehouse(
+        this.warehouse.warehouseId,
+        pageNumber,
+        pageSize,
+        itemName
+      )
+      .subscribe(this.processResult(event));
   }
 
   processResult(event?) {
     return (data) => {
-      this.itemList = this.itemList.concat(data._embedded.items);
+      console.log(data._embedded);
+      this.receivedItemList = this.receivedItemList.concat(
+        data._embedded.butcheryReceivingItems
+      );
       this.totalPages = data.page.totalPages;
       this.isFetching = false;
       if (event) {
@@ -129,10 +126,10 @@ export class ReceivingItemSearchComponent implements OnInit, OnDestroy,ViewDidEn
   }
 
   dismissModal() {
-    this.modalController.dismiss(null,'dismissModal');
+    this.modalController.dismiss(null, 'dismissModal');
   }
 
-  onSelectItem(item: Item) {
+  onSelectItem(item: ButcheryReceivingItem) {
     this.modalController.dismiss(item, 'item');
   }
 }

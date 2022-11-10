@@ -15,27 +15,27 @@ interface ResponseReceivings {
   page: PageInfo;
 }
 
+interface ResponseReceivingItems {
+  _embedded: {
+    butcheryReceivingItems: ButcheryReceivingItem[];
+  };
+  page: PageInfo;
+}
+
 @Injectable({
   providedIn: 'root',
 })
+
 export class ButcheryReceivingsService {
   private apiUrl: string;
 
   private _receivingsHaveChanged = new Subject<boolean>();
-
-  // private _receivingPrintPreview = new BehaviorSubject<ReceivingPrintPreviewDto>(
-  //   undefined
-  // );
 
   constructor(private http: HttpClient, private config: AppParamsConfig) {}
 
   get receivingsHaveChanged() {
     return this._receivingsHaveChanged;
   }
-
-  // get purchasePrintPreview() {
-  //   return this._receivingPrintPreview;
-  // }
 
   getReceiving(receivingId: number): Observable<ButcheryReceivingDto> {
 
@@ -83,10 +83,20 @@ export class ButcheryReceivingsService {
 
   }
 
-  getReceivingItemsByWarehouse(warehouseId: number): Observable<ButcheryReceivingItem[]> {
+  getReceivingItemsByWarehouse(
+    warehouseId: number,
+    pageNumber?: number,
+    pageSize?: number,
+    searchDesc?: string
+    ): Observable<ResponseReceivingItems> {
 
-    this.apiUrl = `${this.config.urlV1ButcheryReceivingItems}/warehouses?warehouseId=${warehouseId}`;
-    return this.http.get<ButcheryReceivingItem[]>(this.apiUrl);
+    searchDesc = this.filterString(searchDesc);
+
+    this.apiUrl = `${this.config.urlButcheryReceivingItemsSearchByWarehouseId}` +
+                  `${warehouseId}&itemName=${searchDesc}` +
+                  `&page=${pageNumber}&size=${pageSize}`;
+
+    return this.http.get<ResponseReceivingItems>(this.apiUrl);
 
   }
 
@@ -119,5 +129,22 @@ export class ButcheryReceivingsService {
     };
     this.apiUrl = `${this.config.urlV1ButcheryReceivingItems}`;
     return this.http.delete<ButcheryReceivingDto>(this.apiUrl, options);
+  }
+
+  filterString(stringValue): string {
+
+    if (stringValue === undefined) {
+      stringValue = '';
+    }
+
+    stringValue = String(stringValue).replace('%','');
+    stringValue = String(stringValue).replace('^','');
+    stringValue = String(stringValue).replace('[','');
+    stringValue = String(stringValue).replace(']','');
+    stringValue = String(stringValue).replace('|','');
+    stringValue = String(stringValue).replace('\\','');
+
+    return stringValue;
+
   }
 }

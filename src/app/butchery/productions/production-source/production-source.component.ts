@@ -23,11 +23,11 @@ import { ProductionSourceService } from './production-source.service';
   styleUrls: ['./production-source.component.scss'],
 })
 export class ProductionSourceComponent implements OnInit, OnDestroy {
-  @ViewChild('uomSelect', { static: true }) uomSelect: IonSelect;
-  @ViewChild('receivedQtyInput', { static: true }) receivedQtyInput: IonInput;
-  @ViewChild('itemCostInput', { static: true }) itemCostInput: IonInput;
-  @ViewChild('documentedWeightInput', { static: true }) documentedWeightInput: IonInput;
-  @ViewChild('actualWeightInput', { static: true }) actualWeightInput: IonInput;
+  // @ViewChild('uomSelect', { static: true }) uomSelect: IonSelect;
+  // @ViewChild('receivedQtyInput', { static: true }) receivedQtyInput: IonInput;
+  // @ViewChild('itemCostInput', { static: true }) itemCostInput: IonInput;
+  // @ViewChild('documentedWeightInput', { static: true }) documentedWeightInput: IonInput;
+  // @ViewChild('actualWeightInput', { static: true }) actualWeightInput: IonInput;
 
   warehouseSub: Subscription;
   receivedItemSub: Subscription;
@@ -53,6 +53,7 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
+    this.warehouseSub.unsubscribe();
     this.receivedItemSub.unsubscribe();
     this.uomSelectSub.unsubscribe();
     this.receivedQtyInputSub.unsubscribe();
@@ -90,11 +91,11 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
       }),
     });
 
-    this.uomSelectSub = this.uomSelect.ionDismiss.subscribe(this.onQtyFocus());
-    this.receivedQtyInputSub = this.receivedQtyInput.ionFocus.subscribe(this.onQtyFocus());
-    this.itemCostInputSub = this.itemCostInput.ionFocus.subscribe(this.onCostFocus());
-    this.documentedWeightInputSub = this.documentedWeightInput.ionFocus.subscribe(this.onDocumentedWeightFocus());
-    this.actualWeightInputSub = this.actualWeightInput.ionFocus.subscribe(this.onActualWeightFocus());
+    // this.uomSelectSub = this.uomSelect.ionDismiss.subscribe(this.onQtyFocus());
+    // this.receivedQtyInputSub = this.receivedQtyInput.ionFocus.subscribe(this.onQtyFocus());
+    // this.itemCostInputSub = this.itemCostInput.ionFocus.subscribe(this.onCostFocus());
+    // this.documentedWeightInputSub = this.documentedWeightInput.ionFocus.subscribe(this.onDocumentedWeightFocus());
+    // this.actualWeightInputSub = this.actualWeightInput.ionFocus.subscribe(this.onActualWeightFocus());
 
     this.warehouseSub = this.productionSourceService.warehouse.subscribe(res => {
       this.warehouse = res;
@@ -146,39 +147,40 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
             });
           }
 
-          const qtyElem = this.receivedQtyInput.getInputElement();
-          qtyElem.then((rs) => rs.focus());
+          // const qtyElem = this.receivedQtyInput.getInputElement();
+          // qtyElem.then((rs) => rs.focus());
+
         }
       });
   }
 
-  onQtyFocus() {
-    return (res) => {
-      const qtyElem = this.receivedQtyInput.getInputElement();
-      qtyElem.then((rst) => rst.select());
-    };
-  }
+  // onQtyFocus() {
+  //   return (res) => {
+  //     const qtyElem = this.receivedQtyInput.getInputElement();
+  //     qtyElem.then((rst) => rst.select());
+  //   };
+  // }
 
-  onCostFocus() {
-    return (res) => {
-      const qtyElem = this.itemCostInput.getInputElement();
-      qtyElem.then((rst) => rst.select());
-    };
-  }
+  // onCostFocus() {
+  //   return (res) => {
+  //     const qtyElem = this.itemCostInput.getInputElement();
+  //     qtyElem.then((rst) => rst.select());
+  //   };
+  // }
 
-  onDocumentedWeightFocus() {
-    return (res) => {
-      const qtyElem = this.documentedWeightInput.getInputElement();
-      qtyElem.then((rst) => rst.select());
-    };
-  }
+  // onDocumentedWeightFocus() {
+  //   return (res) => {
+  //     const qtyElem = this.documentedWeightInput.getInputElement();
+  //     qtyElem.then((rst) => rst.select());
+  //   };
+  // }
 
-  onActualWeightFocus() {
-    return (res) => {
-      const qtyElem = this.actualWeightInput.getInputElement();
-      qtyElem.then((rst) => rst.select());
-    };
-  }
+  // onActualWeightFocus() {
+  //   return (res) => {
+  //     const qtyElem = this.actualWeightInput.getInputElement();
+  //     qtyElem.then((rst) => rst.select());
+  //   };
+  // }
 
   onItemSearch() {
     if (!this.modalOpen) {
@@ -195,31 +197,31 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
             const itemData = new Item();
             const uomData = new Uom();
 
-            itemData.itemId = resultData.data.itemId;
-            itemData.itemName = resultData.data.itemName;
-            itemData.itemCode = resultData.data.itemCode;
-            itemData.uom = resultData.data.uom;
+            // itemData.itemId = resultData.data.itemId;
+            // itemData.itemName = resultData.data.itemName;
+            // itemData.itemCode = resultData.data.itemCode;
+            // itemData.uom = resultData.data.uom;
 
-            uomData.uomId = resultData.data.uom.uomId;
-            uomData.uomName = resultData.data.uom.uomName;
-            uomData.uomCode = resultData.data.uom.uomCode;
+            // uomData.uomId = resultData.data.uom.uomId;
+            // uomData.uomName = resultData.data.uom.uomName;
+            // uomData.uomCode = resultData.data.uom.uomCode;
 
             // this.item = resultData.data;
             this.uoms = [];
-            this.uoms = this.uoms.concat(uomData);
-            this.getItemUoms(itemData.itemId);
-            this.itemForm.patchValue({
-              item: itemData,
-              itemName: itemData.itemName,
-              uom: uomData,
-              receivedQty: 1.0,
-              itemCost: 0.00,
-              documentedQty: 0.00,
-              remarks: '',
-            });
+            // this.uoms = this.uoms.concat(uomData);
+            // this.getItemUoms(itemData.itemId);
+            // this.itemForm.patchValue({
+            //   item: itemData,
+            //   itemName: itemData.itemName,
+            //   uom: uomData,
+            //   receivedQty: 1.0,
+            //   itemCost: 0.00,
+            //   documentedQty: 0.00,
+            //   remarks: '',
+            // });
 
-            const qtyElem = this.receivedQtyInput.getInputElement();
-            qtyElem.then((res) => res.focus());
+            // const qtyElem = this.receivedQtyInput.getInputElement();
+            // qtyElem.then((res) => res.focus());
           }
           this.modalOpen = false;
         });
