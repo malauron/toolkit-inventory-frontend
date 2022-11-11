@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-searchbar
       #searchBar
-      placeholder="Search Received Item"
+      placeholder="Search For Received Items"
     ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
@@ -23,15 +23,19 @@
           name="log-in-outline"
         ></ion-icon>
         <ion-label>
-          <p>
-            {{ item.butcheryReceivingItemId.toString().padStart(8, "0") }} -
-            {{
-              item.butcheryReceiving.dateCreated | date: "MMM dd, yyyy hh:mm a"
-            }}
+          <p class="font-x-small">
+            {{ item.butcheryReceiving.butcheryReceivingId.toString().padStart(8, "0") }} -
+            {{ item.butcheryReceiving.dateCreated | date: "MMM dd, yyyy hh:mm a" }}
           </p>
+          <h6>
+            {{ item.butcheryReceivingItemId.toString().padStart(8, "0") }}
+          </h6>
           <h3>{{ item.item.itemName }}</h3>
-          <h5>{{ item.receivedQty | number:'1.0-2' }}{{ item.requiredUom.uomCode }}</h5>
-          <p>{{ item.butcheryReceiving.warehouse.warehouseName }}</p>
+          <h5>
+            {{ item.receivedQty | number: "1.0-2"
+            }}{{ item.requiredUom.uomCode }}
+          </h5>
+          <p class="font-x-small">{{ item.butcheryReceiving.warehouse.warehouseName }}</p>
         </ion-label>
       </ion-item>
     </ion-card>

@@ -96,6 +96,9 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
             this.productionItems = resData.butcheryProductionItems;
             this.productionSources = resData.butcheryProductionSourceViews;
             this.totalAmount = this.production.totalAmount;
+
+            this.productionSourceService.warehouse.next(this.warehouse);
+
             this.isFetching = false;
           },
           (err) => {
@@ -220,7 +223,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
             this.productionSources = this.productionSources.concat(
               res.butcheryProductionSourceView
             );
-            this.getTotalAmt();
+            // this.getTotalAmt();
             this.messageBox('New production source has been added.');
           } else {
             this.messageBox(
@@ -372,7 +375,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
   onProcessSavedProduction() {
     return (res: ButcheryProduction) => {
-      console.log(res);
       this.production.butcheryProductionId = res.butcheryProductionId;
       this.production.productionStatus = res.productionStatus;
       this.production.totalAmount = res.totalAmount;

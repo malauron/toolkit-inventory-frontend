@@ -93,7 +93,6 @@ export class ReceivingItemSearchComponent
 
   processResult(event?) {
     return (data) => {
-      console.log(data._embedded);
       this.receivedItemList = this.receivedItemList.concat(
         data._embedded.butcheryReceivingItems
       );

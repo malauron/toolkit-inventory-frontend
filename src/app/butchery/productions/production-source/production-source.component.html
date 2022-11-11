@@ -19,59 +19,50 @@
     <div class="card-top"></div>
     <form [formGroup]="itemForm">
       <ion-item fill="outline" lines="none">
-        <!-- <ion-label position="floating">Item</ion-label> -->
-        <ng-container >
-          <ion-label>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reiciendis, molestiae.</ion-label></ng-container>
-        <ion-button mode="ios" class="search-button" slot="end" size="small" fill="clear" (click)="onItemSearch()">
+        <ion-label *ngIf="pSource.butcheryReceivingItem">
+          <p class="font-x-small">
+            {{ pSource.butcheryReceivingItem.butcheryReceiving.butcheryReceivingId.toString().padStart(8, "0") }} -
+            {{ pSource.butcheryReceivingItem.butcheryReceiving.dateCreated | date: "MMM dd, yyyy hh:mm a" }}
+          </p>
+          <h6>
+            {{ pSource.butcheryReceivingItem.butcheryReceivingItemId.toString().padStart(8, "0") }}
+          </h6>
+          <h3>{{ pSource.butcheryReceivingItem.item.itemName }}</h3>
+          <h5>
+            {{ pSource.butcheryReceivingItem.receivedQty | number: "1.0-2"
+            }}{{ pSource.butcheryReceivingItem.requiredUom.uomCode }}
+          </h5>
+          <p class="font-x-small">{{ pSource.butcheryReceivingItem.butcheryReceiving.warehouse.warehouseName }}</p>
+        </ion-label>
+        <ion-icon
+          class="receivedItemIcon"
+          slot="start"
+          color="primary"
+          name="log-in-outline"
+        ></ion-icon>
+        <ion-button
+          mode="ios"
+          class="search-button"
+          slot="end"
+          size="small"
+          fill="clear"
+          (click)="onReceivedItemSearch()"
+        >
           <ion-icon name="search-outline" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-item>
 
       <ion-item fill="outline">
         <ion-label position="floating">Documented Qty.</ion-label>
-        <ion-input #documentedWeightInput formControlName="documentedQty" type="number" inputmode="decimal"
-          min="0" value="0"></ion-input>
+        <ion-input
+          #requiredQtyInput
+          formControlName="requiredQty"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          value="0"
+        ></ion-input>
       </ion-item>
-      <!-- <ion-item fill="outline">
-        <ion-label position="floating">Uom</ion-label>
-        <ion-select #uomSelect formControlName="uom">
-          <ion-select-option *ngFor="let uom of uoms" [value]="uom">{{
-            uom.uomName
-            }}</ion-select-option>
-        </ion-select>
-      </ion-item> -->
-
-      <!-- <ion-grid class="number-inputs">
-        <ion-row>
-          <ion-col size-xs="12" size-sm="4">
-            <ion-item fill="outline">
-              <ion-label position="floating">Received Quantity</ion-label>
-              <ion-input #receivedQtyInput formControlName="receivedQty" type="number" inputmode="decimal" min="0"
-                value="0">
-              </ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col size-xs="12" size-sm="4">
-            <ion-item fill="outline">
-              <ion-label position="floating">Cost</ion-label>
-              <ion-input #itemCostInput formControlName="itemCost" type="number" inputmode="decimal" min="0" value="0">
-              </ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col size-xs="12" size-sm="4">
-            <ion-item fill="outline">
-              <ion-label position="floating">Documented Qty.</ion-label>
-              <ion-input #documentedWeightInput formControlName="documentedQty" type="number" inputmode="decimal"
-                min="0" value="0"></ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-item fill="outline">
-        <ion-label position="floating">Remarks</ion-label>
-        <ion-input #actualWeightInput formControlName="remarks"></ion-input>
-      </ion-item> -->
-
     </form>
   </ion-card>
 </ion-content>
