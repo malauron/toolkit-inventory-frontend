@@ -196,7 +196,7 @@
           *ngFor="let source of productionSources"
         >
           <ion-card class="card-item">
-            <ion-item lines="none" class="production-item-id">
+            <ion-item lines="none" class="item-ids">
               <ion-icon
                 class="item-icon"
                 name="attach-outline"
@@ -244,15 +244,15 @@
                 source.butcheryReceivingItem.receivedQty-source.butcheryReceivingItem.usedQty
                 | number:'1.0-2' }}{{
                 source.butcheryReceivingItem.requiredUom.uomCode
-                }}</ion-card-subtitle
+                }} in stock.</ion-card-subtitle
               >
             </ion-item>
 
             <ion-item lines="none" class="card-footer">
               <ion-card-title slot="end" mode="md" class="font-medium"
-                >{{ source.requiredQty | number:'1.2-2' }}{{
+                >Pulled out {{ source.requiredQty | number:'1.2-2' }}{{
                 source.butcheryReceivingItem.requiredUom.uomCode
-                }}</ion-card-title
+                }}.</ion-card-title
               >
             </ion-item>
           </ion-card>
@@ -292,7 +292,7 @@
           *ngFor="let item of productionItems"
         >
           <ion-card class="card-item">
-            <ion-item lines="none" class="itme-info">
+            <ion-item lines="none" class="item-ids">
               <ion-icon
                 class="item-icon"
                 name="barcode-outline"
@@ -329,7 +329,7 @@
 
             <ion-item lines="none" class="card-footer">
               <ion-card-title slot="end" mode="md" class="font-medium"
-                >{{ item.totalAmount| number:'1.2-2' }}</ion-card-title
+                >Cost: {{ item.totalAmount| number:'1.2-2' }}</ion-card-title
               >
             </ion-item>
           </ion-card>
