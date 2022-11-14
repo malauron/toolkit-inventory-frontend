@@ -7,6 +7,7 @@ export class ButcheryReleasingDto {
     public butcheryReleasingId?: number,
     public releasingStatus?: string,
     public warehouse?: Warehouse,
+    public destinationWarehouse?: Warehouse,
     public customer?: Customer,
     public butcheryReleasingItems?: ButcheryReleasingItem[],
     public butcheryReleasingItem?: ButcheryReleasingItem,

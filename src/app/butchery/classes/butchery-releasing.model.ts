@@ -6,6 +6,7 @@ export class ButcheryReleasing {
   constructor(
     public butcheryReleasingId?: number,
     public warehouse?: Warehouse,
+    public destinationWarehouse?: Warehouse,
     public customer?: Customer,
     public releasingStatus?: string,
     public butcheryReleasingItems?: ButcheryReleasingItem[],

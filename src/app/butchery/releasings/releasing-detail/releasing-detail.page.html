@@ -80,6 +80,7 @@
           <ion-item lines="none">
             <ion-icon class="contactIcon" name="business-outline" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-text-wrap">
+              <ion-card-subtitle *ngIf="!warehouse.warehouseId">Source Warehouse</ion-card-subtitle>
               <ion-card-title mode="md">{{ warehouse.warehouseName }}</ion-card-title>
             </ion-label>
             <ion-button #statusButton
@@ -89,7 +90,7 @@
             </ion-button>
           </ion-item>
 
-          <ion-item lines="none">
+          <!-- <ion-item lines="none">
             <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-text-wrap">
               <ion-card-title>{{ customer.customerName }}</ion-card-title>
@@ -98,6 +99,19 @@
             </ion-label>
             <ion-button *ngIf="releasing.releasingStatus === 'Unposted' || releasing.releasingStatus === undefined"
               (click)="onCustomerSearch()" fill="clear" size="small" mode="ios" id="click-trigger">
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item> -->
+
+          <ion-item lines="none">
+            <ion-icon class="contactIcon" name="business-outline" color="primary" slot="start"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-subtitle *ngIf="!destinationWarehouse.warehouseId">Destination Warehouse</ion-card-subtitle>
+              <ion-card-title mode="md">{{ destinationWarehouse.warehouseName }}</ion-card-title>
+            </ion-label>
+            <ion-button #statusButton
+              *ngIf="releasing.releasingStatus === 'Unposted' || releasing.releasingStatus === undefined"
+              (click)="onWarehouseSearch(true)" fill="clear" size="small" mode="ios" id="click-trigger">
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
@@ -167,14 +181,14 @@
     <div class="receipt-info">
       <ion-card-subtitle>{{ warehouse.warehouseName }}</ion-card-subtitle>
     </div>
-    <div class="receipt-info">Warehouse</div>
+    <div class="receipt-info">Source Warehouse</div>
   </div>
 
   <div class="receipt-header">
     <div class="receipt-info">
-      <ion-card-subtitle>{{ customer.customerName }}</ion-card-subtitle>
+      <ion-card-subtitle>{{ destinationWarehouse.warehouseName }}</ion-card-subtitle>
     </div>
-    <div class="receipt-info">Customer</div>
+    <div class="receipt-info">Destination Warehouse</div>
   </div>
 
   <div class="receipt-header">

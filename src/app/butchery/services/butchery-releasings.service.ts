@@ -69,9 +69,14 @@ export class ButcheryReleasingsService {
     searchDesc = String(searchDesc).replace('|','');
     searchDesc = String(searchDesc).replace('\\','');
 
+    // this.apiUrl =
+    //   `${this.config.urlButcheryReleasingsSearch}` +
+    //   `?butcheryReleasingId=${releasingId}&warehouseName=${searchDesc}&customerName=${searchDesc}` +
+    //   `&releasingStatus=${releasingStatus}&page=${pageNumber}&size=${pageSize}`;
+
     this.apiUrl =
       `${this.config.urlButcheryReleasingsSearch}` +
-      `?butcheryReleasingId=${releasingId}&warehouseName=${searchDesc}&customerName=${searchDesc}` +
+      `?butcheryReleasingId=${releasingId}&warehouseName=${searchDesc}&destinationWhse=${searchDesc}` +
       `&releasingStatus=${releasingStatus}&page=${pageNumber}&size=${pageSize}`;
     return this.http.get<ResponseReleasings>(this.apiUrl);
   }

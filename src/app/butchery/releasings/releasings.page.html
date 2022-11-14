@@ -46,7 +46,7 @@
             >
           </ion-item>
 
-          <ion-item lines="none">
+          <!-- <ion-item lines="none">
             <ion-icon
               class="contactIcon"
               name="person-outline"
@@ -54,6 +54,16 @@
               slot="start"
             ></ion-icon>
               <p>{{ releasing.customer.customerName }}</p>
+          </ion-item> -->
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="business-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+              <p>Destination: {{ releasing.destinationWarehouse.warehouseName }}</p>
           </ion-item>
 
           <ion-item lines="none">
@@ -63,7 +73,7 @@
               color="primary"
               slot="start"
             ></ion-icon>
-              <p>{{ releasing.warehouse.warehouseName }}</p>
+              <p>Source: {{ releasing.warehouse.warehouseName }}</p>
           </ion-item>
 
           <div class="separator"></div>

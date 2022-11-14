@@ -117,7 +117,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
       const fullBarcode = this.itemSearchBar.value;
 
       if (fullBarcode.length >= 12 && !isNaN(Number(fullBarcode))) {
-        const partialBarcode = fullBarcode.substring(1, 7);
+        const partialBarcode = fullBarcode.substring(2, 7);
         const itemQty = Number(
           fullBarcode.substring(7, 9).concat('.', fullBarcode.substring(9, 12))
         );
