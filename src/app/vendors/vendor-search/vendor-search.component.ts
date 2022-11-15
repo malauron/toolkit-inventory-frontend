@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSearchbar, ModalController, ViewDidEnter } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { VendorsService } from 'src/app/services/vendors.service';
   templateUrl: './vendor-search.component.html',
   styleUrls: ['./vendor-search.component.scss'],
 })
-export class VendorSearchComponent  implements OnInit, ViewDidEnter {
+export class VendorSearchComponent  implements OnInit, OnDestroy, ViewDidEnter {
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('vendorSearchBar', {static: true}) vendorSearchBar: IonSearchbar;
 
@@ -32,6 +32,10 @@ export class VendorSearchComponent  implements OnInit, ViewDidEnter {
     private config: AppParamsConfig,
     private modalController: ModalController
   ) { }
+
+  ngOnDestroy(): void {
+    this.vendorSearchBarSubscription.unsubscribe();
+  }
 
   ngOnInit() {
     this.vendorSearchBarSubscription = this.vendorSearchBar.ionInput

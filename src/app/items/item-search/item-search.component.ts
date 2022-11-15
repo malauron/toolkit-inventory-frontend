@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import {
   Component,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -16,7 +17,7 @@ import { ItemsService } from 'src/app/services/items.service';
   templateUrl: './item-search.component.html',
   styleUrls: ['./item-search.component.scss'],
 })
-export class ItemSearchComponent implements OnInit,ViewDidEnter {
+export class ItemSearchComponent implements OnInit, OnDestroy,ViewDidEnter {
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('itemSearchBar', { static: true }) itemSearchBar: IonSearchbar;
 
@@ -36,6 +37,10 @@ export class ItemSearchComponent implements OnInit,ViewDidEnter {
     private config: AppParamsConfig,
     private modalController: ModalController
   ) {}
+
+  ngOnDestroy(): void {
+    this.itemSearchBarSubscription.unsubscribe();
+  }
 
   ngOnInit() {
     this.itemSearchBarSubscription = this.itemSearchBar.ionInput

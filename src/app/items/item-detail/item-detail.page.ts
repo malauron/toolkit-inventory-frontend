@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -26,7 +26,7 @@ import { ItemSearchComponent } from '../item-search/item-search.component';
   templateUrl: './item-detail.page.html',
   styleUrls: ['./item-detail.page.scss'],
 })
-export class ItemDetailPage implements OnInit {
+export class ItemDetailPage implements OnInit, OnDestroy {
   @ViewChild('quantityInput', { static: true }) quantityInput: IonInput;
 
   pageLabel = 'Item Detail';
@@ -68,6 +68,12 @@ export class ItemDetailPage implements OnInit {
 
   get theItemClass() {
     return ItemClass;
+  }
+
+  ngOnDestroy(): void {
+    this.itemSubscription.unsubscribe();
+    this.uomSubscription.unsubscribe();
+    this.genericUomSubscription.unsubscribe();
   }
 
   ngOnInit() {

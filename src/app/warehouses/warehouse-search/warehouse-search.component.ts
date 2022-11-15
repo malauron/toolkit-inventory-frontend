@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSearchbar, ModalController, ViewDidEnter } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { WarehousesService } from 'src/app/services/warehouses.service';
   templateUrl: './warehouse-search.component.html',
   styleUrls: ['./warehouse-search.component.scss'],
 })
-export class WarehouseSearchComponent implements OnInit, ViewDidEnter {
+export class WarehouseSearchComponent implements OnInit, OnDestroy, ViewDidEnter {
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('warehouseSearchBar', {static: true}) warehouseSearchBar: IonSearchbar;
 
@@ -32,6 +32,10 @@ export class WarehouseSearchComponent implements OnInit, ViewDidEnter {
     private config: AppParamsConfig,
     private modalController: ModalController
   ) { }
+
+  ngOnDestroy(): void {
+    this.warehouseSearchBarSubscription.unsubscribe();
+  }
 
   ngOnInit() {
     this.warehouseSearchBarSubscription = this.warehouseSearchBar.ionInput

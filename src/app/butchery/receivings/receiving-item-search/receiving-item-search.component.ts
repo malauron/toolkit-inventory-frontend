@@ -44,6 +44,7 @@ export class ReceivingItemSearchComponent
   ) {}
 
   ngOnDestroy(): void {
+    this.searchBarSub.unsubscribe();
     this.warehouseSub.unsubscribe();
   }
 

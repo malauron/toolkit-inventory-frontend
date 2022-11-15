@@ -53,6 +53,10 @@ ion-searchbar {
     text-align: left;
   }
 
+  .item-ids {
+    max-height: 35px;
+  }
+
   .icon {
     // primary
     filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg)
@@ -96,6 +100,16 @@ ion-popover {
     padding-bottom: 15px;
   }
 }
+
+.font-medium {
+  font-size: medium;
+}
+
+.font-small {
+  font-size: small;
+}
+
+
 
 #print {
   /* hide the printing component from @media screen */
