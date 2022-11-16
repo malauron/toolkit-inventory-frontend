@@ -360,9 +360,9 @@
     <div class="separator"></div>
 
     <ion-grid class="production-history" *ngFor="let production of productions">
-      <ion-row class="ion-align-items-center">
+      <ion-row class="ion-align-items-center row-header">
         <ion-col size-xs="4" size-sm="6" size-md="8">
-          <ion-card-subtitle color="primary">
+          <ion-card-subtitle color="primary" class="">
             {{ production.dateCreated | date:'MMM dd, yyyy hh:mm a' }}
           </ion-card-subtitle>
         </ion-col>
@@ -373,7 +373,7 @@
       >
         <ion-col>
           <ion-card-subtitle color="primary"
-            >{{ source.butcheryReceivingItem.item.itemName }} - {{
+            >{{ source.butcheryReceivingItem.item.itemName }} # {{
             source.butcheryReceivingItem.butcheryReceivingItemId.toString().padStart(8,
             "0") }}
           </ion-card-subtitle>

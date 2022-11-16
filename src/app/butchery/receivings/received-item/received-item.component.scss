@@ -6,6 +6,10 @@ ion-card {
   --ion-background-color: #ffffff;
 }
 
+.separator {
+  border-top: 1px solid var(--ion-color-medium);
+}
+
 .card-holder {
   margin: 20px 20px 0 20px;
 }
@@ -15,7 +19,7 @@ ion-card {
 }
 
 form {
-  margin: 50px 0;
+  margin: 10px 0;
 
   ion-item {
     padding: 10px 10px;
