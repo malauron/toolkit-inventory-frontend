@@ -61,6 +61,10 @@ const routes: Routes = [
         loadChildren: () => import('../butchery/releasings/releasings.module').then( m => m.ReleasingsPageModule)
       },
       {
+        path: 'ending-balances',
+        loadChildren: () => import('../outlet-inventory/ending-balances/ending-balances.module').then( m => m.EndingBalancesPageModule)
+      },
+      {
         path: '',
         redirectTo: 'orders',
         pathMatch: 'full'

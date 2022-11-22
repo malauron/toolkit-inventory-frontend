@@ -129,6 +129,10 @@
     <div class="card-top"></div>
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
+        <ion-card-title class="font-large">Released Items</ion-card-title>
+      </ion-item>
+      <ion-item lines="none"
+      *ngIf="releasing.releasingStatus === 'Unposted'  || releasing.releasingStatus === undefined">
         <ion-searchbar searchIcon="barcode-outline" placeholder="Barcode" (keypress)="onGetItemByItemCode($event)"
           #itemSearchBar></ion-searchbar>
         <!-- <ion-button *ngIf="releasing.releasingStatus === 'Unposted' || releasing.releasingStatus === undefined"
@@ -219,6 +223,11 @@
       <ion-card-subtitle>{{ totalAmount | number:'1.2-2' }}</ion-card-subtitle>
     </div>
   </div>
+
+  <div class="received-by">
+      <ion-card-subtitle>Received By:</ion-card-subtitle>
+  </div>
+
   <div class="company-name">A subsidiary of Eight2Eight Inc.</div>
 
 </div>

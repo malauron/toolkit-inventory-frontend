@@ -31,4 +31,8 @@ export class OptionsPage implements OnInit {
     this.router.navigate(['/','tabs','inventories']);
   }
 
+  onEndingBalance() {
+    this.router.navigate(['/', 'tabs', 'ending-balances']);
+  }
+
 }

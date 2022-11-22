@@ -163,24 +163,34 @@
 
   <ion-card class="card-holder">
     <div class="card-top"></div>
+    <!-- <ion-card-header class="ion-no-padding">
+      <ion-item lines="none">
+        <ion-card-title class="font-large">Production Sources</ion-card-title>
+      </ion-item>
+    </ion-card-header> -->
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
         <ion-card-title class="font-large">Production Sources</ion-card-title>
       </ion-item>
-    </ion-card-header>
-    <ion-card-header
-      class="ion-no-padding"
-      *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined"
-    >
-      <ion-item lines="none">
+      <ion-item
+        lines="none"
+        *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined"
+      >
         <ion-searchbar
           searchIcon="barcode-outline"
           placeholder="Shortcut code ( Received Item ID - Price e.g. 123-100.5)"
           (keypress)="onGetSourceBySourceId($event)"
           #sourceSearchBar
         ></ion-searchbar>
-        <ion-button class="ion-no-padding ion-no-margin" (click)="onManuallyAddProductionSource()" slot="end" mode="ios"
-          fill="clear" size="large" color="success">
+        <ion-button
+          class="ion-no-padding ion-no-margin"
+          (click)="onManuallyAddProductionSource()"
+          slot="end"
+          mode="ios"
+          fill="clear"
+          size="large"
+          color="success"
+        >
           <ion-icon name="add"></ion-icon>
         </ion-button>
       </ion-item>
@@ -223,7 +233,9 @@
             </ion-item>
 
             <ion-item lines="none" class="item-info">
-              <ion-card-title mode="md" class="ion-no-padding ion-no-margin font-medium"
+              <ion-card-title
+                mode="md"
+                class="ion-no-padding ion-no-margin font-medium"
                 >{{ source.butcheryReceivingItem.item.itemName
                 }}</ion-card-title
               >
@@ -243,8 +255,8 @@
                 >{{
                 source.butcheryReceivingItem.receivedQty-source.butcheryReceivingItem.usedQty
                 | number:'1.0-2' }}{{
-                source.butcheryReceivingItem.requiredUom.uomCode
-                }} in stock.</ion-card-subtitle
+                source.butcheryReceivingItem.requiredUom.uomCode }} in
+                stock.</ion-card-subtitle
               >
             </ion-item>
 
@@ -315,7 +327,9 @@
             </ion-item>
 
             <ion-item lines="none" class="item-info">
-              <ion-card-title mode="md" class="ion-no-padding ion-no-margin font-medium"
+              <ion-card-title
+                mode="md"
+                class="ion-no-padding ion-no-margin font-medium"
                 >{{ item.item.itemName }}</ion-card-title
               >
             </ion-item>

@@ -37,6 +37,8 @@ export class AppParamsConfig {
   urlButcheryReceivingsSearch: any;
   urlButcheryReceivingItems: any;
   urlButcheryReceivingItemsSearchByWarehouseId: any;
+  urlInventoryItems: any;
+  urlInventoryItemsSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -119,6 +121,9 @@ export class AppParamsConfig {
     this.urlButcheryReceivingItems = `${this.url}/butcheryReceivingItems`;
     this.urlButcheryReceivingItemsSearchByWarehouseId = `${this.urlButcheryReceivingItems}/search/findByWarehouseAndIsAvailablePageable?` +
                                                     `projection=butcheryReceivingItemView&warehouseId=`;
+    this.urlInventoryItems = `${this.url}/inventoryItems`;
+    this.urlInventoryItemsSearch = `${this.urlInventoryItems}/search/findByCustomParam?`;
+
 
     // this.urlV1 = 'http://122.52.134.244:8443/api/v1';
     this.urlV1 = 'http://localhost:8443/api/v1';
