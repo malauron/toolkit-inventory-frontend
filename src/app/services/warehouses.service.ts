@@ -27,6 +27,11 @@ export class WarehousesService {
 
   constructor(private http: HttpClient, private config: AppParamsConfig) {}
 
+  getWarehouseById(id: number): Observable<Warehouse> {
+    this.apiUrl = `${this.config.urlWarehouseSearchById}${id}`;
+    return this.http.get<Warehouse>(this.apiUrl);
+  }
+
   getWarehouses(
     pageNumber?: number,
     pageSize?: number,

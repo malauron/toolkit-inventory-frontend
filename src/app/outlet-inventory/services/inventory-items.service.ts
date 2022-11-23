@@ -65,4 +65,8 @@ export class InventoryItemsService {
     return this.http.put(this.apiUrl,invItem);
   }
 
+  setQty(invItem: InventoryItemDto) {
+    this.apiUrl = `${this.config.urlV1InventoryItems}/qty`;
+    return this.http.put(this.apiUrl, invItem);
+  }
 }

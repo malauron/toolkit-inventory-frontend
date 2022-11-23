@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { Warehouse } from 'src/app/classes/warehouse.model';
+import { WarehousesService } from 'src/app/services/warehouses.service';
 import { InventoryItem } from '../../classes/inventory-item.model';
 import { InventoryItemsService } from '../../services/inventory-items.service';
 
@@ -11,12 +13,15 @@ import { InventoryItemsService } from '../../services/inventory-items.service';
 })
 export class InventoryPrintViewPage implements OnInit {
 
+  warehouse = new Warehouse();
+
   inventoryItems: InventoryItem[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private inventoryItemsService: InventoryItemsService,
+    private warehouseService: WarehousesService,
   ) { }
 
   ngOnInit() {
@@ -31,13 +36,28 @@ export class InventoryPrintViewPage implements OnInit {
 
       const warehouseId = +paramMap.get('warehouseId');
 
+      this.warehouseService.getWarehouseById(warehouseId).subscribe(res => {
+        this.warehouse = res;
+      });
+
       this.inventoryItemsService.getAllByWarehouseWithQty(warehouseId).subscribe(res => {
         this.inventoryItems = this.inventoryItems.concat(res);
-        console.log(res);
       });
 
     });
 
+  }
+
+  onFinalizeInventory() {
+    const invItem = new InventoryItem();
+    const whse = new Warehouse();
+
+    whse.warehouseId = this.warehouse.warehouseId;
+    whse.warehouseName = this.warehouse.warehouseName;
+
+    invItem.warehouse = whse;
+
+    this.inventoryItemsService.setQty(invItem).subscribe();
   }
 
 }
