@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonSearchbar, ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -25,6 +26,7 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
   @ViewChild('printButton') printButton: ElementRef;
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('inventoryItemSearchBar', { static: true })
+
   inventoryItemSearchBar: IonSearchbar;
 
   inventoryItemSearchBarSub: Subscription;
@@ -32,7 +34,6 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
   warehouse: Warehouse;
   totalAmt: number;
 
-  // itemCosts: ItemCost[] = [];
   inventoryItems: InventoryItemDto[] = [];
 
   searchValue = '';
@@ -45,6 +46,7 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
   modalOpen = false;
 
   constructor(
+    private router: Router,
     private modalSearch: ModalController,
     private inventoryItemsService: InventoryItemsService,
     private config: AppParamsConfig,
@@ -80,6 +82,14 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
       });
   }
 
+  onPrintView() {
+    if (this.warehouse.warehouseId === undefined) {
+      this.messageBox('Please select a warehouse.');
+      return;
+    }
+    this.router.navigate(['/', 'tabs', 'ending-balances', 'inventory-print-view', this.warehouse.warehouseId]);
+  }
+
   onWarehouseSearch() {
     if (!this.modalOpen) {
       this.modalOpen = true;
@@ -93,8 +103,6 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
           if (resultData.role === 'warehouse') {
             this.isFetching = true;
             this.warehouse = resultData.data;
-
-            // this.loadItemCosts(this.warehouse.warehouseId);
 
             this.infiniteScroll.disabled = false;
             this.inventoryItems = [];
@@ -112,25 +120,6 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
         });
     }
   }
-
-  // loadItemCosts(warehouseId: number, print?: boolean) {
-  //   this.itemsService.getItemCosts(warehouseId).subscribe((res) => {
-  //     this.itemCosts = [];
-  //     this.itemCosts = this.itemCosts.concat(res);
-
-  //     this.totalAmt = 0;
-  //     this.itemCosts.forEach((itemCost) => {
-  //       this.totalAmt += itemCost.qty * itemCost.cost;
-  //     });
-
-  //     if (print) {
-  //       setTimeout(() => {
-  //         this.printButton.nativeElement.click();
-  //         this.isFetching = false;
-  //       }, 2000);
-  //     }
-  //   });
-  // }
 
   getInventoryItemsByPage(
     event?,
@@ -155,12 +144,10 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
           invItem.cost = item.cost;
           invItem.price = item.price;
           invItem.qty = 0.00;
-          invItem.isUpdating = false;
+          invItem.isUpdateQty = false;
+          invItem.isUpdatePrice = false;
           this.inventoryItems = this.inventoryItems.concat(invItem);
         });
-        // this.inventoryItems = this.inventoryItems.concat(
-        //   res._embedded.inventoryItems
-        // );
         this.totalPages = res.page.totalPages;
         this.isFetching = false;
         if (event) {
@@ -188,7 +175,7 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
   }
 
   onAddDeductQty(invItem: InventoryItemDto) {
-    if (invItem.isUpdating) {
+    if (invItem.isUpdateQty) {
       return;
     }
     if(invItem.qty === undefined) {
@@ -207,27 +194,46 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
       this.messageBox('Please enter a number other than zero.');
       return;
     }
-    invItem.isUpdating = true;
+    invItem.isUpdateQty = true;
     this.inventoryItemsService.setEndingQty(invItem).subscribe(res => {
       invItem.endingQty = invItem.endingQty + invItem.qty;
       invItem.qty = 0;
-      invItem.isUpdating = false;
+      invItem.isUpdateQty = false;
     },err => {
       this.messageBox('Unable to communicate with the server.');
-      invItem.isUpdating = false;
+      invItem.isUpdateQty = false;
     });
   }
 
-  // printPage() {
-  //   if (this.warehouse.warehouseId) {
-  //     if (!this.isFetching) {
-  //       this.isFetching = true;
-  //       this.loadItemCosts(this.warehouse.warehouseId, true);
-  //     }
-  //   } else {
-  //     this.messageBox('Please select a warehouse.');
-  //   }
-  // }
+  onUpdatePrice(invItem: InventoryItemDto) {
+    if (invItem.isUpdatePrice) {
+      return;
+    }
+    if(invItem.price === undefined) {
+      this.messageBox('Please enter a valid number.');
+      return;
+    }
+    if(invItem.price === null) {
+      this.messageBox('Please enter a valid number.');
+      return;
+    }
+    if (isNaN(invItem.price)) {
+      this.messageBox('Please enter a valid number.');
+      return;
+    }
+    if (invItem.price < 0) {
+      this.messageBox('Please enter a number greater than or equal to zero.');
+      return;
+    }
+    invItem.isUpdatePrice = true;
+    this.inventoryItemsService.setPrice(invItem).subscribe(res => {
+      this.messageBox('Price has been updated successfully.');
+      invItem.isUpdatePrice = false;
+    },err => {
+      this.messageBox('Unable to communicate with the server.');
+      invItem.isUpdatePrice = false;
+    });
+  }
 
   async messageBox(messageDescription: string) {
     const toast = await this.toastController.create({

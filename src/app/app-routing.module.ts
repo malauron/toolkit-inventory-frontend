@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -20,9 +21,6 @@ const routes: Routes = [
     redirectTo: 'tabs',
     pathMatch: 'full'
   },
-
-
-
 ];
 
 @NgModule({

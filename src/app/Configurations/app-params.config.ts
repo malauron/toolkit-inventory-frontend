@@ -78,6 +78,7 @@ export class AppParamsConfig {
   urlV1ButcheryReceivingItems: any;
   urlV1InventoryItems: any;
   urlV1InventoryItemsSetEndingQty: any;
+  urlV1InventoryItemsSetPrice: any;
 
   waitTime: number;
   pageSize: number;
@@ -87,8 +88,8 @@ export class AppParamsConfig {
 
   constructor() {
 
-    // this.url = 'http://122.52.134.244:8443/api';
-    this.url = 'http://localhost:8443/api';
+    this.url = 'http://122.52.134.244:8443/api';
+    // this.url = 'http://localhost:8443/api';
 
     this.urlItems = this.url + '/items';
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;
@@ -127,8 +128,8 @@ export class AppParamsConfig {
     this.urlInventoryItemsSearch = `${this.urlInventoryItems}/search/findByCustomParam?`;
 
 
-    // this.urlV1 = 'http://122.52.134.244:8443/api/v1';
-    this.urlV1 = 'http://localhost:8443/api/v1';
+    this.urlV1 = 'http://122.52.134.244:8443/api/v1';
+    // this.urlV1 = 'http://localhost:8443/api/v1';
 
     this.urlV1Items = this.urlV1 + '/items';
     this.urlV1ItemsFindByItemCode = `${this.urlV1Items}?itemCode=`;
@@ -165,6 +166,7 @@ export class AppParamsConfig {
     this.urlV1ButcheryReceivingItems = `${this.urlV1}/butcheryReceivingItems`;
     this.urlV1InventoryItems = `${this.urlV1}/inventoryItems`;
     this.urlV1InventoryItemsSetEndingQty = `${this.urlV1InventoryItems}/endingQty`;
+    this.urlV1InventoryItemsSetPrice = `${this.urlV1InventoryItems}/price`;
 
     this.waitTime = 500;
     this.pageSize = 20;

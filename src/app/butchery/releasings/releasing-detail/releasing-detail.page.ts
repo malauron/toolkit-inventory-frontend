@@ -27,7 +27,7 @@ import { ButcheryReleasingsService } from '../../services/butchery-releasings.se
 })
 export class ReleasingDetailPage implements OnInit, OnDestroy {
   @ViewChild('statusPopover') statusPopover: IonPopover;
-  @ViewChild('itemSearchBar', { static: true }) itemSearchBar: IonSearchbar;
+  @ViewChild('itemSearchBar') itemSearchBar: IonSearchbar;
 
   statusPopoverOpen = false;
 

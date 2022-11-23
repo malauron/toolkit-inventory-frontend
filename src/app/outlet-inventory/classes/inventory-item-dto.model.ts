@@ -12,6 +12,7 @@ export class InventoryItemDto {
     public cost?: number,
     public price?: number,
     public qty?: number,
-    public isUpdating?: boolean,
+    public isUpdateQty?: boolean,
+    public isUpdatePrice?: boolean,
   ) {}
 }

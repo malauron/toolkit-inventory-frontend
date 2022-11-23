@@ -50,8 +50,18 @@ export class InventoryItemsService {
 
   }
 
+  getAllByWarehouseWithQty(warehouseId: number): Observable<InventoryItem> {
+    this.apiUrl = `${this.config.urlV1InventoryItems}?warehouseId=${warehouseId}`;
+    return this.http.get<InventoryItem>(this.apiUrl);
+  }
+
   setEndingQty(invItem: InventoryItemDto) {
     this.apiUrl =  `${this.config.urlV1InventoryItemsSetEndingQty}`;
+    return this.http.put(this.apiUrl,invItem);
+  }
+
+  setPrice(invItem: InventoryItemDto) {
+    this.apiUrl =  `${this.config.urlV1InventoryItemsSetPrice}`;
     return this.http.put(this.apiUrl,invItem);
   }
 

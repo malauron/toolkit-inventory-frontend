@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button
+        icon="chevron-back-outline"
+        defaultHref="/tabs/ending-balances"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>Print Preview</ion-title>
+    <ion-buttons slot="primary">
+      <!-- <ion-button (click)="onPrintView()" *ngIf="!isFetching">
+        <ion-icon name="print-outline" slot="icon-only"></ion-icon>
+      </ion-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+
+  <!-- <div id="printDiv" class="navbar">
+    <button
+      #printButton
+      styleSheetFile="assets/css/inventories-print-preview.component.css"
+      printSectionId="print"
+      ngxPrint
+      class="split"
+    >
+      <img src="../../../assets/icons/printer.svg" />
+    </button>
+  </div> -->
+
+  <div id="print">
+    <div class="inventory-report">
+      <div class="inventory-header">
+        <div class="inventory-detail">
+          <!-- {{ warehouse.warehouseName }} Inventory -->
+        </div>
+      </div>
+
+      <table id="inventories">
+        <thead>
+          <tr>
+            <th class="auto-number">#</th>
+            <th class="left-aligned">ITEM DESCRIPTION</th>
+            <th class="right-aligned">BEG. QTY.</th>
+            <th class="right-aligned">PUR. QTY.</th>
+            <th class="right-aligned">END. QTY.</th>
+            <th class="right-aligned">COST</th>
+            <th class="right-aligned">PRICE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of inventoryItems">
+            <td class="auto-number"></td>
+            <td class="left-aligned">{{ item.item.itemName}}</td>
+            <td class="right-aligned">
+              <div *ngIf="item.beginningQty!==0">
+                {{ item.beginningQty | number:'1.0-3' }}
+              </div>
+            </td>
+            <td class="right-aligned">
+              <div *ngIf="item.purchasedQty!==0">
+                {{ item.purchasedQty | number:'1.0-3' }}
+              </div>
+            </td>
+            <td class="right-aligned">
+              <div *ngIf="item.endingQty!==0">
+                {{ item.endingQty | number:'1.0-3' }}
+              </div>
+            </td>
+            <td class="right-aligned">
+              <div *ngIf="item.cost!==0">
+                {{ item.cost | number:'1.2' }}
+              </div>
+            </td>
+            <td class="right-aligned">
+              <div *ngIf="item.price!==0">
+                {{ item.price | number:'1.2' }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grand-total">
+        <p>Grand Total:</p>
+        <p class="total-cost">{{ 0.00 | number:'1.2-2' }}</p>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

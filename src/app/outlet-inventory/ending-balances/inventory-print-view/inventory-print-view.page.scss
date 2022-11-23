@@ -1,0 +1,81 @@
+/* Removes page title and date when printing the report. */
+@page { size: auto;  margin: 0mm; }
+
+* {
+  font-family: 'Lato';
+}
+
+.inventory-report {
+  padding: 20px;
+}
+
+.inventory-header {
+  /* border-top: 1px solid #ddd; */
+  border-bottom: 1px solid #ddd;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+}
+
+.inventory-detail {
+  padding: 1px;
+}
+
+.inventory-detail img {
+  float: left;
+  margin: 0 10px ;
+  width: 10px;
+  height: 10px;
+}
+
+#inventories {
+  counter-reset: serial-number; /* Set the serial number counter to 0 */
+  margin-top: 50px;
+  font-size: small;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#inventories td:first-child:before {
+  counter-increment: serial-number; /* Increment the serial number counter */
+  content: counter(serial-number); /* Display the counter */
+}
+
+#inventories th {
+  border-bottom: 3px solid #ddd;
+  padding: 0 5px;
+}
+
+#inventories td {
+  border-bottom: 0.1px solid #ddd ;
+  padding: 0 5px;
+}
+
+.auto-number {
+  width: 20px;
+}
+
+.left-aligned {
+  text-align: left;
+}
+
+.centered {
+  text-align: center;
+  width: 10px;
+}
+
+.right-aligned {
+  text-align: right;
+  width: 90px;
+}
+
+.grand-total{
+  margin: -10px 5px 0 5px;
+  display: grid;
+  grid-template-columns: auto 120px;
+}
+
+.grand-total .total-cost {
+  text-align: end;
+}
