@@ -76,6 +76,8 @@ export class AppParamsConfig {
   urlV1ButcheryReceivingsSearch: any;
   urlV1ButcheryReceivingsSetStatus: any;
   urlV1ButcheryReceivingItems: any;
+  urlV1InventoryItems: any;
+  urlV1InventoryItemsSetEndingQty: any;
 
   waitTime: number;
   pageSize: number;
@@ -161,6 +163,8 @@ export class AppParamsConfig {
     this.urlV1ButcheryReceivings = `${this.urlV1}/butcheryReceivings`;
     this.urlV1ButcheryReceivingsSetStatus = `${this.urlV1ButcheryReceivings}/receivingStatus`;
     this.urlV1ButcheryReceivingItems = `${this.urlV1}/butcheryReceivingItems`;
+    this.urlV1InventoryItems = `${this.urlV1}/inventoryItems`;
+    this.urlV1InventoryItemsSetEndingQty = `${this.urlV1InventoryItems}/endingQty`;
 
     this.waitTime = 500;
     this.pageSize = 20;

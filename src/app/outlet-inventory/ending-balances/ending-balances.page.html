@@ -81,12 +81,13 @@
             <ion-label>{{ item.item.itemName }}</ion-label>
           </ion-item>
           <ion-item lines="none" class="add-deduct-qty">
-
+            <ion-spinner name="bubbles" color="warning" *ngIf="item.isUpdating"></ion-spinner>
             <ion-button
               #statusButton
               fill="clear"
               size="small"
               mode="ios"
+              *ngIf="!item.isUpdating"
               (click)="onAddDeductQty(item)"
             >
               <ion-badge color="warning"

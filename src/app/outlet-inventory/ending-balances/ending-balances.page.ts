@@ -145,7 +145,6 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
       .subscribe((res) => {
 
         res._embedded.inventoryItems.forEach(item => {
-          console.log(item);
           const invItem = new InventoryItemDto();
           invItem.inventoryItemId = item.inventoryItemId;
           invItem.item = item.item;
@@ -156,6 +155,7 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
           invItem.cost = item.cost;
           invItem.price = item.price;
           invItem.qty = 0.00;
+          invItem.isUpdating = false;
           this.inventoryItems = this.inventoryItems.concat(invItem);
         });
         // this.inventoryItems = this.inventoryItems.concat(
@@ -188,7 +188,34 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
   }
 
   onAddDeductQty(invItem: InventoryItemDto) {
-    console.log(invItem);
+    if (invItem.isUpdating) {
+      return;
+    }
+    if(invItem.qty === undefined) {
+      this.messageBox('Please enter a valid number.');
+      return;
+    }
+    if(invItem.qty === null) {
+      this.messageBox('Please enter a valid number.');
+      return;
+    }
+    if (isNaN(invItem.qty)) {
+      this.messageBox('Please enter a valid number.');
+      return;
+    }
+    if (invItem.qty === 0) {
+      this.messageBox('Please enter a number other than zero.');
+      return;
+    }
+    invItem.isUpdating = true;
+    this.inventoryItemsService.setEndingQty(invItem).subscribe(res => {
+      invItem.endingQty = invItem.endingQty + invItem.qty;
+      invItem.qty = 0;
+      invItem.isUpdating = false;
+    },err => {
+      this.messageBox('Unable to communicate with the server.');
+      invItem.isUpdating = false;
+    });
   }
 
   // printPage() {

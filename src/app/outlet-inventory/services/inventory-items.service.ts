@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
+import { InventoryItemDto } from '../classes/inventory-item-dto.model';
 import { InventoryItem } from '../classes/inventory-item.model';
 import { filterString } from '../utils/utils';
 
@@ -47,6 +48,11 @@ export class InventoryItemsService {
                     `warehouseId=${warehouseId}&itemName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
     return this.http.get<ResponseInventoryItems>(this.apiUrl);
 
+  }
+
+  setEndingQty(invItem: InventoryItemDto) {
+    this.apiUrl =  `${this.config.urlV1InventoryItemsSetEndingQty}`;
+    return this.http.put(this.apiUrl,invItem);
   }
 
 }
