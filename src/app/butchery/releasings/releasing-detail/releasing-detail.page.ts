@@ -31,6 +31,8 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
 
   statusPopoverOpen = false;
 
+  releasingId = '00000000';
+
   releasing: ButcheryReleasing;
   warehouse: Warehouse;
   destinationWarehouse: Warehouse;
@@ -83,11 +85,11 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
       if (butcheryReleasingId > 0) {
         this.releasingsService.getReleasing(butcheryReleasingId).subscribe(
           (resData) => {
-            console.log(resData);
             if (!resData.butcheryReleasingId) {
               this.navCtrl.navigateBack('/tabs/releasings');
               return;
             }
+            this.releasingId = resData.butcheryReleasingId.toString();
             this.releasing.butcheryReleasingId = resData.butcheryReleasingId;
             this.releasing.totalAmount = resData.totalAmount;
             this.releasing.releasingStatus = resData.releasingStatus;

@@ -196,8 +196,8 @@
   </div>
 
   <div class="receipt-header">
-    <div class="receipt-date">Oct 14, 2022 06:22 AM</div>
-    <div class="receipt-no">00000001</div>
+    <div class="receipt-date">{{ releasing.dateCreated | date:'MMM dd, yyyy hh:mm a' }}</div>
+    <div class="receipt-no">{{ releasingId.toString().padStart(8, "0") }}</div>
   </div>
 
   <div class="separator"></div>

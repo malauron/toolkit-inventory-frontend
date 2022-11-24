@@ -78,7 +78,10 @@
             <ion-avatar slot="start">
               <img src="../../assets/icons/items.svg" class="icon" />
             </ion-avatar>
-            <ion-label>{{ item.item.itemName }}</ion-label>
+            <ion-label>
+              <ion-card-subtitle class="font-x-small">{{ item.item.itemCode }}</ion-card-subtitle>
+              <ion-card-title class="font-small">{{ item.item.itemName }}</ion-card-title>
+            </ion-label>
           </ion-item>
           <ion-item mode="ios" class="add-deduct-qty">
             <ion-spinner mode="ios" name="bubbles" color="primary" *ngIf="item.isUpdatePrice"></ion-spinner>
