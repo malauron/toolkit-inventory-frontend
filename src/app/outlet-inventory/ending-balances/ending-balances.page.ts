@@ -7,14 +7,18 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonSearchbar, ModalController, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  IonSearchbar,
+  ModalController,
+  ToastController,
+} from '@ionic/angular';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Warehouse } from 'src/app/classes/warehouse.model';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
 import { InventoryItemDto } from '../classes/inventory-item-dto.model';
-import { InventoryItem } from '../classes/inventory-item.model';
 import { InventoryItemsService } from '../services/inventory-items.service';
 
 @Component({
@@ -26,7 +30,6 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
   @ViewChild('printButton') printButton: ElementRef;
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('inventoryItemSearchBar', { static: true })
-
   inventoryItemSearchBar: IonSearchbar;
 
   inventoryItemSearchBarSub: Subscription;
@@ -50,7 +53,8 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
     private modalSearch: ModalController,
     private inventoryItemsService: InventoryItemsService,
     private config: AppParamsConfig,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
@@ -87,10 +91,20 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
       this.messageBox('Please select a warehouse.');
       return;
     }
-    this.router.navigate(['/', 'tabs', 'ending-balances', 'inventory-print-view', this.warehouse.warehouseId]);
+    this.router.navigate([
+      '/',
+      'tabs',
+      'ending-balances',
+      'inventory-print-view',
+      this.warehouse.warehouseId,
+    ]);
   }
 
   onWarehouseSearch() {
+    if (this.isFetching) {
+      return;
+    }
+
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.modalSearch
@@ -132,8 +146,7 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
     this.inventoryItemsService
       .getInventoryItemsByPage(searchDesc, warehouseId, pageNumber, pageSize)
       .subscribe((res) => {
-
-        res._embedded.inventoryItems.forEach(item => {
+        res._embedded.inventoryItems.forEach((item) => {
           const invItem = new InventoryItemDto();
           invItem.inventoryItemId = item.inventoryItemId;
           invItem.item = item.item;
@@ -143,7 +156,7 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
           invItem.endingQty = item.endingQty;
           invItem.cost = item.cost;
           invItem.price = item.price;
-          invItem.qty = 0.00;
+          invItem.qty = 0.0;
           invItem.isUpdateQty = false;
           invItem.isUpdatePrice = false;
           this.inventoryItems = this.inventoryItems.concat(invItem);
@@ -178,11 +191,11 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
     if (invItem.isUpdateQty) {
       return;
     }
-    if(invItem.qty === undefined) {
+    if (invItem.qty === undefined) {
       this.messageBox('Please enter a valid number.');
       return;
     }
-    if(invItem.qty === null) {
+    if (invItem.qty === null) {
       this.messageBox('Please enter a valid number.');
       return;
     }
@@ -195,25 +208,28 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
       return;
     }
     invItem.isUpdateQty = true;
-    this.inventoryItemsService.setEndingQty(invItem).subscribe(res => {
-      invItem.endingQty = invItem.endingQty + invItem.qty;
-      invItem.qty = 0;
-      invItem.isUpdateQty = false;
-    },err => {
-      this.messageBox('Unable to communicate with the server.');
-      invItem.isUpdateQty = false;
-    });
+    this.inventoryItemsService.setEndingQty(invItem).subscribe(
+      (res) => {
+        invItem.endingQty = invItem.endingQty + invItem.qty;
+        invItem.qty = 0;
+        invItem.isUpdateQty = false;
+      },
+      (err) => {
+        this.messageBox('Unable to communicate with the server.');
+        invItem.isUpdateQty = false;
+      }
+    );
   }
 
   onUpdatePrice(invItem: InventoryItemDto) {
     if (invItem.isUpdatePrice) {
       return;
     }
-    if(invItem.price === undefined) {
+    if (invItem.price === undefined) {
       this.messageBox('Please enter a valid number.');
       return;
     }
-    if(invItem.price === null) {
+    if (invItem.price === null) {
       this.messageBox('Please enter a valid number.');
       return;
     }
@@ -226,13 +242,70 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
       return;
     }
     invItem.isUpdatePrice = true;
-    this.inventoryItemsService.setPrice(invItem).subscribe(res => {
-      this.messageBox('Price has been updated successfully.');
-      invItem.isUpdatePrice = false;
-    },err => {
-      this.messageBox('Unable to communicate with the server.');
-      invItem.isUpdatePrice = false;
-    });
+    this.inventoryItemsService.setPrice(invItem).subscribe(
+      (res) => {
+        this.messageBox('Price has been updated successfully.');
+        invItem.isUpdatePrice = false;
+      },
+      (err) => {
+        this.messageBox('Unable to communicate with the server.');
+        invItem.isUpdatePrice = false;
+      }
+    );
+  }
+
+  onFinalizeInventory() {
+
+    if (this.isFetching) {
+      return;
+    }
+
+    if (this.warehouse.warehouseId !== undefined) {
+    console.log(this.isFetching);
+      this.alertCtrl.create({
+        header: 'Confirm',
+        message:
+          'This will finalize ' + this.warehouse.warehouseName + ' inventory.',
+        buttons: [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'Finalize',
+            handler: () => {
+              this.isFetching = true;
+              this.infiniteScroll.disabled = false;
+              this.inventoryItems = [];
+              this.pageNumber = 0;
+              this.totalPages = 0;
+
+              const invItem = new InventoryItemDto();
+
+              invItem.warehouse = this.warehouse;
+
+              this.inventoryItemsService.setQty(invItem).subscribe(
+                (res) => {
+                  this.getInventoryItemsByPage(
+                    undefined,
+                    undefined,
+                    this.warehouse.warehouseId,
+                    this.pageNumber,
+                    this.config.pageSize
+                  );
+                },
+                (err) => {
+                  this.isFetching = false;
+                }
+              );
+
+            },
+          },
+        ],
+      })
+      .then(res => {
+        res.present();
+      });
+    }
   }
 
   async messageBox(messageDescription: string) {

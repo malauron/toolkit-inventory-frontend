@@ -48,16 +48,4 @@ export class InventoryPrintViewPage implements OnInit {
 
   }
 
-  onFinalizeInventory() {
-    const invItem = new InventoryItem();
-    const whse = new Warehouse();
-
-    whse.warehouseId = this.warehouse.warehouseId;
-    whse.warehouseName = this.warehouse.warehouseName;
-
-    invItem.warehouse = whse;
-
-    this.inventoryItemsService.setQty(invItem).subscribe();
-  }
-
 }
