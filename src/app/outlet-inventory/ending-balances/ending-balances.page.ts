@@ -207,6 +207,10 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
       this.messageBox('Please enter a number other than zero.');
       return;
     }
+    if (invItem.beginningQty <=0 && invItem.purchasedQty <=0) {
+      this.messageBox('Item has no beginning quantity and purchases.');
+      return;
+    }
     invItem.isUpdateQty = true;
     this.inventoryItemsService.setEndingQty(invItem).subscribe(
       (res) => {
