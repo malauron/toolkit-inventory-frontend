@@ -71,7 +71,9 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.itemSubscription.unsubscribe();
+    if (this.item.itemId > 0) {
+      this.itemSubscription.unsubscribe();
+    }
     this.uomSubscription.unsubscribe();
     this.genericUomSubscription.unsubscribe();
   }
@@ -81,7 +83,6 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     this.itemUoms = [];
     this.itemBoms = [];
     this.itemGeneric = new ItemGeneric();
-
 
     this.route.paramMap.subscribe((paramMap) => {
       // Check whether paramMap is empty or not
@@ -110,7 +111,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
         }),
         itemName: new FormControl(null, {
           updateOn: 'blur',
-          validators: [Validators.required, Validators.maxLength(50)],
+          validators: [Validators.required, Validators.maxLength(80)],
         }),
         uom: new FormControl(
           { value: null, disabled: this.lockControls },
@@ -344,7 +345,6 @@ export class ItemDetailPage implements OnInit, OnDestroy {
         if (this.item.itemId > 0) {
           this.itemService.putItem(itemDto).subscribe(this.processSaveItem());
         } else {
-
           this.item.itemClass = this.itemForm.value.itemClass;
           this.item.uom = this.itemForm.value.uom;
 
