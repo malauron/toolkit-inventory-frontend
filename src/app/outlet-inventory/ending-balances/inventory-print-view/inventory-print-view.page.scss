@@ -79,3 +79,10 @@
 .grand-total .total-cost {
   text-align: end;
 }
+
+
+#printDiv {
+  /* hide the printing component from @media screen */
+  display: none;
+  visibility: hidden;
+}

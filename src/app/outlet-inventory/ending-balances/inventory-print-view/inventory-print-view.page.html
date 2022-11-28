@@ -7,25 +7,31 @@
       ></ion-back-button>
     </ion-buttons>
     <ion-title>Print Preview</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="printPage()">
+        <ion-icon name="print-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
 
-  <!-- <div id="printDiv" class="navbar">
+
+  <div id="printDiv" class="navbar">
     <button
       #printButton
       styleSheetFile="assets/css/inventories-print-preview.component.css"
-      printSectionId="print"
+      printSectionId="print-current-inventory"
       ngxPrint
       class="split"
     >
       <img src="../../../assets/icons/printer.svg" />
     </button>
-  </div> -->
+  </div>
 
-  <div id="print">
+  <div id="print-current-inventory">
     <div class="inventory-report">
       <div class="inventory-header">
         <div class="inventory-detail">

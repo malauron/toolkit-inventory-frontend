@@ -265,7 +265,7 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
     }
 
     if (this.warehouse.warehouseId !== undefined) {
-    console.log(this.isFetching);
+
       this.alertCtrl.create({
         header: 'Confirm',
         message:

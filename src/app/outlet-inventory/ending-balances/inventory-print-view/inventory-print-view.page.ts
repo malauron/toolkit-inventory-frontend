@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Warehouse } from 'src/app/classes/warehouse.model';
@@ -12,6 +12,7 @@ import { InventoryItemsService } from '../../services/inventory-items.service';
   styleUrls: ['./inventory-print-view.page.scss'],
 })
 export class InventoryPrintViewPage implements OnInit {
+  @ViewChild('printButton') printButton: ElementRef;
 
   warehouse = new Warehouse();
 
@@ -28,7 +29,6 @@ export class InventoryPrintViewPage implements OnInit {
 
     this.route.paramMap.subscribe(paramMap => {
 
-      console.log(paramMap);
       if (isNaN(Number(paramMap.get('warehouseId')))) {
         this.navCtrl.navigateBack('/tabs/ending-balances');
         return;
@@ -46,6 +46,13 @@ export class InventoryPrintViewPage implements OnInit {
 
     });
 
+  }
+
+  printPage() {
+    if (this.warehouse.warehouseId) {
+      console.log('done');
+      this.printButton.nativeElement.click();
+    }
   }
 
 }

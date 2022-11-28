@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -63,6 +64,10 @@ const routes: Routes = [
       {
         path: 'ending-balances',
         loadChildren: () => import('../outlet-inventory/ending-balances/ending-balances.module').then( m => m.EndingBalancesPageModule)
+      },
+      {
+        path: 'inventory-history',
+        loadChildren: () => import('../outlet-inventory/inventory-history/inventory-history.module').then( m => m.InventoryHistoryPageModule)
       },
       {
         path: '',

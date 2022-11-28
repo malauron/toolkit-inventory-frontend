@@ -4,7 +4,7 @@
       <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/releasings"></ion-back-button>
     </ion-buttons>
     <ion-title>Releasing Details</ion-title>
-    <ion-buttons slot="primary">
+    <ion-buttons slot="primary" *ngIf="!isFetching && !isUploading">
       <ion-button (click)="onSaveReleasing()" *ngIf="!releasing.butcheryReleasingId" [disabled]="isUploading">
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
