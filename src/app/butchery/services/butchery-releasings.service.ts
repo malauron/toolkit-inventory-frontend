@@ -103,6 +103,11 @@ export class ButcheryReleasingsService {
     return this.http.put<ButcheryReleasingDto>(this.apiUrl, releasingDto);
   }
 
+  getReleasingItems(id: number): Observable<ButcheryReleasingItem[]> {
+    this.apiUrl = `${this.config.urlV1ButcheryReleasingItems}?butcheryReleasingId=${id}`;
+    return this.http.get<ButcheryReleasingItem[]>(this.apiUrl);
+  }
+
   putReleasingItem(releasingItem: ButcheryReleasingItem): Observable<ButcheryReleasingDto> {
     this.apiUrl = `${this.config.urlV1ButcheryReleasingItems}`;
     return this.http.put<ButcheryReleasingDto>(this.apiUrl, releasingItem);

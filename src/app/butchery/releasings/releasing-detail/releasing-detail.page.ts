@@ -15,6 +15,7 @@ import { CustomerSearchComponent } from 'src/app/customers/customer-search/custo
 import { ItemsService } from 'src/app/services/items.service';
 import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
 import { ButcheryReleasingDto } from '../../classes/butchery-releasing-dto.model';
+import { ButcheryReleasingItemPrint } from '../../classes/butchery-releasing-item-print.model';
 import { ButcheryReleasingItem } from '../../classes/butchery-releasing-item.model';
 import { ButcheryReleasing } from '../../classes/butchery-releasing.model';
 import { ReleasingDetailsConfig } from '../../config/releasing-details.config';
@@ -38,6 +39,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
   destinationWarehouse: Warehouse;
   // customer: Customer;
   releasingItems: ButcheryReleasingItem[] = [];
+  receiptReleasingItems: ButcheryReleasingItemPrint[] = [];
   releasingDetailsConfig: ReleasingDetailsConfig;
 
   isUploading = false;
@@ -509,7 +511,61 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
   }
 
   printPage() {
-    window.print();
+    if (this.releasing.butcheryReleasingId !== undefined) {
+      const releasingId = this.releasing.butcheryReleasingId;
+
+      this.receiptReleasingItems = [];
+
+      this.releasingsService.getReleasingItems(releasingId).subscribe((res) => {
+        const relItem = new ButcheryReleasingItemPrint();
+
+        let prevItemId = 0;
+        let runningItemQty = 0;
+        let i = 1;
+
+        res.forEach((item) => {
+          relItem.butcheryReleasingItemId = item.butcheryReleasingItemId;
+          relItem.item = item.item;
+          relItem.barcode = item.barcode;
+          relItem.itemClass = item.itemClass;
+          relItem.baseUom = item.baseUom;
+          relItem.baseQty = item.baseQty;
+          relItem.cost = item.cost;
+          relItem.requiredUom = item.requiredUom;
+          relItem.releasedQty = item.releasedQty;
+          relItem.itemPrice = item.itemPrice;
+          relItem.totalAmount = item.totalAmount;
+          relItem.isSubTotal = false;
+          this.receiptReleasingItems =
+            this.receiptReleasingItems.concat(relItem);
+
+          if (
+            (prevItemId === 0 ||
+            prevItemId === item.item.itemId)
+          ) {
+            runningItemQty = runningItemQty + item.releasedQty;
+          } else {
+            const subTtl = new ButcheryReleasingItemPrint();
+
+            subTtl.isSubTotal = true;
+            subTtl.runningItemQty = runningItemQty;
+            this.receiptReleasingItems =
+              this.receiptReleasingItems.concat(subTtl);
+
+            runningItemQty = 0;
+          }
+
+          i = i + 1;
+          prevItemId = item.item.itemId;
+        });
+
+        console.log(this.receiptReleasingItems);
+
+        setTimeout(() => {
+          window.print();
+        }, 2000);
+      });
+    }
   }
 
   messageBox(msg: string) {
