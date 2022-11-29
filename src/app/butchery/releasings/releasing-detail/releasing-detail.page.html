@@ -8,7 +8,7 @@
       <ion-button (click)="onSaveReleasing()" *ngIf="!releasing.butcheryReleasingId" [disabled]="isUploading">
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button (click)="printPage()" *ngIf="releasing.releasingStatus === 'Posted'">
+      <ion-button (click)="printPage()" *ngIf="releasing.releasingStatus === 'Posted' && !isFetching">
         <ion-icon name="print-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -201,6 +201,7 @@
 
   <div class="separator"></div>
   <div class="desc-one" *ngFor="let item of receiptReleasingItems">
+
     <div class="item-detail" *ngIf="!item.isSubTotal">
       <div class="barcode">{{ item.barcode }}</div>
       <div class="price">{{ item.totalAmount| number:'1.2-2' }}</div>
@@ -211,9 +212,9 @@
           }}</div>
       </div>
     </div>
-    <div class="item-subTotal" *ngIf="item.isSubTotal">
+    <div class="item-subTotal separator" *ngIf="item.isSubTotal">
       <div class="barcode">Total Wt.</div>
-      <div class="price">{{ item.runningItemQty |  number:'1.2-2' }}</div>
+      <div class="price">{{ item.runningItemQty |  number:'1.0-3' }}</div>
     </div>
   </div>
 

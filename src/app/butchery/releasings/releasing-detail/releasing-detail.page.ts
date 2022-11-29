@@ -512,18 +512,36 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
 
   printPage() {
     if (this.releasing.butcheryReleasingId !== undefined) {
+      this.isFetching = true;
       const releasingId = this.releasing.butcheryReleasingId;
 
       this.receiptReleasingItems = [];
 
       this.releasingsService.getReleasingItems(releasingId).subscribe((res) => {
-        const relItem = new ButcheryReleasingItemPrint();
 
         let prevItemId = 0;
         let runningItemQty = 0;
+        let itemCtr = 0;
         let i = 1;
 
         res.forEach((item) => {
+          const relItem = new ButcheryReleasingItemPrint();
+
+          if (
+            (prevItemId !== 0 &&
+            prevItemId !== item.item.itemId)
+          ) {
+            const subTtl = new ButcheryReleasingItemPrint();
+
+            subTtl.isSubTotal = true;
+            subTtl.runningItemQty = runningItemQty;
+            this.receiptReleasingItems =
+              this.receiptReleasingItems.concat(subTtl);
+
+            runningItemQty = 0;
+
+          }
+
           relItem.butcheryReleasingItemId = item.butcheryReleasingItemId;
           relItem.item = item.item;
           relItem.barcode = item.barcode;
@@ -539,30 +557,25 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
           this.receiptReleasingItems =
             this.receiptReleasingItems.concat(relItem);
 
-          if (
-            (prevItemId === 0 ||
-            prevItemId === item.item.itemId)
-          ) {
-            runningItemQty = runningItemQty + item.releasedQty;
-          } else {
-            const subTtl = new ButcheryReleasingItemPrint();
+          runningItemQty = runningItemQty + item.releasedQty;
+          itemCtr++;
 
+          if (i === res.length) {
+            const subTtl = new ButcheryReleasingItemPrint();
             subTtl.isSubTotal = true;
             subTtl.runningItemQty = runningItemQty;
             this.receiptReleasingItems =
               this.receiptReleasingItems.concat(subTtl);
-
-            runningItemQty = 0;
           }
+
 
           i = i + 1;
           prevItemId = item.item.itemId;
         });
 
-        console.log(this.receiptReleasingItems);
-
         setTimeout(() => {
           window.print();
+          this.isFetching = false;
         }, 2000);
       });
     }

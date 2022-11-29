@@ -122,7 +122,7 @@ ion-popover {
       }
     }
 
-    .desc-one {
+    .desc-one, .item-detail, .item-subTotal {
       width: 240px;
       margin-top: 5px;
       display: grid;
@@ -135,6 +135,10 @@ ion-popover {
       .price {
         text-align: right;
       }
+    }
+
+    .item-subTotal {
+      padding-bottom: 20px;
     }
 
     .total {
