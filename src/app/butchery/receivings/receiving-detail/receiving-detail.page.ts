@@ -235,9 +235,11 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
                   this.dataHaveChanged = true;
                   this.receiving.receivingStatus = res.receivingStatus;
                   if (this.receiving.receivingStatus === 'Unposted') {
-                    this.receivingItems = this.receivingItems.concat(
-                      res.butcheryReceivingItem
-                    );
+                    // this.receivingItems = this.receivingItems.concat(
+                    //   res.butcheryReceivingItem
+                    // );
+                    this.receivingItems.unshift(res.butcheryReceivingItem);
+
                     this.getTotalAmt();
                     this.messageBox('New receivedd item has been added.');
                   } else {
@@ -248,7 +250,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
                   }
                 });
             } else {
-              this.receivingItems = this.receivingItems.concat(receivedItem);
+              // this.receivingItems = this.receivingItems.concat(receivedItem);
+              this.receivingItems.unshift(receivedItem);
+
               this.getTotalAmt();
             }
           }
@@ -482,6 +486,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     if (!this.modalOpen) {
       this.modalOpen = true;
 
+      console.log(pItem);
       const receivedItemDetail = new ReceivedItemDetail();
 
       receivedItemDetail.item = pItem.item;

@@ -46,6 +46,16 @@
             >
           </ion-item>
 
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              name="calendar-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+              <p>{{ releasing.dateCreated | date:'MMM dd, yyyy hh:mm a' }}</p>
+          </ion-item>
+
           <!-- <ion-item lines="none">
             <ion-icon
               class="contactIcon"

@@ -162,9 +162,11 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
           this.dataHaveChanged = true;
           this.releasing.releasingStatus = res.releasingStatus;
           if (this.releasing.releasingStatus === 'Unposted') {
-            this.releasingItems = this.releasingItems.concat(
-              res.butcheryReleasingItem
-            );
+            // this.releasingItems = this.releasingItems.concat(
+            //   res.butcheryReleasingItem
+            // );
+
+            this.releasingItems.unshift(res.butcheryReleasingItem);
             this.getTotalAmt();
             this.messageBox('New releasing item has been added.');
           } else {
@@ -175,7 +177,8 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
           }
         });
     } else {
-      this.releasingItems = this.releasingItems.concat(releasingItem);
+      // this.releasingItems = this.releasingItems.concat(releasingItem);
+      this.releasingItems.unshift(releasingItem);
       this.getTotalAmt();
     }
   }
@@ -519,6 +522,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
 
       this.releasingsService.getReleasingItems(releasingId).subscribe((res) => {
 
+        let prevUom = null;
         let prevItemId = 0;
         let runningItemQty = 0;
         let itemCtr = 0;
@@ -527,18 +531,22 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
         res.forEach((item) => {
           const relItem = new ButcheryReleasingItemPrint();
 
+          //Display subtotal
           if (
             (prevItemId !== 0 &&
             prevItemId !== item.item.itemId)
           ) {
-            const subTtl = new ButcheryReleasingItemPrint();
+            const subTtlQty = new ButcheryReleasingItemPrint();
 
-            subTtl.isSubTotal = true;
-            subTtl.runningItemQty = runningItemQty;
+            subTtlQty.isSubTotal = true;
+            subTtlQty.totalUom = prevUom;
+            subTtlQty.runningEntries = itemCtr;
+            subTtlQty.runningItemQty = runningItemQty;
             this.receiptReleasingItems =
-              this.receiptReleasingItems.concat(subTtl);
+              this.receiptReleasingItems.concat(subTtlQty);
 
             runningItemQty = 0;
+            itemCtr = 0;
 
           }
 
@@ -557,20 +565,25 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
           this.receiptReleasingItems =
             this.receiptReleasingItems.concat(relItem);
 
+          prevUom = item.requiredUom;
           runningItemQty = runningItemQty + item.releasedQty;
           itemCtr++;
 
+          //Display subtotal after the last item
           if (i === res.length) {
-            const subTtl = new ButcheryReleasingItemPrint();
-            subTtl.isSubTotal = true;
-            subTtl.runningItemQty = runningItemQty;
+            const subTtlQty = new ButcheryReleasingItemPrint();
+            subTtlQty.isSubTotal = true;
+            subTtlQty.totalUom = prevUom;
+            subTtlQty.runningEntries = itemCtr;
+            subTtlQty.runningItemQty = runningItemQty;
             this.receiptReleasingItems =
-              this.receiptReleasingItems.concat(subTtl);
+              this.receiptReleasingItems.concat(subTtlQty);
           }
 
 
           i = i + 1;
           prevItemId = item.item.itemId;
+
         });
 
         setTimeout(() => {

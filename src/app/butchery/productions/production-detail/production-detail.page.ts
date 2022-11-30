@@ -158,9 +158,10 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           this.dataHaveChanged = true;
           this.production.productionStatus = res.productionStatus;
           if (this.production.productionStatus === 'Unposted') {
-            this.productionItems = this.productionItems.concat(
-              res.butcheryProductionItem
-            );
+            // this.productionItems = this.productionItems.concat(
+            //   res.butcheryProductionItem
+            // );
+            this.productionItems.unshift(res.butcheryProductionItem);
             this.getTotalAmt();
             this.messageBox('New production item has been added.');
           } else {
@@ -171,7 +172,8 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           }
         });
     } else {
-      this.productionItems = this.productionItems.concat(productionItem);
+      // this.productionItems = this.productionItems.concat(productionItem);
+      this.productionItems.unshift(productionItem);
       this.getTotalAmt();
     }
   }
@@ -220,10 +222,11 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           this.dataHaveChanged = true;
           this.production.productionStatus = res.productionStatus;
           if (this.production.productionStatus === 'Unposted') {
-            this.productionSources = this.productionSources.concat(
-              res.butcheryProductionSourceView
-            );
-            // this.getTotalAmt();
+            // this.productionSources = this.productionSources.concat(
+            //   res.butcheryProductionSourceView
+            // );
+
+            this.productionSources.unshift(res.butcheryProductionSourceView);
             this.messageBox('New production source has been added.');
           } else {
             this.messageBox(
@@ -233,7 +236,8 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           }
         });
     } else {
-      this.productionSources = this.productionSources.concat(productionSource);
+      // this.productionSources = this.productionSources.concat(productionSource);
+      this.productionSources.unshift(productionSource);
     }
   }
 

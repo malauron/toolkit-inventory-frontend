@@ -212,9 +212,9 @@
           }}</div>
       </div>
     </div>
-    <div class="item-subTotal separator" *ngIf="item.isSubTotal">
-      <div class="barcode">Total Wt.</div>
-      <div class="price">{{ item.runningItemQty |  number:'1.0-3' }}</div>
+    <div class="item-subTotal separator" *ngIf="item.isSubTotal && item.runningEntries > 1">
+      <div class="barcode">{{ item.runningEntries }} items.</div>
+      <div class="price">{{ item.runningItemQty |  number:'1.0-3' }}{{ item.totalUom.uomCode }}</div>
     </div>
   </div>
 

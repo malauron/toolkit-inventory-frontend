@@ -16,6 +16,8 @@ export class ButcheryReleasingItemPrint {
     public itemPrice?: number,
     public totalAmount?: number,
     public isSubTotal?: boolean,
+    public runningEntries?: number,
     public runningItemQty?: number,
+    public totalUom?: Uom,
   ){}
 }
