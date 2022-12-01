@@ -37,7 +37,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
   releasing: ButcheryReleasing;
   warehouse: Warehouse;
   destinationWarehouse: Warehouse;
-  // customer: Customer;
+  customer: Customer;
   releasingItems: ButcheryReleasingItem[] = [];
   receiptReleasingItems: ButcheryReleasingItemPrint[] = [];
   releasingDetailsConfig: ReleasingDetailsConfig;
@@ -68,8 +68,6 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
 
     this.destinationWarehouse = new Warehouse();
 
-    // this.customer = new Customer();
-
     this.releasingDetailsConfig = new ReleasingDetailsConfig();
 
     this.route.paramMap.subscribe((paramMap) => {
@@ -91,6 +89,8 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
               this.navCtrl.navigateBack('/tabs/releasings');
               return;
             }
+
+            this.customer = new Customer();
             this.releasingId = resData.butcheryReleasingId.toString();
             this.releasing.butcheryReleasingId = resData.butcheryReleasingId;
             this.releasing.totalAmount = resData.totalAmount;
@@ -99,7 +99,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
             this.releasing.dateCreated = resData.dateCreated;
             this.warehouse = resData.warehouse;
             this.destinationWarehouse = resData.destinationWarehouse;
-            // this.customer = resData.customer;
+            this.customer = resData.customer;
             this.releasingItems = resData.butcheryReleasingItems;
             this.totalAmount = this.releasing.totalAmount;
             this.isFetching = false;
@@ -200,12 +200,14 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
           }
           this.dataHaveChanged = true;
           if (res.releasingStatus === 'Unposted') {
+            this.releasingId = String(res.butcheryReleasingId);
             this.releasing.releasingStatus = newStatus;
             this.releasingDetailsConfig.setParams(newStatus);
             this.messageBox(
               `ButcheryReleasing has been ${newStatus.toLowerCase()} successfully.`
             );
           } else {
+            this.releasingId = String(res.butcheryReleasingId);
             this.releasing.releasingStatus = res.releasingStatus;
             this.releasingDetailsConfig.setParams(res.releasingStatus);
             this.messageBox(
@@ -285,48 +287,48 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
     }
   }
 
-  // onCustomerSearch() {
-  //   if (!this.modalOpen) {
-  //     this.modalOpen = true;
-  //     this.modalSearch
-  //       .create({ component: CustomerSearchComponent })
-  //       .then((modalSearch) => {
-  //         modalSearch.present();
-  //         return modalSearch.onDidDismiss();
-  //       })
-  //       .then((resultData) => {
-  //         if (resultData.role === 'customer') {
-  //           if (this.releasing.butcheryReleasingId) {
-  //             const releasingDto = new ButcheryReleasingDto();
-  //             releasingDto.butcheryReleasingId =
-  //               this.releasing.butcheryReleasingId;
-  //             releasingDto.customer = resultData.data;
-  //             this.dataHaveChanged = true;
+  onCustomerSearch() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.modalSearch
+        .create({ component: CustomerSearchComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'customer') {
+            if (this.releasing.butcheryReleasingId) {
+              const releasingDto = new ButcheryReleasingDto();
+              releasingDto.butcheryReleasingId =
+                this.releasing.butcheryReleasingId;
+              releasingDto.customer = resultData.data;
+              this.dataHaveChanged = true;
 
-  //             this.releasingsService
-  //               .putReleasing(releasingDto)
-  //               .subscribe((res) => {
-  //                 this.releasing.releasingStatus = res.releasingStatus;
-  //                 if (this.releasing.releasingStatus === 'Unposted') {
-  //                   this.customer = resultData.data;
-  //                   this.messageBox(
-  //                     `Produced items will be delivered to ${this.customer.customerName}.`
-  //                   );
-  //                 } else {
-  //                   this.messageBox(
-  //                     'Unable to update the releasing since its status has been tagged as ' +
-  //                       this.releasing.releasingStatus
-  //                   );
-  //                 }
-  //               });
-  //           } else {
-  //             this.customer = resultData.data;
-  //           }
-  //         }
-  //         this.modalOpen = false;
-  //       });
-  //   }
-  // }
+              this.releasingsService
+                .putReleasing(releasingDto)
+                .subscribe((res) => {
+                  this.releasing.releasingStatus = res.releasingStatus;
+                  if (this.releasing.releasingStatus === 'Unposted') {
+                    this.customer = resultData.data;
+                    this.messageBox(
+                      `Produced items will be delivered to ${this.customer.customerName}.`
+                    );
+                  } else {
+                    this.messageBox(
+                      'Unable to update the releasing since its status has been tagged as ' +
+                        this.releasing.releasingStatus
+                    );
+                  }
+                });
+            } else {
+              this.customer = resultData.data;
+            }
+          }
+          this.modalOpen = false;
+        });
+    }
+  }
 
   onSaveReleasing() {
     if (this.isUploading) {
@@ -360,7 +362,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
     releasingDto.totalAmount = this.totalAmount;
     releasingDto.warehouse = this.warehouse;
     releasingDto.destinationWarehouse = this.destinationWarehouse;
-    // releasingDto.customer = this.customer;
+    releasingDto.customer = this.customer;
     releasingDto.butcheryReleasingItems = this.releasingItems;
 
     this.releasingsService
@@ -370,6 +372,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
 
   onProcessSavedReleasing() {
     return (res: ButcheryReleasing) => {
+      this.releasingId = String(res.butcheryReleasingId);
       this.releasing.butcheryReleasingId = res.butcheryReleasingId;
       this.releasing.releasingStatus = res.releasingStatus;
       this.releasing.totalAmount = res.totalAmount;

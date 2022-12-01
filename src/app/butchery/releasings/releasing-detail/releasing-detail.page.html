@@ -89,19 +89,6 @@
             </ion-button>
           </ion-item>
 
-          <!-- <ion-item lines="none">
-            <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
-            <ion-label class="ion-text-wrap">
-              <ion-card-title>{{ customer.customerName }}</ion-card-title>
-              <h2>{{ customer.contactNo }}</h2>
-              <h2>{{ customer.address }}</h2>
-            </ion-label>
-            <ion-button *ngIf="releasing.releasingStatus === 'Unposted' || releasing.releasingStatus === undefined"
-              (click)="onCustomerSearch()" fill="clear" size="small" mode="ios" id="click-trigger">
-              <ion-icon name="search-outline"></ion-icon>
-            </ion-button>
-          </ion-item> -->
-
           <ion-item lines="none">
             <ion-icon class="contactIcon" name="business-outline" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-text-wrap">
@@ -111,6 +98,20 @@
             <ion-button #statusButton
               *ngIf="releasing.releasingStatus === 'Unposted' || releasing.releasingStatus === undefined"
               (click)="onWarehouseSearch(true)" fill="clear" size="small" mode="ios" id="click-trigger">
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-subtitle *ngIf="releasing.releasingStatus === 'Unposted' || releasing.releasingStatus === undefined">
+                <span *ngIf="!customer">Customer</span>
+              </ion-card-subtitle>
+              <ion-card-title *ngIf="customer">{{ customer.customerName }}</ion-card-title>
+            </ion-label>
+            <ion-button *ngIf="releasing.releasingStatus === 'Unposted' || releasing.releasingStatus === undefined"
+              (click)="onCustomerSearch()" fill="clear" size="small" mode="ios" id="click-trigger">
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
@@ -192,6 +193,13 @@
       <ion-card-subtitle>{{ destinationWarehouse.warehouseName }}</ion-card-subtitle>
     </div>
     <div class="receipt-info">Destination Warehouse</div>
+  </div>
+
+  <div class="receipt-header" *ngIf="customer">
+    <div class="receipt-info">
+      <ion-card-subtitle>{{ customer.customerName }}</ion-card-subtitle>
+    </div>
+    <div class="receipt-info">Customer</div>
   </div>
 
   <div class="receipt-header">
