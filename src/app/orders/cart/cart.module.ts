@@ -16,8 +16,8 @@ import { WarehouseSearchModule } from 'src/app/warehouses/warehouse-search/wareh
     FormsModule,
     IonicModule,
     CartPageRoutingModule,
-    CustomerSearchModule,
-    WarehouseSearchModule
+    // CustomerSearchModule,
+    // WarehouseSearchModule
   ],
   declarations: [CartPage]
 })

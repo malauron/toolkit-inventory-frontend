@@ -1,22 +1,27 @@
 <ion-content>
-    <div class="auth-frame">
-        <div>
-            <ion-img class="logo" src="../../../assets/images/logo.png"></ion-img>
-        </div>
-        <div class="credentials">
-            <ion-item lines="none">
-                <ion-label color="medium" position="fixed">Username</ion-label>
-                <ion-input color="tertiary"></ion-input>
-            </ion-item>
-        </div>
-        <div class="credentials">
-            <ion-item lines="none">
-                <ion-label color="medium" position="fixed">Password</ion-label>
-                <ion-input color="tertiary" type="password"></ion-input>
-            </ion-item>
-        </div>
-        <div class="credentials">
-            <ion-button color="primary">LOGIN</ion-button>
-        </div>
+  <div class="auth-frame">
+    <div>
+      <ion-img class="logo" src="../../../assets/images/logo.png"></ion-img>
     </div>
+    <form [formGroup]="userForm">
+      <div class="credentials">
+        <ion-item lines="none">
+          <ion-label color="medium" position="fixed">Username</ion-label>
+          <ion-input formControlName="username" color="tertiary"></ion-input>
+        </ion-item>
+      </div>
+      <div class="credentials">
+        <ion-item lines="none">
+          <ion-label color="medium" position="fixed">Password</ion-label>
+          <ion-input formControlName="password" color="tertiary" type="password"></ion-input>
+        </ion-item>
+      </div>
+    </form>
+    <div class="credentials">
+      <ion-button (click)="onLogin()" color="primary" [disabled]="this.isLogginIn">
+        <ion-label *ngIf="!this.isLogginIn">LOGIN</ion-label>
+        <ion-spinner name="bubbles" *ngIf="this.isLogginIn"></ion-spinner>
+      </ion-button>
+    </div>
+  </div>
 </ion-content>

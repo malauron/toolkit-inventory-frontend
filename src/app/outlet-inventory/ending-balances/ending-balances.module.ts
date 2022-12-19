@@ -8,6 +8,7 @@ import { EndingBalancesPageRoutingModule } from './ending-balances-routing.modul
 
 import { EndingBalancesPage } from './ending-balances.page';
 import { NgxPrintModule } from 'ngx-print';
+import { WarehouseSearchModule } from 'src/app/warehouses/warehouse-search/warehouse-search.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { NgxPrintModule } from 'ngx-print';
     IonicModule,
     EndingBalancesPageRoutingModule,
     NgxPrintModule,
+    // WarehouseSearchModule
   ],
   declarations: [EndingBalancesPage]
 })
