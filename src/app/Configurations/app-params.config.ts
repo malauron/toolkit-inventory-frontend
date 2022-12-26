@@ -92,7 +92,8 @@ export class AppParamsConfig {
   constructor() {
 
     // this.url = 'http://122.52.134.244:8443/api';
-    this.url = 'http://localhost:8443/api';
+    // this.url = 'http://localhost:8443/api';
+    this.url = 'http://server04:8443/api';
 
     this.urlItems = this.url + '/items';
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;
