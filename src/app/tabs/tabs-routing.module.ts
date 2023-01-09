@@ -70,6 +70,10 @@ const routes: Routes = [
         loadChildren: () => import('../outlet-inventory/inventory-history/inventory-history.module').then( m => m.InventoryHistoryPageModule)
       },
       {
+        path: 'sales',
+        loadChildren: () => import('../pos/sales/sales.module').then( m => m.SalesPageModule)
+      },
+      {
         path: '',
         redirectTo: 'orders',
         pathMatch: 'full'

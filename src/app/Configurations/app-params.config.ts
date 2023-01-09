@@ -41,6 +41,8 @@ export class AppParamsConfig {
   urlInventoryItems: any;
   urlInventoryItemsSearch: any;
   urlInventoryHistories: any;
+  urlPosSales: any;
+  urlPosSalesSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -82,6 +84,9 @@ export class AppParamsConfig {
   urlV1InventoryItemsSetEndingQty: any;
   urlV1InventoryItemsSetPrice: any;
   urlV1InventoryHistories: any;
+  urlV1PosSales: any;
+  urlV1PosSalesSetStatus: any;
+  urlV1PosSaleItems: any;
 
   waitTime: number;
   pageSize: number;
@@ -132,6 +137,8 @@ export class AppParamsConfig {
     this.urlInventoryItems = `${this.url}/inventoryItems`;
     this.urlInventoryItemsSearch = `${this.urlInventoryItems}/search/findByCustomParam?`;
     this.urlInventoryHistories = `${this.url}/inventoryHistories`;
+    this.urlPosSales = `${this.url}/posSales`;
+    this.urlPosSalesSearch = `${this.urlPosSales}/search/findByCustomParam`;
 
     this.urlV1 = `${this.url}/v1`;
 
@@ -171,6 +178,9 @@ export class AppParamsConfig {
     this.urlV1InventoryItems = `${this.urlV1}/inventoryItems`;
     this.urlV1InventoryItemsSetEndingQty = `${this.urlV1InventoryItems}/endingQty`;
     this.urlV1InventoryItemsSetPrice = `${this.urlV1InventoryItems}/price`;
+    this.urlV1PosSales = `${this.urlV1}/posSales`;
+    this.urlV1PosSaleItems = `${this.urlV1}/posSaleItems`;
+    this.urlV1PosSalesSetStatus = `${this.urlV1PosSales}/saleStatus`;
 
     this.waitTime = 500;
     this.pageSize = 20;
