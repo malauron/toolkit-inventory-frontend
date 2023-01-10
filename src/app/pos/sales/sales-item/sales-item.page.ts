@@ -1,26 +1,20 @@
-/* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  IonInput,
-  IonSelect,
-  ModalController,
-  ToastController,
-} from '@ionic/angular';
+import { IonInput, IonSelect, ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/classes/item.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemSearchComponent } from 'src/app/items/item-search/item-search.component';
 import { ItemsService } from 'src/app/services/items.service';
-import { PurchaseItemDetail } from './purchase-item.model';
-import { PurchaseItemService } from './purchase-item.service';
+import { SaleItemDetail } from './sale-item.model';
+import { SaleItemService } from './sale-item.service';
 
 @Component({
-  selector: 'app-purchased-item',
-  templateUrl: './purchased-item.component.html',
-  styleUrls: ['./purchased-item.component.scss'],
+  selector: 'app-sales-item',
+  templateUrl: './sales-item.page.html',
+  styleUrls: ['./sales-item.page.scss'],
 })
-export class PurchasedItemComponent implements OnInit, OnDestroy {
+export class SalesItemPage implements OnInit, OnDestroy {
   @ViewChild('uomSelect', { static: true }) uomSelect: IonSelect;
   @ViewChild('quantityInput', { static: true }) quantityInput: IonInput;
   @ViewChild('costInput', { static: true }) costInput: IonInput;
@@ -38,7 +32,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private itemService: ItemsService,
-    private purchaseItemService: PurchaseItemService,
+    private saleItemService: SaleItemService,
     private modalController: ModalController,
     private toastCtrl: ToastController
   ) {}
@@ -77,7 +71,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
     this.costInputSub = this.costInput.ionFocus.subscribe(this.onCostFocus());
 
     this.purchaseItemSub =
-      this.purchaseItemService.purchaseItemDetail.subscribe((res) => {
+      this.saleItemService.saleItemDetail.subscribe((res) => {
         if (res !== undefined) {
           const itemData = new Item();
           const uomData = new Uom();
@@ -214,7 +208,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
     if (!this.itemForm.valid) {
       this.messageBox('Plrease provide a valid item information.');
     } else {
-      const purchaseItemDetail = new PurchaseItemDetail(
+      const purchaseItemDetail = new SaleItemDetail(
         this.itemForm.value.item,
         this.itemForm.value.uom,
         this.itemForm.value.quantity,
@@ -241,3 +235,4 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
       });
   }
 }
+

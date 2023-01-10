@@ -1,9 +1,9 @@
 import { Item } from 'src/app/classes/item.model';
 import { Uom } from 'src/app/classes/uom.model';
 
-export class ButcheryReleasingItemPrint {
+export class PosSaleItemPrint  {
   constructor(
-    public butcheryReleasingItemId?: number,
+    public posSaleItemId?: number,
     public item?: Item,
     public barcode?: string,
     public itemClass?: string,

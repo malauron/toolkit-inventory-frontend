@@ -8,6 +8,7 @@ import { CustomerSearchComponent } from 'src/app/customers/customer-search/custo
 import { ItemsService } from 'src/app/services/items.service';
 import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
 import { PosSaleDto } from '../../classes/pos-sale-dto.model';
+import { PosSaleItemPrint } from '../../classes/pos-sale-item-print';
 import { PosSaleItem } from '../../classes/pos-sale-item.model';
 import { PosSale } from '../../classes/pos-sale.model';
 import { SaleDetailsConfig } from '../../config/sale-details.config';
@@ -107,20 +108,13 @@ export class SalesDetailPage implements OnInit, OnDestroy {
     if (event && event.key === 'Enter') {
       const fullBarcode = this.itemSearchBar.value;
 
-      if (fullBarcode.length >= 12 && !isNaN(Number(fullBarcode))) {
-        const partialBarcode = fullBarcode.substring(2, 7);
-        const itemQty = Number(
-          fullBarcode.substring(7, 9).concat('.', fullBarcode.substring(9, 12))
-        );
-
-        this.itemsService.getItemByItemCode(partialBarcode).subscribe((res) => {
-          if (res.item) {
-            this.addSaleItem(res, fullBarcode, itemQty);
-          } else {
-            this.messageBox('Item not found!');
-          }
-        });
-      }
+      this.itemsService.getItemByItemCode(fullBarcode).subscribe((res) => {
+        if (res.item) {
+          this.addSaleItem(res, fullBarcode, 1);
+        } else {
+          this.messageBox('Item not found!');
+        }
+      });
 
       this.itemSearchBar.value = '';
     }
@@ -150,10 +144,6 @@ export class SalesDetailPage implements OnInit, OnDestroy {
           this.dataHaveChanged = true;
           this.sale.saleStatus = res.saleStatus;
           if (this.sale.saleStatus === 'Unposted') {
-            // this.saleItems = this.saleItems.concat(
-            //   res.posSaleItem
-            // );
-
             this.saleItems.unshift(res.posSaleItem);
             this.getTotalAmt();
             this.messageBox('New sale item has been added.');
@@ -165,7 +155,6 @@ export class SalesDetailPage implements OnInit, OnDestroy {
           }
         });
     } else {
-      // this.saleItems = this.saleItems.concat(saleItem);
       this.saleItems.unshift(saleItem);
       this.getTotalAmt();
     }
@@ -243,7 +232,7 @@ export class SalesDetailPage implements OnInit, OnDestroy {
                   if (this.sale.saleStatus === 'Unposted') {
                     this.warehouse = resultData.data;
                     this.messageBox(
-                      `Released items will be taken from ${this.warehouse.warehouseName}.`
+                      `Sold items will be taken from ${this.warehouse.warehouseName}.`
                     );
                   } else {
                     this.messageBox(
@@ -304,7 +293,7 @@ export class SalesDetailPage implements OnInit, OnDestroy {
     }
   }
 
-  onSaveReleasing() {
+  onSaveSale() {
     if (this.isUploading) {
       return;
     }
@@ -318,11 +307,6 @@ export class SalesDetailPage implements OnInit, OnDestroy {
       this.messageBox('Please choose a destination warehouse');
       return;
     }
-
-    // if (!this.customer.customerId) {
-    //   this.messageBox('Please choose a customer.');
-    //   return;
-    // }
 
     if (this.saleItems.length <= 0) {
       this.messageBox('Please add at least 1 sale item.');
@@ -340,10 +324,10 @@ export class SalesDetailPage implements OnInit, OnDestroy {
 
     this.salesService
       .postSale(saleDto)
-      .subscribe(this.onProcessSavedReleasing());
+      .subscribe(this.onProcessSavedSale());
   }
 
-  onProcessSavedReleasing() {
+  onProcessSavedSale() {
     return (res: PosSale) => {
       this.saleId = String(res.posSaleId);
       this.sale.posSaleId = res.posSaleId;
@@ -452,7 +436,7 @@ export class SalesDetailPage implements OnInit, OnDestroy {
         let i = 1;
 
         res.forEach((item) => {
-          const relItem = new PosSaleItemPrint();
+          const salItem = new PosSaleItemPrint();
 
           //Display subtotal
           if (
@@ -473,20 +457,20 @@ export class SalesDetailPage implements OnInit, OnDestroy {
 
           }
 
-          relItem.posSaleItemId = item.posSaleItemId;
-          relItem.item = item.item;
-          relItem.barcode = item.barcode;
-          relItem.itemClass = item.itemClass;
-          relItem.baseUom = item.baseUom;
-          relItem.baseQty = item.baseQty;
-          relItem.cost = item.cost;
-          relItem.requiredUom = item.requiredUom;
-          relItem.releasedQty = item.releasedQty;
-          relItem.itemPrice = item.itemPrice;
-          relItem.totalAmount = item.totalAmount;
-          relItem.isSubTotal = false;
+          salItem.posSaleItemId = item.posSaleItemId;
+          salItem.item = item.item;
+          salItem.barcode = item.barcode;
+          salItem.itemClass = item.itemClass;
+          salItem.baseUom = item.baseUom;
+          salItem.baseQty = item.baseQty;
+          salItem.cost = item.cost;
+          salItem.requiredUom = item.requiredUom;
+          salItem.releasedQty = item.releasedQty;
+          salItem.itemPrice = item.itemPrice;
+          salItem.totalAmount = item.totalAmount;
+          salItem.isSubTotal = false;
           this.receiptSaleItems =
-            this.receiptSaleItems.concat(relItem);
+            this.receiptSaleItems.concat(salItem);
 
           prevUom = item.requiredUom;
           runningItemQty = runningItemQty + item.releasedQty;

@@ -1,9 +1,247 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>sales-detail</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/sales"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Sales Details</ion-title>
+    <ion-buttons slot="primary" *ngIf="!isFetching && !isUploading">
+      <ion-button (click)="onSaveSale()" *ngIf="!sale.posSaleId" [disabled]="isUploading">
+        <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button (click)="printPage()" *ngIf="sale.saleStatus === 'Posted' && !isFetching">
+        <ion-icon name="print-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <div class="spinner">
+    <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
+  </div>
 
+  <ion-card *ngIf="!isFetching" class="card-holder">
+    <div class="card-top"></div>
+    <ion-grid>
+      <ion-row>
+        <ion-col size-xs="12" size-xl="4" push-xl="8">
+          <ion-item lines="none" *ngIf="sale.posSaleId">
+            <ion-icon class="contactIcon" name="calendar-outline" color="primary" slot="start"></ion-icon>
+            <ion-label>
+              <ion-label class="ion-text-wrap">{{ sale.dateCreated | date:'MMM dd, yyyy hh:mm a'
+                }}</ion-label>
+            </ion-label>
+          </ion-item>
+
+          <ion-item lines="none" *ngIf="sale.posSaleId">
+            <ion-icon class="cartIcon" name="log-out-outline" color="primary" slot="start"></ion-icon>
+            <ion-label>{{ sale.posSaleId.toString().padStart(8, "0")
+              }}</ion-label>
+
+            <!-- Button to change the status of the sale -->
+            <ion-button #statusButton *ngIf="saleDetailsConfig.saleStatusButton && !isUploading" fill="clear"
+              size="small" mode="ios" (click)="onShowPopOver($event)">
+              <ion-badge [color]="saleDetailsConfig.saleStatusColor">{{sale.saleStatus}}
+              </ion-badge>
+            </ion-button>
+
+            <ion-popover #statusPopover *ngIf="saleDetailsConfig.saleStatusPopover" triggerAction="click"
+              dismissOnSelect="true" [isOpen]="statusPopoverOpen" (didDismiss)="statusPopoverOpen = false">
+              <ng-template>
+                <ion-content>
+                  <ion-list>
+                    <ion-item #postedStatus *ngIf="saleDetailsConfig.postedStatus"
+                      class="ion-text-center ion-no-padding ion-no-margin" lines="full" [button]="true"
+                      (click)="onUpdateStatus('Posted')">
+                      <ion-label>Post</ion-label>
+                    </ion-item>
+                    <ion-item #cancelledStatus *ngIf="saleDetailsConfig.cancelledStatus"
+                      class="ion-text-center ion-no-padding ion-no-margin" lines="none" [button]="true"
+                      (click)="onUpdateStatus('Cancelled')">
+                      <ion-label color="primary">Cancel</ion-label>
+                    </ion-item>
+                  </ion-list>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
+            <!-- **************************************** -->
+
+            <!-- Badge that indicates the status of the sale -->
+            <ion-badge #statusBadge [color]="saleDetailsConfig.saleStatusColor"
+              *ngIf="saleDetailsConfig.saleStatusBadge">
+              {{sale.saleStatus}}
+            </ion-badge>
+            <!-- *************************************** -->
+          </ion-item>
+        </ion-col>
+
+        <ion-col size-xs="12" size-xl="7" pull-xl="4">
+          <ion-item lines="none">
+            <ion-icon class="contactIcon" name="business-outline" color="primary" slot="start"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-subtitle *ngIf="!warehouse.warehouseId">Source Warehouse</ion-card-subtitle>
+              <ion-card-title mode="md">{{ warehouse.warehouseName }}</ion-card-title>
+            </ion-label>
+            <ion-button #statusButton
+              *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined"
+              (click)="onWarehouseSearch()" fill="clear" size="small" mode="ios" id="click-trigger">
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <!-- <ion-item lines="none">
+            <ion-icon class="contactIcon" name="business-outline" color="primary" slot="start"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-subtitle *ngIf="!destinationWarehouse.warehouseId">Destination Warehouse</ion-card-subtitle>
+              <ion-card-title mode="md">{{ destinationWarehouse.warehouseName }}</ion-card-title>
+            </ion-label>
+            <ion-button #statusButton
+              *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined"
+              (click)="onWarehouseSearch(true)" fill="clear" size="small" mode="ios" id="click-trigger">
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item> -->
+
+          <ion-item lines="none">
+            <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-subtitle *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined">
+                <span *ngIf="!customer">Customer</span>
+              </ion-card-subtitle>
+              <ion-card-title *ngIf="customer">{{ customer.customerName }}</ion-card-title>
+            </ion-label>
+            <ion-button *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined"
+              (click)="onCustomerSearch()" fill="clear" size="small" mode="ios" id="click-trigger">
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon class="contactIcon" name="calculator-outline" color="primary" slot="start"></ion-icon>
+            <ion-card-title mode="md">{{ totalAmount | number:'1.2-2' }}</ion-card-title>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-card class="card-holder">
+    <div class="card-top"></div>
+    <ion-card-header class="ion-no-padding">
+      <ion-item lines="none">
+        <ion-card-title class="font-large">Released Items</ion-card-title>
+      </ion-item>
+      <ion-item lines="none"
+        *ngIf="sale.saleStatus === 'Unposted'  || sale.saleStatus === undefined">
+        <ion-searchbar searchIcon="barcode-outline" placeholder="Barcode" (keypress)="onGetItemByItemCode($event)"
+          #itemSearchBar></ion-searchbar>
+        <!-- <ion-button *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined"
+          class="ion-no-padding ion-no-margin" (click)="onAddReleasingItem()" slot="end" mode="ios" fill="clear"
+          size="large" color="success">
+          <ion-icon name="add"></ion-icon>
+        </ion-button> -->
+      </ion-item>
+    </ion-card-header>
+    <div class="separator"></div>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size-xs="12" size-md="6" size-lg="4" *ngFor="let item of saleItems">
+          <ion-card class="card-item">
+            <ion-item lines="none" class="itme-info">
+              <ion-icon class="item-icon" name="barcode-outline" color="primary" slot="start"></ion-icon>
+              <ion-button *ngIf="sale.saleStatus === 'Unposted'  || sale.saleStatus === undefined"
+                (click)="onDeleteSaleItem(item)" class="ion-no-margin ion-no-padding" mode="ios" slot="end"
+                fill="clear" color="medium" size="default">
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+              <ion-card-subtitle>{{item.barcode}}</ion-card-subtitle>
+            </ion-item>
+
+            <ion-item lines="none" class="item-info">
+              <ion-card-title mode="md" class="ion-no-padding ion-no-margin">{{ item.item.itemName }}</ion-card-title>
+            </ion-item>
+            <ion-item lines="none" class="item-info">
+              <ion-card-subtitle class="ion-no-padding ion-no-margin">{{ item.releasedQty }}{{item.requiredUom.uomCode
+                }} @{{
+                item.itemPrice| number:'1.2-2' }}/{{ item.requiredUom.uomCode
+                }}</ion-card-subtitle>
+            </ion-item>
+
+            <ion-item lines="none" class="card-footer">
+              <ion-card-title slot="end" mode="md">{{ item.totalAmount| number:'1.2-2' }}</ion-card-title>
+            </ion-item>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
 </ion-content>
+
+
+<div id="print">
+
+  <div class="receipt-header">
+    <div class="receipt-info">
+      <ion-card-subtitle>{{ warehouse.warehouseName }}</ion-card-subtitle>
+    </div>
+    <div class="receipt-info">Source Warehouse</div>
+  </div>
+
+  <!-- <div class="receipt-header">
+    <div class="receipt-info">
+      <ion-card-subtitle>{{ destinationWarehouse.warehouseName }}</ion-card-subtitle>
+    </div>
+    <div class="receipt-info">Destination Warehouse</div>
+  </div> -->
+
+  <div class="receipt-header" *ngIf="customer">
+    <div class="receipt-info">
+      <ion-card-subtitle>{{ customer.customerName }}</ion-card-subtitle>
+    </div>
+    <div class="receipt-info">Customer</div>
+  </div>
+
+  <div class="receipt-header">
+    <div class="receipt-date">{{ sale.dateCreated | date:'MMM dd, yyyy hh:mm a' }}</div>
+    <div class="receipt-no">{{ saleId.toString().padStart(8, "0") }}</div>
+  </div>
+
+  <div class="separator"></div>
+  <div class="desc-one" *ngFor="let item of receiptSaleItems">
+
+    <div class="item-detail" *ngIf="!item.isSubTotal">
+      <div class="barcode">{{ item.barcode }}</div>
+      <div class="price">{{ item.totalAmount| number:'1.2-2' }}</div>
+      <div>
+        <div>{{ item.item.itemName }}</div>
+        <div>{{ item.releasedQty }}{{item.requiredUom.uomCode }} @{{
+          item.itemPrice| number:'1.2-2' }}/{{ item.requiredUom.uomCode
+          }}</div>
+      </div>
+    </div>
+    <div class="item-subTotal separator" *ngIf="item.isSubTotal && item.runningEntries > 1">
+      <div class="barcode">{{ item.runningEntries }} items.</div>
+      <div class="price">{{ item.runningItemQty |  number:'1.0-3' }}{{ item.totalUom.uomCode }}</div>
+    </div>
+  </div>
+
+  <br>
+  <div class="separator"></div>
+  <div class="separator"></div>
+  <div class="total">
+    <div class="total-desc">
+      <ion-card-subtitle>Total</ion-card-subtitle>
+    </div>
+    <div class="total-amt">
+      <ion-card-subtitle>{{ totalAmount | number:'1.2-2' }}</ion-card-subtitle>
+    </div>
+  </div>
+
+  <div class="received-by">
+    <ion-card-subtitle>Received By:</ion-card-subtitle>
+  </div>
+
+  <div class="company-name">A subsidiary of Eight2Eight Inc.</div>
+
+</div>
