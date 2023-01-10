@@ -13,6 +13,9 @@ import { PosSaleItem } from '../../classes/pos-sale-item.model';
 import { PosSale } from '../../classes/pos-sale.model';
 import { SaleDetailsConfig } from '../../config/sale-details.config';
 import { PosSalesService } from '../../services/pos-sales.service';
+import { SaleItemDetail } from '../sales-item/sale-item.model';
+import { SaleItemService } from '../sales-item/sale-item.service';
+import { SalesItemPage } from '../sales-item/sales-item.page';
 
 @Component({
   selector: 'app-sales-detail',
@@ -46,6 +49,7 @@ export class SalesDetailPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private salesService: PosSalesService,
+    private saleItemService: SaleItemService,
     private modalSearch: ModalController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController
@@ -157,6 +161,57 @@ export class SalesDetailPage implements OnInit, OnDestroy {
     } else {
       this.saleItems.unshift(saleItem);
       this.getTotalAmt();
+    }
+  }
+
+  onAddSaleItem() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.saleItemService.saleItemDetail.next(undefined);
+      this.modalSearch
+        .create({ component: SalesItemPage })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'item') {
+            const item: SaleItemDetail = resultData.data;
+            const saleItem = new PosSaleItem();
+
+            saleItem.item = item.item;
+            saleItem.requiredUom = item.uom;
+            saleItem.purchasedQty = item.quantity;
+            saleItem.purchasePrice = item.price;
+            saleItem.totalAmount = item.quantity * item.price;
+
+            if (this.sale.posSaleId) {
+              saleItem.posSale = this.sale;
+              this.purchaseService
+                .putPurchaseItem(saleItem)
+                .subscribe((res) => {
+                  this.dataHaveChanged = true;
+                  this.purchase.purchaseStatus = res.purchaseStatus;
+                  if (this.purchase.purchaseStatus === 'Unposted') {
+                    this.saleItems = this.saleItems.concat(
+                      res.saleItem
+                    );
+                    this.getTotalAmt();
+                    this.messageBox('New purchased item has been added.');
+                  } else {
+                    this.messageBox(
+                      'Unable to update the purchase since its status has been tagged as ' +
+                        this.purchase.purchaseStatus
+                    );
+                  }
+                });
+            } else {
+              this.saleItems = this.saleItems.concat(saleItem);
+              this.getTotalAmt();
+            }
+          }
+          this.modalOpen = false;
+        });
     }
   }
 
