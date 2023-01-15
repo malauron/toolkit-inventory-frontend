@@ -181,27 +181,27 @@ export class SalesDetailPage implements OnInit, OnDestroy {
 
             saleItem.item = item.item;
             saleItem.requiredUom = item.uom;
-            saleItem.purchasedQty = item.quantity;
-            saleItem.purchasePrice = item.price;
+            saleItem.releasedQty = item.quantity;
+            saleItem.itemPrice = item.price;
             saleItem.totalAmount = item.quantity * item.price;
 
             if (this.sale.posSaleId) {
               saleItem.posSale = this.sale;
-              this.purchaseService
-                .putPurchaseItem(saleItem)
+              this.salesService
+                .putSaleItem(saleItem)
                 .subscribe((res) => {
                   this.dataHaveChanged = true;
-                  this.purchase.purchaseStatus = res.purchaseStatus;
-                  if (this.purchase.purchaseStatus === 'Unposted') {
+                  this.sale.saleStatus = res.saleStatus;
+                  if (this.sale.saleStatus === 'Unposted') {
                     this.saleItems = this.saleItems.concat(
-                      res.saleItem
+                      res.posSaleItem
                     );
                     this.getTotalAmt();
                     this.messageBox('New purchased item has been added.');
                   } else {
                     this.messageBox(
                       'Unable to update the purchase since its status has been tagged as ' +
-                        this.purchase.purchaseStatus
+                        this.sale.saleStatus
                     );
                   }
                 });
