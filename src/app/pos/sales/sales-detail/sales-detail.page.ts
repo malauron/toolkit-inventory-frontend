@@ -62,6 +62,8 @@ export class SalesDetailPage implements OnInit, OnDestroy {
 
     this.warehouse = new Warehouse();
 
+    this.customer = new Customer();
+
     this.saleDetailsConfig = new SaleDetailsConfig();
 
     this.route.paramMap.subscribe((paramMap) => {
@@ -353,13 +355,14 @@ export class SalesDetailPage implements OnInit, OnDestroy {
       return;
     }
 
+    console.log(this.warehouse);
     if (!this.warehouse.warehouseId) {
       this.messageBox('Please choose a warehouse.');
       return;
     }
 
-    if (!this.warehouse.warehouseId) {
-      this.messageBox('Please choose a destination warehouse');
+    if (!this.customer.customerId) {
+      this.messageBox('Please choose a customer.');
       return;
     }
 

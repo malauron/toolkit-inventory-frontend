@@ -39,4 +39,8 @@ export class OptionsPage implements OnInit {
     this.router.navigate(['/', 'tabs', 'inventory-history']);
   }
 
+  onPOS() {
+    this.router.navigate(['/', 'tabs', 'sales']);
+  }
+
 }

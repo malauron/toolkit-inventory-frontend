@@ -104,11 +104,15 @@
 
           <ion-item lines="none">
             <ion-icon class="contactIcon" name="person-outline" color="primary" slot="start"></ion-icon>
-            <ion-label class="ion-text-wrap">
+            <!-- <ion-label class="ion-text-wrap">
               <ion-card-subtitle *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined">
                 <span *ngIf="!customer">Customer</span>
               </ion-card-subtitle>
               <ion-card-title *ngIf="customer">{{ customer.customerName }}</ion-card-title>
+            </ion-label> -->
+            <ion-label class="ion-text-wrap">
+              <ion-card-subtitle *ngIf="!customer.customerId">Customer</ion-card-subtitle>
+              <ion-card-title mode="md">{{ customer.customerName }}</ion-card-title>
             </ion-label>
             <ion-button *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined"
               (click)="onCustomerSearch()" fill="clear" size="small" mode="ios" id="click-trigger">
