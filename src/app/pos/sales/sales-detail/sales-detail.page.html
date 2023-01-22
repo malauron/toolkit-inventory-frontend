@@ -139,11 +139,11 @@
         *ngIf="sale.saleStatus === 'Unposted'  || sale.saleStatus === undefined">
         <ion-searchbar searchIcon="barcode-outline" placeholder="Barcode" (keypress)="onGetItemByItemCode($event)"
           #itemSearchBar></ion-searchbar>
-        <!-- <ion-button *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined"
-          class="ion-no-padding ion-no-margin" (click)="onAddReleasingItem()" slot="end" mode="ios" fill="clear"
+        <ion-button *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined"
+          class="ion-no-padding ion-no-margin" (click)="onAddSaleItem()" slot="end" mode="ios" fill="clear"
           size="large" color="success">
           <ion-icon name="add"></ion-icon>
-        </ion-button> -->
+        </ion-button>
       </ion-item>
     </ion-card-header>
     <div class="separator"></div>

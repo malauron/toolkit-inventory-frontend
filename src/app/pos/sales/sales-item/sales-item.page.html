@@ -1,9 +1,85 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>sales-item</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Purchased Item</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onSavePurchasedItem()">
+        <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card class="card-holder">
+    <div class="card-top"></div>
+    <!-- <ion-list slot="content" class="list-content"> -->
+    <form [formGroup]="itemForm">
+      <ion-item fill="outline">
+        <ion-label position="floating">Item</ion-label>
+        <ion-input
+          (click)="onItemSearch()"
+          readonly="true"
+          formControlName="itemName"
+        ></ion-input>
+        <ion-button
+          mode="ios"
+          class="search-button"
+          slot="end"
+          size="small"
+          fill="clear"
+          (click)="onItemSearch()"
+        >
+          <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item fill="outline">
+        <ion-label position="floating">Uom</ion-label>
+        <ion-select #uomSelect formControlName="uom">
+          <ion-select-option *ngFor="let uom of uoms" [value]="uom">{{
+            uom.uomName
+          }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item fill="outline">
+        <ion-label position="floating">Quantity</ion-label>
+        <ion-input
+          #quantityInput
+          formControlName="quantity"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          value="0"
+        ></ion-input>
+      </ion-item>
+      <ion-item fill="outline">
+        <ion-label position="floating">Cost</ion-label>
+        <ion-input
+          #costInput
+          formControlName="price"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          value="0"
+        ></ion-input>
+      </ion-item>
+    </form>
 
+    <!-- <ion-item lines="none">
+        <ion-button
+          full
+          (click)="onAddItem()"
+          slot="end"
+          size="default"
+          color="success"
+        >
+          Add<ion-icon name="add-outline" slot="start"></ion-icon>
+        </ion-button>
+      </ion-item> -->
+    <!-- </ion-list> -->
+  </ion-card>
 </ion-content>
