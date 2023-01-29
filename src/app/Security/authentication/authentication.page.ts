@@ -23,7 +23,7 @@ export class AuthenticationPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('onInit');
+    // console.log('onInit');
     if (this.authenticationService.isUserLoggedIn()) {
       this.router.navigateByUrl('/tabs/orders');
       return;
