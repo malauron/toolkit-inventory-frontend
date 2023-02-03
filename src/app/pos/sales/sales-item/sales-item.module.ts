@@ -8,6 +8,7 @@ import { SalesItemPageRoutingModule } from './sales-item-routing.module';
 
 import { SalesItemPage } from './sales-item.page';
 import { SaleItemService } from './sale-item.service';
+import { ItemSearchModule } from 'src/app/items/item-search/item-search.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { SaleItemService } from './sale-item.service';
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
-    SalesItemPageRoutingModule
+    SalesItemPageRoutingModule,
+    ItemSearchModule
   ],
   declarations: [SalesItemPage],
   providers: [SaleItemService]

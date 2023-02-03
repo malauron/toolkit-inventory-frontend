@@ -78,6 +78,7 @@ export class SalesItemPage implements OnInit, OnDestroy {
           const reqUomData = new Uom();
 
           itemData.itemId = res.item.itemId;
+          itemData.itemCode = res.item.itemCode;
           itemData.itemName = res.item.itemName;
           itemData.uom = res.item.uom;
 
@@ -145,6 +146,7 @@ export class SalesItemPage implements OnInit, OnDestroy {
             const uomData = new Uom();
 
             itemData.itemId = resultData.data.itemId;
+            itemData.itemCode = resultData.data.itemCode;
             itemData.itemName = resultData.data.itemName;
             itemData.uom = resultData.data.uom;
 
@@ -208,13 +210,13 @@ export class SalesItemPage implements OnInit, OnDestroy {
     if (!this.itemForm.valid) {
       this.messageBox('Plrease provide a valid item information.');
     } else {
-      const purchaseItemDetail = new SaleItemDetail(
+      const saleItemDetail = new SaleItemDetail(
         this.itemForm.value.item,
         this.itemForm.value.uom,
         this.itemForm.value.quantity,
         this.itemForm.value.price
       );
-      this.modalController.dismiss(purchaseItemDetail, 'item');
+      this.modalController.dismiss(saleItemDetail, 'item');
     }
   }
 

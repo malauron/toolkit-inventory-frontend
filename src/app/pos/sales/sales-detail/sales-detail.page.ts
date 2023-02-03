@@ -182,6 +182,7 @@ export class SalesDetailPage implements OnInit, OnDestroy {
             const saleItem = new PosSaleItem();
 
             saleItem.item = item.item;
+            saleItem.barcode = item.item.itemCode;
             saleItem.requiredUom = item.uom;
             saleItem.releasedQty = item.quantity;
             saleItem.itemPrice = item.price;
@@ -355,7 +356,6 @@ export class SalesDetailPage implements OnInit, OnDestroy {
       return;
     }
 
-    console.log(this.warehouse);
     if (!this.warehouse.warehouseId) {
       this.messageBox('Please choose a warehouse.');
       return;
