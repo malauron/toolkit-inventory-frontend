@@ -8,6 +8,7 @@ import { ReceivingDetailPageRoutingModule } from './receiving-detail-routing.mod
 
 import { ReceivingDetailPage } from './receiving-detail.page';
 import { ReceivedItemModule } from '../received-item/received-item.module';
+import { VendorSearchModule } from 'src/app/vendors/vendor-search/vendor-search.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ReceivedItemModule } from '../received-item/received-item.module';
     FormsModule,
     IonicModule,
     ReceivingDetailPageRoutingModule,
-    ReceivedItemModule
+    ReceivedItemModule,
+    VendorSearchModule
   ],
   declarations: [ReceivingDetailPage]
 })
