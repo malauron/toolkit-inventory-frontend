@@ -140,6 +140,8 @@ export class InventoryHistoryPage implements OnInit, OnDestroy {
         res._embedded.inventoryHistories.forEach((item) => {
           const invItem = new InventoryItemDto();
           this.inventoryHistories = this.inventoryHistories.concat(res._embedded.inventoryHistories);
+
+          console.log(1);
         });
         this.totalPages = res.page.totalPages;
         this.isFetching = false;

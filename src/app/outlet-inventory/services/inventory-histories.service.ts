@@ -45,8 +45,11 @@ export class InventoryHistoriesService {
       searchDesc = filterString(searchDesc);
     }
 
+    // this.apiUrl = `${this.config.urlInventoryHistories}/search/findByWarehouseId?` +
+    //                 `warehouseId=${warehouseId}&itemName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+
     this.apiUrl = `${this.config.urlInventoryHistories}/search/findByWarehouseId?` +
-                    `warehouseId=${warehouseId}&itemName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+                    `warehouseId=${warehouseId}&page=${pageNumber}&size=${pageSize}`;
     return this.http.get<ResponseInventoryHistories>(this.apiUrl);
 
   }
