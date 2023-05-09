@@ -47,40 +47,47 @@
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
-          <ion-item lines="none">
+          <!-- <ion-item lines="none">
             <ion-searchbar #searchBar placeholder="Search Inventory Item"></ion-searchbar>
-          </ion-item>
+          </ion-item> -->
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-card>
 
-  <!-- <ion-grid class="inventory-items" *ngIf="inventoryHistories.length>0">
+  <ion-grid class="inventory-items" *ngIf="inventoryHistories.length>0">
     <ion-row>
       <ion-col
         size-xs="12"
-        size-sm="6"
         size-lg="4"
-        size-xl="3"
         *ngFor="let inventory of inventoryHistories"
       >
         <ion-card class="favCard">
           <div class="card-top"></div>
-          <ion-item class="menuName">
+          <ion-item class="menuName" lines="none">
             <ion-avatar slot="start">
-              <img src="../../assets/icons/items.svg" class="icon" />
+              <img src="../../assets/icons/inventory-history.svg" class="icon" />
             </ion-avatar>
             <ion-label>{{ inventory.dateCreated | date:'MMM dd, yyyy hh:mm a' }}</ion-label>
+
+            <ion-button class="menuDetail"
+              mode="ios"
+              size="small"
+              color="secondary"
+              fill="clear"
+              slot="end"
+              ><ion-icon name="chevron-forward-outline"></ion-icon
+            ></ion-button>
           </ion-item>
         </ion-card>
       </ion-col>
     </ion-row>
-  </ion-grid> -->
+  </ion-grid>
 
   <ion-infinite-scroll
     #infiniteScroll
     threshold="5%"
-
+    (ionInfinite)="loadMoreData($event)"
   >
     <ion-infinite-scroll-content
       loadingSpinner="none"
