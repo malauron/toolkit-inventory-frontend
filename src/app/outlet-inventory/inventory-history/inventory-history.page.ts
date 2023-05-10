@@ -50,7 +50,6 @@ export class InventoryHistoryPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.warehouse = new Warehouse();
-
     // this.searchBarSub = this.searchBar.ionInput
     //   .pipe(
     //     map((event) => (event.target as HTMLInputElement).value),
@@ -148,6 +147,10 @@ export class InventoryHistoryPage implements OnInit, OnDestroy {
         }
         this.infiniteScroll.disabled = false;
       });
+  }
+
+  getInventoryHistoryItems(warehouseId?: number) {
+
   }
 
   loadMoreData(event) {
