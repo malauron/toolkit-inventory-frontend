@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/quotes */
 import { Item } from 'src/app/classes/item.model';
 import { Warehouse } from 'src/app/classes/warehouse.model';
 
