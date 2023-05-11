@@ -5,17 +5,17 @@ import { InventoryHistoryPrintViewPage } from './inventory-history-print-view.pa
 
 const routes: Routes = [
   {
-    path: ':warehouseId',
+    path: ':inventoryHistoryId',
     component: InventoryHistoryPrintViewPage
   },
   {
     path: '',
-    redirectTo: '/tabs/ending-balances',
+    redirectTo: '/tabs/inventory-history',
     pathMatch: 'full'
   },
   {
     path: '**',
-    redirectTo: '/tabs/ending-balances',
+    redirectTo: '/tabs/inventory-history',
     pathMatch: 'full'
   }
 ];

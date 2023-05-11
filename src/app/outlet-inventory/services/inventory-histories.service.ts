@@ -5,8 +5,8 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { AppParamsConfig } from "src/app/Configurations/app-params.config";
 import { InventoryHistory } from "../classes/inventory-history.model";
-import { InventoryItem } from "../classes/inventory-item.model";
 import { filterString } from '../utils/utils';
+import { InventoryHistoryItem } from "../classes/inventory-history-item.model";
 
 
 interface ResponseInventoryHistories {
@@ -46,19 +46,16 @@ export class InventoryHistoriesService {
       searchDesc = filterString(searchDesc);
     }
 
-    // this.apiUrl = `${this.config.urlInventoryHistories}/search/findByWarehouseId?` +
-    //                 `warehouseId=${warehouseId}&itemName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
-
     this.apiUrl = `${this.config.urlInventoryHistories}/search/findByWarehouseId?` +
                     `warehouseId=${warehouseId}&page=${pageNumber}&size=${pageSize}`;
     return this.http.get<ResponseInventoryHistories>(this.apiUrl);
 
   }
 
-  getInventoryHistoryItems(warehouseId: number) {
+  getInventoryHistoryItems(inventoryHistoryId: number) {
 
-    this.apiUrl = `${this.config.urlV1InventoryHistories}/inventoryItems?warehouseId=${warehouseId}`;
-    return this.http.get<InventoryItem>(this.apiUrl);
+    this.apiUrl = `${this.config.urlV1InventoryHistoryItems}?inventoryHisotryId=${inventoryHistoryId}`;
+    return this.http.get<InventoryHistoryItem>(this.apiUrl);
 
   }
 

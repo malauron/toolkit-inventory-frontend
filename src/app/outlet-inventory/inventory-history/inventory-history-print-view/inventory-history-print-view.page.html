@@ -34,9 +34,9 @@
   <div id="print-current-inventory">
     <div class="inventory-report">
       <div class="inventory-header">
-        <div class="inventory-detail">
+        <!-- <div class="inventory-detail">
           {{ warehouse.warehouseName }}
-        </div>
+        </div> -->
       </div>
 
       <table id="inventories">
@@ -52,7 +52,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of inventoryItems">
+          <tr *ngFor="let item of inventoryHistoryItems">
             <td class="auto-number"></td>
             <td class="left-aligned">{{ item.item.itemName}}</td>
             <td class="right-aligned">

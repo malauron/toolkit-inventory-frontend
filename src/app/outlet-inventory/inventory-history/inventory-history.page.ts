@@ -76,17 +76,18 @@ export class InventoryHistoryPage implements OnInit, OnDestroy {
     //   });
   }
 
-  onPrintView() {
-    if (this.warehouse.warehouseId === undefined) {
-      this.messageBox('Please select a warehouse.');
-      return;
-    }
+  onPrintView(inventoryHistoryId?: number) {
+    // if (this.warehouse.warehouseId === undefined) {
+    //   this.messageBox('Please select a warehouse.');
+    //   return;
+    // }
+
     this.router.navigate([
       '/',
       'tabs',
-      'ending-balances',
-      'inventory-print-view',
-      this.warehouse.warehouseId,
+      'inventory-history',
+      'inventory-history-print-view',
+      inventoryHistoryId,
     ]);
   }
 
@@ -147,10 +148,6 @@ export class InventoryHistoryPage implements OnInit, OnDestroy {
         }
         this.infiniteScroll.disabled = false;
       });
-  }
-
-  getInventoryHistoryItems(warehouseId?: number) {
-
   }
 
   loadMoreData(event) {

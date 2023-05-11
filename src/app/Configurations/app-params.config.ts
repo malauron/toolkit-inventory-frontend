@@ -84,6 +84,7 @@ export class AppParamsConfig {
   urlV1InventoryItemsSetEndingQty: any;
   urlV1InventoryItemsSetPrice: any;
   urlV1InventoryHistories: any;
+  urlV1InventoryHistoryItems: any;
   urlV1PosSales: any;
   urlV1PosSalesSetStatus: any;
   urlV1PosSaleItems: any;
@@ -178,6 +179,7 @@ export class AppParamsConfig {
     this.urlV1InventoryItems = `${this.urlV1}/inventoryItems`;
     this.urlV1InventoryItemsSetEndingQty = `${this.urlV1InventoryItems}/endingQty`;
     this.urlV1InventoryItemsSetPrice = `${this.urlV1InventoryItems}/price`;
+    this.urlV1InventoryHistoryItems = `${this.urlV1}/inventoryHistoryItems`;
     this.urlV1PosSales = `${this.urlV1}/posSales`;
     this.urlV1PosSaleItems = `${this.urlV1}/posSaleItems`;
     this.urlV1PosSalesSetStatus = `${this.urlV1PosSales}/saleStatus`;

@@ -1,10 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { Warehouse } from 'src/app/classes/warehouse.model';
-import { WarehousesService } from 'src/app/services/warehouses.service';
-import { InventoryItem } from '../../classes/inventory-item.model';
-import { InventoryItemsService } from '../../services/inventory-items.service';
+import { InventoryHistoryItem } from '../../classes/inventory-history-item.model';
+import { InventoryHistoriesService } from '../../services/inventory-histories.service';
 
 @Component({
   selector: 'app-inventory-history-print-view',
@@ -14,34 +12,29 @@ import { InventoryItemsService } from '../../services/inventory-items.service';
 export class InventoryHistoryPrintViewPage implements OnInit {
   @ViewChild('printButton') printButton: ElementRef;
 
-  warehouse = new Warehouse();
-
-  inventoryItems: InventoryItem[] = [];
+  inventoryHistoryItems: InventoryHistoryItem[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
-    private inventoryItemsService: InventoryItemsService,
-    private warehouseService: WarehousesService,
+    private inventoryHistoriesService: InventoryHistoriesService,
   ) { }
 
   ngOnInit() {
 
     this.route.paramMap.subscribe(paramMap => {
 
-      if (isNaN(Number(paramMap.get('warehouseId')))) {
-        this.navCtrl.navigateBack('/tabs/ending-balances');
+      if (isNaN(Number(paramMap.get('inventoryHistoryId')))) {
+        this.navCtrl.navigateBack('/tabs/inventory-history');
         return;
       }
 
-      const warehouseId = +paramMap.get('warehouseId');
+      const inventoryHistoryId = +paramMap.get('inventoryHistoryId');
 
-      this.warehouseService.getWarehouseById(warehouseId).subscribe(res => {
-        this.warehouse = res;
-      });
 
-      this.inventoryItemsService.getAllByWarehouseWithQty(warehouseId).subscribe(res => {
-        this.inventoryItems = this.inventoryItems.concat(res);
+      this.inventoryHistoriesService.getInventoryHistoryItems(inventoryHistoryId).subscribe(res => {
+        this.inventoryHistoryItems = this.inventoryHistoryItems.concat(res);
+        console.log(res);
       });
 
     });
@@ -49,10 +42,10 @@ export class InventoryHistoryPrintViewPage implements OnInit {
   }
 
   printPage() {
-    if (this.warehouse.warehouseId) {
-      console.log('done');
-      this.printButton.nativeElement.click();
-    }
+    // if (this.warehouse.warehouseId) {
+    //   console.log('done');
+    //   this.printButton.nativeElement.click();
+    // }
   }
 
 }
