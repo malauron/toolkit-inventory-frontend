@@ -50,37 +50,9 @@ export class InventoryHistoryPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.warehouse = new Warehouse();
-    // this.searchBarSub = this.searchBar.ionInput
-    //   .pipe(
-    //     map((event) => (event.target as HTMLInputElement).value),
-    //     debounceTime(this.config.waitTime),
-    //     distinctUntilChanged()
-    //   )
-    //   .subscribe((res) => {
-    //     if (this.warehouse.warehouseId) {
-    //       this.searchValue = res.trim();
-    //       this.infiniteScroll.disabled = false;
-    //       this.inventoryHistories = [];
-    //       this.pageNumber = 0;
-    //       this.totalPages = 0;
-    //       this.getInventoryHistories(
-    //         undefined,
-    //         this.searchValue,
-    //         this.warehouse.warehouseId,
-    //         this.pageNumber,
-    //         this.config.pageSize
-    //       );
-    //     } else {
-    //       console.log('no data');
-    //     }
-    //   });
   }
 
   onPrintView(inventoryHistoryId?: number) {
-    // if (this.warehouse.warehouseId === undefined) {
-    //   this.messageBox('Please select a warehouse.');
-    //   return;
-    // }
 
     this.router.navigate([
       '/',
@@ -118,7 +90,7 @@ export class InventoryHistoryPage implements OnInit, OnDestroy {
               this.searchValue,
               this.warehouse.warehouseId,
               this.pageNumber,
-              this.config.pageSize
+              50
             );
           }
           this.modalOpen = false;
@@ -163,7 +135,7 @@ export class InventoryHistoryPage implements OnInit, OnDestroy {
       this.searchValue,
       this.warehouse.warehouseId,
       this.pageNumber,
-      this.config.pageSize
+      50
     );
   }
 

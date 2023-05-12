@@ -34,7 +34,6 @@ export class InventoryHistoryPrintViewPage implements OnInit {
 
       this.inventoryHistoriesService.getInventoryHistoryItems(inventoryHistoryId).subscribe(res => {
         this.inventoryHistoryItems = this.inventoryHistoryItems.concat(res);
-        console.log(res);
       });
 
     });
@@ -42,10 +41,7 @@ export class InventoryHistoryPrintViewPage implements OnInit {
   }
 
   printPage() {
-    // if (this.warehouse.warehouseId) {
-    //   console.log('done');
-    //   this.printButton.nativeElement.click();
-    // }
+    this.printButton.nativeElement.click();
   }
 
 }

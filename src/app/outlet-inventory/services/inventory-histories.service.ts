@@ -54,7 +54,7 @@ export class InventoryHistoriesService {
 
   getInventoryHistoryItems(inventoryHistoryId: number) {
 
-    this.apiUrl = `${this.config.urlV1InventoryHistoryItems}?inventoryHisotryId=${inventoryHistoryId}`;
+    this.apiUrl = `${this.config.urlV1InventoryHistoryItems}?inventoryHistoryId=${inventoryHistoryId}`;
     return this.http.get<InventoryHistoryItem>(this.apiUrl);
 
   }
