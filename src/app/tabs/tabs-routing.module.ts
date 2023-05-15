@@ -74,6 +74,10 @@ const routes: Routes = [
         loadChildren: () => import('../pos/sales/sales.module').then( m => m.SalesPageModule)
       },
       {
+        path: 'item-prices',
+        loadChildren: () => import('../pos/item-prices/item-prices.module').then(m => m.ItemPricesPageModule)
+      },
+      {
         path: '',
         redirectTo: 'orders',
         pathMatch: 'full'

@@ -23,7 +23,11 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'authentication',
     pathMatch: 'full'
+  },  {
+    path: 'item-prices',
+    loadChildren: () => import('./pos/item-prices/item-prices.module').then( m => m.ItemPricesPageModule)
   },
+
 
 
 ];

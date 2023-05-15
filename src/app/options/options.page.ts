@@ -43,4 +43,8 @@ export class OptionsPage implements OnInit {
     this.router.navigate(['/', 'tabs', 'sales']);
   }
 
+  onItemPrices() {
+    this.router.navigate(['/', 'tabs', 'item-prices']);
+  }
+
 }
