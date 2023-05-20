@@ -38,7 +38,13 @@
           </ion-button>
         </ion-item>
         <ion-item lines="none">
-          <ion-searchbar placeholder="Search Item"></ion-searchbar>
+          <ion-icon class="contractIcon" src="../../assets/icons/items.svg" color="primary" slot="start"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <ion-card-title mode="md">{{ item.itemName }}</ion-card-title>
+          </ion-label>
+          <ion-button #statusButton (click)="onItemSearch()" fill="clear" size="small" mode="ios" id="click-trigger" *ngIf="!isFetching">
+            <ion-icon name="search-outline"></ion-icon>
+          </ion-button>
         </ion-item>
       </ion-col>
     </ion-row>

@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ItemPricesPageRoutingModule } from './item-prices-routing.module';
 
 import { ItemPricesPage } from './item-prices.page';
+import { ItemSearchModule } from 'src/app/items/item-search/item-search.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ItemPricesPageRoutingModule
+    ItemPricesPageRoutingModule,
+    ItemSearchModule
   ],
   declarations: [ItemPricesPage]
 })
