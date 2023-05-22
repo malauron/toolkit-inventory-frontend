@@ -6,6 +6,7 @@ import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/wa
 import { Item } from 'src/app/classes/item.model';
 import { PosItemPrice } from '../classes/pos-item-price.model';
 import { CustomerGroupsService } from 'src/app/services/customer-groups.service';
+import { TempPosItemPriceLevel } from '../classes/temp-pos-item-price-level.model';
 
 @Component({
   selector: 'app-item-prices',
@@ -18,6 +19,8 @@ export class ItemPricesPage implements OnInit {
   warehouse: Warehouse;
   posItemPrice: PosItemPrice;
   item: Item;
+
+  tempPosItemPriceLevels: TempPosItemPriceLevel[] = [];
 
   pageNumber = 0;
   totalPages = 0;
@@ -85,7 +88,7 @@ export class ItemPricesPage implements OnInit {
         .then((resultData) => {
           if (resultData.role === 'item') {
             this.item = resultData.data;
-            this.getPosItemPrice();
+            this.getPosItemPrice(this.warehouse.warehouseId, this.item.itemId);
             // const itemData = new Item();
             // const uomData = new Uom();
 
@@ -117,10 +120,37 @@ export class ItemPricesPage implements OnInit {
     }
   }
 
-  getPosItemPrice() {
+  getPosItemPrice(warehouseId: number, itemId: number) {
+    this.tempPosItemPriceLevels = [];
+
     this.customerGroupService
     .getCustomerGroups()
     .subscribe(data => {
+      const globalPrice = new TempPosItemPriceLevel();
+      globalPrice.lineNo = 1;
+      globalPrice.description = 'Global Price';
+      globalPrice.price = 0;
+      this.tempPosItemPriceLevels = this.tempPosItemPriceLevels.concat(globalPrice);
+
+      const defaultPrice = new TempPosItemPriceLevel();
+      defaultPrice.lineNo = 2;
+      defaultPrice.description = 'Default Price';
+      defaultPrice.price = 0;
+      this.tempPosItemPriceLevels = this.tempPosItemPriceLevels.concat(defaultPrice);
+
+      let ctr = 3;
+
+      data.forEach((r) => {
+        const tempPriceLvl = new TempPosItemPriceLevel();
+        tempPriceLvl.lineNo = ctr;
+        tempPriceLvl.description = r.customerGroupName;
+        tempPriceLvl.customerGroup = r;
+        tempPriceLvl.price = 0;
+        this.tempPosItemPriceLevels = this.tempPosItemPriceLevels.concat(tempPriceLvl);
+        ctr += 1;
+      });
+
+      console.log(this.tempPosItemPriceLevels);
       console.log(data);
     });
   }
