@@ -60,6 +60,11 @@ export class ItemPricesPage implements OnInit {
             this.posItemPrice.warehouse = this.warehouse;
 
             this.infiniteScroll.disabled = false;
+
+            if (this.item.itemId > 0 && this.warehouse.warehouseId > 0) {
+              this.getPosItemPrice(this.warehouse, this.item);
+            }
+
             // this.inventoryItems = [];
             // this.pageNumber = 0;
             // this.totalPages = 0;
@@ -88,7 +93,10 @@ export class ItemPricesPage implements OnInit {
         .then((resultData) => {
           if (resultData.role === 'item') {
             this.item = resultData.data;
-            this.getPosItemPrice(this.warehouse.warehouseId, this.item.itemId);
+            if (this.item.itemId > 0 && this.warehouse.warehouseId > 0) {
+              this.getPosItemPrice(this.warehouse, this.item);
+            }
+
             // const itemData = new Item();
             // const uomData = new Uom();
 
@@ -120,7 +128,7 @@ export class ItemPricesPage implements OnInit {
     }
   }
 
-  getPosItemPrice(warehouseId: number, itemId: number) {
+  getPosItemPrice(whse: Warehouse, itm: Item) {
     this.tempPosItemPriceLevels = [];
 
     this.customerGroupService
@@ -129,14 +137,16 @@ export class ItemPricesPage implements OnInit {
       const globalPrice = new TempPosItemPriceLevel();
       globalPrice.lineNo = 1;
       globalPrice.description = 'Global Price';
-      globalPrice.price = 0;
-      this.tempPosItemPriceLevels = this.tempPosItemPriceLevels.concat(globalPrice);
+      globalPrice.price = itm.price;
+      this.tempPosItemPriceLevels = this.tempPosItemPriceLevels
+                                        .concat(globalPrice);
 
       const defaultPrice = new TempPosItemPriceLevel();
       defaultPrice.lineNo = 2;
-      defaultPrice.description = 'Default Price';
+      defaultPrice.description = 'Default Warehouse Price';
       defaultPrice.price = 0;
-      this.tempPosItemPriceLevels = this.tempPosItemPriceLevels.concat(defaultPrice);
+      this.tempPosItemPriceLevels = this.tempPosItemPriceLevels
+                                        .concat(defaultPrice);
 
       let ctr = 3;
 
@@ -146,7 +156,8 @@ export class ItemPricesPage implements OnInit {
         tempPriceLvl.description = r.customerGroupName;
         tempPriceLvl.customerGroup = r;
         tempPriceLvl.price = 0;
-        this.tempPosItemPriceLevels = this.tempPosItemPriceLevels.concat(tempPriceLvl);
+        this.tempPosItemPriceLevels = this.tempPosItemPriceLevels
+                                          .concat(tempPriceLvl);
         ctr += 1;
       });
 
