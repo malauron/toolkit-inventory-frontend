@@ -43,6 +43,8 @@ export class AppParamsConfig {
   urlInventoryHistories: any;
   urlPosSales: any;
   urlPosSalesSearch: any;
+  urlPosItemPrice: any;
+  urlPosItemPriceSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -140,6 +142,8 @@ export class AppParamsConfig {
     this.urlInventoryHistories = `${this.url}/inventoryHistories`;
     this.urlPosSales = `${this.url}/posSales`;
     this.urlPosSalesSearch = `${this.urlPosSales}/search/findByCustomParam`;
+    this.urlPosItemPrice = `${this.url}/posItemPrices`;
+    this.urlPosItemPriceSearch = `${this.urlPosItemPrice}/search/findByWarehouseIdAndItemId`;
 
     this.urlV1 = `${this.url}/v1`;
 
