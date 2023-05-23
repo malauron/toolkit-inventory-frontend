@@ -92,22 +92,20 @@ export class ItemPricesPage implements OnInit {
   getPosItemPrice(whse: Warehouse, itm: Item) {
     this.tempPosItemPriceLevels = [];
 
-    this.customerGroupService
-    .getCustomerGroups()
-    .subscribe(data => {
+    this.customerGroupService.getCustomerGroups().subscribe((data) => {
       const globalPrice = new TempPosItemPriceLevel();
       globalPrice.lineNo = 1;
       globalPrice.description = 'Global';
       globalPrice.price = itm.price;
-      this.tempPosItemPriceLevels = this.tempPosItemPriceLevels
-                                        .concat(globalPrice);
+      this.tempPosItemPriceLevels =
+        this.tempPosItemPriceLevels.concat(globalPrice);
 
       const defaultPrice = new TempPosItemPriceLevel();
       defaultPrice.lineNo = 2;
       defaultPrice.description = `Warehouse's Default`;
       defaultPrice.price = 0;
-      this.tempPosItemPriceLevels = this.tempPosItemPriceLevels
-                                        .concat(defaultPrice);
+      this.tempPosItemPriceLevels =
+        this.tempPosItemPriceLevels.concat(defaultPrice);
 
       let ctr = 3;
 
@@ -117,18 +115,43 @@ export class ItemPricesPage implements OnInit {
         tempPriceLvl.description = r.customerGroupName;
         tempPriceLvl.customerGroup = r;
         tempPriceLvl.price = 0;
-        this.tempPosItemPriceLevels = this.tempPosItemPriceLevels
-                                          .concat(tempPriceLvl);
+        this.tempPosItemPriceLevels =
+          this.tempPosItemPriceLevels.concat(tempPriceLvl);
         ctr += 1;
-
       });
 
-      this.posItemPriceService.getPosItemPrice(whse.warehouseId, itm.itemId)
-        .subscribe(res => {
-          console.log(res);
-        },err => {
-          console.log(`Error Descirption: ${err}`);
-        });
+      // console.log(this.tempPosItemPriceLevels);
+
+      this.posItemPriceService
+        .getPosItemPrice(whse.warehouseId, itm.itemId)
+        .subscribe(
+          (res) => {
+            // console.log(res);
+            res.posItemPriceLevels.forEach((pl) => {
+              this.tempPosItemPriceLevels.forEach((tpl) => {
+                if (tpl.lineNo > 2) {
+                  if (
+                    tpl.customerGroup.customerGroupId ===
+                    pl.customerGroup.customerGroupId
+                  ) {
+                    tpl.posItemPriceLevelId = pl.posItemPriceLevelId;
+                    tpl.price = pl.price;
+                    return;
+                  }
+                } else {
+                  console.log(tpl.lineNo);
+                  if (tpl.lineNo === 2) {
+                    tpl.price = res.defaultPrice;
+                  }
+                }
+              });
+            });
+            // console.log(this.tempPosItemPriceLevels);
+          },
+          (err) => {
+            // console.log(`Error Descirption: ${err}`);
+          }
+        );
     });
   }
 
