@@ -14,6 +14,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "baseHref": "/toolkit-inventory/",
+            "deployUrl": "/toolkit-inventory/",
             "outputPath": "www",
             "index": "src/index.html",
             "main": "src/main.ts",
