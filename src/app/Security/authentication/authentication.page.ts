@@ -14,7 +14,7 @@ import { AuthenticationService } from '../services/authentication.service';
 export class AuthenticationPage implements OnInit {
   userForm: FormGroup;
 
-  isLogginIn = false;
+  isLoggingIn = false;
 
   constructor(
     private router: Router,
@@ -40,12 +40,12 @@ export class AuthenticationPage implements OnInit {
   }
 
   onLogin() {
-    if (this.isLogginIn) {
+    if (this.isLoggingIn) {
       return;
     }
-    this.isLogginIn = true;
+    this.isLoggingIn = true;
     if (!this.userForm.valid) {
-      this.isLogginIn = false;
+      this.isLoggingIn = false;
       this.messageBox('Invalid credentials.');
     } else {
       const user = new User();
@@ -56,11 +56,11 @@ export class AuthenticationPage implements OnInit {
           const token = response.headers.get('Jwt-Token');
           this.authenticationService.saveToken(token);
           this.authenticationService.addUserToLocalCache(response.body);
-          this.isLogginIn = false;
+          // this.isLoggingIn = false;
           this.router.navigateByUrl('/tabs/orders');
         },
         (err: HttpErrorResponse) => {
-          this.isLogginIn = false;
+          this.isLoggingIn = false;
           if (err.status === 0) {
             this.messageBox('Unable to communicate with the server.');
           } else {
