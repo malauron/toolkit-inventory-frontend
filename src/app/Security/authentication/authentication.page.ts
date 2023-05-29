@@ -23,7 +23,6 @@ export class AuthenticationPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // console.log('onInit');
     if (this.authenticationService.isUserLoggedIn()) {
       this.router.navigateByUrl('/tabs/orders');
       return;
@@ -56,7 +55,6 @@ export class AuthenticationPage implements OnInit {
           const token = response.headers.get('Jwt-Token');
           this.authenticationService.saveToken(token);
           this.authenticationService.addUserToLocalCache(response.body);
-          // this.isLoggingIn = false;
           this.router.navigateByUrl('/tabs/orders');
         },
         (err: HttpErrorResponse) => {

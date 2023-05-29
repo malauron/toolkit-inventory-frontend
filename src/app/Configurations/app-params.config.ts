@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT, Location, LocationStrategy } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -98,10 +99,10 @@ export class AppParamsConfig {
   editMenu: true;
 
   constructor() {
+    // this.url = 'http://localhost:8443/api';
+    this.url = `${location.protocol}//${location.hostname}:8443/api`;
 
-    // this.url = 'http://122.52.134.244:8443/api';
-    this.url = 'http://localhost:8443/api';
-    // this.url = 'http://server04:8443/api';
+    console.log(location);
 
     this.urlItems = this.url + '/items';
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;
@@ -135,8 +136,9 @@ export class AppParamsConfig {
     this.urlButcheryReceivings = `${this.url}/butcheryReceivings`;
     this.urlButcheryReceivingsSearch = `${this.urlButcheryReceivings}/search/findByCustomParam`;
     this.urlButcheryReceivingItems = `${this.url}/butcheryReceivingItems`;
-    this.urlButcheryReceivingItemsSearchByWarehouseId = `${this.urlButcheryReceivingItems}/search/findByWarehouseAndIsAvailablePageable?` +
-                                                    `projection=butcheryReceivingItemView&warehouseId=`;
+    this.urlButcheryReceivingItemsSearchByWarehouseId =
+      `${this.urlButcheryReceivingItems}/search/findByWarehouseAndIsAvailablePageable?` +
+      `projection=butcheryReceivingItemView&warehouseId=`;
     this.urlInventoryItems = `${this.url}/inventoryItems`;
     this.urlInventoryItemsSearch = `${this.urlInventoryItems}/search/findByCustomParam?`;
     this.urlInventoryHistories = `${this.url}/inventoryHistories`;
