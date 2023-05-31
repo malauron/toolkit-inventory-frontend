@@ -8,6 +8,8 @@ import { PosItemPrice } from '../classes/pos-item-price.model';
 import { CustomerGroupsService } from 'src/app/services/customer-groups.service';
 import { TempPosItemPriceLevel } from '../classes/temp-pos-item-price-level.model';
 import { PosItemPriceService } from '../services/pos-item-price.service';
+import { PosItemPriceDto } from '../classes/pos-item-price-dto.model';
+import { PosItemPriceLevel } from '../classes/pos-item-price-level.model';
 
 @Component({
   selector: 'app-item-prices',
@@ -27,6 +29,7 @@ export class ItemPricesPage implements OnInit {
   totalPages = 0;
 
   isFetching = false;
+  isUploading = false;
   modalOpen = false;
 
   constructor(
@@ -120,13 +123,11 @@ export class ItemPricesPage implements OnInit {
         ctr += 1;
       });
 
-      // console.log(this.tempPosItemPriceLevels);
-
       this.posItemPriceService
         .getPosItemPrice(whse.warehouseId, itm.itemId)
         .subscribe(
           (res) => {
-            // console.log(res);
+            this.posItemPrice.defaultPrice = res.defaultPrice;
             res.posItemPriceLevels.forEach((pl) => {
               this.tempPosItemPriceLevels.forEach((tpl) => {
                 if (tpl.lineNo > 2) {
@@ -139,24 +140,50 @@ export class ItemPricesPage implements OnInit {
                     return;
                   }
                 } else {
-                  console.log(tpl.lineNo);
                   if (tpl.lineNo === 2) {
                     tpl.price = res.defaultPrice;
                   }
                 }
               });
             });
-            // console.log(this.tempPosItemPriceLevels);
+            this.isFetching = false;
           },
           (err) => {
-            // console.log(`Error Descirption: ${err}`);
+            this.isFetching = false;
           }
         );
     });
   }
 
   onSave() {
-    console.log('save');
+    if (!this.isUploading) {
+      this.isUploading = true;
+      const posItemPriceDto = new PosItemPriceDto();
+      let posItemPriceLevels: PosItemPriceLevel[] = [];
+
+      posItemPriceDto.posItemPriceId = this.posItemPrice.posItemPriceId;
+      posItemPriceDto.item = this.item;
+      posItemPriceDto.warehouse = this.warehouse;
+
+      this.tempPosItemPriceLevels.forEach((pl) => {
+        if (pl.lineNo === 2) {
+          posItemPriceDto.defaultPrice = pl.price;
+        }
+
+        if (pl.lineNo > 2) {
+          const priceLevel = new PosItemPriceLevel();
+          priceLevel.posItemPriceLevelId = pl.posItemPriceLevelId;
+          priceLevel.customerGroup = pl.customerGroup;
+          priceLevel.price = pl.price;
+          posItemPriceLevels = posItemPriceLevels.concat(priceLevel);
+        }
+      });
+
+      posItemPriceDto.posItemPriceLevels = posItemPriceLevels;
+
+      console.log(posItemPriceDto);
+    }
+    this.isUploading = false;
   }
 
   async messageBox(messageDescription: string) {
