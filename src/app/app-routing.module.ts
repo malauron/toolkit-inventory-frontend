@@ -6,26 +6,23 @@ import { AuthenticationGuard } from './Security/Guards/authentication.guard';
 const routes: Routes = [
 
   {
-    path: 'authentication',
-    loadChildren: () => import('./Security/authentication/authentication.module').then( m => m.AuthenticationPageModule)
-  },
-  {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule),
     canLoad: [AuthenticationGuard]
   },
   {
+    path: 'authentication',
+    loadChildren: () => import('./Security/authentication/authentication.module').then( m => m.AuthenticationPageModule)
+  },
+  {
     path: '',
-    redirectTo: 'authentication',
+    redirectTo: 'tabs',
     pathMatch: 'full'
   },
   {
     path: '**',
-    redirectTo: 'authentication',
+    redirectTo: 'tabs',
     pathMatch: 'full'
-  },  {
-    path: 'item-prices',
-    loadChildren: () => import('./pos/item-prices/item-prices.module').then( m => m.ItemPricesPageModule)
   },
 
 
@@ -38,4 +35,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

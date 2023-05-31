@@ -99,10 +99,9 @@ export class AppParamsConfig {
   editMenu: true;
 
   constructor() {
+
     // this.url = 'http://localhost:8443/api';
     this.url = `${location.protocol}//${location.hostname}:8443/api`;
-
-    console.log(location);
 
     this.urlItems = this.url + '/items';
     this.urlItemSearch = `${this.urlItems}/search/findByItemNameContainingOrderByItemName`;

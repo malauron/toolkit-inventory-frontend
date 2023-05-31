@@ -20,6 +20,7 @@ export class AuthenticationGuard implements CanLoad {
     if (this.authenticationService.isUserLoggedIn()) {
       return true;
     }
+
     this.router.navigate(['/','authentication']);
     return false;
   }

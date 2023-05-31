@@ -23,10 +23,6 @@ export class AuthenticationPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/tabs/orders');
-      return;
-    } else {
       this.userForm = new FormGroup({
         username: new FormControl('', {
           validators: [Validators.required],
@@ -35,7 +31,6 @@ export class AuthenticationPage implements OnInit {
           validators: [Validators.required],
         }),
       });
-    }
   }
 
   onLogin() {

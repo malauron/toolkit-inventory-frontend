@@ -155,7 +155,9 @@ export class ItemPricesPage implements OnInit {
     });
   }
 
-  onPrintView() {}
+  onSave() {
+    console.log('save');
+  }
 
   async messageBox(messageDescription: string) {
     const toast = await this.toastController.create({

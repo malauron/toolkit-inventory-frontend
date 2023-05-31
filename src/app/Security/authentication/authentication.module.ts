@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { AuthenticationPageRoutingModule } from './authentication-routing.module';
 
 import { AuthenticationPage } from './authentication.page';
+import { AuthenticationService } from '../services/authentication.service';
+import { Router } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -14,8 +16,20 @@ import { AuthenticationPage } from './authentication.page';
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
-    AuthenticationPageRoutingModule
+    AuthenticationPageRoutingModule,
   ],
-  declarations: [AuthenticationPage]
+  declarations: [AuthenticationPage],
 })
-export class AuthenticationPageModule {}
+export class AuthenticationPageModule {
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService
+  ) {
+    if (this.authenticationService.isUserLoggedIn()) {
+      if (location.pathname === '/authentication') {
+        this.router.navigateByUrl('/tabs/orders');
+      }
+      return;
+    }
+  }
+}
