@@ -8,7 +8,7 @@
     </ion-buttons>
     <ion-title>Item Prices</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="onSave()" *ngIf="!isFetching">
+      <ion-button (click)="onSave()" *ngIf="!isFetching && !isUploading">
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>

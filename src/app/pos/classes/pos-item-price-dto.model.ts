@@ -9,5 +9,6 @@ export class PosItemPriceDto {
     public warehouse?: Warehouse,
     public item?: Item,
     public defaultPrice?: number,
+    public errorMsg?: string,
   ){}
 }

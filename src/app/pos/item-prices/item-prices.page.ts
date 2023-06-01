@@ -7,9 +7,11 @@ import { Item } from 'src/app/classes/item.model';
 import { PosItemPrice } from '../classes/pos-item-price.model';
 import { CustomerGroupsService } from 'src/app/services/customer-groups.service';
 import { TempPosItemPriceLevel } from '../classes/temp-pos-item-price-level.model';
-import { PosItemPriceService } from '../services/pos-item-price.service';
+import { PosItemPricesService } from '../services/pos-item-prices.service';
 import { PosItemPriceDto } from '../classes/pos-item-price-dto.model';
 import { PosItemPriceLevel } from '../classes/pos-item-price-level.model';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-item-prices',
@@ -36,7 +38,7 @@ export class ItemPricesPage implements OnInit {
     private modalSearch: ModalController,
     private toastController: ToastController,
     private customerGroupService: CustomerGroupsService,
-    private posItemPriceService: PosItemPriceService
+    private posItemPricesService: PosItemPricesService
   ) {}
 
   ngOnInit() {
@@ -93,6 +95,7 @@ export class ItemPricesPage implements OnInit {
   }
 
   getPosItemPrice(whse: Warehouse, itm: Item) {
+    this.posItemPrice.posItemPriceId = 0;
     this.tempPosItemPriceLevels = [];
 
     this.customerGroupService.getCustomerGroups().subscribe((data) => {
@@ -114,6 +117,7 @@ export class ItemPricesPage implements OnInit {
 
       data.forEach((r) => {
         const tempPriceLvl = new TempPosItemPriceLevel();
+        tempPriceLvl.posItemPriceLevelId = 0;
         tempPriceLvl.lineNo = ctr;
         tempPriceLvl.description = r.customerGroupName;
         tempPriceLvl.customerGroup = r;
@@ -123,13 +127,17 @@ export class ItemPricesPage implements OnInit {
         ctr += 1;
       });
 
-      this.posItemPriceService
+      this.posItemPricesService
         .getPosItemPrice(whse.warehouseId, itm.itemId)
         .subscribe(
           (res) => {
+            this.posItemPrice.posItemPriceId = res.posItemPriceId;
             this.posItemPrice.defaultPrice = res.defaultPrice;
             res.posItemPriceLevels.forEach((pl) => {
               this.tempPosItemPriceLevels.forEach((tpl) => {
+                if (tpl.posItemPriceLevelId === undefined) {
+                  tpl.posItemPriceLevelId = 0;
+                }
                 if (tpl.lineNo > 2) {
                   if (
                     tpl.customerGroup.customerGroupId ===
@@ -158,6 +166,19 @@ export class ItemPricesPage implements OnInit {
   onSave() {
     if (!this.isUploading) {
       this.isUploading = true;
+
+      if (this.warehouse.warehouseId === undefined) {
+        this.messageBox('Please specify the warehouse.');
+        this.isUploading = false;
+        return;
+      }
+
+      if (this.item.itemId === undefined) {
+        this.messageBox('Please specify the item.');
+        this.isUploading = false;
+        return;
+      }
+
       const posItemPriceDto = new PosItemPriceDto();
       let posItemPriceLevels: PosItemPriceLevel[] = [];
 
@@ -165,25 +186,72 @@ export class ItemPricesPage implements OnInit {
       posItemPriceDto.item = this.item;
       posItemPriceDto.warehouse = this.warehouse;
 
-      this.tempPosItemPriceLevels.forEach((pl) => {
-        if (pl.lineNo === 2) {
-          posItemPriceDto.defaultPrice = pl.price;
-        }
+      try {
+        this.tempPosItemPriceLevels.forEach((tpl) => {
+          console.log(tpl.description);
 
-        if (pl.lineNo > 2) {
-          const priceLevel = new PosItemPriceLevel();
-          priceLevel.posItemPriceLevelId = pl.posItemPriceLevelId;
-          priceLevel.customerGroup = pl.customerGroup;
-          priceLevel.price = pl.price;
-          posItemPriceLevels = posItemPriceLevels.concat(priceLevel);
-        }
-      });
+          if (tpl.lineNo > 1) {
+            if (tpl.price <= 0) {
+              this.messageBox(
+                `${tpl.description}'s price must be greater than zero.`
+              );
+              this.isUploading = false;
+              throw Error();
+            }
+          }
+
+          if (tpl.lineNo === 2) {
+            posItemPriceDto.defaultPrice = tpl.price;
+          }
+
+          if (tpl.lineNo > 2) {
+            const priceLevel = new PosItemPriceLevel();
+            priceLevel.posItemPriceLevelId = tpl.posItemPriceLevelId;
+            priceLevel.customerGroup = tpl.customerGroup;
+            priceLevel.price = tpl.price;
+            posItemPriceLevels = posItemPriceLevels.concat(priceLevel);
+          }
+        });
+      } catch (e) {
+        this.isUploading = false;
+        return;
+      }
 
       posItemPriceDto.posItemPriceLevels = posItemPriceLevels;
 
-      console.log(posItemPriceDto);
+      this.posItemPricesService.postPosItemPrice(posItemPriceDto).subscribe(
+        (res) => {
+          this.posItemPrice.posItemPriceId = res.posItemPriceId;
+          this.posItemPrice.defaultPrice = res.defaultPrice;
+          this.posItemPrice.item = res.item;
+          this.posItemPrice.warehouse = res.warehouse;
+          this.posItemPrice.posItemPriceLevels = res.posItemPriceLevels;
+
+          this.tempPosItemPriceLevels.forEach((tpl) => {
+            if (tpl.posItemPriceLevelId === 0 && tpl.lineNo > 2) {
+              res.posItemPriceLevels.forEach((pl) => {
+                if (
+                  pl.customerGroup.customerGroupId ===
+                  tpl.customerGroup.customerGroupId
+                ) {
+                  tpl.posItemPriceLevelId = pl.posItemPriceLevelId;
+                }
+              });
+            }
+          });
+
+          this.messageBox('Item prices has been updated.');
+
+          this.isUploading = false;
+        },
+        (err) => {
+          this.messageBox(
+            'The changes were unable to be saved due to an encountered error.'
+          );
+          this.isUploading = false;
+        }
+      );
     }
-    this.isUploading = false;
   }
 
   async messageBox(messageDescription: string) {

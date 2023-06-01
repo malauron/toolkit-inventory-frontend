@@ -17,7 +17,7 @@ import { SaleItemService } from './sale-item.service';
 export class SalesItemPage implements OnInit, OnDestroy {
   @ViewChild('uomSelect', { static: true }) uomSelect: IonSelect;
   @ViewChild('quantityInput', { static: true }) quantityInput: IonInput;
-  @ViewChild('costInput', { static: true }) costInput: IonInput;
+  // @ViewChild('costInput', { static: true }) costInput: IonInput;
 
   purchaseItemSub: Subscription;
   uomSelectSub: Subscription;
@@ -68,7 +68,7 @@ export class SalesItemPage implements OnInit, OnDestroy {
 
     this.uomSelectSub = this.uomSelect.ionDismiss.subscribe(this.onQtyFocus());
     this.qtyInputSub = this.quantityInput.ionFocus.subscribe(this.onQtyFocus());
-    this.costInputSub = this.costInput.ionFocus.subscribe(this.onCostFocus());
+    // this.costInputSub = this.costInput.ionFocus.subscribe(this.onCostFocus());
 
     this.purchaseItemSub =
       this.saleItemService.saleItemDetail.subscribe((res) => {
@@ -124,12 +124,12 @@ export class SalesItemPage implements OnInit, OnDestroy {
     };
   }
 
-  onCostFocus() {
-    return (res) => {
-      const qtyElem = this.costInput.getInputElement();
-      qtyElem.then((rst) => rst.select());
-    };
-  }
+  // onCostFocus() {
+  //   return (res) => {
+  //     const qtyElem = this.costInput.getInputElement();
+  //     qtyElem.then((rst) => rst.select());
+  //   };
+  // }
 
   onItemSearch() {
     if (!this.modalOpen) {
