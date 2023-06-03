@@ -188,8 +188,6 @@ export class ItemPricesPage implements OnInit {
 
       try {
         this.tempPosItemPriceLevels.forEach((tpl) => {
-          console.log(tpl.description);
-
           if (tpl.lineNo > 1) {
             if (tpl.price <= 0) {
               this.messageBox(

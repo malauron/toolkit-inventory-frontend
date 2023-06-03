@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button
-        icon="chevron-back-outline"
-        defaultHref="/tabs/options"
-      ></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/options"></ion-back-button>
     </ion-buttons>
     <ion-title>Item Prices</ion-title>
     <ion-buttons slot="primary">
@@ -17,102 +14,58 @@
 
 <ion-content class="ion-padding">
   <div class="spinner">
-    <ion-spinner
-      name="bubbles"
-      color="primary"
-      *ngIf="isFetching"
-    ></ion-spinner>
+    <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
   </div>
 
   <ion-card class="card-holder">
     <div class="card-top"></div>
-    <ion-row>
-      <ion-col size-xs="12">
-        <ion-item lines="none">
-          <ion-icon
-            class="contractIcon"
-            name="business-outline"
-            color="primary"
-            slot="start"
-          ></ion-icon>
-          <ion-label class="ion-text-wrap">
-            <ion-card-title mode="md"
-              >{{ warehouse.warehouseName }}</ion-card-title
-            >
-          </ion-label>
-          <ion-button
-            #statusButton
-            (click)="onWarehouseSearch()"
-            fill="clear"
-            size="small"
-            mode="ios"
-            id="click-trigger"
-            *ngIf="!isFetching"
-          >
-            <ion-icon name="search-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
-        <ion-item lines="none">
-          <ion-icon
-            class="contractIcon"
-            src="../../assets/icons/items.svg"
-            color="primary"
-            slot="start"
-          ></ion-icon>
-          <ion-label class="ion-text-wrap">
-            <ion-card-title mode="md">{{ item.itemName }}</ion-card-title>
-          </ion-label>
-          <ion-button
-            #statusButton
-            (click)="onItemSearch()"
-            fill="clear"
-            size="small"
-            mode="ios"
-            id="click-trigger"
-            *ngIf="!isFetching"
-          >
-            <ion-icon name="search-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </ion-col>
-    </ion-row>
+    <ion-grid>
+      <ion-row>
+        <ion-col size-xs="12">
+          <ion-item lines="none">
+            <ion-icon class="contractIcon" name="business-outline" color="primary" slot="start"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-subtitle *ngIf="!warehouse.warehouseId">Warehouse</ion-card-subtitle>
+              <ion-card-title mode="md">{{ warehouse.warehouseName }}</ion-card-title>
+            </ion-label>
+            <ion-button #statusButton (click)="onWarehouseSearch()" fill="clear" size="small" mode="ios"
+              id="click-trigger" *ngIf="!isFetching">
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon class="contractIcon" src="../../assets/icons/items.svg" color="primary" slot="start"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <ion-card-subtitle *ngIf="!item.itemId">Item</ion-card-subtitle>
+              <ion-card-title mode="md">{{ item.itemName }}</ion-card-title>
+            </ion-label>
+            <ion-button #statusButton (click)="onItemSearch()" fill="clear" size="small" mode="ios" id="click-trigger"
+              *ngIf="!isFetching">
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-card>
 
   <ion-grid *ngIf="item.itemId>0 && warehouse.warehouseId>0">
     <ion-row>
-      <ion-col
-        size-xs="12"
-        size-sm="6"
-        size-lg="4"
-        size-xl="3"
-        *ngFor="let priceLevel of tempPosItemPriceLevels"
-      >
+      <ion-col size-xs="12" size-sm="6" size-lg="4" size-xl="3" *ngFor="let priceLevel of tempPosItemPriceLevels">
         <ion-card class="favCard">
           <div class="card-top"></div>
           <ion-item class="itemName">
             <ion-avatar slot="start">
-              <img
-                src="../../../assets/icons/people-outline.svg"
-                class="icon"
-              />
+              <img src="../../../assets/icons/people-outline.svg" class="icon" />
             </ion-avatar>
             <ion-label>
-              <ion-card-title class="font-small"
-                >{{ priceLevel.description }}</ion-card-title
-              >
+              <ion-card-title class="font-small">{{ priceLevel.description }}</ion-card-title>
             </ion-label>
           </ion-item>
           <ion-item mode="ios" class="qty-row" lines="none">
             <ion-label class="font-small">Amount</ion-label>
-            <ion-input
-              inputmode="decimal"
-              type="number"
-              min="0"
-              mode="ios"
-              class="font-medium ion-text-end"
-              [readonly] = "priceLevel.lineNo === 1"
-              [(ngModel)] = "priceLevel.price"
-            ></ion-input>
+            <ion-input inputmode="decimal" type="number" min="0" mode="ios" class="font-medium ion-text-end"
+              [readonly]="priceLevel.lineNo === 1" [(ngModel)]="priceLevel.price"></ion-input>
           </ion-item>
         </ion-card>
       </ion-col>

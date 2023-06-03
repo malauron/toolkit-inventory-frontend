@@ -82,8 +82,7 @@
               <ion-card-subtitle *ngIf="!warehouse.warehouseId">Source Warehouse</ion-card-subtitle>
               <ion-card-title mode="md">{{ warehouse.warehouseName }}</ion-card-title>
             </ion-label>
-            <ion-button #statusButton
-              *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined"
+            <ion-button #statusButton *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined"
               (click)="onWarehouseSearch()" fill="clear" size="small" mode="ios" id="click-trigger">
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
@@ -135,13 +134,12 @@
       <ion-item lines="none">
         <ion-card-title class="font-large">Items</ion-card-title>
       </ion-item>
-      <ion-item lines="none"
-        *ngIf="sale.saleStatus === 'Unposted'  || sale.saleStatus === undefined">
+      <ion-item lines="none" *ngIf="sale.saleStatus === 'Unposted'  || sale.saleStatus === undefined">
         <ion-searchbar searchIcon="barcode-outline" placeholder="Barcode" (keypress)="onGetItemByItemCode($event)"
           #itemSearchBar></ion-searchbar>
         <ion-button *ngIf="sale.saleStatus === 'Unposted' || sale.saleStatus === undefined"
-          class="ion-no-padding ion-no-margin" (click)="onAddSaleItem()" slot="end" mode="ios" fill="clear"
-          size="large" color="success">
+          class="ion-no-padding ion-no-margin" (click)="onAddSaleItem()" slot="end" mode="ios" fill="clear" size="large"
+          color="success">
           <ion-icon name="add"></ion-icon>
         </ion-button>
       </ion-item>
@@ -155,8 +153,8 @@
             <ion-item lines="none" class="itme-info">
               <ion-icon class="item-icon" name="barcode-outline" color="primary" slot="start"></ion-icon>
               <ion-button *ngIf="sale.saleStatus === 'Unposted'  || sale.saleStatus === undefined"
-                (click)="onDeleteSaleItem(item)" class="ion-no-margin ion-no-padding" mode="ios" slot="end"
-                fill="clear" color="medium" size="default">
+                (click)="onDeleteSaleItem(item)" class="ion-no-margin ion-no-padding" mode="ios" slot="end" fill="clear"
+                color="medium" size="default">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
               <ion-card-subtitle>{{item.barcode}}</ion-card-subtitle>
@@ -226,7 +224,7 @@
     </div>
     <div class="item-subTotal separator" *ngIf="item.isSubTotal && item.runningEntries > 1">
       <div class="barcode">{{ item.runningEntries }} items.</div>
-      <div class="price">{{ item.runningItemQty |  number:'1.0-3' }}{{ item.totalUom.uomCode }}</div>
+      <div class="price">{{ item.runningItemQty | number:'1.0-3' }}{{ item.totalUom.uomCode }}</div>
     </div>
   </div>
 
