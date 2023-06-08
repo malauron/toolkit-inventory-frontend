@@ -58,3 +58,16 @@ ion-select::part(icon) {
     padding: 0;
   }
 }
+
+.buttons-holder::part(native) {
+    // padding-right: 100px;
+      --inner-padding-end : 0;
+}
+
+.delete-item-button {
+  margin: 0;
+}
+
+.delete-item-button::part(native) {
+  padding: 0;
+}

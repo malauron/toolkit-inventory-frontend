@@ -133,7 +133,7 @@
               </ion-row>
             </ion-grid>
 
-            <ion-item lines="none" *ngIf="this.item.itemId">
+            <ion-item lines="none" *ngIf="this.item.itemId" class="buttons-holder">
               <ion-button
                 (click)="onSave()"
                 color="success"
@@ -202,7 +202,7 @@
                   </ion-item>
                 </form>
 
-                <ion-item lines="none">
+                <ion-item lines="none" class="buttons-holder">
                   <ion-button
                     (click)="onAddItemUom()"
                     color="success"
@@ -231,6 +231,7 @@
                 </p>
               </ion-label>
               <ion-button
+                class="delete-item-button"
                 mode="ios"
                 slot="end"
                 fill="clear"
@@ -325,7 +326,7 @@
                   </ion-item>
                 </form>
 
-                <ion-item lines="none">
+                <ion-item lines="none" class="buttons-holder">
                   <ion-button
                     (click)="onAddItemBom()"
                     color="success"

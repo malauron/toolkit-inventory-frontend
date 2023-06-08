@@ -40,7 +40,7 @@ export class OptionsPage implements OnInit {
   }
 
   onPOS() {
-    this.router.navigate(['/', 'tabs', 'sales']);
+    this.router.navigate(['/', 'tabs', 'order-items']);
   }
 
   onItemPrices() {

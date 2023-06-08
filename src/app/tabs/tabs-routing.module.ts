@@ -78,6 +78,10 @@ const routes: Routes = [
         loadChildren: () => import('../pos/item-prices/item-prices.module').then(m => m.ItemPricesPageModule)
       },
       {
+        path: 'order-items',
+        loadChildren: () => import('../pos/order-items/order-items.module').then( m => m.OrderItemsPageModule)
+      },
+      {
         path: '',
         redirectTo: 'orders',
         pathMatch: 'full'

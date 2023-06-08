@@ -1,0 +1,137 @@
+.none {
+  display: none;
+}
+
+ion-content {
+  --ion-background-color: #f6f6f6;
+}
+
+ion-card {
+  --ion-background-color: #ffffff;
+}
+
+ion-searchbar {
+  --box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.19);
+  --background: #f6f6f6;
+  --border-radius: 5px;
+  padding-inline-start: 1px;
+  padding-inline-end: 15px;
+}
+
+.card-holder {
+  margin: 20px 20px 0 20px;
+}
+
+.card-top {
+  border-top: 5px solid var(--ion-color-primary);
+}
+
+.spinner {
+  z-index: 100;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  ion-spinner {
+    stroke: var(--ion-color-primary);
+    fill: var(--ion-color-primary);
+    transform: scale(3);
+  }
+}
+
+.separator {
+  border-top: 1px solid var(--ion-color-medium);
+}
+
+.card-item {
+  height: 175px;
+  margin: auto;
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.19);
+
+  h5 {
+    text-align: left;
+  }
+
+  .icon {
+    // primary
+    filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg)
+      brightness(89%) contrast(108%);
+  }
+
+  .total-cost {
+    padding-left: 50px;
+  }
+}
+
+.inventory-items {
+  margin: 15px;
+}
+
+.favCard {
+  height: 290px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.19);
+  margin: auto;
+  margin-top: 30px;
+
+  .menuName {
+    margin-top: 5px;
+  }
+
+  .icon {
+    // primary
+    filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg)
+      brightness(89%) contrast(108%);
+
+    // secondary
+    // filter:  invert(97%) sepia(79%) saturate(2860%) hue-rotate(292deg) brightness(103%) contrast(91%);
+  }
+}
+
+.qty-row {
+  padding-left: 5px;
+  ::ng-deep input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+}
+
+.card-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.item-icon {
+  margin-right: 20px;
+}
+
+.item-info {
+  --min-height: 10px;
+  --padding-top: 0px;
+  --padding-bottom: 0px;
+  --padding-start: 60px;
+}
+
+ion-popover {
+  --backdrop-opacity: 0;
+}
+.font-x-small {
+  font-size: x-small;
+}
+
+.font-small {
+  font-size: small;
+}
+
+.font-medium {
+  font-size: medium;
+}
+
+.font-large {
+  font-size: large;
+}
