@@ -31,6 +31,7 @@ export class AppParamsConfig {
   urlWarehouse: any;
   urlWarehouseSearch: any;
   urlWarehouseSearchById: any;
+  urlWarehouseSearchByUserId: any;
   urlButcheryProductions: any;
   urlButcheryProductionsSearch: any;
   urlButcheryReleasings: any;
@@ -129,6 +130,7 @@ export class AppParamsConfig {
     this.urlWarehouse = `${this.url}/warehouses`;
     this.urlWarehouseSearch = `${this.urlWarehouse}/search/findByWarehouseNameContainingOrderByWarehouseName`;
     this.urlWarehouseSearchById = `${this.urlWarehouse}/search/findByWarehouseId?id=`;
+    this.urlWarehouseSearchByUserId = `${this.urlWarehouse}/search/findUserCurrentWarehouseByUserId?userId=`;
     this.urlButcheryProductions = `${this.url}/butcheryProductions`;
     this.urlButcheryProductionsSearch = `${this.urlButcheryProductions}/search/findByCustomParam`;
     this.urlButcheryReleasings = `${this.url}/butcheryReleasings`;
