@@ -26,7 +26,7 @@
         <ion-col size-xs="12">
           <ion-item lines="none">
             <ion-icon
-              class="contactIcon"
+              class="card-holder-icon"
               name="business-outline"
               color="primary"
               slot="start"
@@ -36,7 +36,7 @@
                 >{{ warehouse.warehouseName }}</ion-card-title
               >
             </ion-label>
-            <ion-button
+            <!-- <ion-button
               #statusButton
               (click)="onWarehouseSearch()"
               fill="clear"
@@ -46,7 +46,7 @@
               *ngIf="!isFetching"
             >
               <ion-icon name="search-outline"></ion-icon>
-            </ion-button>
+            </ion-button> -->
           </ion-item>
           <ion-item lines="none">
             <ion-searchbar
@@ -58,4 +58,22 @@
       </ion-row>
     </ion-grid>
   </ion-card>
+
+  <ion-grid class="warehouse-items">
+    <ion-row>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreData($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="none"
+      loadingText="Loading more items..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
