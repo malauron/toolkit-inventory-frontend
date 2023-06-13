@@ -20,11 +20,6 @@ ion-content {
 
   // --ion-background-color: #f6f6f6;
 
-  &::-webkit-scrollbar {
-    background: transparent;
-    display: none;
-    width: 0;
-}
 }
 
 ion-card {
@@ -91,20 +86,18 @@ ion-searchbar {
 .warehouse-items {
   margin: 15px 25px;
   ion-col {
-    padding: 0 20px;
+    padding: 0 10px;
   }
 }
 
 .warehouse-item {
-  // background-color:#f6f6f6;
   box-shadow: none;
   margin: auto;
-  margin-top: 30px;
+  margin-top: 15px;
 
   img {
-    border-radius: 25px 25px 25px 25px;
+    border-radius: 10px;
     width: 100%;
-    margin: auto;
   }
 
   ion-card-header {

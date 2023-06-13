@@ -75,7 +75,6 @@ export class OrderItemsPage implements OnInit {
           tmpItem.posItemPriceLevels = itm.posItemPriceLevels;
           this.posItemPrices = this.posItemPrices.concat(tmpItem);
         });
-        console.log(this.posItemPrices);
         this.totalPages = res.page.totalPages;
         this.isFetching = false;
         if (event) {
