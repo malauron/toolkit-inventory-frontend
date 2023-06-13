@@ -16,7 +16,6 @@ import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 export class OrderItemsPage implements OnInit {
   @ViewChild('infiniteScroll') infiniteScroll;
 
-
   warehouse: Warehouse;
   user: User;
   posItemPrices: PosItemPrice[] = [];
@@ -44,11 +43,13 @@ export class OrderItemsPage implements OnInit {
         this.warehouse.warehouseId = res.warehouseId;
         this.warehouse.warehouseName = res.warehouseName;
 
-        this.posItemPricesServices
-          .getPosItemPrices(this.warehouse.warehouseId, '')
-          .subscribe((posItemPrices) => {
-            console.log(posItemPrices._embedded.posItemPrices);
-          });
+        this.getPosItemPrices(
+          undefined,
+          '',
+          this.warehouse.warehouseId,
+          this.pageNumber,
+          this.config.pageSize
+        );
       });
   }
 
@@ -65,7 +66,16 @@ export class OrderItemsPage implements OnInit {
     this.posItemPricesServices
       .getPosItemPrices(warehouseId, searchDesc, pageNumber, pageSize)
       .subscribe((res) => {
-        console.log(res._embedded.posItemPrices);
+        res._embedded.posItemPrices.forEach(itm => {
+          const tmpItem = new PosItemPrice();
+          tmpItem.posItemPriceId = itm.posItemPriceId;
+          tmpItem.item = itm.item;
+          tmpItem.warehouse = itm.warehouse;
+          tmpItem.defaultPrice = itm.defaultPrice;
+          tmpItem.posItemPriceLevels = itm.posItemPriceLevels;
+          this.posItemPrices = this.posItemPrices.concat(tmpItem);
+        });
+        console.log(this.posItemPrices);
         this.totalPages = res.page.totalPages;
         this.isFetching = false;
         if (event) {

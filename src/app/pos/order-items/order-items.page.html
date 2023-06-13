@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button
@@ -8,16 +8,8 @@
     </ion-buttons>
     <ion-title>Point of Sales</ion-title>
   </ion-toolbar>
-</ion-header>
 
-<ion-content>
-  <div class="spinner">
-    <ion-spinner
-      name="bubbles"
-      color="primary"
-      *ngIf="isFetching"
-    ></ion-spinner>
-  </div>
+
 
   <ion-card class="card-holder">
     <div class="card-top"></div>
@@ -59,9 +51,34 @@
     </ion-grid>
   </ion-card>
 
+</ion-header>
+
+<ion-content>
+  <div class="spinner">
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
+  </div>
+
   <ion-grid class="warehouse-items">
     <ion-row>
-      <ion-col></ion-col>
+      <ion-col
+        size-xs="6"
+        size-sm="4"
+        size-lg="3"
+        size-xl="2"
+        *ngFor="let item of posItemPrices"
+      >
+        <ion-card class="warehouse-item" button="true">
+          <img src="../../../assets/images/default_02.jpg"/>
+          <ion-card-header>
+            <ion-card-subtitle class="font-large">{{ item.item.itemName }}</ion-card-subtitle>
+            <ion-card-title>{{ item.defaultPrice | number:'1.2' }}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
     </ion-row>
   </ion-grid>
 
