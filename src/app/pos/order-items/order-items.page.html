@@ -9,8 +9,6 @@
     <ion-title>Point of Sales</ion-title>
   </ion-toolbar>
 
-
-
   <ion-card class="card-holder">
     <div class="card-top"></div>
     <ion-grid>
@@ -42,7 +40,7 @@
           </ion-item>
           <ion-item lines="none">
             <ion-searchbar
-              #inventoryItemSearchBar
+              #itemSearchBar
               placeholder="Search Inventory Item"
             ></ion-searchbar>
           </ion-item>
@@ -67,14 +65,15 @@
       <ion-col
         size-xs="6"
         size-sm="4"
-        size-lg="3"
-        size-xl="2"
+        size-md="3"
+        size-lg="2"
+        size-xl="1"
         *ngFor="let item of posItemPrices"
       >
         <ion-card class="warehouse-item" button="true">
           <img src="../../../assets/images/default_02.jpg"/>
           <ion-card-header>
-            <ion-card-subtitle class="font-large">{{ item.item.itemName }}</ion-card-subtitle>
+            <ion-card-subtitle class="font-large truncate">{{ item.item.itemName }}</ion-card-subtitle>
             <ion-card-title class="font-medium">{{ item.defaultPrice | number:'1.2' }}</ion-card-title>
           </ion-card-header>
         </ion-card>
