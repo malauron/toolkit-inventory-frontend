@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { User } from '../classes/user.model';
@@ -12,7 +12,7 @@ import { AuthenticationService } from '../services/authentication.service';
   styleUrls: ['./authentication.page.scss'],
 })
 export class AuthenticationPage implements OnInit {
-  userForm: FormGroup;
+  userForm: UntypedFormGroup;
 
   isLoggingIn = false;
 
@@ -23,11 +23,11 @@ export class AuthenticationPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-      this.userForm = new FormGroup({
-        username: new FormControl('', {
+      this.userForm = new UntypedFormGroup({
+        username: new UntypedFormControl('', {
           validators: [Validators.required],
         }),
-        password: new FormControl('', {
+        password: new UntypedFormControl('', {
           validators: [Validators.required],
         }),
       });

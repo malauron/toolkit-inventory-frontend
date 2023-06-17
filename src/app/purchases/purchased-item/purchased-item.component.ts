@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {
   IonInput,
   IonSelect,
@@ -30,7 +30,7 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
   qtyInputSub: Subscription;
   costInputSub: Subscription;
 
-  itemForm: FormGroup;
+  itemForm: UntypedFormGroup;
 
   uoms: Uom[] = [];
 
@@ -51,22 +51,22 @@ export class PurchasedItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.itemForm = new FormGroup({
-      item: new FormControl(null, {
+    this.itemForm = new UntypedFormGroup({
+      item: new UntypedFormControl(null, {
         validators: [Validators.required],
       }),
-      itemName: new FormControl(null, {
+      itemName: new UntypedFormControl(null, {
         validators: [Validators.required],
       }),
-      uom: new FormControl(null, {
+      uom: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
-      quantity: new FormControl(null, {
+      quantity: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.001)],
       }),
-      price: new FormControl(null, {
+      price: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.001)],
       }),

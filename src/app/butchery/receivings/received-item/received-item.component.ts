@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {
   IonInput,
   IonSelect,
@@ -34,7 +34,7 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
   documentedWeightInputSub: Subscription;
   actualWeightInputSub: Subscription;
 
-  itemForm: FormGroup;
+  itemForm: UntypedFormGroup;
 
   uoms: Uom[] = [];
 
@@ -57,30 +57,30 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.itemForm = new FormGroup({
-      item: new FormControl(null, {
+    this.itemForm = new UntypedFormGroup({
+      item: new UntypedFormControl(null, {
         validators: [Validators.required],
       }),
-      itemName: new FormControl(null, {
+      itemName: new UntypedFormControl(null, {
         validators: [Validators.required],
       }),
-      uom: new FormControl(null, {
+      uom: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
-      receivedQty: new FormControl(null, {
+      receivedQty: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.001)],
       }),
-      itemCost: new FormControl(null, {
+      itemCost: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
-      documentedQty: new FormControl(null, {
+      documentedQty: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
-      remarks: new FormControl('', {
+      remarks: new UntypedFormControl('', {
         updateOn: 'blur'
       }),
     });

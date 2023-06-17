@@ -12,21 +12,17 @@ import { NgxPrintModule } from 'ngx-print';
 import { PurchaseListPrintPreviewComponent } from './purchase-list-print-preview/purchase-list-print-preview.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    OrdersPageRoutingModule,
-    NgxPrintModule,
-  ],
-  declarations: [
-    OrdersPage,
-    OrderMenuPrintPreviewComponent,
-    PurchaseListPrintPreviewComponent,
-  ],
-  entryComponents: [
-    OrderMenuPrintPreviewComponent,
-    PurchaseListPrintPreviewComponent,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        OrdersPageRoutingModule,
+        NgxPrintModule,
+    ],
+    declarations: [
+        OrdersPage,
+        OrderMenuPrintPreviewComponent,
+        PurchaseListPrintPreviewComponent,
+    ]
 })
 export class OrdersPageModule {}

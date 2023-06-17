@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AlertController,
@@ -32,10 +32,10 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   pageLabel = 'Item Detail';
   postButton = 'checkmark-outline';
 
-  itemForm: FormGroup;
-  itemUomForm: FormGroup;
-  itemBomForm: FormGroup;
-  itemGenericForm: FormGroup;
+  itemForm: UntypedFormGroup;
+  itemUomForm: UntypedFormGroup;
+  itemBomForm: UntypedFormGroup;
+  itemGenericForm: UntypedFormGroup;
 
   item: Item;
   baseUom: Uom;
@@ -108,83 +108,83 @@ export class ItemDetailPage implements OnInit, OnDestroy {
         this.lockControls = true;
       }
 
-      this.itemForm = new FormGroup({
-        itemCode: new FormControl(null, {
+      this.itemForm = new UntypedFormGroup({
+        itemCode: new UntypedFormControl(null, {
           updateOn: 'blur',
           validators: [Validators.required, Validators.maxLength(20)],
         }),
-        itemName: new FormControl(null, {
+        itemName: new UntypedFormControl(null, {
           updateOn: 'blur',
           validators: [Validators.required, Validators.maxLength(80)],
         }),
-        uom: new FormControl(
+        uom: new UntypedFormControl(
           { value: null, disabled: this.lockControls },
           {
             updateOn: 'blur',
             validators: [Validators.required],
           }
         ),
-        itemClass: new FormControl(
+        itemClass: new UntypedFormControl(
           { value: ItemClass.Stock, disabled: this.lockControls },
           {
             updateOn: 'blur',
             validators: [Validators.required],
           }
         ),
-        price: new FormControl(null, {
+        price: new UntypedFormControl(null, {
           updateOn: 'blur',
           validators: [Validators.required, Validators.min(0.01)],
         }),
-        isActive: new FormControl(true, {
+        isActive: new UntypedFormControl(true, {
           updateOn: 'blur',
           validators: [Validators.required],
         }),
       });
 
-      this.itemUomForm = new FormGroup({
-        itemUomId: new FormGroup({
-          item: new FormControl(null),
-          uom: new FormControl(null, {
+      this.itemUomForm = new UntypedFormGroup({
+        itemUomId: new UntypedFormGroup({
+          item: new UntypedFormControl(null),
+          uom: new UntypedFormControl(null, {
             updateOn: 'blur',
             validators: [Validators.required],
           }),
         }),
-        quantity: new FormControl({
+        quantity: new UntypedFormControl({
           updateOn: 'blur',
           validators: [Validators.required],
         }),
       });
 
-      this.itemBomForm = new FormGroup({
-        subItem: new FormControl(null, {
+      this.itemBomForm = new UntypedFormGroup({
+        subItem: new UntypedFormControl(null, {
           validators: [Validators.required],
         }),
-        subItemName: new FormControl(null, {
+        subItemName: new UntypedFormControl(null, {
           validators: [Validators.required],
         }),
-        requiredUom: new FormControl(null, {
+        requiredUom: new UntypedFormControl(null, {
           updateOn: 'blur',
           validators: [Validators.required],
         }),
-        requiredQty: new FormControl(null, {
+        requiredQty: new UntypedFormControl(null, {
           updateOn: 'blur',
           validators: [Validators.required, Validators.min(0.001)],
         }),
       });
 
-      this.itemGenericForm = new FormGroup({
-        itemGenericId: new FormControl(null),
-        subItem: new FormControl(null, {
+      this.itemGenericForm = new UntypedFormGroup({
+        itemGenericId: new UntypedFormControl(null),
+        subItem: new UntypedFormControl(null, {
           validators: [Validators.required],
         }),
-        subItemName: new FormControl(null, {
+        subItemName: new UntypedFormControl(null, {
           validators: [Validators.required],
         }),
-        requiredUom: new FormControl(null, {
+        requiredUom: new UntypedFormControl(null, {
           updateOn: 'blur',
           validators: [Validators.required],
         }),
-        requiredQty: new FormControl(null, {
+        requiredQty: new UntypedFormControl(null, {
           updateOn: 'blur',
           validators: [Validators.required, Validators.min(0.001)],
         }),
