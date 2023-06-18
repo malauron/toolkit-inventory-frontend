@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ToastController } from '@ionic/angular';
 import { CustomerDto } from 'src/app/classes/customer-dto.model';
@@ -28,7 +28,7 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
   dataHaveChanged = false;
   isFetching = false;
   isUploading = false;
-  customerForm: UntypedFormGroup;
+  customerForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
@@ -58,26 +58,26 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
       this.displayPicture = '../../assets/icons/personv06.svg';
       this.displaySignature = '../../assets/icons/signaturev04.svg';
       this.displayImg = this.displayPicture;
-      this.customerForm = new UntypedFormGroup({
-        customerCode: new UntypedFormControl(null, {
+      this.customerForm = new FormGroup({
+        customerCode: new FormControl(null, {
           validators: [Validators.required],
         }),
-        customerName: new UntypedFormControl(null, {
+        customerName: new FormControl(null, {
           validators: [Validators.required],
         }),
-        customerGroup: new UntypedFormControl(null, {
+        customerGroup: new FormControl(null, {
           validators: [Validators.required],
         }),
-        contactNo: new UntypedFormControl(''),
-        address: new UntypedFormControl(''),
-        sssNo: new UntypedFormControl(''),
-        hdmfNo: new UntypedFormControl(''),
-        phicNo: new UntypedFormControl(''),
-        tinNo: new UntypedFormControl(''),
-        bloodType: new UntypedFormControl(''),
-        erContactPerson: new UntypedFormControl(''),
-        erContactNo: new UntypedFormControl(''),
-        erContactAddress: new UntypedFormControl(''),
+        contactNo: new FormControl(''),
+        address: new FormControl(''),
+        sssNo: new FormControl(''),
+        hdmfNo: new FormControl(''),
+        phicNo: new FormControl(''),
+        tinNo: new FormControl(''),
+        bloodType: new FormControl(''),
+        erContactPerson: new FormControl(''),
+        erContactNo: new FormControl(''),
+        erContactAddress: new FormControl(''),
       });
 
       const customerId = Number(paramMap.get('customerId'));

@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AlertController,
@@ -32,8 +32,8 @@ export class MenuDetailPage implements OnInit, OnDestroy {
   uomSelectSub: Subscription;
   qtyInputSub: Subscription;
 
-  menuForm: UntypedFormGroup;
-  itemForm: UntypedFormGroup;
+  menuForm: FormGroup;
+  itemForm: FormGroup;
 
   uoms: Uom[] = [];
   menuIngredients: MenuIngredient[] = [];
@@ -60,28 +60,28 @@ export class MenuDetailPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.isFetching = true;
 
-    this.menuForm = new UntypedFormGroup({
-      menuName: new UntypedFormControl(null, {
+    this.menuForm = new FormGroup({
+      menuName: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(30)],
       }),
-      remarks: new UntypedFormControl('', {
+      remarks: new FormControl('', {
         updateOn: 'blur',
       }),
     });
 
-    this.itemForm = new UntypedFormGroup({
-      item: new UntypedFormControl(null, {
+    this.itemForm = new FormGroup({
+      item: new FormControl(null, {
         validators: [Validators.required],
       }),
-      itemName: new UntypedFormControl(null, {
+      itemName: new FormControl(null, {
         validators: [Validators.required],
       }),
-      uom: new UntypedFormControl(null, {
+      uom: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
-      quantity: new UntypedFormControl(null, {
+      quantity: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(1)],
       }),

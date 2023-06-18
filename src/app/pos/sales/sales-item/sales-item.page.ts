@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IonInput, IonSelect, ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Item } from 'src/app/classes/item.model';
@@ -24,7 +24,7 @@ export class SalesItemPage implements OnInit, OnDestroy {
   qtyInputSub: Subscription;
   costInputSub: Subscription;
 
-  itemForm: UntypedFormGroup;
+  itemForm: FormGroup;
 
   uoms: Uom[] = [];
 
@@ -45,22 +45,22 @@ export class SalesItemPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.itemForm = new UntypedFormGroup({
-      item: new UntypedFormControl(null, {
+    this.itemForm = new FormGroup({
+      item: new FormControl(null, {
         validators: [Validators.required],
       }),
-      itemName: new UntypedFormControl(null, {
+      itemName: new FormControl(null, {
         validators: [Validators.required],
       }),
-      uom: new UntypedFormControl(null, {
+      uom: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
-      quantity: new UntypedFormControl(null, {
+      quantity: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.001)],
       }),
-      price: new UntypedFormControl(null, {
+      price: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.001)],
       }),

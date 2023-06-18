@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   IonInput,
   IonSelect,
@@ -31,7 +31,7 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
 
   pSource = new ButcheryProductionSource();
 
-  itemForm: UntypedFormGroup;
+  itemForm: FormGroup;
 
   uoms: Uom[] = [];
 
@@ -52,8 +52,8 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.itemForm = new UntypedFormGroup({
-      requiredQty: new UntypedFormControl(0, {
+    this.itemForm = new FormGroup({
+      requiredQty: new FormControl(0, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
