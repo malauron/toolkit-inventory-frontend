@@ -32,6 +32,13 @@ ion-searchbar {
   border-top: 5px solid var(--ion-color-primary);
 }
 
+ion-content {
+  width: calc(100% + 22px);
+}
+ion-content::part(scroll) {
+  padding-right: 22px;
+}
+
 .spinner {
   z-index: 100;
   position: fixed;
