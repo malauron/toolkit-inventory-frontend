@@ -21,6 +21,9 @@
       <ion-col>
         <ion-card class="item-header">
           <div class="card-top"></div>
+          <ion-item class="primary-info" lines="full">
+            <ion-card-title>Primary Information</ion-card-title>
+          </ion-item>
           <form [formGroup]="itemForm" class="ion-padding">
             <ion-grid class="two-cols">
               <ion-row>
@@ -216,7 +219,7 @@
               </ion-grid>
             </ion-accordion>
           </ion-accordion-group>
-          <div class="separator"></div>
+          <!-- <div class="separator"></div> -->
 
           <!-- Item UoMs -->
           <ion-list>
@@ -340,7 +343,7 @@
               </ion-grid>
             </ion-accordion>
           </ion-accordion-group>
-          <div class="separator"></div>
+          <!-- <div class="separator"></div> -->
 
           <!-- Item BoMs -->
           <ion-list>
@@ -376,7 +379,7 @@
           <ion-item class="item-generic-header" lines="none">
             <ion-card-title>Stock Item</ion-card-title>
           </ion-item>
-          <div class="separator"></div>
+          <!-- <div class="separator"></div> -->
           <ion-grid>
             <form [formGroup]="itemGenericForm">
               <ion-item fill="outline">

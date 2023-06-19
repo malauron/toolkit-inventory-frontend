@@ -29,7 +29,7 @@ export class OrderItemsPage implements OnInit, OnDestroy {
   searchValue = '';
   pageNumber = 0;
   totalPages = 0;
-  pageSize = 50;
+  pageSize = 20;
 
   isFetching = false;
 
