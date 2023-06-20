@@ -367,6 +367,13 @@
         </ion-card>
       </ion-col>
 
+      <ion-col
+      size-xs="12"
+      size-xl="6"
+      *ngIf="this.item.itemClass === theItemClass.Assembly">
+        <app-item-add-ons></app-item-add-ons>
+      </ion-col>
+
       <!-- Generic Item -->
       <ion-col
         size-xs="12"

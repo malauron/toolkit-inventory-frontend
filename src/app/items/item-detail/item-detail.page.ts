@@ -20,6 +20,7 @@ import { Uom } from 'src/app/classes/uom.model';
 import { ItemsService } from 'src/app/services/items.service';
 import { UomsService } from 'src/app/services/uoms.service';
 import { ItemSearchComponent } from '../item-search/item-search.component';
+import { ItemAddOnsComponent } from '../item-add-ons/item-add-ons.component';
 
 @Component({
   selector: 'app-item-detail',
