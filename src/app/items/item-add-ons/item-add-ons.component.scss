@@ -1,8 +1,16 @@
-ion-card {
+.item-add-ons {
   --ion-background-color: #ffffff;
 
-  ion-list {
-    padding: 0;
+  ion-card {
+    box-shadow: none;
+    margin: 10px 0 10px 0;
+    border-bottom: 5px solid #f6f6f6;
+    border-radius: 0;
+  }
+
+  ion-card:last-child {
+    margin: 10px 0 0 0;
+    border-bottom: none;
   }
 }
 
