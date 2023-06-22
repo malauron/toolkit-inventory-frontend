@@ -7,7 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ItemAddOnsComponent implements OnInit {
 
+  isButtonVisible = false;
+
   constructor() { }
+
+  showButton() {
+    this.isButtonVisible = true;
+  }
+
+  hideButton() {
+    this.isButtonVisible = true;
+  }
 
   ngOnInit() {}
 

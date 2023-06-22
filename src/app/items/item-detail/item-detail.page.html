@@ -24,7 +24,7 @@
           <ion-item class="primary-info" lines="full">
             <ion-card-title>Primary Information</ion-card-title>
           </ion-item>
-          <form [formGroup]="itemForm" class="ion-padding">
+          <form [formGroup]="itemForm" class="ion-padding item-form">
             <ion-grid class="two-cols">
               <ion-row>
                 <ion-col size-xs="12" size-md="6">
@@ -136,7 +136,11 @@
               </ion-row>
             </ion-grid>
 
-            <ion-item lines="none" *ngIf="this.item.itemId" class="buttons-holder">
+            <ion-item
+              lines="none"
+              *ngIf="this.item.itemId"
+              class="buttons-holder"
+            >
               <ion-button
                 (click)="onSave()"
                 color="success"
@@ -365,12 +369,6 @@
             </ion-item>
           </ion-list>
         </ion-card>
-      </ion-col>
-
-      <ion-col
-      size-xs="12"
-      size-xl="6"
-      *ngIf="this.item.itemClass === theItemClass.Assembly">
         <app-item-add-ons></app-item-add-ons>
       </ion-col>
 
