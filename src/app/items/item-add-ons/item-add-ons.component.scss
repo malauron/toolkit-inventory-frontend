@@ -1,35 +1,53 @@
 .item-add-ons {
   --ion-background-color: #ffffff;
 
-  ion-card {
+  .add-on {
     box-shadow: none;
     margin: 10px 0 10px 0;
     border-bottom: 8px solid #f6f6f6;
     border-radius: 0;
 
-    &:last-child {
+    &ion-item:last-child {
       margin: 10px 0 0 0;
       border-bottom: none;
     }
   }
 
-  .add-on ion-item {
-    padding-bottom: 15px;
-    --inner-padding-end: 5;
-
-    &:last-child {
-      --border-style: none;
-      padding-bottom: 0px;
-    }
-
-    .delete-item-button {
-      padding: 0;
+  .new-add-on {
+    box-shadow: none;
+    ion-card-content {
+      border: 2px dashed ;
       margin: 0;
-
-      &::part(native) {
-        padding: 0 0 0 10px;
+      H2 {
+        text-align: center;
+        margin: auto;
       }
     }
+  }
+
+  .add-on {
+    ion-item {
+      padding-bottom: 15px;
+      --inner-padding-end: 5;
+
+
+
+      .delete-item-button {
+        padding: 0;
+        margin: 0;
+
+        &::part(native) {
+          padding: 0 0 0 10px;
+        }
+      }
+    }
+&:last-child {
+        // --border-style: none;
+
+        border: 2px dashed ;
+        padding-bottom: 0px;
+      }
+
   }
 }
 
