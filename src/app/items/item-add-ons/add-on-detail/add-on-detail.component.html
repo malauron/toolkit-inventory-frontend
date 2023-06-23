@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-label>Add-on Detail</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item fill="outline">
+    <ion-icon
+      slot="start"
+      name="bookmark-outline"
+      color="primary"
+    ></ion-icon>
+    <ion-input
+      placeholder="Description"
+      type="text"
+      maxlength="20"
+    >
+    </ion-input>
+  </ion-item>
+  <ion-item fill="outline" lines="none">
+    <ion-icon
+      slot="start"
+      name="toggle-outline"
+      color="primary"
+    ></ion-icon>
+    <!-- <ion-input
+      placeholder="Optional"
+      type="text"
+      maxlength="20"
+    >
+    </ion-input> -->
+    <ion-label>Required</ion-label>
+    <ion-toggle [checked]="true" [enableOnOffLabels]="true" slot="end">Optional</ion-toggle>
+  </ion-item>
+  <ion-item fill="outline">
+    <ion-icon
+      slot="start"
+      name="reorder-two-outline"
+      color="primary"
+    ></ion-icon>
+    <ion-input
+      placeholder="Minimum number of items"
+      type="text"
+      maxlength="20"
+    >
+    </ion-input>
+  </ion-item>
+  <ion-item fill="outline">
+    <ion-icon
+      slot="start"
+      name="reorder-four-outline"
+      color="primary"
+    ></ion-icon>
+    <ion-input
+      placeholder="Maximum number of items"
+      type="text"
+      maxlength="20"
+    >
+    </ion-input>
+  </ion-item>
+  <ion-button expand="block">save</ion-button>
+</ion-content>

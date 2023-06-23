@@ -8,7 +8,7 @@ import { ItemDetailPageRoutingModule } from './item-detail-routing.module';
 
 import { ItemDetailPage } from './item-detail.page';
 import { ItemSearchModule } from '../item-search/item-search.module';
-import { ItemAddOnsComponent } from '../item-add-ons/item-add-ons.component';
+import { ItemAddOnsModule } from '../item-add-ons/item-add-ons.module';
 
 @NgModule({
   imports: [
@@ -16,8 +16,9 @@ import { ItemAddOnsComponent } from '../item-add-ons/item-add-ons.component';
     ReactiveFormsModule,
     IonicModule,
     ItemDetailPageRoutingModule,
-    ItemSearchModule
+    ItemSearchModule,
+    ItemAddOnsModule
   ],
-  declarations: [ItemDetailPage, ItemAddOnsComponent]
+  declarations: [ItemDetailPage]
 })
 export class ItemDetailPageModule {}

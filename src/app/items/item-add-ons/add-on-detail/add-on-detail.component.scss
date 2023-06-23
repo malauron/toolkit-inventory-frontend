@@ -1,0 +1,19 @@
+ion-content {
+  --padding-start: 5%;
+  --padding-end: 5%;
+  --padding-top: 10%;
+  // --padding-bottom: 20%;
+
+  ion-item {
+    padding: 10px 0;
+  }
+
+  ion-button {
+    margin: 20px 0 0 0;
+    height: 3.3rem;
+  }
+
+  ion-toggle {
+    width: 50%;
+  }
+}

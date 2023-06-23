@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { AddOnDetailComponent } from './add-on-detail/add-on-detail.component';
 
 @Component({
   selector: 'app-item-add-ons',
@@ -9,7 +11,21 @@ export class ItemAddOnsComponent implements OnInit {
 
   isButtonVisible = false;
 
-  constructor() { }
+  constructor(private modalAddOns: ModalController) { }
+
+  ngOnInit() {}
+
+  onShowAddOnDetail(){
+    this.modalAddOns
+        .create({
+          component: AddOnDetailComponent,
+          cssClass: 'my-modal'
+        })
+        .then(modal => {
+          modal.present();
+          return modal.onDidDismiss();
+        });
+  }
 
   showButton() {
     this.isButtonVisible = true;
@@ -19,6 +35,5 @@ export class ItemAddOnsComponent implements OnInit {
     this.isButtonVisible = true;
   }
 
-  ngOnInit() {}
 
 }

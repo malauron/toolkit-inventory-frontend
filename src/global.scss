@@ -28,3 +28,7 @@
 @import '/src/theme/fonts.scss';
 
 @import '~swiper/swiper-bundle.css';
+
+.my-modal {
+  --border-radius: 10px;
+}
