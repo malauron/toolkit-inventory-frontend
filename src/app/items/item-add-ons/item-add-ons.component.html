@@ -14,42 +14,22 @@
                 <ion-card-title>Hot Beverages</ion-card-title>
                 <ion-card-subtitle>Optional, Max. of 2</ion-card-subtitle>
               </ion-label>
-              <ion-button
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
               </ion-button>
-              <ion-button
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
-                <ion-icon name="close-circle"></ion-icon> </ion-button
-            ></ion-item>
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                <ion-icon name="close-circle"></ion-icon> </ion-button></ion-item>
           </ion-card-header>
           <ion-card-content class="add-on-content">
-            <ion-item (mouseenter)="showButton()" (mouseleave)="hideButton()">
+            <ion-item>
               <ion-label>
                 <h2>Brewed Coffee</h2>
                 <h3>2 Pcs @ 45.00</h3>
               </ion-label>
-              <ion-button
-                *ngIf="isButtonVisible"
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+              </ion-button>
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
@@ -58,15 +38,10 @@
                 <h2>Hot Choco</h2>
                 <h3>2 Pcs @ 45.00</h3>
               </ion-label>
-              <ion-button
-                *ngIf="isButtonVisible"
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+              </ion-button>
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
@@ -75,15 +50,10 @@
                 <h2>Green Tea</h2>
                 <h3>2 Pcs @ 45.00</h3>
               </ion-label>
-              <ion-button
-                *ngIf="isButtonVisible"
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+              </ion-button>
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
@@ -92,31 +62,17 @@
                 <h2>Hot Milk</h2>
                 <h3>2 Pcs @ 45.00</h3>
               </ion-label>
-              <ion-button
-                *ngIf="isButtonVisible"
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
               </ion-button>
-              <ion-button
-                *ngIf="isButtonVisible"
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
             <ion-item lines="none" button (click)="onShowAddOnContent()">
-              <ion-label><h3>INSERT ITEM...</h3></ion-label>
+              <ion-label>
+                <h3>INSERT ITEM...</h3>
+              </ion-label>
             </ion-item>
           </ion-card-content>
         </ion-card>
@@ -127,42 +83,22 @@
                 <ion-card-title>Cold Beverages</ion-card-title>
                 <ion-card-subtitle>Optional, Max. of 1</ion-card-subtitle>
               </ion-label>
-              <ion-button
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
               </ion-button>
-              <ion-button
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
-                <ion-icon name="close-circle"></ion-icon> </ion-button
-            ></ion-item>
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                <ion-icon name="close-circle"></ion-icon> </ion-button></ion-item>
           </ion-card-header>
           <ion-card-content class="add-on-content">
-            <ion-item (mouseenter)="showButton()" (mouseleave)="hideButton()">
+            <ion-item>
               <ion-label>
                 <h2>Coke Regular</h2>
                 <h3>2 Pcs @ 45.00</h3>
               </ion-label>
-              <ion-button
-                *ngIf="isButtonVisible"
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+              </ion-button>
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
@@ -171,15 +107,10 @@
                 <h2>Sprite Regular</h2>
                 <h3>2 Pcs @ 45.00</h3>
               </ion-label>
-              <ion-button
-                *ngIf="isButtonVisible"
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+              </ion-button>
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
@@ -188,15 +119,10 @@
                 <h2>Pineapple Juice Regular</h2>
                 <h3>2 Pcs @ 45.00</h3>
               </ion-label>
-              <ion-button
-                *ngIf="isButtonVisible"
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+              </ion-button>
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
@@ -205,31 +131,17 @@
                 <h2>Nestea Lemonade Regular</h2>
                 <h3>2 Pcs @ 45.00</h3>
               </ion-label>
-              <ion-button
-                *ngIf="isButtonVisible"
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
               </ion-button>
-              <ion-button
-                *ngIf="isButtonVisible"
-                class="delete-item-button"
-                mode="ios"
-                slot="end"
-                fill="clear"
-                color="medium"
-                size="default"
-              >
+              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
             <ion-item lines="none" button (click)="onShowAddOnContent()">
-              <ion-label><h3>INSERT ITEM...</h3></ion-label>
+              <ion-label>
+                <h3>INSERT ITEM...</h3>
+              </ion-label>
             </ion-item>
           </ion-card-content>
         </ion-card>

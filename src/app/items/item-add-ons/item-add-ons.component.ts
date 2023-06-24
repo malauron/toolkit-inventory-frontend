@@ -9,7 +9,6 @@ import { AddOnContentComponent } from './add-on-content/add-on-content.component
   styleUrls: ['./item-add-ons.component.scss'],
 })
 export class ItemAddOnsComponent implements OnInit {
-  isButtonVisible = false;
 
   constructor(private mdl: ModalController) {}
 
@@ -37,13 +36,5 @@ export class ItemAddOnsComponent implements OnInit {
         modal.present();
         return modal.onDidDismiss();
       });
-  }
-
-  showButton() {
-    this.isButtonVisible = true;
-  }
-
-  hideButton() {
-    this.isButtonVisible = true;
   }
 }

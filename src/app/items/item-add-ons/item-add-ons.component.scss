@@ -10,6 +10,15 @@
     .add-on-header {
       ion-item {
         --inner-padding-end: 5;
+        ion-button {
+          visibility: hidden;
+        }
+      }
+
+      ion-item:hover {
+        ion-button {
+          visibility: visible;
+        }
       }
     }
 
@@ -30,6 +39,16 @@
           margin: 0;
           text-align: center;
           color: #4e4d4d;
+        }
+
+        ion-button {
+          visibility: hidden;
+        }
+      }
+
+      ion-item:hover {
+        ion-button {
+          visibility: visible;
         }
       }
     }
@@ -58,7 +77,6 @@
       color: #4e4d4d;
     }
   }
-
 }
 
 .card-top {

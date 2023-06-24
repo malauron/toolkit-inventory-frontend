@@ -27,30 +27,11 @@
   <ion-item fill="outline" lines="none">
     <ion-icon
       slot="start"
-      name="toggle-outline"
+      name="checkmark-circle-outline"
       color="primary"
     ></ion-icon>
-    <!-- <ion-input
-      placeholder="Optional"
-      type="text"
-      maxlength="20"
-    >
-    </ion-input> -->
     <ion-label>Required</ion-label>
     <ion-toggle [checked]="true" [enableOnOffLabels]="true" slot="end">Optional</ion-toggle>
-  </ion-item>
-  <ion-item fill="outline">
-    <ion-icon
-      slot="start"
-      name="reorder-two-outline"
-      color="primary"
-    ></ion-icon>
-    <ion-input
-      placeholder="Minimum number of items"
-      type="text"
-      maxlength="20"
-    >
-    </ion-input>
   </ion-item>
   <ion-item fill="outline">
     <ion-icon
@@ -59,9 +40,11 @@
       color="primary"
     ></ion-icon>
     <ion-input
+    class="qty-row"
       placeholder="Maximum number of items"
-      type="text"
-      maxlength="20"
+      type="number"
+      inputmode ="numeric"
+      step="1"
     >
     </ion-input>
   </ion-item>
