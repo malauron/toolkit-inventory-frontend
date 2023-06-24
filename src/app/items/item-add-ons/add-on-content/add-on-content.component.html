@@ -1,3 +1,81 @@
-<p>
-  add-on-content works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-label>Add-on item</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item fill="outline">
+    <ion-icon
+      slot="start"
+      name="bookmark-outline"
+      color="primary"
+    ></ion-icon>
+    <ion-input
+      (click)="onItemSearch('bom')"
+      readonly="true"
+      placeholder="Item"
+    ></ion-input>
+    <ion-button
+      mode="ios"
+      class="search-button"
+      slot="end"
+      size="small"
+      fill="clear"
+      (click)="onItemSearch('bom')"
+    >
+      <ion-icon
+        name="search-outline"
+        slot="icon-only"
+      ></ion-icon>
+    </ion-button>
+  </ion-item>
+  <ion-item fill="outline" lines="none">
+    <ion-icon
+      slot="start"
+      name="toggle-outline"
+      color="primary"
+    ></ion-icon>
+    <!-- <ion-input
+      placeholder="Optional"
+      type="text"
+      maxlength="20"
+    >
+    </ion-input> -->
+    <ion-label>Required</ion-label>
+    <ion-toggle [checked]="true" [enableOnOffLabels]="true" slot="end">Optional</ion-toggle>
+  </ion-item>
+  <ion-item fill="outline">
+    <ion-icon
+      slot="start"
+      name="reorder-two-outline"
+      color="primary"
+    ></ion-icon>
+    <ion-input
+      placeholder="Minimum number of items"
+      type="text"
+      maxlength="20"
+    >
+    </ion-input>
+  </ion-item>
+  <ion-item fill="outline">
+    <ion-icon
+      slot="start"
+      name="reorder-four-outline"
+      color="primary"
+    ></ion-icon>
+    <ion-input
+      placeholder="Maximum number of items"
+      type="text"
+      maxlength="20"
+    >
+    </ion-input>
+  </ion-item>
+  <ion-button class="save-button" expand="block">save</ion-button>
+</ion-content>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AddOnDetailComponent } from './add-on-detail/add-on-detail.component';
+import { AddOnContentComponent } from './add-on-content/add-on-content.component';
 
 @Component({
   selector: 'app-item-add-ons',
@@ -8,23 +9,34 @@ import { AddOnDetailComponent } from './add-on-detail/add-on-detail.component';
   styleUrls: ['./item-add-ons.component.scss'],
 })
 export class ItemAddOnsComponent implements OnInit {
-
   isButtonVisible = false;
 
-  constructor(private modalAddOns: ModalController) { }
+  constructor(private mdl: ModalController) {}
 
   ngOnInit() {}
 
-  onShowAddOnDetail(){
-    this.modalAddOns
-        .create({
-          component: AddOnDetailComponent,
-          cssClass: 'my-modal'
-        })
-        .then(modal => {
-          modal.present();
-          return modal.onDidDismiss();
-        });
+  onShowAddOnDetail() {
+    this.mdl
+      .create({
+        component: AddOnDetailComponent,
+        cssClass: 'custom-modal-styles',
+      })
+      .then((modal) => {
+        modal.present();
+        return modal.onDidDismiss();
+      });
+  }
+
+  onShowAddOnContent() {
+    this.mdl
+      .create({
+        component: AddOnContentComponent,
+        cssClass: 'custom-modal-styles',
+      })
+      .then((modal) => {
+        modal.present();
+        return modal.onDidDismiss();
+      });
   }
 
   showButton() {
@@ -34,6 +46,4 @@ export class ItemAddOnsComponent implements OnInit {
   hideButton() {
     this.isButtonVisible = true;
   }
-
-
 }

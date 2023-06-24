@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AddOnDetailModule } from './add-on-detail/add-on-detail.module';
 import { ItemAddOnsComponent } from './item-add-ons.component';
+import { AddOnContentModule } from './add-on-content/add-on-content.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AddOnDetailModule
+    AddOnDetailModule,
+    AddOnContentModule
   ],
   exports: [ItemAddOnsComponent],
   declarations: [ItemAddOnsComponent]

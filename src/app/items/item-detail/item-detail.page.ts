@@ -566,7 +566,10 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.modalItemSearch
-        .create({ component: ItemSearchComponent })
+        .create({
+          component: ItemSearchComponent,
+          cssClass: 'custom-modal-styles'
+        })
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
