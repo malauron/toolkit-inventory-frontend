@@ -20,7 +20,8 @@
     <ion-input
       placeholder="Description"
       type="text"
-      maxlength="20"
+      maxlength="30"
+      [(ngModel)]="itemAddOnDetail.description"
     >
     </ion-input>
   </ion-item>
@@ -31,7 +32,7 @@
       color="primary"
     ></ion-icon>
     <ion-label>Required</ion-label>
-    <ion-toggle [checked]="true" [enableOnOffLabels]="true" slot="end">Optional</ion-toggle>
+    <ion-toggle [(ngModel)]="itemAddOnDetail.isRequired" [checked]="itemAddOnDetail.isRequired" [enableOnOffLabels]="true" slot="end">Optional</ion-toggle>
   </ion-item>
   <ion-item fill="outline">
     <ion-icon
@@ -45,8 +46,9 @@
       type="number"
       inputmode ="numeric"
       step="1"
+      [(ngModel)]="itemAddOnDetail.maxNoOfItems"
     >
     </ion-input>
   </ion-item>
-  <ion-button expand="block">save</ion-button>
+  <ion-button expand="block" (click)="onSaveAddOn()">save</ion-button>
 </ion-content>
