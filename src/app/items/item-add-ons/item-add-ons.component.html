@@ -24,7 +24,8 @@
             <ion-item *ngFor="let addOnContent of addOn.itemAddOnContents">
               <ion-label>
                 <h2>{{ addOnContent.item.itemName }}</h2>
-                <h3>2 Pcs @ 45.00</h3>
+                <h3>{{ addOnContent.qty }} {{ addOnContent.uom.uomCode }} @ {{ addOnContent.price }}</h3>
+                <h4>{{ addOnContent.altDesc }}</h4>
               </ion-label>
               <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
@@ -33,7 +34,7 @@
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
-            <ion-item lines="none" button (click)="onShowAddOnContent()">
+            <ion-item lines="none" button (click)="onShowAddOnContent(addOn)">
               <ion-label>
                 <h3>INSERT ITEM...</h3>
               </ion-label>

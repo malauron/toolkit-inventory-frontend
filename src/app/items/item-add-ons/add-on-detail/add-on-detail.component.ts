@@ -21,6 +21,7 @@ export class AddOnDetailComponent implements OnInit {
     this.itemAddOnDetail.description = '';
     this.itemAddOnDetail.isRequired = false;
     this.itemAddOnDetail.maxNoOfItems = 1;
+    this.itemAddOnDetail.itemAddOnContents = [];
   }
 
   onSaveAddOn() {

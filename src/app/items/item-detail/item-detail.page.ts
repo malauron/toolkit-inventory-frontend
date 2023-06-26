@@ -80,7 +80,6 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     if (this.genericUomSubscription !== undefined) {
       this.genericUomSubscription.unsubscribe();
     }
-    console.log('exit');
   }
 
   ngOnInit() {
