@@ -50,7 +50,6 @@ export class InventoryPrintViewPage implements OnInit {
 
   printPage() {
     if (this.warehouse.warehouseId) {
-      console.log('done');
       this.printButton.nativeElement.click();
     }
   }

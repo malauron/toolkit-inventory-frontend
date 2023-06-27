@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Item } from 'src/app/classes/item.model';
 import { Uom } from 'src/app/classes/uom.model';
+import { UomSearchComponent } from 'src/app/uoms/uom-search/uom-search.component';
 import { ItemSearchComponent } from '../../item-search/item-search.component';
 import { ItemAddOnContent } from '../classes/item-add-on-content.model';
 
@@ -13,9 +14,7 @@ import { ItemAddOnContent } from '../classes/item-add-on-content.model';
 export class AddOnContentComponent implements OnInit {
   itemAddOnContent: ItemAddOnContent;
 
-  constructor(
-    private modalController: ModalController,
-  ) {}
+  constructor(private modalController: ModalController) {}
 
   ngOnInit() {
     this.itemAddOnContent = new ItemAddOnContent();
@@ -37,13 +36,28 @@ export class AddOnContentComponent implements OnInit {
         mdl.present();
         return mdl.onDidDismiss();
       })
-      .then((modal)=>{
-        if(modal.role === 'item'){
+      .then((modal) => {
+        if (modal.role === 'item') {
           this.itemAddOnContent.item = modal.data;
           this.itemAddOnContent.uom = modal.data.uom;
-          console.log(modal.data);
         }
       });
+  }
+
+  onUomSearch(item?: Item) {
+    this.modalController
+      .create({
+        component: UomSearchComponent,
+        componentProps: {
+          item: this.itemAddOnContent.item
+        },
+        cssClass: 'custom-modal-styles',
+      })
+      .then((mdl) => {
+        mdl.present();
+        return mdl.onDidDismiss();
+      })
+      .then((mdl) => {});
   }
 
   onSaveAddOnContent() {

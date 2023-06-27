@@ -486,7 +486,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     if (!this.modalOpen) {
       this.modalOpen = true;
 
-      console.log(pItem);
       const receivedItemDetail = new ReceivedItemDetail();
 
       receivedItemDetail.item = pItem.item;

@@ -60,7 +60,6 @@ export class ItemAddOnsComponent implements OnInit, OnDestroy {
           addOnDetail.itemAddOnContents = addOnDetail.itemAddOnContents.concat(
             modal.data
           );
-          console.log(addOnDetail);
         }
       });
   }

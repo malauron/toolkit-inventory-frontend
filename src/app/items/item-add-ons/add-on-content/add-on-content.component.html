@@ -19,7 +19,7 @@
   </ion-item>
   <ion-item fill="outline">
     <ion-icon slot="start" name="pie-chart-outline" color="primary"></ion-icon>
-    <ion-input [value]="itemAddOnContent.uom.uomName" (click)="onItemSearch('bom')" readonly="true" placeholder="Uom"></ion-input>
+    <ion-input [value]="itemAddOnContent.uom.uomName" (click)="onUomSearch()" readonly="true" placeholder="Uom"></ion-input>
     <ion-button mode="ios" class="search-button" slot="end" size="small" fill="clear" (click)="onItemSearch('bom')">
       <ion-icon name="search-outline" slot="icon-only"></ion-icon>
     </ion-button>

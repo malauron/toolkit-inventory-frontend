@@ -11,6 +11,7 @@ import { ItemGeneric } from '../classes/item-generic.model';
 import { ItemUom } from '../classes/item-uom.model';
 import { Item } from '../classes/item.model';
 import { AppParamsConfig } from '../Configurations/app-params.config';
+import { filterString } from '../utils/utils';
 
 interface ResponseItems {
   _embedded: {
@@ -54,22 +55,21 @@ export class ItemsService {
     return this._item;
   }
 
-  getItemByItemCode(
-    searchDesc?: any
-  ): Observable<ItemDto> {
+  getItemByItemCode(searchDesc?: any): Observable<ItemDto> {
     if (searchDesc === undefined) {
       searchDesc = '';
     }
 
-    searchDesc = String(searchDesc).replace('%','');
-    searchDesc = String(searchDesc).replace('^','');
-    searchDesc = String(searchDesc).replace('[','');
-    searchDesc = String(searchDesc).replace(']','');
-    searchDesc = String(searchDesc).replace('|','');
-    searchDesc = String(searchDesc).replace('\\','');
+    // searchDesc = String(searchDesc).replace('%','');
+    // searchDesc = String(searchDesc).replace('^','');
+    // searchDesc = String(searchDesc).replace('[','');
+    // searchDesc = String(searchDesc).replace(']','');
+    // searchDesc = String(searchDesc).replace('|','');
+    // searchDesc = String(searchDesc).replace('\\','');
 
-    this.apiUrl =
-      `${this.config.urlV1ItemsFindByItemCode}${searchDesc}`;
+    searchDesc = filterString(searchDesc);
+
+    this.apiUrl = `${this.config.urlV1ItemsFindByItemCode}${searchDesc}`;
     return this.http.get<ItemDto>(this.apiUrl);
   }
 
@@ -103,21 +103,24 @@ export class ItemsService {
     warehouseId?: number,
     pageNumber?: number,
     pageSize?: number,
-    itemName?: string): Observable<ResponseItemCosts> {
-
+    itemName?: string
+  ): Observable<ResponseItemCosts> {
     if (searchDesc === undefined) {
       searchDesc = '';
     }
 
-    searchDesc = String(searchDesc).replace('%','');
-    searchDesc = String(searchDesc).replace('^','');
-    searchDesc = String(searchDesc).replace('[','');
-    searchDesc = String(searchDesc).replace(']','');
-    searchDesc = String(searchDesc).replace('|','');
-    searchDesc = String(searchDesc).replace('\\','');
+    // searchDesc = String(searchDesc).replace('%','');
+    // searchDesc = String(searchDesc).replace('^','');
+    // searchDesc = String(searchDesc).replace('[','');
+    // searchDesc = String(searchDesc).replace(']','');
+    // searchDesc = String(searchDesc).replace('|','');
+    // searchDesc = String(searchDesc).replace('\\','');
 
-    this.apiUrl = `${this.config.urlItemCostSearchByWarehouseIdAndItemName}?projection=itemCostView&` +
-                    `warehouseId=${warehouseId}&itemName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+    searchDesc = filterString(searchDesc);
+
+    this.apiUrl =
+      `${this.config.urlItemCostSearchByWarehouseIdAndItemName}?projection=itemCostView&` +
+      `warehouseId=${warehouseId}&itemName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
     return this.http.get<ResponseItemCosts>(this.apiUrl);
   }
 
@@ -129,25 +132,40 @@ export class ItemsService {
     return this.http.put<Item>(this.config.urlV1Items, itemDto);
   }
 
-  getItemUoms(itemId: number): Observable<ItemDto>{
+  getItemUoms(itemId: number): Observable<ItemDto> {
     this.apiUrl = `${this.config.urlV1ItemUoms}?itemId=${itemId}`;
 
     return this.http.get<ItemDto>(this.apiUrl);
   }
 
-  getItemBoms(itemId: number): Observable<ItemDto>{
+  getItemUomsByItemIdUomName(
+    itemId?: number,
+    uomName?: string
+  ): Observable<ItemUom> {
+    if (uomName === undefined) {
+      uomName = '';
+    }
+
+    uomName = filterString(uomName);
+
+    this.apiUrl = `${this.config.urlItemUomSearchByItemIdUomName}?itemId=${itemId}&uomName=${uomName}`;
+
+    return this.http.get<ItemUom>(this.apiUrl);
+  }
+
+  getItemBoms(itemId: number): Observable<ItemDto> {
     this.apiUrl = `${this.config.urlV1ItemBoms}?itemId=${itemId}`;
 
     return this.http.get<ItemDto>(this.apiUrl);
   }
 
-  getItemGenerics(itemId: number): Observable<ItemDto>{
+  getItemGenerics(itemId: number): Observable<ItemDto> {
     this.apiUrl = `${this.config.urlV1ItemGenerics}?itemId=${itemId}`;
 
     return this.http.get<ItemDto>(this.apiUrl);
   }
 
-  putItemGenerics(itemGeneric: ItemGeneric): Observable<ItemGeneric>{
+  putItemGenerics(itemGeneric: ItemGeneric): Observable<ItemGeneric> {
     this.apiUrl = `${this.config.urlV1ItemGenerics}`;
 
     return this.http.put<ItemGeneric>(this.apiUrl, itemGeneric);
@@ -161,7 +179,7 @@ export class ItemsService {
     return this.http.post<ItemBom>(this.config.urlV1ItemBoms, itemBom);
   }
 
-  deleteItemUoms(itemUom: ItemUom){
+  deleteItemUoms(itemUom: ItemUom) {
     const options = {
       headers: new HttpHeaders({
         contentType: 'application/json',

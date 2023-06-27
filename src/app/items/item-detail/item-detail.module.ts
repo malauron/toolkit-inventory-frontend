@@ -8,6 +8,7 @@ import { ItemDetailPageRoutingModule } from './item-detail-routing.module';
 
 import { ItemDetailPage } from './item-detail.page';
 import { ItemSearchModule } from '../item-search/item-search.module';
+import { UomSearchModule } from '../../uoms/uom-search/uom-search.module';
 import { ItemAddOnsModule } from '../item-add-ons/item-add-ons.module';
 
 @NgModule({
@@ -17,6 +18,7 @@ import { ItemAddOnsModule } from '../item-add-ons/item-add-ons.module';
     IonicModule,
     ItemDetailPageRoutingModule,
     ItemSearchModule,
+    UomSearchModule,
     ItemAddOnsModule
   ],
   declarations: [ItemDetailPage]
