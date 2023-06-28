@@ -49,21 +49,71 @@ export class UomSearchComponent implements OnInit, OnDestroy, ViewDidEnter {
         this.pageNumber = 0;
         this.totalPages = 0;
         if (this.item) {
-          this.getUoms(undefined, this.pageNumber,this.config.pageSize,this.item.itemId,this.searchValue);
+          this.getUoms(
+            undefined,
+            this.pageNumber,
+            this.config.pageSize,
+            this.item.itemId,
+            this.searchValue
+          );
         } else {
-          this.getUoms(undefined, this.pageNumber,this.config.pageSize,this.item.itemId);
+          this.getUoms(
+            undefined,
+            this.pageNumber,
+            this.config.pageSize,
+            this.item.itemId
+          );
         }
       });
 
-      if (this.item) {
-        this.getUoms(undefined, this.pageNumber,this.config.pageSize,this.item.itemId);
-      }
+    if (this.item) {
+      this.getUoms(
+        undefined,
+        this.pageNumber,
+        this.config.pageSize,
+        this.item.itemId
+      );
+    }
   }
 
   ionViewDidEnter(): void {
     setTimeout(() => {
       this.searchBar.setFocus();
     }, 5);
+  }
+
+  getUoms(
+    event?,
+    pageNumber?: number,
+    pageSize?: number,
+    itemId?: number,
+    uomName?: string
+  ) {
+    this.isFetching = true;
+    this.itemsService
+      .getItemUomsByItemIdUomName(pageNumber, pageSize, itemId, uomName)
+      .subscribe(
+        (res) => {
+          this.itemUoms = this.itemUoms.concat(res._embedded.itemUoms);
+          this.totalPages = res.page.totalPages;
+          this.isFetching = false;
+          if (event) {
+            event.target.complete();
+          }
+        },
+        (err) => {
+          this.isFetching = false;
+        }
+      );
+  }
+
+  onSelectUom(itemUom?: ItemUom) {
+    if (itemUom === undefined) {
+      itemUom = new ItemUom();
+      itemUom.uom = this.item.uom;
+      itemUom.quantity = 1;
+    }
+    this.modalController.dismiss(itemUom, 'itemUom');
   }
 
   loadMoreItems(event) {
@@ -83,31 +133,13 @@ export class UomSearchComponent implements OnInit, OnDestroy, ViewDidEnter {
         this.searchValue
       );
     } else {
-      this.getUoms(event, this.pageNumber, this.config.pageSize, this.item.itemId);
+      this.getUoms(
+        event,
+        this.pageNumber,
+        this.config.pageSize,
+        this.item.itemId
+      );
     }
-  }
-
-  getUoms(
-    event?,
-    pageNumber?: number,
-    pageSize?: number,
-    itemId?: number,
-    uomName?: string
-  ) {
-    this.itemsService
-      .getItemUomsByItemIdUomName(pageNumber, pageSize, itemId, uomName)
-      .subscribe((res) => {
-        this.itemUoms = this.itemUoms.concat(res._embedded.itemUoms);
-      });
-  }
-
-  onSelectUom(itemUom?: ItemUom) {
-    if (itemUom === undefined) {
-      itemUom = new ItemUom();
-      itemUom.uom = this.item.uom;
-      itemUom.quantity = 1;
-    }
-    this.modalController.dismiss(itemUom, 'itemUom');
   }
 
   ngOnDestroy(): void {
