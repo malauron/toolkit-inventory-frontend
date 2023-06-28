@@ -1,9 +1,12 @@
+/* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSearchbar, ModalController, ViewDidEnter } from '@ionic/angular';
 import { debounceTime, distinctUntilChanged, map, Subscription } from 'rxjs';
+import { ItemUom } from 'src/app/classes/item-uom.model';
 import { Item } from 'src/app/classes/item.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
+import { ItemsService } from 'src/app/services/items.service';
 
 @Component({
   selector: 'app-uom-search',
@@ -17,7 +20,7 @@ export class UomSearchComponent implements OnInit, OnDestroy, ViewDidEnter {
   searchBarSub: Subscription;
 
   item: Item;
-  uoms: Uom[] = [];
+  itemUoms: ItemUom[] = [];
 
   searchValue = '';
 
@@ -28,28 +31,33 @@ export class UomSearchComponent implements OnInit, OnDestroy, ViewDidEnter {
 
   constructor(
     private modalController: ModalController,
-    private config: AppParamsConfig
+    private config: AppParamsConfig,
+    private itemsService: ItemsService
   ) {}
 
   ngOnInit() {
     this.searchBarSub = this.searchBar.ionInput
-    .pipe(
-      map((event) => (event.target as HTMLInputElement).value),
-      debounceTime(this.config.waitTime),
-      distinctUntilChanged()
-    )
-    .subscribe((res) => {
-      this.searchValue = res.trim();
-      this.infiniteScroll.disabled = false;
-      this.uoms = [];
-      this.pageNumber = 0;
-      this.totalPages = 0;
+      .pipe(
+        map((event) => (event.target as HTMLInputElement).value),
+        debounceTime(this.config.waitTime),
+        distinctUntilChanged()
+      )
+      .subscribe((res) => {
+        this.searchValue = res.trim();
+        this.infiniteScroll.disabled = false;
+        this.itemUoms = [];
+        this.pageNumber = 0;
+        this.totalPages = 0;
+        if (this.item) {
+          this.getUoms(undefined, this.pageNumber,this.config.pageSize,this.item.itemId,this.searchValue);
+        } else {
+          this.getUoms(undefined, this.pageNumber,this.config.pageSize,this.item.itemId);
+        }
+      });
+
       if (this.item) {
-        console.log('has item');
-      } else {
-        console.log('no item');
+        this.getUoms(undefined, this.pageNumber,this.config.pageSize,this.item.itemId);
       }
-    });
   }
 
   ionViewDidEnter(): void {
@@ -71,17 +79,35 @@ export class UomSearchComponent implements OnInit, OnDestroy, ViewDidEnter {
         event,
         this.pageNumber,
         this.config.pageSize,
+        this.item.itemId,
         this.searchValue
       );
     } else {
-      this.getUoms(event, this.pageNumber, this.config.pageSize);
+      this.getUoms(event, this.pageNumber, this.config.pageSize, this.item.itemId);
     }
   }
 
-  getUoms(event?, pageNumber?: number, pageSize?: number, uomName?: string) {}
+  getUoms(
+    event?,
+    pageNumber?: number,
+    pageSize?: number,
+    itemId?: number,
+    uomName?: string
+  ) {
+    this.itemsService
+      .getItemUomsByItemIdUomName(pageNumber, pageSize, itemId, uomName)
+      .subscribe((res) => {
+        this.itemUoms = this.itemUoms.concat(res._embedded.itemUoms);
+      });
+  }
 
-  onSelectUom(uom: Uom) {
-    this.modalController.dismiss(uom, 'uom');
+  onSelectUom(itemUom?: ItemUom) {
+    if (itemUom === undefined) {
+      itemUom = new ItemUom();
+      itemUom.uom = this.item.uom;
+      itemUom.quantity = 1;
+    }
+    this.modalController.dismiss(itemUom, 'itemUom');
   }
 
   ngOnDestroy(): void {

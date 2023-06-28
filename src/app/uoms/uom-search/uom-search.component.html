@@ -10,13 +10,31 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid *ngIf="uoms.length > 0">
-    <ion-card class="favCard" *ngFor="let uom of uoms">
-      <ion-item lines="none" detail button (click)="onSelectUom(uom)">
-        <ion-avatar slot="start">
-          <img src="../../assets/icons/items.svg" class="icon" />
-        </ion-avatar>
-        <ion-card-subtitle>{{ uom.uomName }}</ion-card-subtitle>
+  <ion-grid *ngIf="itemUoms.length > 0">
+    <ion-card class="favCard">
+      <ion-item lines="none" detail button (click)="onSelectUom()">
+        <ion-icon
+          slot="start"
+          name="pie-chart-outline"
+          color="primary"
+        ></ion-icon>
+        <ion-label>
+          <h2>{{ item.uom.uomName }}</h2>
+          <h3>Default</h3>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+    <ion-card class="favCard" *ngFor="let itemUom of itemUoms">
+      <ion-item lines="none" detail button (click)="onSelectUom(itemUom)">
+        <ion-icon
+          slot="start"
+          name="pie-chart-outline"
+          color="primary"
+        ></ion-icon>
+        <ion-label>
+          <h2>{{ itemUom.uom.uomName }}</h2>
+          <h3>Equivalent to {{ itemUom.quantity }}{{ item.uom.uomCode }}</h3>
+        </ion-label>
       </ion-item>
     </ion-card>
   </ion-grid>

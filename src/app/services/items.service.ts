@@ -38,7 +38,15 @@ interface ResponseItemCosts {
 }
 
 interface ResponseItemUoms {
-  itemUoms: ItemUom[];
+  _embedded: {
+    itemUoms: ItemUom[];
+  };
+  page: {
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    number: number;
+  };
 }
 
 @Injectable({
@@ -139,18 +147,21 @@ export class ItemsService {
   }
 
   getItemUomsByItemIdUomName(
+    pageNumber?: number,
+    pageSize?: number,
     itemId?: number,
     uomName?: string
-  ): Observable<ItemUom> {
+  ): Observable<ResponseItemUoms> {
     if (uomName === undefined) {
       uomName = '';
     }
 
     uomName = filterString(uomName);
 
-    this.apiUrl = `${this.config.urlItemUomSearchByItemIdUomName}?itemId=${itemId}&uomName=${uomName}`;
+    this.apiUrl = `${this.config.urlItemUomSearchByItemIdUomName}?itemId=${itemId}&uomName=${uomName}` +
+                  `&page=${pageNumber}&size=${pageSize}`;
 
-    return this.http.get<ItemUom>(this.apiUrl);
+    return this.http.get<ResponseItemUoms>(this.apiUrl);
   }
 
   getItemBoms(itemId: number): Observable<ItemDto> {

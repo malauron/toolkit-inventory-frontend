@@ -57,7 +57,9 @@ export class AddOnContentComponent implements OnInit {
         mdl.present();
         return mdl.onDidDismiss();
       })
-      .then((mdl) => {});
+      .then((mdl) => {
+        this.itemAddOnContent.uom = mdl.data.uom;
+      });
   }
 
   onSaveAddOnContent() {
