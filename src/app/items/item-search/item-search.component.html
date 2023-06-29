@@ -10,6 +10,10 @@
 </ion-header>
 
 <ion-content>
+  <div class="spinner" *ngIf="isFetching">
+    <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
+  </div>
+
   <ion-grid *ngIf="itemList.length > 0">
     <ion-card class="favCard" *ngFor="let item of itemList">
       <ion-item lines="none" detail button (click)="onSelectItem(item)">
@@ -21,15 +25,8 @@
     </ion-card>
   </ion-grid>
 
-  <ion-infinite-scroll
-    #infiniteScroll
-    threshold="5%"
-    (ionInfinite)="loadMoreItems($event)"
-  >
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading more items..."
-    >
+  <ion-infinite-scroll #infiniteScroll threshold="5%" (ionInfinite)="loadMoreItems($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more items...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

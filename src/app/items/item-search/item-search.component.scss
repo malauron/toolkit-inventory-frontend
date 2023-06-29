@@ -22,3 +22,17 @@ ion-card {
  // secondary
  // filter: invert(97%) sepia(79%) saturate(2860%) hue-rotate(292deg) brightness(103%) contrast(91%);
 }
+
+.spinner {
+  z-index: 100;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+ion-spinner {
+  stroke: var(--ion-color-primary);
+  fill: var(--ion-color-primary);
+  transform: scale(3);
+}
