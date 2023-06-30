@@ -12,25 +12,65 @@
             <ion-item lines="none">
               <ion-label>
                 <ion-card-title>{{ addOn.description }}</ion-card-title>
-                <ion-card-subtitle><span *ngIf="!addOn.isRequired">Optional, </span>Max. of {{ addOn.maxNoOfItems }}</ion-card-subtitle>
+                <ion-card-subtitle
+                  ><span *ngIf="!addOn.isRequired">Optional, </span>Max. of
+                  {{ addOn.maxNoOfItems }}</ion-card-subtitle
+                >
               </ion-label>
-              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+              <ion-button
+                class="delete-item-button"
+                mode="ios"
+                slot="end"
+                fill="clear"
+                color="medium"
+                size="default"
+              >
                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
               </ion-button>
-              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
-                <ion-icon name="close-circle"></ion-icon> </ion-button></ion-item>
+              <ion-button
+                class="delete-item-button"
+                mode="ios"
+                slot="end"
+                fill="clear"
+                color="medium"
+                size="default"
+              >
+                <ion-icon name="close-circle"></ion-icon> </ion-button
+            ></ion-item>
           </ion-card-header>
           <ion-card-content class="add-on-content">
             <ion-item *ngFor="let addOnContent of addOn.itemAddOnContents">
               <ion-label>
-                <h2>{{ addOnContent.item.itemName }}</h2>
-                <h3>{{ addOnContent.qty }} {{ addOnContent.uom.uomCode }} @ {{ addOnContent.price }}</h3>
-                <h4>{{ addOnContent.altDesc }}</h4>
+                <h2 *ngIf="addOnContent.altDesc">{{ addOnContent.altDesc }}</h2>
+                <h3 *ngIf="addOnContent.altDesc">
+                  ({{ addOnContent.item.itemName }})
+                </h3>
+                <h2 *ngIf="!addOnContent.altDesc">
+                  {{ addOnContent.item.itemName }}
+                </h2>
+                <h3>
+                  {{ addOnContent.qty }}{{ addOnContent.uom.uomCode
+                  }}<span *ngIf="addOnContent.price>0"> @ {{ addOnContent.price | number : "1.2" }}</span>
+                </h3>
               </ion-label>
-              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+              <ion-button
+                class="delete-item-button"
+                mode="ios"
+                slot="end"
+                fill="clear"
+                color="medium"
+                size="default"
+              >
                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
               </ion-button>
-              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+              <ion-button
+                class="delete-item-button"
+                mode="ios"
+                slot="end"
+                fill="clear"
+                color="medium"
+                size="default"
+              >
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
@@ -44,9 +84,7 @@
         <ion-card class="new-add-on">
           <ion-card-content>
             <ion-item lines="none" button (click)="onShowAddOnDetail()">
-              <ion-label>
-                NEW ADD-ON...
-              </ion-label>
+              <ion-label> NEW ADD-ON... </ion-label>
             </ion-item>
           </ion-card-content>
         </ion-card>

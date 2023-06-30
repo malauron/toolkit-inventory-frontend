@@ -8,16 +8,30 @@
     border-radius: 0;
 
     .add-on-header {
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      ion-card-title {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
       ion-item {
         --inner-padding-end: 5;
+        --background: rgba(194, 166, 151,0.1);
+        --border-radius: 25px;
         ion-button {
           visibility: hidden;
+          display: none;
         }
       }
 
       ion-item:hover {
         ion-button {
           visibility: visible;
+          display: inline-block;
         }
       }
     }
@@ -43,12 +57,14 @@
 
         ion-button {
           visibility: hidden;
+          display: none;
         }
       }
 
       ion-item:hover {
         ion-button {
           visibility: visible;
+          display: inline-block;
         }
       }
     }

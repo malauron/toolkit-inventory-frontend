@@ -10,45 +10,48 @@
 </ion-header>
 
 <ion-content>
-
-  <ion-item fill="outline">
-    <ion-icon
-      slot="start"
-      name="bookmark-outline"
-      color="primary"
-    ></ion-icon>
-    <ion-input
-      placeholder="Description"
-      type="text"
-      maxlength="30"
-      [(ngModel)]="itemAddOnDetail.description"
-    >
-    </ion-input>
-  </ion-item>
-  <ion-item fill="outline" lines="none">
-    <ion-icon
-      slot="start"
-      name="checkmark-circle-outline"
-      color="primary"
-    ></ion-icon>
-    <ion-label>Required</ion-label>
-    <ion-toggle [(ngModel)]="itemAddOnDetail.isRequired" [checked]="itemAddOnDetail.isRequired" [enableOnOffLabels]="true" slot="end">Optional</ion-toggle>
-  </ion-item>
-  <ion-item fill="outline">
-    <ion-icon
-      slot="start"
-      name="reorder-four-outline"
-      color="primary"
-    ></ion-icon>
-    <ion-input
-    class="qty-input"
-      placeholder="Maximum number of items"
-      type="number"
-      inputmode ="numeric"
-      step="1"
-      [(ngModel)]="itemAddOnDetail.maxNoOfItems"
-    >
-    </ion-input>
-  </ion-item>
+  <form [formGroup]="detailForm">
+    <ion-item fill="outline">
+      <ion-icon slot="start" name="bookmark-outline" color="primary"></ion-icon>
+      <ion-input
+        formControlName="description"
+        placeholder="Description"
+        type="text"
+        maxlength="30"
+      >
+      </ion-input>
+    </ion-item>
+    <ion-item fill="outline" lines="none">
+      <ion-icon
+        slot="start"
+        name="checkmark-circle-outline"
+        color="primary"
+      ></ion-icon>
+      <ion-label>Required</ion-label>
+      <ion-toggle
+        formControlName="isRequired"
+        [checked]="itemAddOnDetail.isRequired"
+        [enableOnOffLabels]="true"
+        slot="end"
+        >Optional</ion-toggle
+      >
+    </ion-item>
+    <ion-item fill="outline">
+      <ion-icon
+        slot="start"
+        name="reorder-four-outline"
+        color="primary"
+      ></ion-icon>
+      <ion-input
+        formControlName="maxNoOfItems"
+        class="qty-input"
+        placeholder="Maximum number of items"
+        type="number"
+        inputmode="numeric"
+        step="1"
+      >
+      </ion-input>
+    </ion-item>
+  </form>
   <ion-button expand="block" (click)="onSaveAddOn()">save</ion-button>
 </ion-content>
