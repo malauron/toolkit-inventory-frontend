@@ -395,14 +395,21 @@ export class ItemDetailPage implements OnInit, OnDestroy {
 
   processSaveItem() {
     return (itemData) => {
-
-      console.log(itemData.errorDesc);
-      this.itemService.item.next(itemData);
-      if (this.item.itemId) {
-        this.messageBox('Item details has been updated.');
+      if (itemData.errorDesc === null) {
+        this.itemService.item.next(itemData);
+        if (this.item.itemId) {
+          this.messageBox('Item details has been updated.');
+        } else {
+          this.item.itemId = itemData.item.itemId;
+          this.messageBox('Item has been saved successfully.');
+        }
       } else {
-        this.item.itemId = itemData.item.itemId;
-        this.messageBox('Item has been saved successfully.');
+        if (itemData.errorDesc.includes('item_name')) {
+          this.messageBox('Item description already exist.');
+        }
+        if (itemData.errorDesc.includes('item_code')) {
+          this.messageBox('Item code already exist.');
+        }
       }
       this.isUploading = false;
     };
