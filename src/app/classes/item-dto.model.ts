@@ -9,5 +9,6 @@ export class ItemDto {
   public itemUoms?: ItemUom[],
   public itemBoms?: ItemBom[],
   public itemGeneric?: ItemGeneric,
+  public errorDesc?: string,
   ){}
 }

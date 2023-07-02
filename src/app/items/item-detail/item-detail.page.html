@@ -7,7 +7,7 @@
       ></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
-    <ion-buttons slot="primary" *ngIf="!this.item.itemId">
+    <ion-buttons slot="primary" *ngIf="!this.item.itemId && !isUploading">
       <ion-button (click)="onSave()">
         <ion-icon name="{{ postButton }}" slot="icon-only"></ion-icon>
       </ion-button>
@@ -15,7 +15,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   <ion-grid>
     <ion-row>
       <ion-col>

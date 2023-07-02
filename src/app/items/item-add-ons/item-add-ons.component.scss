@@ -1,5 +1,7 @@
 .add-ons-card {
   --ion-background-color: #ffffff;
+  margin-left: 0;
+  margin-right: 0;
 
   .add-on-detail {
     box-shadow: none;
@@ -20,8 +22,8 @@
 
       ion-item {
         --inner-padding-end: 5;
-        --background: rgba(194, 166, 151,0.1);
-        --border-radius: 25px;
+        --background: linear-gradient(175deg, rgba(255,205,205,1) 0%, rgba(255,255,255,0) 54%);
+        --border-radius: 10px;
         ion-button {
           visibility: hidden;
           display: none;

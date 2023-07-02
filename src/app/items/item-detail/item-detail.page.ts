@@ -347,7 +347,13 @@ export class ItemDetailPage implements OnInit, OnDestroy {
         itemDto.item = this.item;
 
         if (this.item.itemId > 0) {
-          this.itemService.putItem(itemDto).subscribe(this.processSaveItem());
+          this.itemService
+            .putItem(itemDto)
+            .subscribe(this.processSaveItem(), (err) => {
+              this.messageBox('Unable to get a response from the server.');
+              this.isUploading = false;
+              return;
+            });
         } else {
           this.item.itemClass = this.itemForm.value.itemClass;
           this.item.uom = this.itemForm.value.uom;
@@ -372,7 +378,13 @@ export class ItemDetailPage implements OnInit, OnDestroy {
             itemDto.itemGeneric = this.itemGeneric;
           }
 
-          this.itemService.postItem(itemDto).subscribe(this.processSaveItem());
+          this.itemService
+            .postItem(itemDto)
+            .subscribe(this.processSaveItem(), (err) => {
+              this.messageBox('Unable to get a response from the server.');
+              this.isUploading = false;
+              return;
+            });
         }
       } else {
         this.messageBox('Invalid item information.');
@@ -383,6 +395,8 @@ export class ItemDetailPage implements OnInit, OnDestroy {
 
   processSaveItem() {
     return (itemData) => {
+
+      console.log(itemData.errorDesc);
       this.itemService.item.next(itemData);
       if (this.item.itemId) {
         this.messageBox('Item details has been updated.');
@@ -568,7 +582,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
       this.modalItemSearch
         .create({
           component: ItemSearchComponent,
-          cssClass: 'custom-modal-styles'
+          cssClass: 'custom-modal-styles',
         })
         .then((modalSearch) => {
           modalSearch.present();

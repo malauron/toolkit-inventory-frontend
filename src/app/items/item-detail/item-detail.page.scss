@@ -2,8 +2,20 @@ ion-content {
   --ion-background-color: #f6f6f6;
 }
 
+ion-grid {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+ion-col {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 ion-card {
   --ion-background-color: #ffffff;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 ion-select {
@@ -19,6 +31,8 @@ ion-select {
 }
 
 .item-form {
+  padding-left: 0;
+  padding-right: 0;
   padding-bottom: 30px;
 }
 
@@ -110,4 +124,11 @@ ion-select::part(icon) {
 
 .delete-item-button::part(native) {
   padding: 0;
+}
+
+@media (min-width: 768px) {
+  ion-col {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }
