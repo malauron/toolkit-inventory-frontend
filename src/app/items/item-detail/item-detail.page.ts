@@ -19,6 +19,7 @@ import { Item } from 'src/app/classes/item.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemsService } from 'src/app/services/items.service';
 import { UomsService } from 'src/app/services/uoms.service';
+import { AddOnsServices } from '../item-add-ons/services/add-ons.service';
 import { ItemSearchComponent } from '../item-search/item-search.component';
 
 @Component({
@@ -61,6 +62,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private itemService: ItemsService,
     private uomService: UomsService,
+    private addOnsService: AddOnsServices,
     private toastController: ToastController,
     private alertCtrl: AlertController,
     private modalItemSearch: ModalController
@@ -362,7 +364,8 @@ export class ItemDetailPage implements OnInit, OnDestroy {
             itemDto.itemUoms = this.itemUoms;
           } else if (this.item.itemClass === ItemClass.Assembly) {
             itemDto.itemBoms = this.itemBoms;
-            // itemDto.itemAddOnDetails = this.
+            itemDto.itemAddOnDetails = this.addOnsService.getItemAddOnDetails();
+            console.log(itemDto);
           } else if (this.item.itemClass === ItemClass.Branded) {
             if (!this.itemGenericForm.valid) {
               this.messageBox('Invalid stock item details.');
