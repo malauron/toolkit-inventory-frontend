@@ -3,7 +3,7 @@ import { Uom } from 'src/app/classes/uom.model';
 
 export class ItemAddOnContent {
   constructor(
-    public itemAddOnId?: number,
+    public itemAddOnContentId?: number,
     public item?: Item,
     public uom?: Uom,
     public qty?: number,

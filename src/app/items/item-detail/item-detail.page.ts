@@ -362,6 +362,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
             itemDto.itemUoms = this.itemUoms;
           } else if (this.item.itemClass === ItemClass.Assembly) {
             itemDto.itemBoms = this.itemBoms;
+            // itemDto.itemAddOnDetails = this.
           } else if (this.item.itemClass === ItemClass.Branded) {
             if (!this.itemGenericForm.valid) {
               this.messageBox('Invalid stock item details.');
@@ -406,9 +407,10 @@ export class ItemDetailPage implements OnInit, OnDestroy {
       } else {
         if (itemData.errorDesc.includes('item_name')) {
           this.messageBox('Item description already exist.');
-        }
-        if (itemData.errorDesc.includes('item_code')) {
+        } else if (itemData.errorDesc.includes('item_code')) {
           this.messageBox('Item code already exist.');
+        } else {
+          this.messageBox(itemData.errorDesc);
         }
       }
       this.isUploading = false;

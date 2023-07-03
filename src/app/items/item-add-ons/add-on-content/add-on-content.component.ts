@@ -26,7 +26,7 @@ export class AddOnContentComponent implements OnInit {
 
   ngOnInit() {
     this.itemAddOnContent = new ItemAddOnContent();
-    this.itemAddOnContent.itemAddOnId = 0;
+    this.itemAddOnContent.itemAddOnContentId = 0;
     this.itemAddOnContent.item = new Item();
     this.itemAddOnContent.uom = new Uom();
 
