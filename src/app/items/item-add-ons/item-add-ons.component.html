@@ -7,7 +7,7 @@
         <ion-card-title>Add-ons</ion-card-title>
       </ion-item>
       <div class="add-ons" slot="content">
-        <ion-card class="add-on-detail" *ngFor="let addOn of this.addOns">
+        <ion-card class="add-on-detail" *ngFor="let addOn of this.addOnsService.getItemAddOnDetails()">
           <ion-card-header class="add-on-header">
             <ion-item lines="none">
               <ion-label>

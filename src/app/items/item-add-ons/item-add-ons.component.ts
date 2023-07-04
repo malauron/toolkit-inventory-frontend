@@ -11,19 +11,20 @@ import { ItemAddOnDetail } from './classes/item-add-on-detail.model';
   styleUrls: ['./item-add-ons.component.scss'],
 })
 export class ItemAddOnsComponent implements OnInit, OnDestroy {
-  addOns: ItemAddOnDetail[];
+  // addOns: ItemAddOnDetail[];
 
   constructor(
     private mdl: ModalController,
-    private addOnsService: AddOnsServices
+    public addOnsService: AddOnsServices
   ) {}
 
   ngOnDestroy(): void {
+    // this.addOnsService.setItemAddOnDetails([]);
     this.addOnsService.setItemAddOnDetails([]);
   }
 
   ngOnInit() {
-    this.addOns = this.addOnsService.getItemAddOnDetails();
+    // this.addOns = this.addOnsService.getItemAddOnDetails();
   }
 
   onShowAddOnDetail() {
@@ -38,8 +39,7 @@ export class ItemAddOnsComponent implements OnInit, OnDestroy {
       })
       .then((modal) => {
         if (modal.role === 'saveAddOn') {
-          this.addOns = this.addOns.concat(modal.data);
-          this.addOnsService.setItemAddOnDetails(this.addOns);
+          this.addOnsService.addItemDetail(modal.data);
         }
       });
   }

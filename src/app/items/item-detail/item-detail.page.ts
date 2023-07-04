@@ -89,6 +89,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     this.itemUoms = [];
     this.itemBoms = [];
     this.itemGeneric = new ItemGeneric();
+    this.addOnsService.setItemAddOnDetails([]);
 
     this.route.paramMap.subscribe((paramMap) => {
       // Check whether paramMap is empty or not
@@ -398,12 +399,16 @@ export class ItemDetailPage implements OnInit, OnDestroy {
 
   processSaveItem() {
     return (itemData) => {
+      console.log(itemData);
       if (itemData.errorDesc === null) {
         this.itemService.item.next(itemData);
         if (this.item.itemId) {
           this.messageBox('Item details has been updated.');
         } else {
           this.item.itemId = itemData.item.itemId;
+          this.itemBoms = itemData.itemBoms;
+          this.addOnsService.setItemAddOnDetails(itemData.itemAddOnDetails);
+          console.log(this.addOnsService.getItemAddOnDetails());
           this.messageBox('Item has been saved successfully.');
         }
       } else {
