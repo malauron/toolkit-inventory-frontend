@@ -68,13 +68,6 @@ export class ItemsService {
       searchDesc = '';
     }
 
-    // searchDesc = String(searchDesc).replace('%','');
-    // searchDesc = String(searchDesc).replace('^','');
-    // searchDesc = String(searchDesc).replace('[','');
-    // searchDesc = String(searchDesc).replace(']','');
-    // searchDesc = String(searchDesc).replace('|','');
-    // searchDesc = String(searchDesc).replace('\\','');
-
     searchDesc = filterString(searchDesc);
 
     this.apiUrl = `${this.config.urlV1ItemsFindByItemCode}${searchDesc}`;
@@ -111,19 +104,10 @@ export class ItemsService {
     warehouseId?: number,
     pageNumber?: number,
     pageSize?: number,
-    itemName?: string
   ): Observable<ResponseItemCosts> {
     if (searchDesc === undefined) {
       searchDesc = '';
     }
-
-    // searchDesc = String(searchDesc).replace('%','');
-    // searchDesc = String(searchDesc).replace('^','');
-    // searchDesc = String(searchDesc).replace('[','');
-    // searchDesc = String(searchDesc).replace(']','');
-    // searchDesc = String(searchDesc).replace('|','');
-    // searchDesc = String(searchDesc).replace('\\','');
-
     searchDesc = filterString(searchDesc);
 
     this.apiUrl =
@@ -167,6 +151,11 @@ export class ItemsService {
   getItemBoms(itemId: number): Observable<ItemDto> {
     this.apiUrl = `${this.config.urlV1ItemBoms}?itemId=${itemId}`;
 
+    return this.http.get<ItemDto>(this.apiUrl);
+  }
+
+  getItemAddons(itemId: number): Observable<ItemDto> {
+    this.apiUrl = `${this.config.urlV1ItemAddOns}?itemId=${itemId}`;
     return this.http.get<ItemDto>(this.apiUrl);
   }
 
