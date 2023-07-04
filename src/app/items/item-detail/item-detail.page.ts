@@ -365,7 +365,6 @@ export class ItemDetailPage implements OnInit, OnDestroy {
           } else if (this.item.itemClass === ItemClass.Assembly) {
             itemDto.itemBoms = this.itemBoms;
             itemDto.itemAddOnDetails = this.addOnsService.getItemAddOnDetails();
-            console.log(itemDto);
           } else if (this.item.itemClass === ItemClass.Branded) {
             if (!this.itemGenericForm.valid) {
               this.messageBox('Invalid stock item details.');
@@ -550,6 +549,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   }
 
   onDeleteItemBom(itemBom: ItemBom) {
+    console.log(itemBom);
     this.alertCtrl
       .create({
         header: 'Confirm',
