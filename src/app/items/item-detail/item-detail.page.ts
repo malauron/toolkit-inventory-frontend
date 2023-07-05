@@ -411,7 +411,6 @@ export class ItemDetailPage implements OnInit, OnDestroy {
 
   processSaveItem() {
     return (itemData) => {
-      console.log(itemData);
       if (itemData.errorDesc === null) {
         this.itemService.item.next(itemData);
         if (this.item.itemId) {
@@ -420,7 +419,6 @@ export class ItemDetailPage implements OnInit, OnDestroy {
           this.item.itemId = itemData.item.itemId;
           this.itemBoms = itemData.itemBoms;
           this.addOnsService.setItemAddOnDetails(itemData.itemAddOnDetails);
-          console.log(this.addOnsService.getItemAddOnDetails());
           this.messageBox('Item has been saved successfully.');
         }
       } else {
@@ -566,7 +564,6 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   }
 
   onDeleteItemBom(itemBom: ItemBom) {
-    console.log(itemBom);
     this.alertCtrl
       .create({
         header: 'Confirm',

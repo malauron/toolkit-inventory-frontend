@@ -9,7 +9,6 @@ import { ItemAddOnDetail } from '../classes/item-add-on-detail.model';
   styleUrls: ['./add-on-detail.component.scss'],
 })
 export class AddOnDetailComponent implements OnInit {
-
   itemAddOnDetail: ItemAddOnDetail;
 
   detailForm: FormGroup;
@@ -17,23 +16,29 @@ export class AddOnDetailComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private toastController: ToastController
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.itemAddOnDetail = new ItemAddOnDetail();
-    this.itemAddOnDetail.itemAddOnDetailId = 0;
-    this.itemAddOnDetail.itemAddOnContents = [];
+    if (this.itemAddOnDetail === undefined) {
+      this.itemAddOnDetail = new ItemAddOnDetail();
+      this.itemAddOnDetail.itemAddOnDetailId = 0;
+      this.itemAddOnDetail.itemAddOnContents = [];
+    }
 
     this.detailForm = new FormGroup({
-      description: new FormControl(null, {
+      description: new FormControl(this.itemAddOnDetail.description, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(30)]
+        validators: [Validators.required, Validators.maxLength(30)],
       }),
-      isRequired: new FormControl(false),
-      maxNoOfItems: new FormControl(null, {
+      isRequired: new FormControl(this.itemAddOnDetail.isRequired),
+      maxNoOfItems: new FormControl(this.itemAddOnDetail.maxNoOfItems, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.min(1), Validators.max(30)]
-      })
+        validators: [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(30),
+        ],
+      }),
     });
   }
 
@@ -50,7 +55,7 @@ export class AddOnDetailComponent implements OnInit {
   }
 
   dismissModal() {
-    this.modalController.dismiss(null,'dismissModal');
+    this.modalController.dismiss(null, 'dismissModal');
   }
 
   async messageBox(msg: string) {
