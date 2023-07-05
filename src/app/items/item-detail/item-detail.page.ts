@@ -107,6 +107,9 @@ export class ItemDetailPage implements OnInit, OnDestroy {
       this.item = new Item();
       this.item.itemId = Number(paramMap.get('itemId'));
       this.item.itemClass = ItemClass.Stock;
+
+      this.addOnsService.setItem(this.item);
+
       if (this.item.itemId > 0) {
         this.lockControls = true;
       }
@@ -229,8 +232,11 @@ export class ItemDetailPage implements OnInit, OnDestroy {
               // Fecth alternative uoms for this item
               this.getItemUoms(this.item.itemId);
 
-              // Featch all boms for this item
+              // Fetch all boms for this item
               this.getItemBoms(this.item.itemId);
+
+              // Fetch all add-ons
+              this.getItemAddOns(this.item.itemId);
 
               //Fetch generic item
               this.getItemGeneric(this.item.itemId);
@@ -288,6 +294,12 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   getItemBoms(itemId: number) {
     this.itemService.getItemBoms(itemId).subscribe((res) => {
       this.itemBoms = res.itemBoms;
+    });
+  }
+
+  getItemAddOns(itemId: number) {
+    this.itemService.getItemAddOns(itemId).subscribe(res=>{
+      this.addOnsService.setItemAddOnDetails(res.itemAddOnDetails);
     });
   }
 

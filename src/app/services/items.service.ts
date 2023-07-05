@@ -11,6 +11,7 @@ import { ItemGeneric } from '../classes/item-generic.model';
 import { ItemUom } from '../classes/item-uom.model';
 import { Item } from '../classes/item.model';
 import { AppParamsConfig } from '../Configurations/app-params.config';
+import { ItemAddOnDetail } from '../items/item-add-ons/classes/item-add-on-detail.model';
 import { filterString } from '../utils/utils';
 
 interface ResponseItems {
@@ -154,7 +155,7 @@ export class ItemsService {
     return this.http.get<ItemDto>(this.apiUrl);
   }
 
-  getItemAddons(itemId: number): Observable<ItemDto> {
+  getItemAddOns(itemId: number): Observable<ItemDto> {
     this.apiUrl = `${this.config.urlV1ItemAddOns}?itemId=${itemId}`;
     return this.http.get<ItemDto>(this.apiUrl);
   }

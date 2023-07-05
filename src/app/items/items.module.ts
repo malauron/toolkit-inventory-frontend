@@ -10,13 +10,8 @@ import { ItemsPage } from './items.page';
 import { AddOnsServices } from './item-add-ons/services/add-ons.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ItemsPageRoutingModule
-  ],
+  imports: [CommonModule, FormsModule, IonicModule, ItemsPageRoutingModule],
   declarations: [ItemsPage],
-  providers: [AddOnsServices]
+  providers: [AddOnsServices],
 })
 export class ItemsPageModule {}

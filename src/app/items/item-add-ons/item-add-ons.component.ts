@@ -4,6 +4,7 @@ import { AddOnDetailComponent } from './add-on-detail/add-on-detail.component';
 import { AddOnContentComponent } from './add-on-content/add-on-content.component';
 import { AddOnsServices } from './services/add-ons.service';
 import { ItemAddOnDetail } from './classes/item-add-on-detail.model';
+import { ItemsService } from 'src/app/services/items.service';
 
 @Component({
   selector: 'app-item-add-ons',
@@ -11,21 +12,16 @@ import { ItemAddOnDetail } from './classes/item-add-on-detail.model';
   styleUrls: ['./item-add-ons.component.scss'],
 })
 export class ItemAddOnsComponent implements OnInit, OnDestroy {
-  // addOns: ItemAddOnDetail[];
-
   constructor(
     private mdl: ModalController,
     public addOnsService: AddOnsServices
   ) {}
 
   ngOnDestroy(): void {
-    // this.addOnsService.setItemAddOnDetails([]);
     this.addOnsService.setItemAddOnDetails([]);
   }
 
-  ngOnInit() {
-    // this.addOns = this.addOnsService.getItemAddOnDetails();
-  }
+  ngOnInit() {}
 
   onShowAddOnDetail() {
     this.mdl
@@ -39,7 +35,21 @@ export class ItemAddOnsComponent implements OnInit, OnDestroy {
       })
       .then((modal) => {
         if (modal.role === 'saveAddOn') {
-          this.addOnsService.addItemDetail(modal.data);
+          if (this.addOnsService.getItem().itemId > 0) {
+            // const itemAddOnDetail = new ItemAddOnDetail();
+            // itemAddOnDetail.item = this.addOnsService.getItem();
+            // itemAddOnDetail.description = modal.data.description;
+            // itemAddOnDetail.isRequired = modal.data.isRequired;
+            // itemAddOnDetail.maxNoOfItems = modal.data.maxNoOfItems;
+            modal.data.item = this.addOnsService.getItem();
+            this.addOnsService
+              .postItemAddOnDetails(modal.data)
+              .subscribe((res) => {
+                this.addOnsService.addItemDetail(res);
+              });
+          } else {
+            this.addOnsService.addItemDetail(modal.data);
+          }
         }
       });
   }
@@ -56,9 +66,20 @@ export class ItemAddOnsComponent implements OnInit, OnDestroy {
       })
       .then((modal) => {
         if (modal.role === 'saveContent') {
-          addOnDetail.itemAddOnContents = addOnDetail.itemAddOnContents.concat(
-            modal.data
-          );
+          if (addOnDetail.itemAddOnDetailId > 0) {
+            modal.data.itemAddOnDetail = new ItemAddOnDetail(
+              addOnDetail.itemAddOnDetailId
+            );
+            this.addOnsService
+              .postItemAddOnContents(modal.data)
+              .subscribe((res) => {
+                addOnDetail.itemAddOnContents =
+                  addOnDetail.itemAddOnContents.concat(res);
+              });
+          } else {
+            addOnDetail.itemAddOnContents =
+              addOnDetail.itemAddOnContents.concat(modal.data);
+          }
         }
       });
   }
