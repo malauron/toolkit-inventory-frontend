@@ -55,4 +55,16 @@ export class AddOnsServices {
       itemAddOnContent
     );
   }
+
+  deleteItemAddOnDetails(itemAddOnDetailId: number) {
+    return this.http.delete(
+      `${this.urlV1ItemAddOnDetails}?itemAddOnDetailId=${itemAddOnDetailId}`
+    );
+  }
+
+  deleteItemAddOnContents(itemAddOnContentId: number) {
+    return this.http.delete(
+      `${this.urlV1ItemAddOnContents}?itemAddOnContentId=${itemAddOnContentId}`
+    );
+  }
 }

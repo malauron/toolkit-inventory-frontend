@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { AddOnDetailComponent } from './add-on-detail/add-on-detail.component';
 import { AddOnContentComponent } from './add-on-content/add-on-content.component';
 import { AddOnsServices } from './services/add-ons.service';
 import { ItemAddOnDetail } from './classes/item-add-on-detail.model';
-import { ItemsService } from 'src/app/services/items.service';
 import { ItemAddOnContent } from './classes/item-add-on-content.model';
 
 @Component({
@@ -15,6 +14,7 @@ import { ItemAddOnContent } from './classes/item-add-on-content.model';
 export class ItemAddOnsComponent implements OnInit, OnDestroy {
   constructor(
     private mdl: ModalController,
+    private alertCtrl: AlertController,
     public addOnsService: AddOnsServices
   ) {}
 
@@ -151,10 +151,97 @@ export class ItemAddOnsComponent implements OnInit, OnDestroy {
             content.price = modal.data.price;
             content.qty = modal.data.qty;
             content.altDesc = modal.data.altDesc;
-
           }
         }
-        console.log(modal);
+      });
+  }
+
+  onDeleteItemAddOnDetail(itemAddOnDetail: ItemAddOnDetail) {
+    this.alertCtrl
+      .create({
+        header: 'Confirm',
+        message: 'This will be deleted permanently.',
+        buttons: [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'Delete',
+            handler: () => {
+              if (itemAddOnDetail.itemAddOnDetailId > 0) {
+                this.addOnsService
+                  .deleteItemAddOnDetails(itemAddOnDetail.itemAddOnDetailId)
+                  .subscribe((res) => {
+                    for (const key in this.addOnsService.getItemAddOnDetails()) {
+                      if (
+                        itemAddOnDetail ===
+                        this.addOnsService.getItemAddOnDetails()[key]
+                      ) {
+                        this.addOnsService
+                          .getItemAddOnDetails()
+                          .splice(Number(key), 1);
+                      }
+                    }
+                  });
+              } else {
+                for (const key in this.addOnsService.getItemAddOnDetails()) {
+                  if (
+                    itemAddOnDetail ===
+                    this.addOnsService.getItemAddOnDetails()[key]
+                  ) {
+                    this.addOnsService
+                      .getItemAddOnDetails()
+                      .splice(Number(key), 1);
+                  }
+                }
+              }
+            },
+          },
+        ],
+      })
+      .then((res) => {
+        res.present();
+      });
+  }
+
+  onDeleteItemAddOnContent(
+    itemAddOnContent: ItemAddOnContent,
+    allContents: ItemAddOnContent[]
+  ) {
+    this.alertCtrl
+      .create({
+        header: 'Confirm',
+        message: 'This will be deleted permanently.',
+        buttons: [
+          {
+            text: 'Cancel',
+          },
+          {
+            text: 'Delete',
+            handler: () => {
+              if (itemAddOnContent.itemAddOnContentId > 0) {
+                this.addOnsService
+                  .deleteItemAddOnContents(itemAddOnContent.itemAddOnContentId)
+                  .subscribe((res) => {
+                    for (const key in allContents) {
+                      if (itemAddOnContent === allContents[key]) {
+                        allContents.splice(Number(key), 1);
+                      }
+                    }
+                  });
+              } else {
+                for (const key in allContents) {
+                  if (itemAddOnContent === allContents[key]) {
+                    allContents.splice(Number(key), 1);
+                  }
+                }
+              }
+            },
+          },
+        ],
+      })
+      .then((res) => {
+        res.present();
       });
   }
 }

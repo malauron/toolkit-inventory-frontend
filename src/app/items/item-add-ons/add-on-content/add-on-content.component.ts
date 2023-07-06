@@ -76,12 +76,12 @@ export class AddOnContentComponent implements OnInit {
   }
 
   onUomSearch(item?: Item) {
-    if (this.itemAddOnContent.item.itemId === undefined) {
+    if (this.item.itemId === undefined) {
       this.messageBox('Please select an item.');
       return;
     }
 
-    if (this.itemAddOnContent.uom.uomId === undefined) {
+    if (this.uom.uomId === undefined) {
       this.messageBox('Please select a UoM.');
       return;
     }
@@ -96,7 +96,7 @@ export class AddOnContentComponent implements OnInit {
       .create({
         component: UomSearchComponent,
         componentProps: {
-          item: this.itemAddOnContent.item,
+          item: this.item,
         },
         cssClass: 'custom-modal-styles',
       })

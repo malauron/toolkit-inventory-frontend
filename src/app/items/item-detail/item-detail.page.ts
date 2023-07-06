@@ -298,7 +298,7 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   }
 
   getItemAddOns(itemId: number) {
-    this.itemService.getItemAddOns(itemId).subscribe(res=>{
+    this.itemService.getItemAddOns(itemId).subscribe((res) => {
       this.addOnsService.setItemAddOnDetails(res.itemAddOnDetails);
     });
   }

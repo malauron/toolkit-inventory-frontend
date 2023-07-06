@@ -29,6 +29,7 @@
                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
               </ion-button>
               <ion-button
+                (click)="onDeleteItemAddOnDetail(addOn)"
                 class="delete-item-button"
                 mode="ios"
                 slot="end"
@@ -66,6 +67,7 @@
                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
               </ion-button>
               <ion-button
+                (click)="onDeleteItemAddOnContent(addOnContent, addOn.itemAddOnContents)"
                 class="delete-item-button"
                 mode="ios"
                 slot="end"
