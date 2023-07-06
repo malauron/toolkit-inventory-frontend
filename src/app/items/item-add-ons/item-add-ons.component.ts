@@ -119,7 +119,7 @@ export class ItemAddOnsComponent implements OnInit, OnDestroy {
       });
   }
 
-  onEditAddOnContent(content: ItemAddOnContent) {
+  onEditAddOnContent(content: ItemAddOnContent, addOnDetail: ItemAddOnDetail) {
     this.mdl
       .create({
         component: AddOnContentComponent,
@@ -131,6 +131,30 @@ export class ItemAddOnsComponent implements OnInit, OnDestroy {
       .then((modal) => {
         modal.present();
         return modal.onDidDismiss();
+      })
+      .then((modal) => {
+        if (modal.role === 'saveContent') {
+          if (modal.data.itemAddOnContentId > 0) {
+            modal.data.itemAddOnDetail = addOnDetail;
+            this.addOnsService
+              .postItemAddOnContents(modal.data)
+              .subscribe((res) => {
+                content.item = res.item;
+                content.uom = res.uom;
+                content.price = res.price;
+                content.qty = res.qty;
+                content.altDesc = res.altDesc;
+              });
+          } else {
+            content.item = modal.data.item;
+            content.uom = modal.data.uom;
+            content.price = modal.data.price;
+            content.qty = modal.data.qty;
+            content.altDesc = modal.data.altDesc;
+
+          }
+        }
+        console.log(modal);
       });
   }
 }

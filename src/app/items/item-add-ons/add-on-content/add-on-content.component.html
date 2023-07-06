@@ -14,7 +14,7 @@
     <ion-item fill="outline">
       <ion-icon slot="start" name="bookmark-outline" color="primary"></ion-icon>
       <ion-input
-        [value]="itemAddOnContent.item.itemName"
+        [value]="this.item.itemName"
         (click)="onItemSearch()"
         readonly="true"
         placeholder="Item"
@@ -37,7 +37,7 @@
         color="primary"
       ></ion-icon>
       <ion-input
-        [value]="itemAddOnContent.uom.uomName"
+        [value]="this.uom.uomName"
         (click)="onUomSearch()"
         readonly="true"
         placeholder="Uom"

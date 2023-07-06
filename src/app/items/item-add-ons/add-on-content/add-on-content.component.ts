@@ -14,6 +14,8 @@ import { ItemAddOnContent } from '../classes/item-add-on-content.model';
 })
 export class AddOnContentComponent implements OnInit {
   itemAddOnContent: ItemAddOnContent;
+  item: Item;
+  uom: Uom;
 
   contentForm: FormGroup;
 
@@ -25,21 +27,26 @@ export class AddOnContentComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.itemAddOnContent = new ItemAddOnContent();
-    this.itemAddOnContent.itemAddOnContentId = 0;
-    this.itemAddOnContent.item = new Item();
-    this.itemAddOnContent.uom = new Uom();
+    if (this.itemAddOnContent === undefined) {
+      this.itemAddOnContent = new ItemAddOnContent();
+      this.itemAddOnContent.itemAddOnContentId = 0;
+      this.item = new Item();
+      this.uom = new Uom();
+    } else {
+      this.item = this.itemAddOnContent.item;
+      this.uom = this.itemAddOnContent.uom;
+    }
 
     this.contentForm = new FormGroup({
-      qty: new FormControl(null, {
+      qty: new FormControl(this.itemAddOnContent.qty, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.0001)],
       }),
-      price: new FormControl(null, {
+      price: new FormControl(this.itemAddOnContent.price, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
-      altDesc: new FormControl(null),
+      altDesc: new FormControl(this.itemAddOnContent.altDesc),
     });
   }
 
@@ -61,8 +68,8 @@ export class AddOnContentComponent implements OnInit {
       })
       .then((modal) => {
         if (modal.role === 'item') {
-          this.itemAddOnContent.item = modal.data;
-          this.itemAddOnContent.uom = modal.data.uom;
+          this.item = modal.data;
+          this.uom = modal.data.uom;
         }
         this.modalOpen = false;
       });
@@ -99,29 +106,34 @@ export class AddOnContentComponent implements OnInit {
       })
       .then((mdl) => {
         if (mdl.role === 'itemUom') {
-          this.itemAddOnContent.uom = mdl.data.uom;
+          this.uom = mdl.data.uom;
         }
         this.modalOpen = false;
       });
   }
 
   onSaveAddOnContent() {
-    if (this.itemAddOnContent.item.itemId === undefined) {
+    if (this.item.itemId === undefined) {
       this.messageBox('Some fields contain invalid information.');
       return;
     }
 
-    if (this.itemAddOnContent.uom.uomId === undefined) {
+    if (this.uom.uomId === undefined) {
       this.messageBox('Some fields contain invalid information.');
       return;
     }
+
+    const tmpItm = new ItemAddOnContent();
 
     if (this.contentForm.valid) {
-      this.itemAddOnContent.qty = this.contentForm.value.qty;
-      this.itemAddOnContent.price = this.contentForm.value.price;
-      this.itemAddOnContent.altDesc = this.contentForm.value.altDesc;
+      tmpItm.itemAddOnContentId = this.itemAddOnContent.itemAddOnContentId;
+      tmpItm.item = this.item;
+      tmpItm.uom = this.uom;
+      tmpItm.qty = this.contentForm.value.qty;
+      tmpItm.price = this.contentForm.value.price;
+      tmpItm.altDesc = this.contentForm.value.altDesc;
 
-      this.modalController.dismiss(this.itemAddOnContent, 'saveContent');
+      this.modalController.dismiss(tmpItm, 'saveContent');
     } else {
       this.messageBox('Some fields contain invalid information.');
     }
