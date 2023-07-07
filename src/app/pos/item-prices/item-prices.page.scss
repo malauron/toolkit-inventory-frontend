@@ -80,17 +80,20 @@ ion-searchbar {
 
 
   .icon {
-
-    // primary
     filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg) brightness(89%) contrast(108%);
-
-    // secondary
-    // filter:  invert(97%) sepia(79%) saturate(2860%) hue-rotate(292deg) brightness(103%) contrast(91%);
   }
 }
 
 .qty-row {
   padding-left: 50px;
+
+  ::ng-deep input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
 }
 
 .card-footer {
