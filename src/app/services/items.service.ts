@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable id-blacklist */
@@ -47,6 +48,12 @@ interface ResponseItemUoms {
     totalElements: number;
     totalPages: number;
     number: number;
+  };
+}
+
+interface ResponseItemAddOnDetails {
+  _embedded: {
+    itemAddOnDetails: ItemAddOnDetail[];
   };
 }
 
@@ -155,10 +162,27 @@ export class ItemsService {
     return this.http.get<ItemDto>(this.apiUrl);
   }
 
-  getItemAddOns(itemId: number): Observable<ItemDto> {
-    this.apiUrl = `${this.config.urlV1ItemAddOns}?itemId=${itemId}`;
-    return this.http.get<ItemDto>(this.apiUrl);
+  // getItemAddOns(itemId: number): Observable<ItemDto> {
+  //   this.apiUrl = `${this.config.urlV1ItemAddOns}?itemId=${itemId}`;
+  //   return this.http.get<ItemDto>(this.apiUrl);
+  // }
+
+  getItemAddOnDetails(itemId: number): Observable<ResponseItemAddOnDetails> {
+    this.apiUrl = `${this.config.urlItemAddOnDetails}/search/findByItemId?itemId=${itemId}&projection=itemAddOnDetailView`;
+
+    const options = {
+      headers: new HttpHeaders({
+        'Cache-Control':
+          'no-cache, no-store, must-revalidate, post-check=0, pre-check=0',
+        Pragma: 'no-cache',
+        Expires: '0',
+        'Content-Type': 'application/json',
+      }),
+    };
+
+    return this.http.get<ResponseItemAddOnDetails>(this.apiUrl, options);
   }
+
 
   getItemGenerics(itemId: number): Observable<ItemDto> {
     this.apiUrl = `${this.config.urlV1ItemGenerics}?itemId=${itemId}`;

@@ -7,9 +7,10 @@ import { WarehousesService } from 'src/app/services/warehouses.service';
 import { PosItemPricesService } from '../services/pos-item-prices.service';
 import { PosItemPrice } from '../classes/pos-item-price.model';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
-import { IonSearchbar } from '@ionic/angular';
+import { AlertController, IonSearchbar, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { OrderItemDetailComponent } from '../order-item-detail/order-item-detail.component';
 
 @Component({
   selector: 'app-order-items',
@@ -34,6 +35,8 @@ export class OrderItemsPage implements OnInit, OnDestroy {
   isFetching = false;
 
   constructor(
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
     private authenticationService: AuthenticationService,
     private warehousesService: WarehousesService,
     private posItemPricesServices: PosItemPricesService,
@@ -111,6 +114,21 @@ export class OrderItemsPage implements OnInit, OnDestroy {
           event.target.complete();
         }
       });
+  }
+
+  onShowOrderItemDetail() {
+    this.modalCtrl
+    .create({
+      component: OrderItemDetailComponent,
+      cssClass: 'custom-modal-styles'
+    })
+    .then((modal) => {
+      modal.present();
+      return modal.onDidDismiss();
+    })
+    .then((modal) => {
+
+    });
   }
 
   loadMoreData(event) {
