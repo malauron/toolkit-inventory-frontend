@@ -1,0 +1,41 @@
+.item-header {
+  img {
+    border-radius: 4px;
+  }
+  ion-col {
+    padding: 10px 15px;
+  }
+  .item-desc, .item-price {
+    margin-top: 0;
+  }
+}
+
+ion-item {
+  margin: 0 1.5rem;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+// ion-item::part(native) {
+//   --padding-start: 0;
+//   --padding-end: 0;
+// }
+
+ion-checkbox {
+  margin-right: 1rem;
+}
+
+.add-on-item-desc {
+  margin-right: 5px;
+}
+
+.qty-input {
+  padding-left: 5px;
+  ::ng-deep input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+}
