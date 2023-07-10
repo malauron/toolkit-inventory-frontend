@@ -116,7 +116,8 @@ export class OrderItemsPage implements OnInit, OnDestroy {
       });
   }
 
-  onShowOrderItemDetail() {
+  onShowOrderItemDetail(posItemPrice: PosItemPrice) {
+    console.log(posItemPrice);
     this.modalCtrl
     .create({
       component: OrderItemDetailComponent,
@@ -127,7 +128,6 @@ export class OrderItemsPage implements OnInit, OnDestroy {
       return modal.onDidDismiss();
     })
     .then((modal) => {
-
     });
   }
 

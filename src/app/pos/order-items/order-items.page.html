@@ -69,7 +69,7 @@
         size-lg="2"
         *ngFor="let item of posItemPrices"
       >
-        <ion-card class="warehouse-item" button="true" (click)="onShowOrderItemDetail()">
+        <ion-card class="warehouse-item" button="true" (click)="onShowOrderItemDetail(item)">
           <img src="../../../assets/images/default_02.jpg"/>
           <ion-card-header>
             <ion-card-subtitle class="font-large truncate">{{ item.item.itemName }}</ion-card-subtitle>

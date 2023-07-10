@@ -1,21 +1,36 @@
 ion-grid {
-  padding: 1.25rem 0.25rem;
+  padding: 0 0 1.25rem 0;
   border-bottom: 8px solid #f6f6f6;
 
   .item-header {
-    img {
-      border-radius: 4px;
-    }
     ion-col {
-      padding: 10px 15px;
+      padding: 30px 15px 10px 15px;
     }
+
+    .img-col {
+      padding: 0;
+      height: 13rem;
+      overflow: hidden;
+    }
+
+    img {
+      position: absolute;
+      border-radius: 4px;
+      width: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
     .item-desc,
     .item-price {
       margin-top: 0;
     }
+
     .item-remarks {
       font-size: 0.91rem;
     }
+
     h4 {
       font-weight: 600;
       font-size: 1.1rem;
@@ -26,6 +41,7 @@ ion-grid {
 ion-list {
   padding: 1rem 0;
   border-bottom: 8px solid #f6f6f6;
+
   &:last-child {
     border-style: none;
     margin-bottom: 3rem;
@@ -33,9 +49,11 @@ ion-list {
 
   .add-on-item-header {
     padding: 0 1rem;
+
     h3 {
       font-weight: 600;
     }
+
     h5 {
       font-size: 0.8rem;
     }
@@ -63,27 +81,32 @@ ion-list {
 
 ion-footer {
   height: 5rem;
+
   ion-toolbar {
     padding-top: 0.8rem;
+
     ion-item {
       --padding-start: 0;
       min-width: 10rem;
+
       ion-label {
         font-weight: 600;
         font-size: 1.25rem;
       }
+
       ion-button {
         width: 3rem;
         padding: 0;
         --padding-start: 0;
         --padding-end: 0;
+
         &:part(native) {
           width: 3rem;
         }
       }
     }
+
     .add-to-cart-btn {
-      // width: 50%;
       height: 3rem;
       padding-right: 1rem;
     }
@@ -92,6 +115,7 @@ ion-footer {
 
 .qty-input {
   padding-left: 5px;
+
   ::ng-deep input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -116,5 +140,31 @@ ion-footer {
 @media (min-width: 540px) {
   .add-to-cart-btn {
     width: 70%;
+  }
+}
+
+@media (min-width: 576px) {
+  ion-grid {
+    padding: 1.25rem 0 1.25rem 1rem;
+
+    .item-header {
+      ion-col {
+        padding: 10px 15px;
+      }
+
+      .img-col {
+        padding: 10px 0px;
+        height: unset;
+        overflow: auto;
+      }
+
+      img {
+        position: unset;
+        width: unset;
+        top: unset;
+        left: unset;
+        transform: none;
+      }
+    }
   }
 }
