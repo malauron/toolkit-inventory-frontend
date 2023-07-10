@@ -1,32 +1,93 @@
-.item-header {
-  img {
-    border-radius: 4px;
-  }
-  ion-col {
-    padding: 10px 15px;
-  }
-  .item-desc, .item-price {
-    margin-top: 0;
+ion-grid {
+  padding: 1.25rem 0.25rem;
+  border-bottom: 8px solid #f6f6f6;
+
+  .item-header {
+    img {
+      border-radius: 4px;
+    }
+    ion-col {
+      padding: 10px 15px;
+    }
+    .item-desc,
+    .item-price {
+      margin-top: 0;
+    }
+    .item-remarks {
+      font-size: 0.91rem;
+    }
+    h4 {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
   }
 }
 
-ion-item {
-  margin: 0 1.5rem;
-  --padding-start: 0;
-  --inner-padding-end: 0;
+ion-list {
+  padding: 1rem 0;
+  border-bottom: 8px solid #f6f6f6;
+  &:last-child {
+    border-style: none;
+    margin-bottom: 3rem;
+  }
+
+  .add-on-item-header {
+    padding: 0 1rem;
+    h3 {
+      font-weight: 600;
+    }
+    h5 {
+      font-size: 0.8rem;
+    }
+  }
+
+  ion-item {
+    margin: 0 1rem;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    font-size: 0.91rem;
+
+    ion-checkbox {
+      margin-right: 1rem;
+    }
+
+    .add-on-item-desc {
+      margin-right: 5px;
+    }
+
+    &:last-child {
+      --border-style: none;
+    }
+  }
 }
 
-// ion-item::part(native) {
-//   --padding-start: 0;
-//   --padding-end: 0;
-// }
-
-ion-checkbox {
-  margin-right: 1rem;
-}
-
-.add-on-item-desc {
-  margin-right: 5px;
+ion-footer {
+  height: 5rem;
+  ion-toolbar {
+    padding-top: 0.8rem;
+    ion-item {
+      --padding-start: 0;
+      min-width: 10rem;
+      ion-label {
+        font-weight: 600;
+        font-size: 1.25rem;
+      }
+      ion-button {
+        width: 3rem;
+        padding: 0;
+        --padding-start: 0;
+        --padding-end: 0;
+        &:part(native) {
+          width: 3rem;
+        }
+      }
+    }
+    .add-to-cart-btn {
+      // width: 50%;
+      height: 3rem;
+      padding-right: 1rem;
+    }
+  }
 }
 
 .qty-input {
@@ -37,5 +98,23 @@ ion-checkbox {
     -moz-appearance: none;
     appearance: none;
     margin: 0;
+  }
+}
+
+@media (min-width: 350px) {
+  .add-to-cart-btn {
+    width: 50%;
+  }
+}
+
+@media (min-width: 450px) {
+  .add-to-cart-btn {
+    width: 60%;
+  }
+}
+
+@media (min-width: 540px) {
+  .add-to-cart-btn {
+    width: 70%;
   }
 }
