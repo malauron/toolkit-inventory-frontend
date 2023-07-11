@@ -15,17 +15,69 @@
         ><img src="../../../assets/images/default_03.jpg"
       /></ion-col>
       <ion-col>
-        <h4 class="item-desc">Lorem ipsum dolor sit.</h4>
+        <h4 class="item-desc">{{ posItemPrice.item.itemName }}</h4>
         <ion-label class="item-remarks"
           >Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto nemo
           tenetur, quasi architecto nihil repellat.</ion-label
         >
       </ion-col>
       <ion-col size="auto">
-        <h4 class="item-price">1,920.95</h4>
+        <h4 class="item-price">
+          {{ posItemPrice.defaultPrice | number : "1.2-2" }}
+        </h4>
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-list *ngFor="let detail of this.itemAddOnDetails">
+    <ion-list-header mode="md" class="add-on-item-header">
+      <ion-label>
+        <h3>{{ detail.description }}</h3>
+        <h5>
+          <span *ngIf="!detail.isRequired">Optional, </span>Max. of
+          {{ detail.maxNoOfItems }}
+        </h5>
+      </ion-label>
+    </ion-list-header>
+    <ion-item lines="full" *ngFor="let content of detail.itemAddOnContents">
+      <ion-checkbox slot="start" mode="ios" (ionChange)="validateCheckBox($event, detail)"></ion-checkbox>
+      <ion-label class="ion-text-wrap add-on-item-desc"
+        ><span
+          *ngIf="
+            content.altDesc !== null ||
+            content.altDesc !== undefined ||
+            content.altDesc.trim() !== ''
+          "
+          >{{ content.altDesc }}</span
+        ><span
+          *ngIf="
+            content.altDesc === null ||
+            content.altDesc === undefined ||
+            content.altDesc.trim() === ''
+          "
+          >{{ content.item.itemName }}</span
+        ></ion-label
+      >
+      <ion-label slot="end" *ngIf="content.price > 0">{{
+        content.price | number : "1.2-2"
+      }}</ion-label>
+    </ion-item>
+    <!-- <ion-item lines="full">
+      <ion-checkbox slot="start" mode="ios"></ion-checkbox>
+      <ion-label class="ion-text-wrap add-on-item-desc"
+        >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae,
+        molestiae.</ion-label
+      >
+      <ion-label slot="end">9,549.00</ion-label>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-checkbox slot="start" mode="ios"></ion-checkbox>
+      <ion-label class="ion-text-wrap add-on-item-desc"
+        >Lorem ipsum consectetur elit. Quae, molestiae.</ion-label
+      >
+      <ion-label slot="end">255.00</ion-label>
+    </ion-item> -->
+  </ion-list>
+  <!--
   <ion-list>
     <ion-list-header mode="md" class="add-on-item-header">
       <ion-label>
@@ -46,7 +98,7 @@
         >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae,
         molestiae.</ion-label
       >
-      <ion-label slot="end">9,549.00</ion-label>
+      <ion-label slot="end">{{ 9549 | number:'1.2-2' }}</ion-label>
     </ion-item>
     <ion-item lines="full">
       <ion-checkbox slot="start" mode="ios"></ion-checkbox>
@@ -55,38 +107,7 @@
       >
       <ion-label slot="end">255.00</ion-label>
     </ion-item>
-  </ion-list>
-
-  <ion-list>
-    <ion-list-header mode="md" class="add-on-item-header">
-      <ion-label>
-        <h3>Cold Beverages</h3>
-        <h5>Optional, Max. of 1</h5>
-      </ion-label>
-    </ion-list-header>
-    <ion-item lines="full">
-      <ion-checkbox slot="start" mode="ios"></ion-checkbox>
-      <ion-label class="ion-text-wrap add-on-item-desc"
-        >Lorem ipsum dolor, sit amet consectetur. Quae, molestiae.</ion-label
-      >
-      <ion-label slot="end">95.00</ion-label>
-    </ion-item>
-    <ion-item lines="full">
-      <ion-checkbox slot="start" mode="ios"></ion-checkbox>
-      <ion-label class="ion-text-wrap add-on-item-desc"
-        >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae,
-        molestiae.</ion-label
-      >
-      <ion-label slot="end">9,549.00</ion-label>
-    </ion-item>
-    <ion-item lines="full">
-      <ion-checkbox slot="start" mode="ios"></ion-checkbox>
-      <ion-label class="ion-text-wrap add-on-item-desc"
-        >Lorem ipsum consectetur elit. Quae, molestiae.</ion-label
-      >
-      <ion-label slot="end">255.00</ion-label>
-    </ion-item>
-  </ion-list>
+  </ion-list> -->
 </ion-content>
 
 <ion-footer>

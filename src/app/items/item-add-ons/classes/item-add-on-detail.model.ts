@@ -8,6 +8,7 @@ export class ItemAddOnDetail {
     public description?: string,
     public isRequired?: boolean,
     public maxNoOfItems?: number,
-    public itemAddOnContents?: ItemAddOnContent[]
+    public itemAddOnContents?: ItemAddOnContent[],
+    public checkedItems?: number
   ){}
 }

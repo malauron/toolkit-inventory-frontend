@@ -11,6 +11,6 @@ import { OrderItemDetailComponent } from "./order-item-detail.component";
     FormsModule,
     IonicModule
   ],
-  declarations: [OrderItemDetailComponent]
+  declarations: [OrderItemDetailComponent],
 })
 export class OrderItemDetailModule{}

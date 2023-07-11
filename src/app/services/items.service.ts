@@ -162,11 +162,6 @@ export class ItemsService {
     return this.http.get<ItemDto>(this.apiUrl);
   }
 
-  // getItemAddOns(itemId: number): Observable<ItemDto> {
-  //   this.apiUrl = `${this.config.urlV1ItemAddOns}?itemId=${itemId}`;
-  //   return this.http.get<ItemDto>(this.apiUrl);
-  // }
-
   getItemAddOnDetails(itemId: number): Observable<ResponseItemAddOnDetails> {
     this.apiUrl = `${this.config.urlItemAddOnDetails}/search/findByItemId?itemId=${itemId}&projection=itemAddOnDetailView`;
 
