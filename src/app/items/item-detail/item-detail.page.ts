@@ -1,10 +1,17 @@
 /* eslint-disable no-underscore-dangle */
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AlertController,
   IonInput,
+  IonToggle,
   ModalController,
   NavController,
   ToastController,
@@ -27,8 +34,9 @@ import { ItemSearchComponent } from '../item-search/item-search.component';
   templateUrl: './item-detail.page.html',
   styleUrls: ['./item-detail.page.scss'],
 })
-export class ItemDetailPage implements OnInit, OnDestroy {
+export class ItemDetailPage implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('quantityInput', { static: true }) quantityInput: IonInput;
+  @ViewChild('isWeightBasedCostOpt') isWeightBasedCostOpt: IonToggle;
 
   pageLabel = 'Item Detail';
   postButton = 'checkmark-outline';
@@ -37,6 +45,10 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   itemUomForm: FormGroup;
   itemBomForm: FormGroup;
   itemGenericForm: FormGroup;
+
+  selectedPicture: any;
+  displayPicture: any;
+  displayImg: any;
 
   item: Item;
   baseUom: Uom;
@@ -124,11 +136,11 @@ export class ItemDetailPage implements OnInit, OnDestroy {
           validators: [Validators.required, Validators.maxLength(80)],
         }),
         uom: new FormControl(
-          { value: null, disabled: this.lockControls },
-          {
-            updateOn: 'blur',
-            validators: [Validators.required],
-          }
+          { value: null, disabled: this.lockControls }
+          // {
+          //   updateOn: 'blur',
+          //   validators: [Validators.required],
+          // }
         ),
         itemClass: new FormControl(
           { value: ItemClass.Stock, disabled: this.lockControls },
@@ -139,11 +151,19 @@ export class ItemDetailPage implements OnInit, OnDestroy {
         ),
         price: new FormControl(null, {
           updateOn: 'blur',
-          validators: [Validators.required, Validators.min(0.01)],
+          validators: [Validators.required, Validators.min(0)],
         }),
         isActive: new FormControl(true, {
           updateOn: 'blur',
           validators: [Validators.required],
+        }),
+        isWeighable: new FormControl({
+          value: false,
+          disabled: this.lockControls,
+        }),
+        isWeightBasedCost: new FormControl({
+          value: false,
+          disabled: this.lockControls,
         }),
       });
 
@@ -224,6 +244,8 @@ export class ItemDetailPage implements OnInit, OnDestroy {
               this.item.itemClass = itemApiData.itemClass;
               this.item.price = itemApiData.price;
               this.item.isActive = itemApiData.isActive;
+              this.item.isWeighable = itemApiData.isWeighable;
+              this.item.isWeightBasedCost = itemApiData.isWeightBasedCost;
               this.baseUom = itemApiData.uom;
 
               // // Fetch base uoms
@@ -253,6 +275,13 @@ export class ItemDetailPage implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit(): void {
+    if (this.item.itemId === 0 || this.lockControls) {
+      console.log('sdfads');
+      this.isWeightBasedCostOpt.disabled = true;
+    }
+  }
+
   // Fetch all UoMs
   getBaseUom(itemResData?: Item) {
     this.uomSubscription = this.uomService
@@ -266,8 +295,10 @@ export class ItemDetailPage implements OnInit, OnDestroy {
             uom.uomCode = uomApiData._embedded.uoms[key].uomCode;
             uom.uomName = uomApiData._embedded.uoms[key].uomName;
             if (itemResData) {
-              if (itemResData.uom.uomId === uom.uomId) {
-                this.item.uom = uom;
+              if (itemResData.uom) {
+                if (itemResData.uom.uomId === uom.uomId) {
+                  this.item.uom = uom;
+                }
               }
             }
             this.uoms = this.uoms.concat(uom);
@@ -282,6 +313,8 @@ export class ItemDetailPage implements OnInit, OnDestroy {
             itemClass: itemResData.itemClass,
             price: itemResData.price,
             isActive: itemResData.isActive,
+            isWeighable: itemResData.isWeighable,
+            isWeightBasedCost: itemResData.isWeightBasedCost,
           });
         }
       });
@@ -351,12 +384,13 @@ export class ItemDetailPage implements OnInit, OnDestroy {
   onSave() {
     if (!this.isUploading) {
       this.isUploading = true;
-
       if (this.itemForm.valid) {
         this.item.itemCode = this.itemForm.value.itemCode;
         this.item.itemName = this.itemForm.value.itemName;
         this.item.price = this.itemForm.value.price;
         this.item.isActive = this.itemForm.value.isActive;
+        this.item.isWeighable = this.itemForm.value.isWeighable;
+        this.item.isWeightBasedCost = this.itemForm.value.isWeightBasedCost;
 
         const itemDto = new ItemDto();
         itemDto.item = this.item;
@@ -432,6 +466,18 @@ export class ItemDetailPage implements OnInit, OnDestroy {
       }
       this.isUploading = false;
     };
+  }
+
+  onPictureFileChange(event) {
+    if (event.target.files[0] !== undefined) {
+      this.selectedPicture = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (event2) => {
+        this.displayPicture = reader.result;
+        this.displayImg = this.displayPicture;
+      };
+    }
   }
 
   onBaseUomChange(baseUom: Uom) {
@@ -673,6 +719,17 @@ export class ItemDetailPage implements OnInit, OnDestroy {
         });
     }
   }
+
+  onIsWeighableChanged(event) {
+    this.isWeightBasedCostOpt.disabled = !event.target.checked;
+    if (!this.lockControls) {
+      this.isWeightBasedCostOpt.checked = event.target.checked;
+    } else {
+      this.isWeightBasedCostOpt.disabled = this.lockControls;
+      console.log('asdfdewrwer');
+    }
+  }
+
   async messageBox(msg: string) {
     const toast = await this.toastController.create({
       color: 'dark',

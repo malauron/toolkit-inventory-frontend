@@ -1,4 +1,5 @@
 import { ItemClass } from './item-class.model';
+import { ItemPicture } from './item-picture.model';
 import { Uom } from './uom.model';
 export class Item {
   constructor(
@@ -9,5 +10,9 @@ export class Item {
     public itemClass?: ItemClass,
     public price?: number,
     public isActive?: boolean,
+    public isWeighable?: boolean,
+    public isWeightBasedCost?: boolean,
+    public itemPicture?: ItemPicture,
+    public convertedPicture?: any,
     public dateCreated?: string) {}
 }

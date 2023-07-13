@@ -1,7 +1,10 @@
 <ion-header>
   <ion-toolbar color="danger">
     <ion-buttons slot="start">
-      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/items"></ion-back-button>
+      <ion-back-button
+        icon="chevron-back-outline"
+        defaultHref="/tabs/items"
+      ></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
     <ion-buttons slot="primary" *ngIf="!this.item.itemId && !isUploading">
@@ -15,7 +18,24 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col>
+      <ion-col class="images" size-xs="12" size-lg="4" push-lg="8">
+        <ion-avatar>
+          <ion-img [src]="displayImg"></ion-img>
+        </ion-avatar>
+
+        <div class="file-upload-holder">
+          <label for="file-upload" class="custom-file-upload">
+            File Upload
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            (change)="onPictureFileChange($event)"
+          />
+        </div>
+      </ion-col>
+
+      <ion-col size-xs="12" size-lg="8" pull-lg="4">
         <ion-card class="item-header">
           <div class="card-top"></div>
           <ion-item class="primary-info" lines="full">
@@ -24,37 +44,76 @@
           <form [formGroup]="itemForm" class="ion-padding item-form">
             <ion-grid class="two-cols">
               <ion-row>
+                <!-- <ion-col size-xs="12" size-md="6"> -->
                 <ion-col size-xs="12" size-md="6">
                   <!-- Barcode -->
                   <ion-item fill="outline">
-                    <ion-icon slot="start" name="barcode-outline" color="primary"></ion-icon>
-                    <ion-input placeholder="Code" type="text" maxlength="20" formControlName="itemCode">
+                    <ion-icon
+                      slot="start"
+                      name="barcode-outline"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-input
+                      placeholder="Code"
+                      type="text"
+                      maxlength="20"
+                      formControlName="itemCode"
+                    >
                     </ion-input>
                   </ion-item>
                 </ion-col>
                 <ion-col size-xs="12" size-md="6">
                   <!-- Item Status -->
                   <ion-item fill="outline" lines="none">
+                    <ion-icon
+                      slot="start"
+                      name="checkmark-circle-outline"
+                      color="primary"
+                    ></ion-icon>
                     <ion-label>Active</ion-label>
-                    <ion-toggle [enableOnOffLabels]="true" slot="end" formControlName="isActive"></ion-toggle>
+                    <ion-toggle
+                      [enableOnOffLabels]="true"
+                      slot="end"
+                      formControlName="isActive"
+                    ></ion-toggle>
                   </ion-item>
                 </ion-col>
               </ion-row>
             </ion-grid>
 
             <ion-item fill="outline">
-              <ion-icon slot="start" src="../../assets/icons/items.svg" color="primary"></ion-icon>
-              <ion-input placeholder="Description" type="text" formControlName="itemName">
+              <ion-icon
+                slot="start"
+                src="../../assets/icons/items.svg"
+                color="primary"
+              ></ion-icon>
+              <ion-input
+                placeholder="Description"
+                type="text"
+                formControlName="itemName"
+              >
               </ion-input>
             </ion-item>
 
             <!-- Item Classification -->
             <ion-item fill="outline">
-              <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
-              <ion-select #itemClass class="disabledInput" placeholder="Item Classification" formControlName="itemClass"
-                interface="popover" (ionChange)="itemClassChange(itemClass.value)">
-                <ion-select-option *ngFor="let itmClass of theItemClass | keyvalue">{{ itmClass.key
-                  }}</ion-select-option>
+              <ion-icon
+                slot="start"
+                name="cube-outline"
+                color="primary"
+              ></ion-icon>
+              <ion-select
+                #itemClass
+                class="disabledInput"
+                placeholder="Item Classification"
+                formControlName="itemClass"
+                interface="popover"
+                (ionChange)="itemClassChange(itemClass.value)"
+              >
+                <ion-select-option
+                  *ngFor="let itmClass of theItemClass | keyvalue"
+                  >{{ itmClass.key }}</ion-select-option
+                >
               </ion-select>
             </ion-item>
 
@@ -63,10 +122,21 @@
                 <ion-col size-xs="12" size-md="6">
                   <!-- UOMs -->
                   <ion-item fill="outline">
-                    <ion-icon slot="start" name="scale-outline" color="primary"></ion-icon>
-                    <ion-select #baseUom placeholder="Base UoM" interface="popover"
-                      (ionChange)="onBaseUomChange(baseUom.value)" formControlName="uom" *ngIf="uoms.length">
-                      <ion-select-option *ngFor="let uom of uoms" [value]="uom">{{ uom.uomName }}
+                    <ion-icon
+                      slot="start"
+                      name="scale-outline"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-select
+                      #baseUom
+                      placeholder="Base UoM"
+                      interface="popover"
+                      (ionChange)="onBaseUomChange(baseUom.value)"
+                      formControlName="uom"
+                      *ngIf="uoms.length"
+                    >
+                      <ion-select-option *ngFor="let uom of uoms" [value]="uom"
+                        >{{ uom.uomName }}
                       </ion-select-option>
                     </ion-select>
                   </ion-item>
@@ -74,16 +144,76 @@
                 <ion-col size-xs="12" size-md="6">
                   <!-- Item Price -->
                   <ion-item fill="outline">
-                    <ion-icon slot="start" name="pricetag-outline" color="primary"></ion-icon>
-                    <ion-input formControlName="price" placeholder="Price" type="number">
+                    <ion-icon
+                      slot="start"
+                      name="pricetag-outline"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-input
+                      formControlName="price"
+                      placeholder="Price"
+                      type="number"
+                    >
                     </ion-input>
                   </ion-item>
                 </ion-col>
               </ion-row>
             </ion-grid>
 
-            <ion-item lines="none" *ngIf="this.item.itemId" class="buttons-holder">
-              <ion-button (click)="onSave()" color="success" slot="end" size="default" [disabled]="isUploading">
+            <ion-grid class="two-cols" *ngIf="item.itemClass==='Stock'">
+              <ion-row>
+                <ion-col size-xs="12" size-md="6">
+                  <!-- UOMs -->
+                  <ion-item fill="outline" lines="none">
+                    <ion-icon
+                      slot="start"
+                      name="checkmark-circle-outline"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-label class="weight-opt-lbl">Weighable</ion-label>
+                    <ion-toggle
+                      [enableOnOffLabels]="true"
+                      slot="end"
+                      formControlName="isWeighable"
+                      (ionChange)="onIsWeighableChanged($event)"
+                    ></ion-toggle>
+                  </ion-item>
+                </ion-col>
+                <ion-col size-xs="12" size-md="6">
+                  <!-- Item Price -->
+                  <ion-item fill="outline" lines="none">
+                    <ion-icon
+                      class="weight-icon"
+                      slot="start"
+                      name="checkmark-circle-outline"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-label position="fixed" class="weight-opt-lbl"
+                      >Weight-based costing/pricing</ion-label
+                    >
+                    <ion-toggle
+                      #isWeightBasedCostOpt
+                      [enableOnOffLabels]="true"
+                      slot="end"
+                      formControlName="isWeightBasedCost"
+                    ></ion-toggle>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <ion-item
+              lines="none"
+              *ngIf="this.item.itemId"
+              class="buttons-holder"
+            >
+              <ion-button
+                (click)="onSave()"
+                color="success"
+                slot="end"
+                size="default"
+                [disabled]="isUploading"
+              >
                 Save
                 <ion-icon name="{{ postButton }}" slot="start"></ion-icon>
               </ion-button>
@@ -91,10 +221,11 @@
           </form>
         </ion-card>
       </ion-col>
-
-      <!-- Unit of Measure -->
-      <ion-col size-xs="12" size-xl="6" *ngIf="item.itemClass === theItemClass.Stock">
-        <!-- <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemId"> -->
+      <ion-col
+        size-xs="12"
+        size-lg="8"
+        *ngIf="item.itemClass === theItemClass.Stock"
+      >
         <ion-card class="item-uom">
           <div class="card-top"></div>
 
@@ -107,22 +238,47 @@
                 <form [formGroup]="itemUomForm">
                   <div formGroupName="itemUomId">
                     <ion-item fill="outline">
-                      <ion-icon slot="start" name="pie-chart-outline" color="primary"></ion-icon>
-                      <ion-select formControlName="uom" placeholder="Alternative UoM" interface="popover"
-                        *ngIf="uoms.length">
-                        <ion-select-option *ngFor="let uom of uoms" [value]="uom">{{ uom.uomName }}</ion-select-option>
+                      <ion-icon
+                        slot="start"
+                        name="pie-chart-outline"
+                        color="primary"
+                      ></ion-icon>
+                      <ion-select
+                        formControlName="uom"
+                        placeholder="Alternative UoM"
+                        interface="popover"
+                        *ngIf="uoms.length"
+                      >
+                        <ion-select-option
+                          *ngFor="let uom of uoms"
+                          [value]="uom"
+                          >{{ uom.uomName }}</ion-select-option
+                        >
                       </ion-select>
                     </ion-item>
                   </div>
                   <ion-item fill="outline">
-                    <ion-icon slot="start" name="flask-outline" color="primary"></ion-icon>
-                    <ion-input formControlName="quantity" placeholder="Equivalent Quantity" type="number">
+                    <ion-icon
+                      slot="start"
+                      name="flask-outline"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-input
+                      formControlName="quantity"
+                      placeholder="Equivalent Quantity"
+                      type="number"
+                    >
                     </ion-input>
                   </ion-item>
                 </form>
 
                 <ion-item lines="none" class="buttons-holder">
-                  <ion-button (click)="onAddItemUom()" color="success" slot="end" size="default">
+                  <ion-button
+                    (click)="onAddItemUom()"
+                    color="success"
+                    slot="end"
+                    size="default"
+                  >
                     Add
                     <ion-icon name="add" slot="start"></ion-icon>
                   </ion-button>
@@ -130,7 +286,6 @@
               </ion-grid>
             </ion-accordion>
           </ion-accordion-group>
-          <!-- <div class="separator"></div> -->
 
           <!-- Item UoMs -->
           <ion-list>
@@ -144,8 +299,15 @@
                   itemUom.quantity }}{{ baseUom.uomCode}}
                 </p>
               </ion-label>
-              <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default"
-                (click)="onDeleteItemUom(itemUom)">
+              <ion-button
+                class="delete-item-button"
+                mode="ios"
+                slot="end"
+                fill="clear"
+                color="medium"
+                size="default"
+                (click)="onDeleteItemUom(itemUom)"
+              >
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
@@ -154,7 +316,11 @@
       </ion-col>
 
       <!-- Bill of Materials -->
-      <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemClass === theItemClass.Assembly">
+      <ion-col
+        size-xs="12"
+        size-xl="6"
+        *ngIf="this.item.itemClass === theItemClass.Assembly"
+      >
         <ion-card class="item-bom">
           <div class="card-top"></div>
 
@@ -166,31 +332,76 @@
               <ion-grid slot="content">
                 <form [formGroup]="itemBomForm">
                   <ion-item fill="outline">
-                    <ion-icon slot="start" src="../../assets/icons/items.svg" color="primary"></ion-icon>
-                    <ion-input (click)="onItemSearch('bom')" readonly="true" formControlName="subItemName"
-                      placeholder="Item"></ion-input>
-                    <ion-button mode="ios" class="search-button" slot="end" size="small" fill="clear"
-                      (click)="onItemSearch('bom')">
-                      <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+                    <ion-icon
+                      slot="start"
+                      src="../../assets/icons/items.svg"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-input
+                      (click)="onItemSearch('bom')"
+                      readonly="true"
+                      formControlName="subItemName"
+                      placeholder="Item"
+                    ></ion-input>
+                    <ion-button
+                      mode="ios"
+                      class="search-button"
+                      slot="end"
+                      size="small"
+                      fill="clear"
+                      (click)="onItemSearch('bom')"
+                    >
+                      <ion-icon
+                        name="search-outline"
+                        slot="icon-only"
+                      ></ion-icon>
                     </ion-button>
                   </ion-item>
                   <ion-item fill="outline">
-                    <ion-icon slot="start" name="scale-outline" color="primary"></ion-icon>
-                    <ion-select #uomSelect formControlName="requiredUom" placeholder="Uom" interface="popover">
-                      <ion-select-option *ngFor="let uom of uomsForBom" [value]="uom">{{ uom.uomName }}
+                    <ion-icon
+                      slot="start"
+                      name="scale-outline"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-select
+                      #uomSelect
+                      formControlName="requiredUom"
+                      placeholder="Uom"
+                      interface="popover"
+                    >
+                      <ion-select-option
+                        *ngFor="let uom of uomsForBom"
+                        [value]="uom"
+                        >{{ uom.uomName }}
                       </ion-select-option>
                     </ion-select>
                   </ion-item>
                   <ion-item fill="outline">
-                    <ion-icon slot="start" name="flask-outline" color="primary"></ion-icon>
-                    <ion-input #quantityInput formControlName="requiredQty" placeholder="Quantity" type="number"
-                      inputmode="decimal" min="0" value="0">
+                    <ion-icon
+                      slot="start"
+                      name="flask-outline"
+                      color="primary"
+                    ></ion-icon>
+                    <ion-input
+                      #quantityInput
+                      formControlName="requiredQty"
+                      placeholder="Quantity"
+                      type="number"
+                      inputmode="decimal"
+                      min="0"
+                      value="0"
+                    >
                     </ion-input>
                   </ion-item>
                 </form>
 
                 <ion-item lines="none" class="buttons-holder">
-                  <ion-button (click)="onAddItemBom()" color="success" slot="end" size="default">
+                  <ion-button
+                    (click)="onAddItemBom()"
+                    color="success"
+                    slot="end"
+                    size="default"
+                  >
                     Add
                     <ion-icon name="add" slot="start"></ion-icon>
                   </ion-button>
@@ -198,7 +409,6 @@
               </ion-grid>
             </ion-accordion>
           </ion-accordion-group>
-          <!-- <div class="separator"></div> -->
 
           <!-- Item BoMs -->
           <ion-list>
@@ -207,18 +417,30 @@
                 <h2>{{ itemBom.subItem.itemName }}</h2>
                 <p>{{itemBom.requiredQty}}{{itemBom.requiredUom.uomCode }}</p>
               </ion-label>
-              <ion-button mode="ios" slot="end" fill="clear" color="medium" size="default"
-                (click)="onDeleteItemBom(itemBom)">
+              <ion-button
+                mode="ios"
+                slot="end"
+                fill="clear"
+                color="medium"
+                size="default"
+                (click)="onDeleteItemBom(itemBom)"
+              >
                 <ion-icon name="close-circle"></ion-icon>
               </ion-button>
             </ion-item>
           </ion-list>
         </ion-card>
+
+        <!-- Item Addon Component -->
         <app-item-add-ons></app-item-add-ons>
       </ion-col>
 
       <!-- Generic Item -->
-      <ion-col size-xs="12" size-xl="6" *ngIf="this.item.itemClass === theItemClass.Branded">
+      <ion-col
+        size-xs="12"
+        size-xl="6"
+        *ngIf="this.item.itemClass === theItemClass.Branded"
+      >
         <ion-card class="item-generic">
           <div class="card-top"></div>
 
@@ -229,32 +451,74 @@
           <ion-grid>
             <form [formGroup]="itemGenericForm">
               <ion-item fill="outline">
-                <ion-icon slot="start" src="../../assets/icons/items.svg" color="primary"></ion-icon>
-                <ion-input (click)="onItemSearch()" readonly="true" formControlName="subItemName"
-                  placeholder="Item"></ion-input>
-                <ion-button mode="ios" class="search-button" slot="end" size="small" fill="clear"
-                  (click)="onItemSearch()">
+                <ion-icon
+                  slot="start"
+                  src="../../assets/icons/items.svg"
+                  color="primary"
+                ></ion-icon>
+                <ion-input
+                  (click)="onItemSearch()"
+                  readonly="true"
+                  formControlName="subItemName"
+                  placeholder="Item"
+                ></ion-input>
+                <ion-button
+                  mode="ios"
+                  class="search-button"
+                  slot="end"
+                  size="small"
+                  fill="clear"
+                  (click)="onItemSearch()"
+                >
                   <ion-icon name="search-outline" slot="icon-only"></ion-icon>
                 </ion-button>
               </ion-item>
               <ion-item fill="outline">
-                <ion-icon slot="start" name="scale-outline" color="primary"></ion-icon>
-                <ion-select #uomSelect formControlName="requiredUom" placeholder="Uom" interface="popover">
-                  <ion-select-option *ngFor="let uom of uomsForGeneric" [value]="uom">{{ uom.uomName }}
+                <ion-icon
+                  slot="start"
+                  name="scale-outline"
+                  color="primary"
+                ></ion-icon>
+                <ion-select
+                  #uomSelect
+                  formControlName="requiredUom"
+                  placeholder="Uom"
+                  interface="popover"
+                >
+                  <ion-select-option
+                    *ngFor="let uom of uomsForGeneric"
+                    [value]="uom"
+                    >{{ uom.uomName }}
                   </ion-select-option>
                 </ion-select>
               </ion-item>
               <ion-item fill="outline">
-                <ion-icon slot="start" name="flask-outline" color="primary"></ion-icon>
-                <ion-input #quantityInput formControlName="requiredQty" placeholder="Quantity" type="number"
-                  inputmode="decimal" min="0" value="0">
+                <ion-icon
+                  slot="start"
+                  name="flask-outline"
+                  color="primary"
+                ></ion-icon>
+                <ion-input
+                  #quantityInput
+                  formControlName="requiredQty"
+                  placeholder="Quantity"
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  value="0"
+                >
                 </ion-input>
               </ion-item>
             </form>
 
             <ion-item lines="none" *ngIf="this.item.itemId">
-              <ion-button (click)="updateItemGeneric()" color="success" slot="end" size="default"
-                [disabled]="isUploading">
+              <ion-button
+                (click)="updateItemGeneric()"
+                color="success"
+                slot="end"
+                size="default"
+                [disabled]="isUploading"
+              >
                 Save
                 <ion-icon name="checkmark-outline" slot="start"></ion-icon>
               </ion-button>
