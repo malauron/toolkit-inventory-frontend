@@ -102,6 +102,8 @@ export class ItemDetailPage implements OnInit, OnDestroy, AfterViewInit {
     this.itemBoms = [];
     this.itemGeneric = new ItemGeneric();
     this.addOnsService.setItemAddOnDetails([]);
+    this.displayPicture = '../../assets/items.svg';
+    this.displayImg = this.displayPicture;
 
     this.route.paramMap.subscribe((paramMap) => {
       // Check whether paramMap is empty or not
