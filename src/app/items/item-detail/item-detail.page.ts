@@ -279,7 +279,6 @@ export class ItemDetailPage implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.item.itemId === 0 || this.lockControls) {
-      console.log('sdfads');
       this.isWeightBasedCostOpt.disabled = true;
     }
   }
@@ -728,7 +727,6 @@ export class ItemDetailPage implements OnInit, OnDestroy, AfterViewInit {
       this.isWeightBasedCostOpt.checked = event.target.checked;
     } else {
       this.isWeightBasedCostOpt.disabled = this.lockControls;
-      console.log('asdfdewrwer');
     }
   }
 

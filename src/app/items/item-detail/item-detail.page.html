@@ -18,7 +18,7 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col class="images" size-xs="12" size-lg="4" push-lg="8">
+      <ion-col class="images" size-xs="12" size-md="4" push-md="8">
         <ion-avatar>
           <ion-img [src]="displayImg"></ion-img>
         </ion-avatar>
@@ -35,7 +35,7 @@
         </div>
       </ion-col>
 
-      <ion-col size-xs="12" size-lg="8" pull-lg="4">
+      <ion-col size-xs="12" size-md="8" pull-md="4">
         <ion-card class="item-header">
           <div class="card-top"></div>
           <ion-item class="primary-info" lines="full">
@@ -45,7 +45,7 @@
             <ion-grid class="two-cols">
               <ion-row>
                 <!-- <ion-col size-xs="12" size-md="6"> -->
-                <ion-col size-xs="12" size-md="6">
+                <ion-col size-xs="12" size-lg="6">
                   <!-- Barcode -->
                   <ion-item fill="outline">
                     <ion-icon
@@ -62,7 +62,7 @@
                     </ion-input>
                   </ion-item>
                 </ion-col>
-                <ion-col size-xs="12" size-md="6">
+                <ion-col size-xs="12" size-lg="6">
                   <!-- Item Status -->
                   <ion-item fill="outline" lines="none">
                     <ion-icon
@@ -119,7 +119,7 @@
 
             <ion-grid class="two-cols">
               <ion-row>
-                <ion-col size-xs="12" size-md="6">
+                <ion-col size-xs="12" size-lg="6">
                   <!-- UOMs -->
                   <ion-item fill="outline">
                     <ion-icon
@@ -141,7 +141,7 @@
                     </ion-select>
                   </ion-item>
                 </ion-col>
-                <ion-col size-xs="12" size-md="6">
+                <ion-col size-xs="12" size-lg="6">
                   <!-- Item Price -->
                   <ion-item fill="outline">
                     <ion-icon
@@ -162,7 +162,7 @@
 
             <ion-grid class="two-cols" *ngIf="item.itemClass==='Stock'">
               <ion-row>
-                <ion-col size-xs="12" size-md="6">
+                <ion-col size-xs="12" size-lg="6">
                   <!-- UOMs -->
                   <ion-item fill="outline" lines="none">
                     <ion-icon
@@ -179,7 +179,7 @@
                     ></ion-toggle>
                   </ion-item>
                 </ion-col>
-                <ion-col size-xs="12" size-md="6">
+                <ion-col size-xs="12" size-lg="6">
                   <!-- Item Price -->
                   <ion-item fill="outline" lines="none">
                     <ion-icon
@@ -223,7 +223,7 @@
       </ion-col>
       <ion-col
         size-xs="12"
-        size-lg="8"
+        size-md="8"
         *ngIf="item.itemClass === theItemClass.Stock"
       >
         <ion-card class="item-uom">
@@ -318,7 +318,7 @@
       <!-- Bill of Materials -->
       <ion-col
         size-xs="12"
-        size-xl="6"
+        size-md="8"
         *ngIf="this.item.itemClass === theItemClass.Assembly"
       >
         <ion-card class="item-bom">
@@ -438,7 +438,7 @@
       <!-- Generic Item -->
       <ion-col
         size-xs="12"
-        size-xl="6"
+        size-md="8"
         *ngIf="this.item.itemClass === theItemClass.Branded"
       >
         <ion-card class="item-generic">
