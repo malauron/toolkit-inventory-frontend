@@ -1,9 +1,34 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>batches</ion-title>
+  <ion-toolbar color="danger">
+    <ion-searchbar #searchBar></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
+    <ion-fab-button color="success" (click)="onAddBatch()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
+  <div class="spinner">
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
+  </div>
+
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreItems($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more items..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

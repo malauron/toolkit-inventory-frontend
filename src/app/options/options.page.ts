@@ -15,6 +15,10 @@ export class OptionsPage implements OnInit {
   ngOnInit() {
   }
 
+  onBatches() {
+    this.router.navigate(['/','tabs','butchery-batches']);
+  }
+
   onReceiving() {
     this.router.navigate(['/','tabs','receivings']);
   }
