@@ -48,7 +48,9 @@ export class ButcheryBatchesPage implements OnInit {
       });
   }
 
-  onAddBatch(){}
+  onAddBatch(){
+    this.router.navigate(['/', 'tabs', 'butchery-batches', 'butchery-batch', 0]);
+  }
 
   loadMoreItems(event) {
 

@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-back-button
+        icon="chevron-back-outline"
+        defaultHref="/tabs/butchery-batches"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ pageLabel }}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button>
+        <ion-icon slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <div class="card-top"></div>
+    <ion-item lines="full">
+      <ion-card-title>Primary Information</ion-card-title>
+    </ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col size-xs="12">
+          <ion-item fill="outline">
+            <ion-icon
+              slot="start"
+              name="bookmark-outline"
+              color="primary"
+            ></ion-icon>
+            <ion-input
+              placeholder="Code"
+              type="text"
+              maxlength="20"
+            ></ion-input>
+            <ion-button size="small" mode="ios" fill="clear"
+              >Unposted</ion-button
+            >
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12">
+          <ion-item fill="outline">
+            <ion-icon
+              slot="start"
+              name="bookmark-outline"
+              color="primary"
+            ></ion-icon>
+            <ion-input
+              placeholder="Date Received"
+              type="text"
+              maxlength="20"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12">
+          <ion-item fill="outline">
+            <ion-icon
+              slot="start"
+              name="bookmark-outline"
+              color="primary"
+            ></ion-icon>
+            <ion-input
+              placeholder="Remarks"
+              type="text"
+              maxlength="20"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12">
+          <ion-item fill="outline">
+            <ion-icon
+              slot="start"
+              name="bookmark-outline"
+              color="primary"
+            ></ion-icon>
+            <ion-input
+              placeholder="Code"
+              type="text"
+              maxlength="20"
+            ></ion-input>
+            <ion-button size="small" mode="ios" fill="clear"
+              >Open</ion-button
+            >
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+  <ion-card>
+    <div class="card-top"></div>
+    <ion-item lines="full">
+      <ion-card-title>Details</ion-card-title>
+    </ion-item>
+    <ion-card class="details-card">
+
+      <ion-label>
+        <ion-card-title>MERSK</ion-card-title>
+        <ion-card-subtitle
+          >Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta quidem eveniet consequuntur voluptatibus quam maxime nisi quae possimus exercitationem veniam?</ion-card-subtitle
+        >
+      </ion-label>
+    </ion-card>
+  </ion-card>
+</ion-content>
