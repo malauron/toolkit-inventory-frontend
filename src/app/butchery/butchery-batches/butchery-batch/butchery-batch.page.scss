@@ -40,4 +40,12 @@ ion-searchbar {
 .details-card {
   margin: 1rem;
   box-shadow: none;
+
+  ion-item {
+    padding: 0;
+  }
+
+  ion-icon {
+    margin-right: 1rem;
+  }
 }

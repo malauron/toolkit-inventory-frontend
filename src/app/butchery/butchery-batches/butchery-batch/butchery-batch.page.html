@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar color="danger">
     <ion-buttons slot="start">
-      <ion-back-button
-        icon="chevron-back-outline"
-        defaultHref="/tabs/butchery-batches"
-      ></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/butchery-batches"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
     <ion-buttons slot="primary">
@@ -25,64 +22,28 @@
       <ion-row>
         <ion-col size-xs="12">
           <ion-item fill="outline">
-            <ion-icon
-              slot="start"
-              name="bookmark-outline"
-              color="primary"
-            ></ion-icon>
-            <ion-input
-              placeholder="Code"
-              type="text"
-              maxlength="20"
-            ></ion-input>
-            <ion-button size="small" mode="ios" fill="clear"
-              >Unposted</ion-button
-            >
+            <ion-icon slot="start" name="bookmark-outline" color="primary"></ion-icon>
+            <ion-input placeholder="Code" type="text" maxlength="20"></ion-input>
+            <ion-button size="small" mode="ios" fill="clear">Unposted</ion-button>
           </ion-item>
         </ion-col>
         <ion-col size-xs="12">
           <ion-item fill="outline">
-            <ion-icon
-              slot="start"
-              name="bookmark-outline"
-              color="primary"
-            ></ion-icon>
-            <ion-input
-              placeholder="Date Received"
-              type="text"
-              maxlength="20"
-            ></ion-input>
+            <ion-icon slot="start" name="calendar-outline" color="primary"></ion-icon>
+            <ion-input placeholder="Date Received" type="text" maxlength="20"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-xs="12">
           <ion-item fill="outline">
-            <ion-icon
-              slot="start"
-              name="bookmark-outline"
-              color="primary"
-            ></ion-icon>
-            <ion-input
-              placeholder="Remarks"
-              type="text"
-              maxlength="20"
-            ></ion-input>
+            <ion-icon slot="start" name="information-outline" color="primary"></ion-icon>
+            <ion-input placeholder="Remarks" type="text" maxlength="20"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-xs="12">
-          <ion-item fill="outline">
-            <ion-icon
-              slot="start"
-              name="bookmark-outline"
-              color="primary"
-            ></ion-icon>
-            <ion-input
-              placeholder="Code"
-              type="text"
-              maxlength="20"
-            ></ion-input>
-            <ion-button size="small" mode="ios" fill="clear"
-              >Open</ion-button
-            >
+          <ion-item fill="outline" lines="none">
+            <ion-icon slot="start" name="checkmark-circle-outline" color="primary"></ion-icon>
+            <ion-label>Open</ion-label>
+            <ion-toggle [enableOnOffLabels]="true" slot="end"></ion-toggle>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -94,13 +55,30 @@
       <ion-card-title>Details</ion-card-title>
     </ion-item>
     <ion-card class="details-card">
+      <ion-item lines="none">
+        <ion-icon name="storefront-outline" color="primary" slot="start"></ion-icon>
+        <ion-input placeholder="Supplier" type="text" maxlength="20"></ion-input>
+      </ion-item>
 
-      <ion-label>
+      <ion-item lines="none">
+        <ion-icon name="document-attach-outline" color="primary" slot="start"></ion-icon>
+        <ion-input placeholder="Reference" type="text" maxlength="20"></ion-input>
+      </ion-item>
+
+
+      <ion-item lines="none">
+        <ion-label position="floating">Doc. No. of Cases</ion-label>
+        <!-- <ion-icon name="document-attach-outline" color="primary" slot="start"></ion-icon> -->
+        <ion-input placeholder="Reference" type="text" maxlength="20" value="1,290.00"></ion-input>
+      </ion-item>
+      <!-- <ion-label>
+        <h3>Supplier</h3>
         <ion-card-title>MERSK</ion-card-title>
+
         <ion-card-subtitle
           >Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta quidem eveniet consequuntur voluptatibus quam maxime nisi quae possimus exercitationem veniam?</ion-card-subtitle
         >
-      </ion-label>
+      </ion-label> -->
     </ion-card>
   </ion-card>
 </ion-content>
