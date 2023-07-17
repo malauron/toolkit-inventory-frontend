@@ -202,7 +202,21 @@ ion-searchbar {
   }
 }
 
+@media (min-width: 768px) {
+  .main-content {
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+  }
+}
+
 @media (min-width: 992px) {
+  .primary-info-row {
+    ion-item {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+
   .item-hdr {
     display: flex !important;
   }
