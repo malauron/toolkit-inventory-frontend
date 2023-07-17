@@ -1,7 +1,10 @@
 <ion-header>
   <ion-toolbar color="danger">
     <ion-buttons slot="start">
-      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/butchery-batches"></ion-back-button>
+      <ion-back-button
+        icon="chevron-back-outline"
+        defaultHref="/tabs/butchery-batches"
+      ></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
     <ion-buttons slot="primary">
@@ -22,26 +25,56 @@
       <ion-row>
         <ion-col size-xs="12">
           <ion-item fill="outline">
-            <ion-icon slot="start" name="bookmark-outline" color="primary"></ion-icon>
-            <ion-input placeholder="Code" type="text" maxlength="20"></ion-input>
-            <ion-button size="small" mode="ios" fill="clear">Unposted</ion-button>
+            <ion-icon
+              slot="start"
+              name="bookmark-outline"
+              color="primary"
+            ></ion-icon>
+            <ion-input
+              placeholder="Code"
+              type="text"
+              maxlength="20"
+            ></ion-input>
+            <ion-button size="small" mode="ios" fill="clear"
+              >Unposted</ion-button
+            >
           </ion-item>
         </ion-col>
         <ion-col size-xs="12">
           <ion-item fill="outline">
-            <ion-icon slot="start" name="calendar-outline" color="primary"></ion-icon>
-            <ion-input placeholder="Date Received" type="text" maxlength="20"></ion-input>
+            <ion-icon
+              slot="start"
+              name="calendar-outline"
+              color="primary"
+            ></ion-icon>
+            <ion-input
+              placeholder="Date Received"
+              type="text"
+              maxlength="20"
+            ></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-xs="12">
           <ion-item fill="outline">
-            <ion-icon slot="start" name="information-outline" color="primary"></ion-icon>
-            <ion-input placeholder="Remarks" type="text" maxlength="20"></ion-input>
+            <ion-icon
+              slot="start"
+              name="information-outline"
+              color="primary"
+            ></ion-icon>
+            <ion-input
+              placeholder="Remarks"
+              type="text"
+              maxlength="20"
+            ></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-xs="12">
           <ion-item fill="outline" lines="none">
-            <ion-icon slot="start" name="checkmark-circle-outline" color="primary"></ion-icon>
+            <ion-icon
+              slot="start"
+              name="checkmark-circle-outline"
+              color="primary"
+            ></ion-icon>
             <ion-label>Open</ion-label>
             <ion-toggle [enableOnOffLabels]="true" slot="end"></ion-toggle>
           </ion-item>
@@ -49,36 +82,275 @@
       </ion-row>
     </ion-grid>
   </ion-card>
+
   <ion-card>
     <div class="card-top"></div>
     <ion-item lines="full">
       <ion-card-title>Details</ion-card-title>
     </ion-item>
+
     <ion-card class="details-card">
-      <ion-item lines="none">
-        <ion-icon name="storefront-outline" color="primary" slot="start"></ion-icon>
-        <ion-input placeholder="Supplier" type="text" maxlength="20"></ion-input>
-      </ion-item>
+      <ion-card-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col size-xs="12" size-lg="6">
+              <ion-item lines="none">
+                <ion-icon
+                  name="storefront-outline"
+                  color="primary"
+                  slot="start"
+                ></ion-icon>
+                <ion-input
+                  placeholder="Supplier"
+                  type="text"
+                  maxlength="20"
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="12" size-lg="6">
+              <ion-item lines="none">
+                <ion-icon
+                  name="document-attach-outline"
+                  color="primary"
+                  slot="start"
+                ></ion-icon>
+                <ion-input
+                  placeholder="Reference"
+                  type="text"
+                  maxlength="20"
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-header>
 
-      <ion-item lines="none">
-        <ion-icon name="document-attach-outline" color="primary" slot="start"></ion-icon>
-        <ion-input placeholder="Reference" type="text" maxlength="20"></ion-input>
-      </ion-item>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row class="item-hdr">
+            <ion-col size-xs="12" size-lg="6">
+              <ion-item lines="none">
+                <ion-label class="item-desc-hdr-lbl"
+                  >Item Description</ion-label
+                >
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-qty-hdr-lbl"
+                  ><h2>Doc. Qty.</h2></ion-label
+                >
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-qty-hdr-lbl"
+                  ><h2>Act. Qty.</h2></ion-label
+                >
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-qty-hdr-lbl"
+                  ><h2>Doc. Weight(Kg)</h2></ion-label
+                >
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-qty-hdr-lbl"
+                  ><h2>Act. Weight(Kg)</h2></ion-label
+                >
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row class="item-row">
+            <ion-col size-xs="12" size-lg="6">
+              <ion-item lines="none">
+                <ion-icon
+                  slot="start"
+                  name="cube-outline"
+                  color="primary"
+                ></ion-icon>
+                <ion-label class="item-desc-lbl item-line-lbl">
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Odio, quas?
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Doc. Cases</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Act. Cases</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Doc. Weight(Kg)</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Act. Weight(Kg)</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row class="item-row">
+            <div class="option-buttons">
+              <ion-item lines="none">
+                <ion-button
+                  class="delete-item-button"
+                  mode="ios"
+                  slot="end"
+                  fill="clear"
+                  color="medium"
+                  size="default"
+                >
+                  <ion-icon
+                    name="ellipsis-horizontal-circle-outline"
+                  ></ion-icon>
+                </ion-button>
+                <ion-button
+                  class="delete-item-button"
+                  mode="ios"
+                  slot="end"
+                  fill="clear"
+                  color="medium"
+                  size="default"
+                >
+                  <ion-icon name="close-circle"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </div>
+            <ion-col size-xs="12" size-lg="6">
+              <ion-item lines="none">
+                <ion-icon
+                  slot="start"
+                  name="cube-outline"
+                  color="primary"
+                ></ion-icon>
+                <ion-label class="item-desc-lbl item-line-lbl">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo
+                  similique modi cupiditate aspernatur amet suscipit architecto
+                  mollitia corporis veniam nemo.
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Doc. Cases</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Act. Cases</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Doc. Weight(Kg)</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Act. Weight(Kg)</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row class="item-row">
+            <ion-col size-xs="12" size-lg="6">
+              <ion-item lines="none">
+                <ion-icon
+                  slot="start"
+                  name="cube-outline"
+                  color="primary"
+                ></ion-icon>
+                <ion-label class="item-desc-lbl item-line-lbl">
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Odio, quas?
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Doc. Cases</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Act. Cases</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Doc. Weight(Kg)</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Act. Weight(Kg)</h3>
+                  <h2>289.25</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item class="insert-item" lines="none" button>
+                <ion-label>
+                  <h3>INSERT ITEM...</h3>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
 
-
-      <ion-item lines="none">
-        <ion-label position="floating">Doc. No. of Cases</ion-label>
-        <!-- <ion-icon name="document-attach-outline" color="primary" slot="start"></ion-icon> -->
-        <ion-input placeholder="Reference" type="text" maxlength="20" value="1,290.00"></ion-input>
-      </ion-item>
-      <!-- <ion-label>
-        <h3>Supplier</h3>
-        <ion-card-title>MERSK</ion-card-title>
-
-        <ion-card-subtitle
-          >Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta quidem eveniet consequuntur voluptatibus quam maxime nisi quae possimus exercitationem veniam?</ion-card-subtitle
-        >
-      </ion-label> -->
+    <ion-card class="new-detail-card">
+      <ion-card-content>
+        <ion-item lines="none" button>
+          <ion-label><h3>NEW DETAIL ...</h3></ion-label>
+        </ion-item>
+      </ion-card-content>
     </ion-card>
   </ion-card>
 </ion-content>
