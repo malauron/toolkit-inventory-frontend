@@ -64,6 +64,19 @@ ion-searchbar {
     margin-right: 1rem;
   }
 
+  .details-row {
+    position: relative;
+
+    &:hover {
+      .option-buttons {
+        visibility: visible;
+        display: block;
+      backdrop-filter: none;
+      }
+      border-bottom: none;
+    }
+  }
+
   .item-desc-hdr-lbl {
     color: var(--ion-color-medium);
     text-align: center;
@@ -77,15 +90,11 @@ ion-searchbar {
   }
 
   .item-hdr {
-    // ion-label {
-    //   margin: 0;
-    // }
     vertical-align: bottom;
     background-color: #f8f5f5;
 
     ion-item::part(native) {
       background-color: transparent;
-      // align-items: flex-end;
     }
 
     margin-bottom: 1rem;
@@ -99,6 +108,14 @@ ion-searchbar {
     border-bottom: 0.1rem solid rgba($color: #6c6c6c, $alpha: 0.5);
 
     &:nth-last-child(2) {
+      border-bottom: none;
+    }
+
+    &:hover {
+      .option-buttons {
+        visibility: visible;
+        display: block;
+      }
       border-bottom: none;
     }
   }
@@ -130,13 +147,11 @@ ion-searchbar {
       color: var(--ion-color-medium);
     }
   }
-
 }
 
 .new-detail-card {
   box-shadow: none;
   margin: 0;
-  // border-bottom: 8px solid #f6f6f6;
   border-radius: 0;
 
   ion-item {
@@ -155,9 +170,15 @@ ion-searchbar {
 }
 
 .option-buttons {
-  background-color: rgba($color: #f6f6f6, $alpha: 0.5);
-  backdrop-filter: blur(5px);
-  display: block;
+  visibility: hidden;
+  display: none;
+  background: linear-gradient(
+    270deg,
+    rgba(245, 245, 245, 1) 0%,
+    rgba(255, 255, 255, 0.6699929971988796) 30%,
+    rgba(255, 255, 255, 0) 50%
+  );
+  backdrop-filter: blur(1px);
   height: 100%;
   width: 100%;
   z-index: 100 !important;
@@ -182,7 +203,6 @@ ion-searchbar {
 }
 
 @media (min-width: 992px) {
-
   .item-hdr {
     display: flex !important;
   }
