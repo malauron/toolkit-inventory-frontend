@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular';
+import { Vendor } from 'src/app/classes/vendor.model';
+import { VendorSearchComponent } from 'src/app/vendors/vendor-search/vendor-search.component';
 // import { Item } from 'src/app/classes/item.model';
 // import { Uom } from 'src/app/classes/uom.model';
 // import { UomSearchComponent } from 'src/app/uoms/uom-search/uom-search.component';
@@ -19,6 +21,8 @@ export class ButcheryBatchDetailComponent implements OnInit {
   // item: Item;
   // uom: Uom;
 
+  vendor: Vendor;
+
   contentForm: FormGroup;
 
   modalOpen = false;
@@ -29,30 +33,30 @@ export class ButcheryBatchDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.itemAddOnContent === undefined) {
-      this.itemAddOnContent = new ItemAddOnContent();
-      this.itemAddOnContent.itemAddOnContentId = 0;
-      this.item = new Item();
-      this.uom = new Uom();
+    if (this.vendor === undefined) {
+      this.vendor = new Vendor();
+      // this.itemAddOnContent.itemAddOnContentId = 0;
+      // this.item = new Item();
+      // this.uom = new Uom();
     } else {
-      this.item = this.itemAddOnContent.item;
-      this.uom = this.itemAddOnContent.uom;
+      // this.item = this.itemAddOnContent.item;
+      // this.uom = this.itemAddOnContent.uom;
     }
 
-    this.contentForm = new FormGroup({
-      qty: new FormControl(this.itemAddOnContent.qty, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.min(0.0001)],
-      }),
-      price: new FormControl(this.itemAddOnContent.price, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.min(0)],
-      }),
-      altDesc: new FormControl(this.itemAddOnContent.altDesc),
-    });
+    // this.contentForm = new FormGroup({
+    //   qty: new FormControl(this.itemAddOnContent.qty, {
+    //     updateOn: 'blur',
+    //     validators: [Validators.required, Validators.min(0.0001)],
+    //   }),
+    //   price: new FormControl(this.itemAddOnContent.price, {
+    //     updateOn: 'blur',
+    //     validators: [Validators.required, Validators.min(0)],
+    //   }),
+    //   altDesc: new FormControl(this.itemAddOnContent.altDesc),
+    // });
   }
 
-  onItemSearch() {
+  onVendorSearch() {
     if (this.modalOpen) {
       return;
     }
@@ -61,7 +65,7 @@ export class ButcheryBatchDetailComponent implements OnInit {
 
     this.modalController
       .create({
-        component: ItemSearchComponent,
+        component: VendorSearchComponent,
         cssClass: 'custom-modal-styles',
       })
       .then((mdl) => {
@@ -69,76 +73,76 @@ export class ButcheryBatchDetailComponent implements OnInit {
         return mdl.onDidDismiss();
       })
       .then((modal) => {
-        if (modal.role === 'item') {
-          this.item = modal.data;
-          this.uom = modal.data.uom;
+        if (modal.role === 'vendor') {
+          this.vendor = modal.data;
+          // this.uom = modal.data.uom;
         }
         this.modalOpen = false;
       });
   }
 
-  onUomSearch(item?: Item) {
-    if (this.item.itemId === undefined) {
-      this.messageBox('Please select an item.');
-      return;
-    }
+  // onUomSearch(item?: Item) {
+  //   if (this.item.itemId === undefined) {
+  //     this.messageBox('Please select an item.');
+  //     return;
+  //   }
 
-    if (this.uom.uomId === undefined) {
-      this.messageBox('Please select a UoM.');
-      return;
-    }
+  //   if (this.uom.uomId === undefined) {
+  //     this.messageBox('Please select a UoM.');
+  //     return;
+  //   }
 
-    if (this.modalOpen) {
-      return;
-    }
+  //   if (this.modalOpen) {
+  //     return;
+  //   }
 
-    this.modalOpen = true;
+  //   this.modalOpen = true;
 
-    this.modalController
-      .create({
-        component: UomSearchComponent,
-        componentProps: {
-          item: this.item,
-        },
-        cssClass: 'custom-modal-styles',
-      })
-      .then((mdl) => {
-        mdl.present();
-        return mdl.onDidDismiss();
-      })
-      .then((mdl) => {
-        if (mdl.role === 'itemUom') {
-          this.uom = mdl.data.uom;
-        }
-        this.modalOpen = false;
-      });
-  }
+  //   this.modalController
+  //     .create({
+  //       component: UomSearchComponent,
+  //       componentProps: {
+  //         item: this.item,
+  //       },
+  //       cssClass: 'custom-modal-styles',
+  //     })
+  //     .then((mdl) => {
+  //       mdl.present();
+  //       return mdl.onDidDismiss();
+  //     })
+  //     .then((mdl) => {
+  //       if (mdl.role === 'itemUom') {
+  //         this.uom = mdl.data.uom;
+  //       }
+  //       this.modalOpen = false;
+  //     });
+  // }
 
   onSaveAddOnContent() {
-    if (this.item.itemId === undefined) {
-      this.messageBox('Some fields contain invalid information.');
-      return;
-    }
+    // if (this.item.itemId === undefined) {
+    //   this.messageBox('Some fields contain invalid information.');
+    //   return;
+    // }
 
-    if (this.uom.uomId === undefined) {
-      this.messageBox('Some fields contain invalid information.');
-      return;
-    }
+    // if (this.uom.uomId === undefined) {
+    //   this.messageBox('Some fields contain invalid information.');
+    //   return;
+    // }
 
-    const tmpItm = new ItemAddOnContent();
+    // const tmpItm = new ItemAddOnContent();
 
-    if (this.contentForm.valid) {
-      tmpItm.itemAddOnContentId = this.itemAddOnContent.itemAddOnContentId;
-      tmpItm.item = this.item;
-      tmpItm.uom = this.uom;
-      tmpItm.qty = this.contentForm.value.qty;
-      tmpItm.price = this.contentForm.value.price;
-      tmpItm.altDesc = this.contentForm.value.altDesc;
+    // if (this.contentForm.valid) {
+    //   tmpItm.itemAddOnContentId = this.itemAddOnContent.itemAddOnContentId;
+    //   tmpItm.item = this.item;
+    //   tmpItm.uom = this.uom;
+    //   tmpItm.qty = this.contentForm.value.qty;
+    //   tmpItm.price = this.contentForm.value.price;
+    //   tmpItm.altDesc = this.contentForm.value.altDesc;
 
-      this.modalController.dismiss(tmpItm, 'saveContent');
-    } else {
-      this.messageBox('Some fields contain invalid information.');
-    }
+    //   this.modalController.dismiss(tmpItm, 'saveContent');
+    // } else {
+    //   this.messageBox('Some fields contain invalid information.');
+    // }
   }
 
   dismissModal() {
