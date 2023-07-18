@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar color="danger">
     <ion-buttons slot="start">
-      <ion-back-button
-        icon="chevron-back-outline"
-        defaultHref="/tabs/butchery-batches"
-      ></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/butchery-batches"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
     <ion-buttons slot="primary">
@@ -25,63 +22,27 @@
       <ion-row class="primary-info-row">
         <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
-            <ion-icon
-              slot="start"
-              name="bookmark-outline"
-              color="primary"
-            ></ion-icon>
-            <ion-input
-              [readonly]="true"
-              placeholder="Code"
-              type="text"
-              maxlength="20"
-            ></ion-input>
-            <ion-button size="small" mode="ios" fill="clear"
-              >Unposted</ion-button
-            >
+            <ion-icon slot="start" name="bookmark-outline" color="primary"></ion-icon>
+            <ion-input [readonly]="true" placeholder="Code" type="text" maxlength="20"></ion-input>
+            <ion-button size="small" mode="ios" fill="clear">Unposted</ion-button>
           </ion-item>
         </ion-col>
         <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
-            <ion-label position="floating">
-              Date Received
-            </ion-label>
-            <ion-icon
-              slot="start"
-              name="calendar-outline"
-              color="primary"
-            ></ion-icon>
-            <ion-input
-              (click)="showReceivedDatePicker()"
-              [value]="dateValue"
-              [readonly]="true"
-              placeholder="Date Received"
-              type="text"
-              maxlength="20"
-            ></ion-input>
+            <ion-icon slot="start" name="calendar-outline" color="primary"></ion-icon>
+            <ion-input (click)="showReceivedDatePicker()" [value]="dateValue" [readonly]="true"
+              placeholder="Date Received" type="text" maxlength="20"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
-            <ion-icon
-              slot="start"
-              name="information-outline"
-              color="primary"
-            ></ion-icon>
-            <ion-input
-              placeholder="Remarks"
-              type="text"
-              maxlength="20"
-            ></ion-input>
+            <ion-icon slot="start" name="information-outline" color="primary"></ion-icon>
+            <ion-input placeholder="Remarks" type="text" maxlength="20"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline" lines="none">
-            <ion-icon
-              slot="start"
-              name="checkmark-circle-outline"
-              color="primary"
-            ></ion-icon>
+            <ion-icon slot="start" name="checkmark-circle-outline" color="primary"></ion-icon>
             <ion-label>Open</ion-label>
             <ion-toggle [enableOnOffLabels]="true" slot="end"></ion-toggle>
           </ion-item>
@@ -102,56 +63,24 @@
           <ion-row class="details-row">
             <div class="option-buttons">
               <ion-item lines="none">
-                <ion-button
-                  class="delete-item-button"
-                  mode="ios"
-                  slot="end"
-                  fill="clear"
-                  color="medium"
-                  size="default"
-                >
-                  <ion-icon
-                    name="ellipsis-horizontal-circle-outline"
-                  ></ion-icon>
+                <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                  <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
                 </ion-button>
-                <ion-button
-                  class="delete-item-button"
-                  mode="ios"
-                  slot="end"
-                  fill="clear"
-                  color="medium"
-                  size="default"
-                >
+                <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                   <ion-icon name="close-circle"></ion-icon>
                 </ion-button>
               </ion-item>
             </div>
             <ion-col size-xs="12" size-lg="6">
               <ion-item lines="none">
-                <ion-icon
-                  name="storefront-outline"
-                  color="primary"
-                  slot="start"
-                ></ion-icon>
-                <ion-input
-                  placeholder="Supplier"
-                  type="text"
-                  maxlength="20"
-                ></ion-input>
+                <ion-icon name="storefront-outline" color="primary" slot="start"></ion-icon>
+                <ion-input placeholder="Supplier" type="text" maxlength="20"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col size-xs="12" size-lg="6">
               <ion-item lines="none">
-                <ion-icon
-                  name="document-attach-outline"
-                  color="primary"
-                  slot="start"
-                ></ion-icon>
-                <ion-input
-                  placeholder="Reference"
-                  type="text"
-                  maxlength="20"
-                ></ion-input>
+                <ion-icon name="document-attach-outline" color="primary" slot="start"></ion-icon>
+                <ion-input placeholder="Reference" type="text" maxlength="20"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -163,74 +92,52 @@
           <ion-row class="item-hdr">
             <ion-col size-xs="12" size-lg="6">
               <ion-item lines="none">
-                <ion-label class="item-desc-hdr-lbl"
-                  >Item Description</ion-label
-                >
+                <ion-label class="item-desc-hdr-lbl">Item Description</ion-label>
               </ion-item>
             </ion-col>
             <ion-col size-xs="6" size-md="3" size-lg="1.5">
               <ion-item lines="none">
-                <ion-label class="item-qty-hdr-lbl"
-                  ><h2>Doc. Qty.</h2></ion-label
-                >
+                <ion-label class="item-qty-hdr-lbl">
+                  <h2>Doc. Qty.</h2>
+                </ion-label>
               </ion-item>
             </ion-col>
             <ion-col size-xs="6" size-md="3" size-lg="1.5">
               <ion-item lines="none">
-                <ion-label class="item-qty-hdr-lbl"
-                  ><h2>Act. Qty.</h2></ion-label
-                >
+                <ion-label class="item-qty-hdr-lbl">
+                  <h2>Act. Qty.</h2>
+                </ion-label>
               </ion-item>
             </ion-col>
             <ion-col size-xs="6" size-md="3" size-lg="1.5">
               <ion-item lines="none">
-                <ion-label class="item-qty-hdr-lbl"
-                  ><h2>Doc. Weight(Kg)</h2></ion-label
-                >
+                <ion-label class="item-qty-hdr-lbl">
+                  <h2>Doc. Weight(Kg)</h2>
+                </ion-label>
               </ion-item>
             </ion-col>
             <ion-col size-xs="6" size-md="3" size-lg="1.5">
               <ion-item lines="none">
-                <ion-label class="item-qty-hdr-lbl"
-                  ><h2>Act. Weight(Kg)</h2></ion-label
-                >
+                <ion-label class="item-qty-hdr-lbl">
+                  <h2>Act. Weight(Kg)</h2>
+                </ion-label>
               </ion-item>
             </ion-col>
           </ion-row>
           <ion-row class="item-row">
             <div class="option-buttons">
               <ion-item lines="none">
-                <ion-button
-                  class="delete-item-button"
-                  mode="ios"
-                  slot="end"
-                  fill="clear"
-                  color="medium"
-                  size="default"
-                >
-                  <ion-icon
-                    name="ellipsis-horizontal-circle-outline"
-                  ></ion-icon>
+                <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                  <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
                 </ion-button>
-                <ion-button
-                  class="delete-item-button"
-                  mode="ios"
-                  slot="end"
-                  fill="clear"
-                  color="medium"
-                  size="default"
-                >
+                <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                   <ion-icon name="close-circle"></ion-icon>
                 </ion-button>
               </ion-item>
             </div>
             <ion-col size-xs="12" size-lg="6">
               <ion-item lines="none">
-                <ion-icon
-                  slot="start"
-                  name="cube-outline"
-                  color="primary"
-                ></ion-icon>
+                <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
                 <ion-label class="item-desc-lbl item-line-lbl">
                   Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                   Odio, quas?
@@ -273,37 +180,17 @@
           <ion-row class="item-row">
             <div class="option-buttons">
               <ion-item lines="none">
-                <ion-button
-                  class="delete-item-button"
-                  mode="ios"
-                  slot="end"
-                  fill="clear"
-                  color="medium"
-                  size="default"
-                >
-                  <ion-icon
-                    name="ellipsis-horizontal-circle-outline"
-                  ></ion-icon>
+                <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                  <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
                 </ion-button>
-                <ion-button
-                  class="delete-item-button"
-                  mode="ios"
-                  slot="end"
-                  fill="clear"
-                  color="medium"
-                  size="default"
-                >
+                <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                   <ion-icon name="close-circle"></ion-icon>
                 </ion-button>
               </ion-item>
             </div>
             <ion-col size-xs="12" size-lg="6">
               <ion-item lines="none">
-                <ion-icon
-                  slot="start"
-                  name="cube-outline"
-                  color="primary"
-                ></ion-icon>
+                <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
                 <ion-label class="item-desc-lbl item-line-lbl">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo
                   similique modi cupiditate aspernatur amet suscipit architecto
@@ -347,37 +234,17 @@
           <ion-row class="item-row">
             <div class="option-buttons">
               <ion-item lines="none">
-                <ion-button
-                  class="delete-item-button"
-                  mode="ios"
-                  slot="end"
-                  fill="clear"
-                  color="medium"
-                  size="default"
-                >
-                  <ion-icon
-                    name="ellipsis-horizontal-circle-outline"
-                  ></ion-icon>
+                <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                  <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
                 </ion-button>
-                <ion-button
-                  class="delete-item-button"
-                  mode="ios"
-                  slot="end"
-                  fill="clear"
-                  color="medium"
-                  size="default"
-                >
+                <ion-button class="delete-item-button" mode="ios" slot="end" fill="clear" color="medium" size="default">
                   <ion-icon name="close-circle"></ion-icon>
                 </ion-button>
               </ion-item>
             </div>
             <ion-col size-xs="12" size-lg="6">
               <ion-item lines="none">
-                <ion-icon
-                  slot="start"
-                  name="cube-outline"
-                  color="primary"
-                ></ion-icon>
+                <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
                 <ion-label class="item-desc-lbl item-line-lbl">
                   Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                   Odio, quas?
@@ -433,7 +300,9 @@
     <ion-card class="new-detail-card">
       <ion-card-content>
         <ion-item lines="none" button>
-          <ion-label><h3>NEW DETAIL ...</h3></ion-label>
+          <ion-label>
+            <h3>NEW DETAIL ...</h3>
+          </ion-label>
         </ion-item>
       </ion-card-content>
     </ion-card>
