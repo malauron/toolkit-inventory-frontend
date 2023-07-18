@@ -107,9 +107,9 @@ ion-searchbar {
     margin-bottom: 1rem;
     border-bottom: 0.1rem solid rgba($color: #6c6c6c, $alpha: 0.5);
 
-    &:nth-last-child(2) {
-      border-bottom: none;
-    }
+    // &:nth-last-child(2) {
+    //   border-bottom: none;
+    // }
 
     &:hover {
       .option-buttons {

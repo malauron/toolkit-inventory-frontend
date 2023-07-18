@@ -24,6 +24,7 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "bootstrap": "^5.2.0",
+    "date-fns": "^2.30.0",
     "ngx-print": "^1.2.1",
     "rxjs": "^7.5.0",
     "swiper": "^8.2.4",

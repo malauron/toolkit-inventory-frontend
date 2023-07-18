@@ -1,0 +1,16 @@
+ion-content {
+  --padding-start: 5%;
+  --padding-end: 5%;
+  --padding-top: 10%;
+
+  ion-datetime {
+    margin: auto;
+    // border: 3px solid var(--ion-color-primary);
+    border-radius: 5px;
+  }
+
+  ion-button {
+    margin: 20px 0 0 0;
+    height: 3.3rem;
+  }
+}

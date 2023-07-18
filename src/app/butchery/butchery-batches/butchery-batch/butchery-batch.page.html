@@ -31,6 +31,7 @@
               color="primary"
             ></ion-icon>
             <ion-input
+              [readonly]="true"
               placeholder="Code"
               type="text"
               maxlength="20"
@@ -42,12 +43,18 @@
         </ion-col>
         <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
+            <ion-label position="floating">
+              Date Received
+            </ion-label>
             <ion-icon
               slot="start"
               name="calendar-outline"
               color="primary"
             ></ion-icon>
             <ion-input
+              (click)="showReceivedDatePicker()"
+              [value]="dateValue"
+              [readonly]="true"
               placeholder="Date Received"
               type="text"
               maxlength="20"
