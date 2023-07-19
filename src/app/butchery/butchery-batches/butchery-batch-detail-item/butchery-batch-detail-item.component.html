@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-label>Add-on item</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="contentForm">
+    <ion-item fill="outline">
+      <ion-icon slot="start" name="bookmark-outline" color="primary"></ion-icon>
+      <ion-input
+        [value]="this.item.itemName"
+        (click)="onItemSearch()"
+        readonly="true"
+        placeholder="Item"
+      ></ion-input>
+      <ion-button
+        mode="ios"
+        class="search-button"
+        slot="end"
+        size="small"
+        fill="clear"
+        (click)="onItemSearch()"
+      >
+        <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item fill="outline">
+      <ion-icon
+        slot="start"
+        name="pie-chart-outline"
+        color="primary"
+      ></ion-icon>
+      <ion-input
+        [value]="this.uom.uomName"
+        (click)="onUomSearch()"
+        readonly="true"
+        placeholder="Uom"
+      ></ion-input>
+      <ion-button
+        mode="ios"
+        class="search-button"
+        slot="end"
+        size="small"
+        fill="clear"
+        (click)="onUomSearch()"
+      >
+        <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item fill="outline">
+      <ion-icon
+        slot="start"
+        src="../../assets/icons/actqty.svg"
+        class="icon-img"
+        color="primary"
+      ></ion-icon>
+      <ion-input
+        formControlName="qty"
+        placeholder="Quantity"
+        type="number"
+        maxlength="20"
+      >
+      </ion-input>
+    </ion-item>
+    <ion-item fill="outline">
+      <ion-icon slot="start" name="pricetag-outline" color="primary"></ion-icon>
+      <ion-input
+        formControlName="price"
+        placeholder="Add-on Price"
+        type="number"
+        maxlength="20"
+      >
+      </ion-input>
+    </ion-item>
+    <ion-item fill="outline">
+      <ion-icon
+        slot="start"
+        name="swap-horizontal-outline"
+        color="primary"
+      ></ion-icon>
+      <ion-input
+        formControlName="altDesc"
+        placeholder="Alternative Item Description"
+        type="text"
+        maxlength="20"
+      >
+      </ion-input>
+    </ion-item>
+  </form>
+  <ion-button class="save-button" expand="block" (click)="onSaveAddOnContent()"
+    >save</ion-button
+  >
+</ion-content>

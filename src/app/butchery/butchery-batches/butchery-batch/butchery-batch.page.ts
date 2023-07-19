@@ -4,6 +4,7 @@ import { format, parseISO } from 'date-fns';
 import { DatePickerComponent } from 'src/app/custom-controls/date-picker/date-picker.component';
 import { VendorWarehouseSearchComponent } from 'src/app/vendor-warehouses/vendor-warehouse-search/vendor-warehouse-search.component';
 import { ButcheryBatchDetailComponent } from '../butchery-batch-detail/butchery-batch-detail.component';
+import { ButcheryBatchDetailItemComponent } from '../butchery-batch-detail-item/butchery-batch-detail-item.component';
 
 @Component({
   selector: 'app-butchery-batch',
@@ -46,6 +47,22 @@ export class ButcheryBatchPage implements OnInit {
     this.mdl
     .create({
       component: ButcheryBatchDetailComponent,
+      cssClass: 'custom-modal-styles',
+    })
+    .then((modal) => {
+      modal.present();
+      return modal.onDidDismiss();
+    })
+    .then((modal) => {
+
+    })
+    ;
+  }
+
+  onShowBatchDetailItem() {
+    this.mdl
+    .create({
+      component: ButcheryBatchDetailItemComponent,
       cssClass: 'custom-modal-styles',
     })
     .then((modal) => {

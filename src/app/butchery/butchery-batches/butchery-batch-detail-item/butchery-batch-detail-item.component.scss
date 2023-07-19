@@ -1,0 +1,18 @@
+ion-content {
+  --padding-start: 5%;
+  --padding-end: 5%;
+  --padding-top: 10%;
+
+  ion-item {
+    padding: 10px 0;
+  }
+
+  icon-img {
+    font-size: 1px;
+  }
+
+  .save-button {
+    margin: 20px 0 0 0;
+    height: 3.3rem;
+  }
+}
