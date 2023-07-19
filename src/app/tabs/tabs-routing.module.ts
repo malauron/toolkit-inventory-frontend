@@ -86,6 +86,10 @@ const routes: Routes = [
         loadChildren: () => import('../butchery/butchery-batches/butchery-batches.module').then( m => m.ButcheryBatchesPageModule)
       },
       {
+        path: 'vendor-warehouses',
+        loadChildren: () => import('../vendor-warehouses/vendor-warehouses.module').then( m => m.VendorWarehousesPageModule)
+      },
+      {
         path: '',
         redirectTo: 'orders',
         pathMatch: 'full'

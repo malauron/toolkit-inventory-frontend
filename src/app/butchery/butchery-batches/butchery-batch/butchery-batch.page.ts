@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { format, parseISO } from 'date-fns';
 import { DatePickerComponent } from 'src/app/custom-controls/date-picker/date-picker.component';
+import { VendorWarehouseSearchComponent } from 'src/app/vendor-warehouses/vendor-warehouse-search/vendor-warehouse-search.component';
 import { ButcheryBatchDetailComponent } from '../butchery-batch-detail/butchery-batch-detail.component';
 
 @Component({
@@ -12,6 +13,8 @@ import { ButcheryBatchDetailComponent } from '../butchery-batch-detail/butchery-
 export class ButcheryBatchPage implements OnInit {
 
   pageLabel = 'Batch';
+
+  modalOpen = false;
 
   dateValue;
 
@@ -55,6 +58,47 @@ export class ButcheryBatchPage implements OnInit {
     ;
   }
 
-  onVendorWarehouseSearch(){}
+  onVendorWarehouseSearch(){
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.mdl
+        .create({ component: VendorWarehouseSearchComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'vendorWarehouse') {
+            // if (this.receiving.butcheryReceivingId) {
+            //   const receivingDto = new ButcheryReceivingDto();
+            //   receivingDto.butcheryReceivingId =
+            //     this.receiving.butcheryReceivingId;
+            //   receivingDto.warehouse = resultData.data;
+            //   this.dataHaveChanged = true;
+
+            //   this.receivingsService
+            //     .putReceiving(receivingDto)
+            //     .subscribe((res) => {
+            //       this.receiving.receivingStatus = res.receivingStatus;
+            //       if (this.receiving.receivingStatus === 'Unposted') {
+            //         this.warehouse = resultData.data;
+            //         this.messageBox(
+            //           `Produced items will be stored to ${this.warehouse.warehouseName}.`
+            //         );
+            //       } else {
+            //         this.messageBox(
+            //           'Unable to update the receiving since its status has been tagged as ' +
+            //             this.receiving.receivingStatus
+            //         );
+            //       }
+            //     });
+            // } else {
+            //   this.warehouse = resultData.data;
+            // }
+          }
+          this.modalOpen = false;
+        });
+    }
+  }
 
 }

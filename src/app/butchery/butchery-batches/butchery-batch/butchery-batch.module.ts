@@ -8,6 +8,7 @@ import { ButcheryBatchPageRoutingModule } from './butchery-batch-routing.module'
 
 import { ButcheryBatchPage } from './butchery-batch.page';
 import { VendorSearchModule } from 'src/app/vendors/vendor-search/vendor-search.module';
+import { VendorWarehouseSearchModule } from 'src/app/vendor-warehouses/vendor-warehouse-search/vendor-warehouse-search.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { VendorSearchModule } from 'src/app/vendors/vendor-search/vendor-search.
     FormsModule,
     IonicModule,
     ButcheryBatchPageRoutingModule,
-    VendorSearchModule
+    VendorSearchModule,
+    VendorWarehouseSearchModule
   ],
   declarations: [ButcheryBatchPage]
 })

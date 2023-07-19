@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar #warehouseSearchBar placeholder="Search storage provider"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="warehouseList.length > 0">
+    <ion-card class="favCard" *ngFor="let warehouse of warehouseList">
+      <ion-item lines="none" detail button (click)="onSelectWarehouse(warehouse)">
+        <ion-icon
+          class="warehouseIcon"
+          name="business-outline"
+          color="primary"
+          slot="start"
+        ></ion-icon>
+        <ion-card-subtitle>{{ warehouse.vendorWarehouseName }}</ion-card-subtitle>
+      </ion-item>
+    </ion-card>
+  </ion-grid>
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreWarehouses($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more warehouses..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
