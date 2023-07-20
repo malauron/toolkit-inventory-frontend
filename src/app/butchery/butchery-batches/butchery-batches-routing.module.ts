@@ -17,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/tabs/buthcery-batches',
+    redirectTo: '/tabs/butchery-batches',
     pathMatch: 'full',
   },
 ];

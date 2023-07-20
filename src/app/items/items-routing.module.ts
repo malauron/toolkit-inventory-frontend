@@ -6,17 +6,20 @@ import { ItemsPage } from './items.page';
 const routes: Routes = [
   {
     path: 'item-detail',
-    loadChildren: () => import('./item-detail/item-detail.module').then( m => m.ItemDetailPageModule)
+    loadChildren: () =>
+      import('./item-detail/item-detail.module').then(
+        (m) => m.ItemDetailPageModule
+      ),
   },
   {
     path: '',
-    component: ItemsPage
+    component: ItemsPage,
   },
   {
     path: '**',
     redirectTo: '/tabs/items',
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({

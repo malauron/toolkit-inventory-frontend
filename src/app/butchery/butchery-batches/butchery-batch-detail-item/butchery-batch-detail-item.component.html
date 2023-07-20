@@ -12,7 +12,7 @@
 <ion-content>
   <form [formGroup]="contentForm">
     <ion-item fill="outline">
-      <ion-icon slot="start" name="bookmark-outline" color="primary"></ion-icon>
+      <ion-icon slot="start" src="../../assets/icons/inventory.svg" color="primary"></ion-icon>
       <ion-input
         [value]="this.item.itemName"
         (click)="onItemSearch()"
@@ -33,7 +33,7 @@
     <ion-item fill="outline">
       <ion-icon
         slot="start"
-        name="pie-chart-outline"
+        src="../../assets/icons/measuring-tape.svg"
         color="primary"
       ></ion-icon>
       <ion-input
@@ -56,23 +56,23 @@
     <ion-item fill="outline">
       <ion-icon
         slot="start"
-        src="../../assets/icons/actqty.svg"
+        src="../../assets/icons/docqty.svg"
         class="icon-img"
         color="primary"
       ></ion-icon>
       <ion-input
         formControlName="qty"
-        placeholder="Quantity"
+        placeholder="Document Quantity"
         type="number"
         maxlength="20"
       >
       </ion-input>
     </ion-item>
     <ion-item fill="outline">
-      <ion-icon slot="start" name="pricetag-outline" color="primary"></ion-icon>
+      <ion-icon slot="start" src="../../assets/icons/actqty.svg" color="primary"></ion-icon>
       <ion-input
         formControlName="price"
-        placeholder="Add-on Price"
+        placeholder="Actual Quantity"
         type="number"
         maxlength="20"
       >
@@ -81,13 +81,24 @@
     <ion-item fill="outline">
       <ion-icon
         slot="start"
-        name="swap-horizontal-outline"
+        src="../../assets/icons/docwt.svg"
+        class="icon-img"
         color="primary"
       ></ion-icon>
       <ion-input
-        formControlName="altDesc"
-        placeholder="Alternative Item Description"
-        type="text"
+        formControlName="qty"
+        placeholder="Document Weight"
+        type="number"
+        maxlength="20"
+      >
+      </ion-input>
+    </ion-item>
+    <ion-item fill="outline">
+      <ion-icon slot="start" src="../../assets/icons/actwt.svg" color="primary"></ion-icon>
+      <ion-input
+        formControlName="price"
+        placeholder="Actual Weight"
+        type="number"
         maxlength="20"
       >
       </ion-input>

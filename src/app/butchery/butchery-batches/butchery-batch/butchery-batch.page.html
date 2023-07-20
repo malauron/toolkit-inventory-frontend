@@ -4,9 +4,9 @@
       <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/butchery-batches"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
-    <ion-buttons slot="primary">
+    <ion-buttons slot="primary" *ngIf="!showElems">
       <ion-button>
-        <ion-icon slot="icon-only"></ion-icon>
+        <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -20,23 +20,23 @@
     </ion-item>
     <ion-grid>
       <ion-row class="primary-info-row">
-        <ion-col size-xs="12" size-lg="6">
+        <ion-col size-xs="12" size-lg="6" *ngIf="showElems">
           <ion-item fill="outline">
-            <ion-icon slot="start" name="bookmark-outline" color="primary"></ion-icon>
-            <ion-input [readonly]="true" placeholder="Code" type="text" maxlength="20"></ion-input>
+            <ion-icon slot="start" src="../../assets/icons/layers.svg" color="primary"></ion-icon>
+            <ion-input [readonly]="true" placeholder="Batch ID" type="text" maxlength="20"></ion-input>
             <ion-button size="small" mode="ios" fill="clear">Unposted</ion-button>
           </ion-item>
         </ion-col>
-        <ion-col size-xs="12" size-lg="6">
+        <ion-col size-xs="12" size-lg="6" [pushLg]="pushLg">
           <ion-item fill="outline">
             <ion-icon slot="start" name="calendar-outline" color="primary"></ion-icon>
             <ion-input (click)="showReceivedDatePicker()" [value]="dateValue" [readonly]="true"
               placeholder="Date Received" type="text" maxlength="20"></ion-input>
           </ion-item>
         </ion-col>
-        <ion-col size-xs="12">
+        <ion-col size-xs="12" size-lg="6" [pullLg]="pullLg">
           <ion-item fill="outline">
-            <ion-icon slot="start" name="business-outline" color="primary"></ion-icon>
+            <ion-icon slot="start" src="../../assets/icons/warehouse02.svg" color="primary"></ion-icon>
             <ion-input (click)="onVendorWarehouseSearch()" readonly="true" placeholder="Storage Provider"></ion-input>
             <ion-button mode="ios" class="search-button" slot="end" size="small" fill="clear" (click)="onVendorWarehouseSearch()">
               <ion-icon name="search-outline" slot="icon-only"></ion-icon>
@@ -45,16 +45,23 @@
         </ion-col>
         <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
-            <ion-icon slot="start" name="information-outline" color="primary"></ion-icon>
+            <ion-icon slot="start" src="../../assets/icons/info.svg" color="primary"></ion-icon>
             <ion-input placeholder="Remarks" type="text" maxlength="20"></ion-input>
           </ion-item>
         </ion-col>
-        <ion-col size-xs="12" size-lg="6">
+        <ion-col size-xs="12" size-lg="6" *ngIf="showElems">
           <ion-item fill="outline" lines="none">
             <ion-icon slot="start" name="checkmark-circle-outline" color="primary"></ion-icon>
             <ion-label>Open</ion-label>
             <ion-toggle [enableOnOffLabels]="true" slot="end"></ion-toggle>
           </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="showElems">
+        <ion-col class="buttons">
+          <ion-button color="success" size="default" class="save-button">
+            <ion-icon name="checkmark-outline" slot="start"></ion-icon>Save
+          </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
