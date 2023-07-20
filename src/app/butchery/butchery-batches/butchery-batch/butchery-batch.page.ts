@@ -7,6 +7,7 @@ import { ButcheryBatchDetailComponent } from '../butchery-batch-detail/butchery-
 import { ButcheryBatchDetailItemComponent } from '../butchery-batch-detail-item/butchery-batch-detail-item.component';
 import { ButcheryBatch } from '../../classes/butchery-batch.mode';
 import { ActivatedRoute } from '@angular/router';
+import { VendorWarehouse } from 'src/app/classes/vendor-warehouse.model';
 
 @Component({
   selector: 'app-butchery-batch',
@@ -44,8 +45,10 @@ export class ButcheryBatchPage implements OnInit {
         this.navCtrl.navigateBack('/tabs/butchery-batches');
         return;
       }
+
       this.butcheryBatch = new ButcheryBatch();
       this.butcheryBatch.butcheryBatchId = Number(paramMap.get('batchId'));
+      this.butcheryBatch.vendorWarehouse = new VendorWarehouse();
 
       if (this.butcheryBatch.butcheryBatchId === 0) {
         this.pushLg = 6;
@@ -56,46 +59,25 @@ export class ButcheryBatchPage implements OnInit {
   }
 
   showReceivedDatePicker() {
-    this.mdl
-      .create({
-        component: DatePickerComponent,
-        cssClass: 'custom-modal-styles',
-      })
-      .then((modal) => {
-        modal.present();
-        return modal.onDidDismiss();
-      })
-      .then((modal) => {
-        if (modal.role === 'setDate') {
-          this.dateValue = format(parseISO(modal.data), 'MMMM dd, yyyy');
-        }
-      });
-  }
-
-  onShowBatchDetail() {
-    this.mdl
-      .create({
-        component: ButcheryBatchDetailComponent,
-        cssClass: 'custom-modal-styles',
-      })
-      .then((modal) => {
-        modal.present();
-        return modal.onDidDismiss();
-      })
-      .then((modal) => {});
-  }
-
-  onShowBatchDetailItem() {
-    this.mdl
-      .create({
-        component: ButcheryBatchDetailItemComponent,
-        cssClass: 'custom-modal-styles',
-      })
-      .then((modal) => {
-        modal.present();
-        return modal.onDidDismiss();
-      })
-      .then((modal) => {});
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.mdl
+        .create({
+          component: DatePickerComponent,
+          cssClass: 'custom-modal-styles',
+        })
+        .then((modal) => {
+          modal.present();
+          return modal.onDidDismiss();
+        })
+        .then((modal) => {
+          if (modal.role === 'setDate') {
+            this.butcheryBatch.dateCreated = modal.data;
+            this.dateValue = format(parseISO(modal.data), 'MMMM dd, yyyy');
+          }
+          this.modalOpen = false;
+        });
+    }
   }
 
   onVendorWarehouseSearch() {
@@ -109,34 +91,71 @@ export class ButcheryBatchPage implements OnInit {
         })
         .then((resultData) => {
           if (resultData.role === 'vendorWarehouse') {
-            // if (this.receiving.butcheryReceivingId) {
-            //   const receivingDto = new ButcheryReceivingDto();
-            //   receivingDto.butcheryReceivingId =
-            //     this.receiving.butcheryReceivingId;
-            //   receivingDto.warehouse = resultData.data;
-            //   this.dataHaveChanged = true;
-            //   this.receivingsService
-            //     .putReceiving(receivingDto)
-            //     .subscribe((res) => {
-            //       this.receiving.receivingStatus = res.receivingStatus;
-            //       if (this.receiving.receivingStatus === 'Unposted') {
-            //         this.warehouse = resultData.data;
-            //         this.messageBox(
-            //           `Produced items will be stored to ${this.warehouse.warehouseName}.`
-            //         );
-            //       } else {
-            //         this.messageBox(
-            //           'Unable to update the receiving since its status has been tagged as ' +
-            //             this.receiving.receivingStatus
-            //         );
-            //       }
-            //     });
-            // } else {
-            //   this.warehouse = resultData.data;
-            // }
+            if (this.butcheryBatch.butcheryBatchId) {
+              // const receivingDto = new ButcheryReceivingDto();
+              // receivingDto.butcheryReceivingId =
+              //   this.receiving.butcheryReceivingId;
+              // receivingDto.warehouse = resultData.data;
+              // this.dataHaveChanged = true;
+              // this.receivingsService
+              //   .putReceiving(receivingDto)
+              //   .subscribe((res) => {
+              //     this.receiving.receivingStatus = res.receivingStatus;
+              //     if (this.receiving.receivingStatus === 'Unposted') {
+              //       this.warehouse = resultData.data;
+              //       this.messageBox(
+              //         `Produced items will be stored to ${this.warehouse.warehouseName}.`
+              //       );
+              //     } else {
+              //       this.messageBox(
+              //         'Unable to update the receiving since its status has been tagged as ' +
+              //           this.receiving.receivingStatus
+              //       );
+              //     }
+              //   });
+            } else {
+              this.butcheryBatch.vendorWarehouse = resultData.data;
+            }
           }
           this.modalOpen = false;
         });
     }
   }
+
+  onShowBatchDetail() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.mdl
+        .create({
+          component: ButcheryBatchDetailComponent,
+          cssClass: 'custom-modal-styles',
+        })
+        .then((modal) => {
+          modal.present();
+          return modal.onDidDismiss();
+        })
+        .then((modal) => {
+          this.modalOpen = false;
+        });
+    }
+  }
+
+  onShowBatchDetailItem() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.mdl
+        .create({
+          component: ButcheryBatchDetailItemComponent,
+          cssClass: 'custom-modal-styles',
+        })
+        .then((modal) => {
+          modal.present();
+          return modal.onDidDismiss();
+        })
+        .then((modal) => {
+          this.modalOpen = false;
+        });
+    }
+  }
+
 }

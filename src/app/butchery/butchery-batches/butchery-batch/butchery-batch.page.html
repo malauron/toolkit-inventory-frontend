@@ -37,7 +37,7 @@
         <ion-col size-xs="12" size-lg="6" [pullLg]="pullLg">
           <ion-item fill="outline">
             <ion-icon slot="start" src="../../assets/icons/warehouse02.svg" color="primary"></ion-icon>
-            <ion-input (click)="onVendorWarehouseSearch()" readonly="true" placeholder="Storage Provider"></ion-input>
+            <ion-input (click)="onVendorWarehouseSearch()" readonly="true" placeholder="Storage Provider" [value]="butcheryBatch.vendorWarehouse.vendorWarehouseName"></ion-input>
             <ion-button mode="ios" class="search-button" slot="end" size="small" fill="clear" (click)="onVendorWarehouseSearch()">
               <ion-icon name="search-outline" slot="icon-only"></ion-icon>
             </ion-button>
