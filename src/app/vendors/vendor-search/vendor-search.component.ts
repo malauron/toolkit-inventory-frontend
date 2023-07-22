@@ -12,9 +12,9 @@ import { VendorsService } from 'src/app/services/vendors.service';
   templateUrl: './vendor-search.component.html',
   styleUrls: ['./vendor-search.component.scss'],
 })
-export class VendorSearchComponent  implements OnInit, OnDestroy, ViewDidEnter {
+export class VendorSearchComponent implements OnInit, OnDestroy, ViewDidEnter {
   @ViewChild('infiniteScroll') infiniteScroll;
-  @ViewChild('vendorSearchBar', {static: true}) vendorSearchBar: IonSearchbar;
+  @ViewChild('vendorSearchBar', { static: true }) vendorSearchBar: IonSearchbar;
 
   vendorSearchBarSubscription: Subscription;
 
@@ -31,7 +31,7 @@ export class VendorSearchComponent  implements OnInit, OnDestroy, ViewDidEnter {
     private vendorService: VendorsService,
     private config: AppParamsConfig,
     private modalController: ModalController
-  ) { }
+  ) {}
 
   ngOnDestroy(): void {
     this.vendorSearchBarSubscription.unsubscribe();
@@ -59,9 +59,9 @@ export class VendorSearchComponent  implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   ionViewDidEnter(): void {
-      setTimeout(() => {
-        this.vendorSearchBar.setFocus();
-      }, 5);
+    setTimeout(() => {
+      this.vendorSearchBar.setFocus();
+    }, 5);
   }
 
   getVendors(
@@ -88,7 +88,7 @@ export class VendorSearchComponent  implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   procressResult(event?) {
-    return(data) => {
+    return (data) => {
       this.vendorList = this.vendorList.concat(data._embedded.vendors);
       this.totalPages = data.page.totalPages;
       this.isFetching = false;

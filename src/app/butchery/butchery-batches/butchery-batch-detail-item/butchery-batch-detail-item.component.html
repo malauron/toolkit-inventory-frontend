@@ -14,7 +14,7 @@
     <ion-item fill="outline">
       <ion-icon slot="start" src="../../assets/icons/inventory.svg" color="primary"></ion-icon>
       <ion-input
-        [value]="this.item.itemName"
+        [value]="contentForm.value.item.itemName"
         (click)="onItemSearch()"
         readonly="true"
         placeholder="Item"
@@ -37,7 +37,7 @@
         color="primary"
       ></ion-icon>
       <ion-input
-        [value]="this.uom.uomName"
+        [value]="contentForm.value.requiredUom.uomName"
         (click)="onUomSearch()"
         readonly="true"
         placeholder="Uom"
@@ -61,7 +61,7 @@
         color="primary"
       ></ion-icon>
       <ion-input
-        formControlName="qty"
+        formControlName="requiredQty"
         placeholder="Document Quantity"
         type="number"
         maxlength="20"
@@ -71,7 +71,7 @@
     <ion-item fill="outline">
       <ion-icon slot="start" src="../../assets/icons/actqty.svg" color="primary"></ion-icon>
       <ion-input
-        formControlName="price"
+      formControlName="receivedQty"
         placeholder="Actual Quantity"
         type="number"
         maxlength="20"
@@ -86,7 +86,7 @@
         color="primary"
       ></ion-icon>
       <ion-input
-        formControlName="qty"
+      formControlName="requiredWeightKg"
         placeholder="Document Weight"
         type="number"
         maxlength="20"
@@ -96,7 +96,7 @@
     <ion-item fill="outline">
       <ion-icon slot="start" src="../../assets/icons/actwt.svg" color="primary"></ion-icon>
       <ion-input
-        formControlName="price"
+      formControlName="receivedWeightKg"
         placeholder="Actual Weight"
         type="number"
         maxlength="20"

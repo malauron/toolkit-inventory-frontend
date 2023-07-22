@@ -6,6 +6,7 @@ import { Uom } from 'src/app/classes/uom.model';
 import { UomSearchComponent } from 'src/app/uoms/uom-search/uom-search.component';
 import { ItemSearchComponent } from '../../../items/item-search/item-search.component';
 import { ItemAddOnContent } from '../../../items/item-add-ons/classes/item-add-on-content.model';
+import { ButcheryBatchDetailitem } from '../../classes/butchery-batch-detail-item.model';
 
 @Component({
   selector: 'app-add-on-content',
@@ -13,9 +14,7 @@ import { ItemAddOnContent } from '../../../items/item-add-ons/classes/item-add-o
   styleUrls: ['./butchery-batch-detail-item.component.scss'],
 })
 export class ButcheryBatchDetailItemComponent implements OnInit {
-  itemAddOnContent: ItemAddOnContent;
-  item: Item;
-  uom: Uom;
+  detailItem: ButcheryBatchDetailitem;
 
   contentForm: FormGroup;
 
@@ -27,26 +26,36 @@ export class ButcheryBatchDetailItemComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.itemAddOnContent === undefined) {
-      this.itemAddOnContent = new ItemAddOnContent();
-      this.itemAddOnContent.itemAddOnContentId = 0;
-      this.item = new Item();
-      this.uom = new Uom();
-    } else {
-      this.item = this.itemAddOnContent.item;
-      this.uom = this.itemAddOnContent.uom;
+    if (this.detailItem === undefined) {
+      this.detailItem = new ButcheryBatchDetailitem();
+      this.detailItem.butcheryBatchDetailItemId = 0;
+      this.detailItem.item = new Item();
+      this.detailItem.requiredUom = new Uom();
     }
 
     this.contentForm = new FormGroup({
-      qty: new FormControl(this.itemAddOnContent.qty, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.min(0.0001)],
+      item: new FormControl(this.detailItem.item, {
+        validators: [Validators.required],
       }),
-      price: new FormControl(this.itemAddOnContent.price, {
+      requiredUom: new FormControl(this.detailItem.requiredUom, {
+        validators: [Validators.required],
+      }),
+      requiredQty: new FormControl(this.detailItem.requiredQty, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
-      altDesc: new FormControl(this.itemAddOnContent.altDesc),
+      receivedQty: new FormControl(this.detailItem.receivedQty, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(0)],
+      }),
+      requiredWeightKg: new FormControl(this.detailItem.requiredWeightKg, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(0)],
+      }),
+      receivedWeightKg: new FormControl(this.detailItem.receivedWeightKg, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(0)],
+      }),
     });
   }
 
@@ -68,21 +77,18 @@ export class ButcheryBatchDetailItemComponent implements OnInit {
       })
       .then((modal) => {
         if (modal.role === 'item') {
-          this.item = modal.data;
-          this.uom = modal.data.uom;
+          this.contentForm.patchValue({
+            item: modal.data,
+            requiredUom: modal.data.uom
+          });
         }
         this.modalOpen = false;
       });
   }
 
   onUomSearch(item?: Item) {
-    if (this.item.itemId === undefined) {
+    if (this.contentForm.value.item.itemId === undefined) {
       this.messageBox('Please select an item.');
-      return;
-    }
-
-    if (this.uom.uomId === undefined) {
-      this.messageBox('Please select a UoM.');
       return;
     }
 
@@ -96,7 +102,7 @@ export class ButcheryBatchDetailItemComponent implements OnInit {
       .create({
         component: UomSearchComponent,
         componentProps: {
-          item: this.item,
+          item: this.contentForm.value.item,
         },
         cssClass: 'custom-modal-styles',
       })
@@ -106,34 +112,25 @@ export class ButcheryBatchDetailItemComponent implements OnInit {
       })
       .then((mdl) => {
         if (mdl.role === 'itemUom') {
-          this.uom = mdl.data.uom;
+          this.contentForm.patchValue({
+            requiredUom: mdl.data.uom
+          });
         }
         this.modalOpen = false;
       });
   }
 
   onSaveAddOnContent() {
-    if (this.item.itemId === undefined) {
-      this.messageBox('Some fields contain invalid information.');
-      return;
-    }
-
-    if (this.uom.uomId === undefined) {
-      this.messageBox('Some fields contain invalid information.');
-      return;
-    }
-
-    const tmpItm = new ItemAddOnContent();
 
     if (this.contentForm.valid) {
-      tmpItm.itemAddOnContentId = this.itemAddOnContent.itemAddOnContentId;
-      tmpItm.item = this.item;
-      tmpItm.uom = this.uom;
-      tmpItm.qty = this.contentForm.value.qty;
-      tmpItm.price = this.contentForm.value.price;
-      tmpItm.altDesc = this.contentForm.value.altDesc;
+      this.detailItem.item = this.contentForm.value.item;
+      this.detailItem.requiredUom = this.contentForm.value.requiredUom;
+      this.detailItem.requiredQty = this.contentForm.value.requiredQty;
+      this.detailItem.receivedQty = this.contentForm.value.receivedQty;
+      this.detailItem.requiredWeightKg = this.contentForm.value.requiredWeightKg;
+      this.detailItem.receivedWeightKg = this.contentForm.value.receivedWeightKg;
 
-      this.modalController.dismiss(tmpItm, 'saveContent');
+      this.modalController.dismiss(this.detailItem, 'saveDetailItem');
     } else {
       this.messageBox('Some fields contain invalid information.');
     }

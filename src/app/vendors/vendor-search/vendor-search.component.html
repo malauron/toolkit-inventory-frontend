@@ -10,32 +10,21 @@
 </ion-header>
 
 <ion-content>
+  <div class="spinner" *ngIf="isFetching">
+    <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
+  </div>
+
   <ion-grid *ngIf="vendorList.length > 0">
     <ion-card class="favCard" *ngFor="let vendor of vendorList">
       <ion-item lines="none" detail button (click)="onSelectVendor(vendor)">
-        <!-- <ion-avatar slot="start">
-          <img src="../../assets/icons/items.svg" class="icon" />
-        </ion-avatar> -->
-        <ion-icon
-          class="vendorIcon"
-          name="storefront-outline"
-          color="primary"
-          slot="start"
-        ></ion-icon>
+        <ion-icon class="vendorIcon" name="storefront-outline" color="primary" slot="start"></ion-icon>
         <ion-card-subtitle>{{ vendor.vendorName }}</ion-card-subtitle>
       </ion-item>
     </ion-card>
   </ion-grid>
 
-  <ion-infinite-scroll
-    #infiniteScroll
-    threshold="5%"
-    (ionInfinite)="loadMoreVendors($event)"
-  >
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading more vendors..."
-    >
+  <ion-infinite-scroll #infiniteScroll threshold="5%" (ionInfinite)="loadMoreVendors($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more vendors...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

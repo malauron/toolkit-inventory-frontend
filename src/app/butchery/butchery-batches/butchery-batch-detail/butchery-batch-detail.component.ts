@@ -3,25 +3,16 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular';
 import { Vendor } from 'src/app/classes/vendor.model';
 import { VendorSearchComponent } from 'src/app/vendors/vendor-search/vendor-search.component';
-// import { Item } from 'src/app/classes/item.model';
-// import { Uom } from 'src/app/classes/uom.model';
-// import { UomSearchComponent } from 'src/app/uoms/uom-search/uom-search.component';
-// import { ItemSearchComponent } from '../../../items/item-search/item-search.component';
-// import { ItemAddOnContent } from '../../../items/item-add-ons/classes/item-add-on-content.model';
+import { ButcheryBatchDetail } from '../../classes/butchery-batch-detail.model';
+import { ButcheryBatchDetailitem } from '../../classes/butchery-batch-detail-item.model';
 
 @Component({
-  selector: 'app-add-on-content',
+  selector: 'app-butchery-batch-detail',
   templateUrl: './butchery-batch-detail.component.html',
   styleUrls: ['./butchery-batch-detail.component.scss'],
 })
 export class ButcheryBatchDetailComponent implements OnInit {
-
-  // butcheryBatchDetail: ButcheryBatchDetail
-  // itemAddOnContent: ItemAddOnContent;
-  // item: Item;
-  // uom: Uom;
-
-  vendor: Vendor;
+  batchDetail: ButcheryBatchDetail;
 
   contentForm: FormGroup;
 
@@ -33,116 +24,57 @@ export class ButcheryBatchDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.vendor === undefined) {
-      this.vendor = new Vendor();
-      // this.itemAddOnContent.itemAddOnContentId = 0;
-      // this.item = new Item();
-      // this.uom = new Uom();
-    } else {
-      // this.item = this.itemAddOnContent.item;
-      // this.uom = this.itemAddOnContent.uom;
+    if (this.batchDetail === undefined) {
+      this.batchDetail = new ButcheryBatchDetail();
+      this.batchDetail.butcheryBatchDetailId = 0;
+      this.batchDetail.vendor = new Vendor();
+
+      const detailItem: ButcheryBatchDetailitem[] = [];
+      this.batchDetail.butcheryBatchDetailItems = detailItem;
     }
 
-    // this.contentForm = new FormGroup({
-    //   qty: new FormControl(this.itemAddOnContent.qty, {
-    //     updateOn: 'blur',
-    //     validators: [Validators.required, Validators.min(0.0001)],
-    //   }),
-    //   price: new FormControl(this.itemAddOnContent.price, {
-    //     updateOn: 'blur',
-    //     validators: [Validators.required, Validators.min(0)],
-    //   }),
-    //   altDesc: new FormControl(this.itemAddOnContent.altDesc),
-    // });
+    this.contentForm = new FormGroup({
+      vendor: new FormControl(this.batchDetail.vendor, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+      referenceNo: new FormControl(this.batchDetail.referenceNo),
+    });
   }
 
   onVendorSearch() {
-    if (this.modalOpen) {
-      return;
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+
+      this.modalController
+        .create({
+          component: VendorSearchComponent,
+          cssClass: 'custom-modal-styles',
+        })
+        .then((mdl) => {
+          mdl.present();
+          return mdl.onDidDismiss();
+        })
+        .then((modal) => {
+          if (modal.role === 'vendor') {
+            this.contentForm.patchValue({
+              vendor: modal.data
+            });
+          }
+          this.modalOpen = false;
+        });
     }
-
-    this.modalOpen = true;
-
-    this.modalController
-      .create({
-        component: VendorSearchComponent,
-        cssClass: 'custom-modal-styles',
-      })
-      .then((mdl) => {
-        mdl.present();
-        return mdl.onDidDismiss();
-      })
-      .then((modal) => {
-        if (modal.role === 'vendor') {
-          this.vendor = modal.data;
-          // this.uom = modal.data.uom;
-        }
-        this.modalOpen = false;
-      });
   }
 
-  // onUomSearch(item?: Item) {
-  //   if (this.item.itemId === undefined) {
-  //     this.messageBox('Please select an item.');
-  //     return;
-  //   }
+  onSaveBatchDetail() {
+    if (this.contentForm.valid) {
+      this.batchDetail.vendor = this.contentForm.value.vendor;
+      this.batchDetail.referenceNo = this.contentForm.value.referenceNo;
 
-  //   if (this.uom.uomId === undefined) {
-  //     this.messageBox('Please select a UoM.');
-  //     return;
-  //   }
-
-  //   if (this.modalOpen) {
-  //     return;
-  //   }
-
-  //   this.modalOpen = true;
-
-  //   this.modalController
-  //     .create({
-  //       component: UomSearchComponent,
-  //       componentProps: {
-  //         item: this.item,
-  //       },
-  //       cssClass: 'custom-modal-styles',
-  //     })
-  //     .then((mdl) => {
-  //       mdl.present();
-  //       return mdl.onDidDismiss();
-  //     })
-  //     .then((mdl) => {
-  //       if (mdl.role === 'itemUom') {
-  //         this.uom = mdl.data.uom;
-  //       }
-  //       this.modalOpen = false;
-  //     });
-  // }
-
-  onSaveAddOnContent() {
-    // if (this.item.itemId === undefined) {
-    //   this.messageBox('Some fields contain invalid information.');
-    //   return;
-    // }
-
-    // if (this.uom.uomId === undefined) {
-    //   this.messageBox('Some fields contain invalid information.');
-    //   return;
-    // }
-
-    // const tmpItm = new ItemAddOnContent();
-
-    // if (this.contentForm.valid) {
-    //   tmpItm.itemAddOnContentId = this.itemAddOnContent.itemAddOnContentId;
-    //   tmpItm.item = this.item;
-    //   tmpItm.uom = this.uom;
-    //   tmpItm.qty = this.contentForm.value.qty;
-    //   tmpItm.price = this.contentForm.value.price;
-    //   tmpItm.altDesc = this.contentForm.value.altDesc;
-
-    //   this.modalController.dismiss(tmpItm, 'saveContent');
-    // } else {
-    //   this.messageBox('Some fields contain invalid information.');
-    // }
+      this.modalController.dismiss(this.batchDetail, 'saveBatcherDetail');
+    } else {
+      this.messageBox('Some fields contain invalid information.');
+    }
   }
 
   dismissModal() {

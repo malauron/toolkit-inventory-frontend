@@ -1,10 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSearchbar, ModalController, ViewDidEnter } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -17,7 +12,7 @@ import { ItemsService } from 'src/app/services/items.service';
   templateUrl: './item-search.component.html',
   styleUrls: ['./item-search.component.scss'],
 })
-export class ItemSearchComponent implements OnInit, OnDestroy,ViewDidEnter {
+export class ItemSearchComponent implements OnInit, OnDestroy, ViewDidEnter {
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('itemSearchBar', { static: true }) itemSearchBar: IonSearchbar;
 
@@ -121,7 +116,7 @@ export class ItemSearchComponent implements OnInit, OnDestroy,ViewDidEnter {
   }
 
   dismissModal() {
-    this.modalController.dismiss(null,'dismissModal');
+    this.modalController.dismiss(null, 'dismissModal');
   }
 
   onSelectItem(item: Item) {
