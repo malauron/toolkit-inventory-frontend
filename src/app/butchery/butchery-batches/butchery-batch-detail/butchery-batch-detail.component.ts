@@ -36,7 +36,7 @@ export class ButcheryBatchDetailComponent implements OnInit {
     this.contentForm = new FormGroup({
       vendor: new FormControl(this.batchDetail.vendor, {
         updateOn: 'blur',
-        validators: [Validators.required]
+        validators: [Validators.required],
       }),
       referenceNo: new FormControl(this.batchDetail.referenceNo),
     });
@@ -58,7 +58,7 @@ export class ButcheryBatchDetailComponent implements OnInit {
         .then((modal) => {
           if (modal.role === 'vendor') {
             this.contentForm.patchValue({
-              vendor: modal.data
+              vendor: modal.data,
             });
           }
           this.modalOpen = false;
@@ -67,6 +67,11 @@ export class ButcheryBatchDetailComponent implements OnInit {
   }
 
   onSaveBatchDetail() {
+    if (this.contentForm.value.vendor.vendorId === undefined) {
+      this.messageBox('Please choose a vendor.');
+      return;
+    }
+
     if (this.contentForm.valid) {
       this.batchDetail.vendor = this.contentForm.value.vendor;
       this.batchDetail.referenceNo = this.contentForm.value.referenceNo;

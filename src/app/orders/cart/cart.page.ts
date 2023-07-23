@@ -104,7 +104,6 @@ export class CartPage implements OnInit {
           this.navCtrl.navigateBack('/tabs/orders');
         },
         (err) => {
-          console.log(err);
         }
       );
     } else {

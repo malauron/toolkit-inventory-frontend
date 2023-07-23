@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+  ToastController,
+} from '@ionic/angular';
 import { format, parseISO } from 'date-fns';
 import { DatePickerComponent } from 'src/app/custom-controls/date-picker/date-picker.component';
 import { VendorWarehouseSearchComponent } from 'src/app/vendor-warehouses/vendor-warehouse-search/vendor-warehouse-search.component';
@@ -22,6 +27,7 @@ import { ButcheryBatchDetailitem } from '../../classes/butchery-batch-detail-ite
 export class ButcheryBatchPage implements OnInit {
   pageLabel = 'Batch';
 
+  butcheryBatch: ButcheryBatch;
   butcheryBatchDetails: ButcheryBatchDetail[] = [];
 
   modalOpen = false;
@@ -33,13 +39,12 @@ export class ButcheryBatchPage implements OnInit {
   pushLg = 0;
   pullLg = 0;
 
-  butcheryBatch: ButcheryBatch;
-
   constructor(
     public route: ActivatedRoute,
     private navCtrl: NavController,
     private mdl: ModalController,
     private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private butcheryBatchesService: ButcheryBatchesService,
     private authenticationService: AuthenticationService
   ) {}
@@ -160,21 +165,24 @@ export class ButcheryBatchPage implements OnInit {
           if (modal.role === 'saveBatcherDetail') {
             detail.vendor = modal.data.vendor;
             detail.referenceNo = modal.data.referenceNo;
+            this.modalOpen = false;
+          } else {
+            this.modalOpen = false;
           }
-          this.modalOpen = false;
         });
     }
   }
 
   onDeleteBatchDetail(detail: ButcheryBatchDetail) {
     if (!this.modalOpen) {
+      this.modalOpen = true;
       this.alertCtrl
         .create({
           header: 'Confirm',
           message: 'This will be deleted permanently.',
           buttons: [
             {
-              text: 'Cancel',
+              text: 'Cancel'
             },
             {
               text: 'Delete',
@@ -196,9 +204,7 @@ export class ButcheryBatchPage implements OnInit {
                   //   });
                 } else {
                   for (const key in this.butcheryBatchDetails) {
-                    if (
-                      detail === this.butcheryBatchDetails[key]
-                    ) {
+                    if (detail === this.butcheryBatchDetails[key]) {
                       this.butcheryBatchDetails.splice(Number(key), 1);
                     }
                   }
@@ -207,8 +213,12 @@ export class ButcheryBatchPage implements OnInit {
             },
           ],
         })
-        .then((res) => {
-          res.present();
+        .then((modal) => {
+          modal.present();
+          return modal.onDidDismiss();
+        })
+        .then((modal) => {
+          this.modalOpen = false;
         });
     }
   }
@@ -235,9 +245,133 @@ export class ButcheryBatchPage implements OnInit {
     }
   }
 
+  onEditBatchDetailItem(detailItem: ButcheryBatchDetailitem) {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.mdl
+        .create({
+          component: ButcheryBatchDetailItemComponent,
+          componentProps: {
+            batchDetailItem: detailItem,
+          },
+          cssClass: 'custom-modal-styles',
+        })
+        .then((modal) => {
+          modal.present();
+          return modal.onDidDismiss();
+        })
+        .then((modal) => {
+          if (modal.role === 'saveContent') {
+            if (modal.data.itemAddOnContentId > 0) {
+              // modal.data.itemAddOnDetail = addOnDetail;
+              // this.addOnsService
+              //   .postItemAddOnContents(modal.data)
+              //   .subscribe((res) => {
+              //     content.item = res.item;
+              //     content.uom = res.uom;
+              //     content.price = res.price;
+              //     content.qty = res.qty;
+              //     content.altDesc = res.altDesc;
+              //   });
+              this.modalOpen = false;
+            } else {
+              detailItem.item = modal.data.item;
+              detailItem.requiredUom = modal.data.requiredUom;
+              detailItem.requiredQty = modal.data.requiredQty;
+              detailItem.receivedQty = modal.data.receivedQty;
+              detailItem.requiredWeightKg = modal.data.requiredWeightKg;
+              detailItem.receivedWeightKg = modal.data.receivedWeightKg;
+              this.modalOpen = false;
+            }
+          } else {
+            this.modalOpen = false;
+          }
+        });
+    }
+  }
+
+  onDeleteBatchDetailItem(
+    detailItem: ButcheryBatchDetailitem,
+    detailItems: ButcheryBatchDetailitem[]
+  ) {
+    if (!this.modalOpen){
+      this.modalOpen = true;
+      this.alertCtrl
+        .create({
+          header: 'Confirm',
+          message: 'This will be deleted permanently.',
+          buttons: [
+            {
+              text: 'Cancel',
+            },
+            {
+              text: 'Delete',
+              handler: () => {
+                if (detailItem.butcheryBatchDetailItemId > 0) {
+                  // this.addOnsService
+                  //   .deleteItemAddOnContents(itemAddOnContent.itemAddOnContentId)
+                  //   .subscribe((res) => {
+                  //     for (const key in allContents) {
+                  //       if (itemAddOnContent === allContents[key]) {
+                  //         allContents.splice(Number(key), 1);
+                  //       }
+                  //     }
+                  //   });
+                } else {
+                  for (const key in detailItems) {
+                    if (detailItem === detailItems[key]) {
+                      detailItems.splice(Number(key), 1);
+                    }
+                  }
+                }
+              },
+            },
+          ],
+        })
+        .then((modal) => {
+          modal.present();
+          return modal.onDidDismiss();
+        })
+        .then((modal) => {
+          this.modalOpen = false;
+        });
+    }
+  }
+
   onSaveButcheryBatch() {
     if (!this.isUploading) {
       this.isUploading = true;
+      let noItem = false;
+
+      if (this.butcheryBatch.vendorWarehouse.vendorWarehouseId === undefined) {
+        this.messageBox('Please choose a storage provider.');
+        this.isUploading = false;
+        return;
+      }
+
+      if (this.butcheryBatch.dateReceived === undefined) {
+        this.messageBox('Please specify the date of receipt.');
+        this.isUploading = false;
+        return;
+      }
+
+      if (this.butcheryBatchDetails.length === 0) {
+        this.messageBox('No detail provided.');
+        this.isUploading = false;
+        return;
+      }
+
+      this.butcheryBatchDetails.forEach((dtl) => {
+        if (dtl.butcheryBatchDetailItems.length === 0) {
+          noItem = true;
+        }
+      });
+
+      if (noItem) {
+        this.messageBox('Some details have no line items.');
+        this.isUploading = false;
+        return;
+      }
 
       const butcheryBatchDto = new ButcheryBatchDto();
       butcheryBatchDto.butcheryBatchId = this.butcheryBatch.butcheryBatchId;
@@ -247,6 +381,7 @@ export class ButcheryBatchPage implements OnInit {
       butcheryBatchDto.hasInventory = this.butcheryBatch.hasInventory;
       butcheryBatchDto.isOpen = this.butcheryBatch.isOpen;
       butcheryBatchDto.vendorWarehouse = this.butcheryBatch.vendorWarehouse;
+      butcheryBatchDto.butcheryBatchDetails = this.butcheryBatchDetails;
       butcheryBatchDto.createdBy =
         this.authenticationService.getUserFromLocalCache();
 
@@ -258,7 +393,6 @@ export class ButcheryBatchPage implements OnInit {
             this.butcheryBatch.batchStatus = res.batchStatus;
             this.butcheryBatch.hasInventory = res.hasInventory;
             this.butcheryBatch.isOpen = res.isOpen;
-            console.log(res);
           },
           error: (err) => {
             this.isUploading = false;
@@ -269,5 +403,16 @@ export class ButcheryBatchPage implements OnInit {
           },
         });
     }
+  }
+
+  async messageBox(msg: string) {
+    const toast = await this.toastCtrl.create({
+      color: 'dark',
+      duration: 2000,
+      position: 'top',
+      message: msg,
+    });
+
+    await toast.present();
   }
 }

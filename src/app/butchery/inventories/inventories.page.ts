@@ -73,7 +73,6 @@ export class InventoriesPage implements OnInit, OnDestroy {
             this.config.pageSize
           );
         } else {
-          console.log('no data');
         }
       });
   }

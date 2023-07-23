@@ -81,7 +81,6 @@ export class EndingBalancesPage implements OnInit, OnDestroy {
             this.config.pageSize
           );
         } else {
-          console.log('no data');
         }
       });
   }

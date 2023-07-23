@@ -84,7 +84,6 @@ export class OrderDetailPage implements OnInit, OnDestroy {
           });
         },
         (err) => {
-          console.log(err);
           this.navCtrl.navigateBack('/tabs/orders/orders-list');
           return;
         }

@@ -14,7 +14,7 @@ import { ButcheryBatchDetailitem } from '../../classes/butchery-batch-detail-ite
   styleUrls: ['./butchery-batch-detail-item.component.scss'],
 })
 export class ButcheryBatchDetailItemComponent implements OnInit {
-  detailItem: ButcheryBatchDetailitem;
+  batchDetailItem: ButcheryBatchDetailitem;
 
   contentForm: FormGroup;
 
@@ -26,33 +26,33 @@ export class ButcheryBatchDetailItemComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.detailItem === undefined) {
-      this.detailItem = new ButcheryBatchDetailitem();
-      this.detailItem.butcheryBatchDetailItemId = 0;
-      this.detailItem.item = new Item();
-      this.detailItem.requiredUom = new Uom();
+    if (this.batchDetailItem === undefined) {
+      this.batchDetailItem = new ButcheryBatchDetailitem();
+      this.batchDetailItem.butcheryBatchDetailItemId = 0;
+      this.batchDetailItem.item = new Item();
+      this.batchDetailItem.requiredUom = new Uom();
     }
 
     this.contentForm = new FormGroup({
-      item: new FormControl(this.detailItem.item, {
+      item: new FormControl(this.batchDetailItem.item, {
         validators: [Validators.required],
       }),
-      requiredUom: new FormControl(this.detailItem.requiredUom, {
+      requiredUom: new FormControl(this.batchDetailItem.requiredUom, {
         validators: [Validators.required],
       }),
-      requiredQty: new FormControl(this.detailItem.requiredQty, {
+      requiredQty: new FormControl(this.batchDetailItem.requiredQty, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
-      receivedQty: new FormControl(this.detailItem.receivedQty, {
+      receivedQty: new FormControl(this.batchDetailItem.receivedQty, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
-      requiredWeightKg: new FormControl(this.detailItem.requiredWeightKg, {
+      requiredWeightKg: new FormControl(this.batchDetailItem.requiredWeightKg, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
-      receivedWeightKg: new FormControl(this.detailItem.receivedWeightKg, {
+      receivedWeightKg: new FormControl(this.batchDetailItem.receivedWeightKg, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
@@ -123,14 +123,14 @@ export class ButcheryBatchDetailItemComponent implements OnInit {
   onSaveAddOnContent() {
 
     if (this.contentForm.valid) {
-      this.detailItem.item = this.contentForm.value.item;
-      this.detailItem.requiredUom = this.contentForm.value.requiredUom;
-      this.detailItem.requiredQty = this.contentForm.value.requiredQty;
-      this.detailItem.receivedQty = this.contentForm.value.receivedQty;
-      this.detailItem.requiredWeightKg = this.contentForm.value.requiredWeightKg;
-      this.detailItem.receivedWeightKg = this.contentForm.value.receivedWeightKg;
+      this.batchDetailItem.item = this.contentForm.value.item;
+      this.batchDetailItem.requiredUom = this.contentForm.value.requiredUom;
+      this.batchDetailItem.requiredQty = this.contentForm.value.requiredQty;
+      this.batchDetailItem.receivedQty = this.contentForm.value.receivedQty;
+      this.batchDetailItem.requiredWeightKg = this.contentForm.value.requiredWeightKg;
+      this.batchDetailItem.receivedWeightKg = this.contentForm.value.receivedWeightKg;
 
-      this.modalController.dismiss(this.detailItem, 'saveDetailItem');
+      this.modalController.dismiss(this.batchDetailItem, 'saveDetailItem');
     } else {
       this.messageBox('Some fields contain invalid information.');
     }
