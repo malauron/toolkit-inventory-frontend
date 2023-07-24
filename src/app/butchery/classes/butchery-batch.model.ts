@@ -1,5 +1,6 @@
 import { VendorWarehouse } from 'src/app/classes/vendor-warehouse.model';
 import { ButcheryBatchDetail } from './butchery-batch-detail.model';
+import { User } from 'src/app/Security/classes/user.model';
 
 export class ButcheryBatch {
   constructor(
@@ -12,5 +13,6 @@ export class ButcheryBatch {
     public vendorWarehouse?: VendorWarehouse,
     public butcheryBatchDetails?: ButcheryBatchDetail[],
     public dateCreated?: string,
+    public createdBy?: User,
   ){}
 }

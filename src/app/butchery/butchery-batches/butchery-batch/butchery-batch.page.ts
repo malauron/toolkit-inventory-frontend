@@ -373,17 +373,15 @@ export class ButcheryBatchPage implements OnInit {
         return;
       }
 
+      // this.butcheryBatch.butcheryBatchDetails = this.butcheryBatchDetails;
+
       const butcheryBatchDto = new ButcheryBatchDto();
-      butcheryBatchDto.butcheryBatchId = this.butcheryBatch.butcheryBatchId;
-      butcheryBatchDto.remarks = this.butcheryBatch.remarks;
-      butcheryBatchDto.dateReceived = this.butcheryBatch.dateReceived;
-      butcheryBatchDto.batchStatus = this.butcheryBatch.batchStatus;
-      butcheryBatchDto.hasInventory = this.butcheryBatch.hasInventory;
-      butcheryBatchDto.isOpen = this.butcheryBatch.isOpen;
-      butcheryBatchDto.vendorWarehouse = this.butcheryBatch.vendorWarehouse;
-      butcheryBatchDto.butcheryBatchDetails = this.butcheryBatchDetails;
-      butcheryBatchDto.createdBy =
-        this.authenticationService.getUserFromLocalCache();
+
+      butcheryBatchDto.butcheryBatch = this.butcheryBatch;
+      if (this.butcheryBatch.butcheryBatchId === 0) {
+        butcheryBatchDto.butcheryBatch.butcheryBatchDetails = this.butcheryBatchDetails;
+        butcheryBatchDto.createdBy = this.authenticationService.getUserFromLocalCache();
+      }
 
       this.butcheryBatchesService
         .postButcheryBatch(butcheryBatchDto)

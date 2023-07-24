@@ -38,7 +38,10 @@ export class ButcheryBatchDetailComponent implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
-      referenceNo: new FormControl(this.batchDetail.referenceNo),
+      referenceNo: new FormControl(this.batchDetail.referenceNo, {
+        updateOn: 'blur',
+        validators: [Validators.required],
+      }),
     });
   }
 

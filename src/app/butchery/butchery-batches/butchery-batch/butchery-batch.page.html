@@ -4,7 +4,7 @@
       <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/butchery-batches"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ pageLabel }}</ion-title>
-    <ion-buttons slot="primary" *ngIf="!showElems">
+    <ion-buttons slot="primary" *ngIf="!showElems && !isUploading">
       <ion-button (click)="onSaveButcheryBatch()">
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
@@ -62,7 +62,7 @@
       </ion-row>
       <ion-row *ngIf="showElems">
         <ion-col class="buttons">
-          <ion-button color="success" (click)="onSaveButcheryBatch()" size="default" class="save-button">
+          <ion-button color="success" (click)="onSaveButcheryBatch()" [disabled]="isUploading" size="default" class="save-button">
             <ion-icon name="checkmark-outline" slot="start"></ion-icon>Save
           </ion-button>
         </ion-col>
