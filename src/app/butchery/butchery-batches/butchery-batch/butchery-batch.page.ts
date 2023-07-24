@@ -408,10 +408,10 @@ export class ButcheryBatchPage implements OnInit {
         .postButcheryBatch(butcheryBatchDto)
         .subscribe({
           next: (res) => {
-            this.butcheryBatch.butcheryBatchId = res.butcheryBatchId;
-            this.butcheryBatch.batchStatus = res.batchStatus;
-            this.butcheryBatch.hasInventory = res.hasInventory;
-            this.butcheryBatch.isOpen = res.isOpen;
+            this.butcheryBatch.butcheryBatchId = res.butcheryBatch.butcheryBatchId;
+            this.butcheryBatch.batchStatus = res.butcheryBatch.batchStatus;
+            this.butcheryBatch.hasInventory = res.butcheryBatch.hasInventory;
+            this.butcheryBatch.isOpen = res.butcheryBatch.isOpen;
           },
           error: (err) => {
             this.isUploading = false;
