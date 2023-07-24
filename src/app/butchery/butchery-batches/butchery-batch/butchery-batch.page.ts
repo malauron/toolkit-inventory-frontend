@@ -67,7 +67,25 @@ export class ButcheryBatchPage implements OnInit {
       this.butcheryBatch.butcheryBatchId = Number(paramMap.get('batchId'));
       this.butcheryBatch.vendorWarehouse = new VendorWarehouse();
 
-      this.updateForm();
+      if (this.butcheryBatch.butcheryBatchId > 0) {
+        this.butcheryBatchesService
+          .getButcheryBatch(this.butcheryBatch.butcheryBatchId)
+          .subscribe({
+            next: (res) => {
+              this.butcheryBatch = res.butcheryBatch;
+              this.butcheryBatchDetails = res.butcheryBatch.butcheryBatchDetails;
+              this.dateValue = format(parseISO(res.butcheryBatch.dateReceived), 'MMMM dd, yyyy');
+            },
+            error: () => {
+              this.updateForm();
+            },
+            complete: () => {
+              this.updateForm();
+            },
+          });
+      } else {
+        this.updateForm();
+      }
     });
   }
 
@@ -182,7 +200,7 @@ export class ButcheryBatchPage implements OnInit {
           message: 'This will be deleted permanently.',
           buttons: [
             {
-              text: 'Cancel'
+              text: 'Cancel',
             },
             {
               text: 'Delete',
@@ -294,7 +312,7 @@ export class ButcheryBatchPage implements OnInit {
     detailItem: ButcheryBatchDetailitem,
     detailItems: ButcheryBatchDetailitem[]
   ) {
-    if (!this.modalOpen){
+    if (!this.modalOpen) {
       this.modalOpen = true;
       this.alertCtrl
         .create({
@@ -378,9 +396,12 @@ export class ButcheryBatchPage implements OnInit {
       const butcheryBatchDto = new ButcheryBatchDto();
 
       butcheryBatchDto.butcheryBatch = this.butcheryBatch;
+
       if (this.butcheryBatch.butcheryBatchId === 0) {
-        butcheryBatchDto.butcheryBatch.butcheryBatchDetails = this.butcheryBatchDetails;
-        butcheryBatchDto.createdBy = this.authenticationService.getUserFromLocalCache();
+        butcheryBatchDto.butcheryBatch.butcheryBatchDetails =
+          this.butcheryBatchDetails;
+        butcheryBatchDto.createdBy =
+          this.authenticationService.getUserFromLocalCache();
       }
 
       this.butcheryBatchesService
@@ -398,6 +419,7 @@ export class ButcheryBatchPage implements OnInit {
           complete: () => {
             this.isUploading = false;
             this.updateForm();
+            this.messageBox('Item information has been saved successfully.');
           },
         });
     }

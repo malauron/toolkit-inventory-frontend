@@ -83,8 +83,9 @@ ion-searchbar {
       .option-buttons {
         visibility: visible;
         display: block;
-      backdrop-filter: none;
+        backdrop-filter: none;
       }
+
       border-bottom: none;
     }
   }
@@ -128,6 +129,7 @@ ion-searchbar {
         visibility: visible;
         display: block;
       }
+
       border-bottom: none;
     }
   }
@@ -184,22 +186,22 @@ ion-searchbar {
 .option-buttons {
   visibility: hidden;
   display: none;
-  background: linear-gradient(
-    270deg,
-    rgba(245, 245, 245, 1) 0%,
-    rgba(255, 255, 255, 0.6699929971988796) 30%,
-    rgba(255, 255, 255, 0) 50%
-  );
+  background: linear-gradient(270deg,
+      rgba(245, 245, 245, 1) 0%,
+      rgba(255, 255, 255, 0.6699929971988796) 30%,
+      rgba(255, 255, 255, 0) 50%);
   backdrop-filter: blur(1px);
   height: 100%;
   width: 100%;
   z-index: 100 !important;
   position: absolute;
   align-items: flex-end;
+
   ion-item {
     --padding-start: 0;
     --inner-padding-end: 0;
     height: 100%;
+
     &::part(native) {
       background-color: transparent;
       height: 100%;
@@ -207,6 +209,7 @@ ion-searchbar {
 
     ion-button {
       margin: 0;
+
       ion-icon {
         margin: 0;
       }
