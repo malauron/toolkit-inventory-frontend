@@ -65,9 +65,11 @@ ion-row {
   ion-col {
     padding: 0;
   }
+
   ion-label {
     margin: 0;
   }
+
   ion-item {
     --padding-start: 0;
     --inner-padding-end: 0;
@@ -84,6 +86,12 @@ ion-row {
 }
 
 .batches-hdr {
+  background-color: #f6f6f6;
+
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: -0.7rem;
+  z-index: 1000;
   display: none;
   visibility: hidden;
 
@@ -146,7 +154,7 @@ ion-spinner {
       visibility: hidden;
     }
 
-  padding-top: 0;
-  padding-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }

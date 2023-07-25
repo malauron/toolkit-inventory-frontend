@@ -395,13 +395,14 @@ export class ButcheryBatchPage implements OnInit {
 
       const butcheryBatchDto = new ButcheryBatchDto();
 
+      this.butcheryBatch.createdBy = this.authenticationService.getUserFromLocalCache();
       butcheryBatchDto.butcheryBatch = this.butcheryBatch;
 
       if (this.butcheryBatch.butcheryBatchId === 0) {
         butcheryBatchDto.butcheryBatch.butcheryBatchDetails =
           this.butcheryBatchDetails;
-        butcheryBatchDto.createdBy =
-          this.authenticationService.getUserFromLocalCache();
+        // butcheryBatchDto.createdBy =
+        //   this.authenticationService.getUserFromLocalCache();
       }
 
       this.butcheryBatchesService
