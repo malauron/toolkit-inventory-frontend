@@ -13,6 +13,7 @@ import { ButcheryBatchDetailModule } from '../butchery-batch-detail/butchery-bat
 import { ButcheryBatchDetailItemModule } from '../butchery-batch-detail-item/butchery-batch-detail-item.module';
 import { ItemSearchModule } from 'src/app/items/item-search/item-search.module';
 import { UomSearchModule } from 'src/app/uoms/uom-search/uom-search.module';
+import { DatePickerModule } from 'src/app/custom-controls/date-picker/date-picker.module';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { UomSearchModule } from 'src/app/uoms/uom-search/uom-search.module';
     VendorWarehouseSearchModule,
     ItemSearchModule,
     UomSearchModule,
+    DatePickerModule,
   ],
   declarations: [ButcheryBatchPage]
 })

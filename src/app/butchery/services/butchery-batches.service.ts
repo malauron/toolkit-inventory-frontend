@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageInfo } from 'src/app/classes/page-info.model';
@@ -21,10 +21,14 @@ export class ButcheryBatchesService {
   private apiUrl: string;
   private urlButcheryBatches: string;
   private urlV1ButcheryBatches: string;
+  private urlV1ButcheryBatchDetails: string;
+  private urlV1ButcheryBatchDetailItems: string;
 
   constructor(private http: HttpClient, private config: AppParamsConfig) {
     this.urlButcheryBatches = `${this.config.url}/butcheryBatches`;
     this.urlV1ButcheryBatches = `${this.config.urlV1}/butcheryBatches`;
+    this.urlV1ButcheryBatchDetails = `${this.config.urlV1}/butcheryBatchDetails`;
+    this.urlV1ButcheryBatchDetailItems = `${this.config.urlV1}/butcheryBatchDetailItems`;
   }
 
   getButcheryBatch(batchId: number): Observable<ButcheryBatchDto> {
@@ -52,12 +56,55 @@ export class ButcheryBatchesService {
     return this.http.get<ResponseButcheryBatches>(this.apiUrl);
   }
 
-  postButcheryBatch(
-    butcheryBatch: ButcheryBatchDto
+  postButcheryBatch(dto: ButcheryBatchDto): Observable<ButcheryBatchDto> {
+    return this.http.post<ButcheryBatchDto>(this.urlV1ButcheryBatches, dto);
+  }
+
+  postButcheryBatchDetail(dto: ButcheryBatchDto): Observable<ButcheryBatchDto> {
+    return this.http.post<ButcheryBatchDto>(
+      this.urlV1ButcheryBatchDetails,
+      dto
+    );
+  }
+
+  postButcheryBatchDetailItem(
+    dto: ButcheryBatchDto
   ): Observable<ButcheryBatchDto> {
     return this.http.post<ButcheryBatchDto>(
-      this.urlV1ButcheryBatches,
-      butcheryBatch
+      this.urlV1ButcheryBatchDetailItems,
+      dto
+    );
+  }
+
+  deleteButcheryBatchDetail(
+    dto: ButcheryBatchDto
+  ): Observable<ButcheryBatchDto> {
+    const options = {
+      headers: new HttpHeaders({
+        contentType: 'application/json',
+      }),
+      body: dto,
+    };
+
+    return this.http.delete<ButcheryBatchDto>(
+      this.urlV1ButcheryBatchDetails,
+      options
+    );
+  }
+
+  deleteButcheryBatchDetailItem(
+    dto: ButcheryBatchDto
+  ): Observable<ButcheryBatchDto> {
+    const options = {
+      headers: new HttpHeaders({
+        contentType: 'application/json',
+      }),
+      body: dto,
+    };
+
+    return this.http.delete<ButcheryBatchDto>(
+      this.urlV1ButcheryBatchDetailItems,
+      options
     );
   }
 }

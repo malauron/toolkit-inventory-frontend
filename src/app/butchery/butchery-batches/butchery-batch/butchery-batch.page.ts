@@ -73,8 +73,12 @@ export class ButcheryBatchPage implements OnInit {
           .subscribe({
             next: (res) => {
               this.butcheryBatch = res.butcheryBatch;
-              this.butcheryBatchDetails = res.butcheryBatch.butcheryBatchDetails;
-              this.dateValue = format(parseISO(res.butcheryBatch.dateReceived), 'MMMM dd, yyyy');
+              this.butcheryBatchDetails =
+                res.butcheryBatch.butcheryBatchDetails;
+              this.dateValue = format(
+                parseISO(res.butcheryBatch.dateReceived),
+                'MMMM dd, yyyy'
+              );
             },
             error: () => {
               this.updateForm();
@@ -155,9 +159,38 @@ export class ButcheryBatchPage implements OnInit {
         })
         .then((modal) => {
           if (modal.role === 'saveBatcherDetail') {
-            this.butcheryBatchDetails = this.butcheryBatchDetails.concat(
-              modal.data
-            );
+            if (this.butcheryBatch.butcheryBatchId > 0) {
+              const butcherBatch = new ButcheryBatch();
+              const butcheryBatchDto = new ButcheryBatchDto();
+
+              butcherBatch.butcheryBatchId = this.butcheryBatch.butcheryBatchId;
+
+              butcheryBatchDto.butcheryBatch = butcherBatch;
+              butcheryBatchDto.butcheryBatchDetail = modal.data;
+
+              this.butcheryBatchesService
+                .postButcheryBatchDetail(butcheryBatchDto)
+                .subscribe({
+                  next: (res) => {
+                    this.messageBox(
+                      'Batch detail information has been saved successfully.'
+                    );
+                    this.butcheryBatchDetails =
+                      this.butcheryBatchDetails.concat(res.butcheryBatchDetail);
+                  },
+                  error: () => {
+                    this.modalOpen = false;
+                  },
+                  complete: () => {
+                    this.modalOpen = false;
+                  },
+                });
+            } else {
+              this.butcheryBatchDetails = this.butcheryBatchDetails.concat(
+                modal.data
+              );
+              this.modalOpen = false;
+            }
           }
           this.modalOpen = false;
         });
@@ -183,7 +216,30 @@ export class ButcheryBatchPage implements OnInit {
           if (modal.role === 'saveBatcherDetail') {
             detail.vendor = modal.data.vendor;
             detail.referenceNo = modal.data.referenceNo;
-            this.modalOpen = false;
+
+            if (this.butcheryBatch.butcheryBatchId > 0) {
+              const butcheryBatchDto = new ButcheryBatchDto();
+
+              butcheryBatchDto.butcheryBatchDetail = detail;
+
+              this.butcheryBatchesService
+                .postButcheryBatchDetail(butcheryBatchDto)
+                .subscribe({
+                  next: (res) => {
+                    this.messageBox(
+                      'Batch detail information has been saved successfully.'
+                    );
+                  },
+                  error: () => {
+                    this.modalOpen = false;
+                  },
+                  complete: () => {
+                    this.modalOpen = false;
+                  },
+                });
+            } else {
+              this.modalOpen = false;
+            }
           } else {
             this.modalOpen = false;
           }
@@ -206,20 +262,25 @@ export class ButcheryBatchPage implements OnInit {
               text: 'Delete',
               handler: () => {
                 if (detail.butcheryBatchDetailId > 0) {
-                  // this.addOnsService
-                  //   .deleteItemAddOnDetails(itemAddOnDetail.itemAddOnDetailId)
-                  //   .subscribe((res) => {
-                  //     for (const key in this.addOnsService.getItemAddOnDetails()) {
-                  //       if (
-                  //         itemAddOnDetail ===
-                  //         this.addOnsService.getItemAddOnDetails()[key]
-                  //       ) {
-                  //         this.addOnsService
-                  //           .getItemAddOnDetails()
-                  //           .splice(Number(key), 1);
-                  //       }
-                  //     }
-                  //   });
+                  const butcheryBatchDto = new ButcheryBatchDto();
+                  butcheryBatchDto.butcheryBatchDetail = detail;
+
+                  this.butcheryBatchesService
+                    .deleteButcheryBatchDetail(butcheryBatchDto)
+                    .subscribe({
+                      next: (res) => {
+                        for (const key in this.butcheryBatchDetails) {
+                          if (detail === this.butcheryBatchDetails[key]) {
+                            this.butcheryBatchDetails.splice(Number(key), 1);
+                          }
+                        }
+                        this.messageBox(
+                          'Batch detail item has been deleted successfully.'
+                        );
+                      },
+                      error: () => {},
+                      complete: () => {},
+                    });
                 } else {
                   for (const key in this.butcheryBatchDetails) {
                     if (detail === this.butcheryBatchDetails[key]) {
@@ -255,15 +316,47 @@ export class ButcheryBatchPage implements OnInit {
         })
         .then((modal) => {
           if (modal.role === 'saveDetailItem') {
-            detail.butcheryBatchDetailItems =
-              detail.butcheryBatchDetailItems.concat(modal.data);
+            if (detail.butcheryBatchDetailId > 0) {
+              const butcheryBatchDto = new ButcheryBatchDto();
+
+              butcheryBatchDto.butcheryBatchDetail = detail;
+              butcheryBatchDto.butcheryBatchDetailItem = modal.data;
+
+              this.butcheryBatchesService
+                .postButcheryBatchDetailItem(butcheryBatchDto)
+                .subscribe({
+                  next: (res) => {
+                    this.messageBox(
+                      'Batch detail item information has been saved successfully.'
+                    );
+                    detail.butcheryBatchDetailItems =
+                      detail.butcheryBatchDetailItems.concat(
+                        res.butcheryBatchDetailItem
+                      );
+                  },
+                  error: () => {
+                    this.modalOpen = false;
+                  },
+                  complete: () => {
+                    this.modalOpen = false;
+                  },
+                });
+            } else {
+              detail.butcheryBatchDetailItems =
+                detail.butcheryBatchDetailItems.concat(modal.data);
+
+              this.modalOpen = false;
+            }
           }
           this.modalOpen = false;
         });
     }
   }
 
-  onEditBatchDetailItem(detailItem: ButcheryBatchDetailitem) {
+  onEditBatchDetailItem(
+    detailItem: ButcheryBatchDetailitem,
+    detail?: ButcheryBatchDetail
+  ) {
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.mdl
@@ -279,26 +372,35 @@ export class ButcheryBatchPage implements OnInit {
           return modal.onDidDismiss();
         })
         .then((modal) => {
-          if (modal.role === 'saveContent') {
-            if (modal.data.itemAddOnContentId > 0) {
-              // modal.data.itemAddOnDetail = addOnDetail;
-              // this.addOnsService
-              //   .postItemAddOnContents(modal.data)
-              //   .subscribe((res) => {
-              //     content.item = res.item;
-              //     content.uom = res.uom;
-              //     content.price = res.price;
-              //     content.qty = res.qty;
-              //     content.altDesc = res.altDesc;
-              //   });
-              this.modalOpen = false;
+          if (modal.role === 'saveDetailItem') {
+            detailItem.item = modal.data.item;
+            detailItem.requiredUom = modal.data.requiredUom;
+            detailItem.requiredQty = modal.data.requiredQty;
+            detailItem.receivedQty = modal.data.receivedQty;
+            detailItem.requiredWeightKg = modal.data.requiredWeightKg;
+            detailItem.receivedWeightKg = modal.data.receivedWeightKg;
+
+            if (detail.butcheryBatchDetailId > 0) {
+              const butcheryBatchDto = new ButcheryBatchDto();
+
+              butcheryBatchDto.butcheryBatchDetailItem = detailItem;
+
+              this.butcheryBatchesService
+                .postButcheryBatchDetailItem(butcheryBatchDto)
+                .subscribe({
+                  next: (res) => {
+                    this.messageBox(
+                      'Batch detail information has been saved successfully.'
+                    );
+                  },
+                  error: () => {
+                    this.modalOpen = false;
+                  },
+                  complete: () => {
+                    this.modalOpen = false;
+                  },
+                });
             } else {
-              detailItem.item = modal.data.item;
-              detailItem.requiredUom = modal.data.requiredUom;
-              detailItem.requiredQty = modal.data.requiredQty;
-              detailItem.receivedQty = modal.data.receivedQty;
-              detailItem.requiredWeightKg = modal.data.requiredWeightKg;
-              detailItem.receivedWeightKg = modal.data.receivedWeightKg;
               this.modalOpen = false;
             }
           } else {
@@ -326,15 +428,25 @@ export class ButcheryBatchPage implements OnInit {
               text: 'Delete',
               handler: () => {
                 if (detailItem.butcheryBatchDetailItemId > 0) {
-                  // this.addOnsService
-                  //   .deleteItemAddOnContents(itemAddOnContent.itemAddOnContentId)
-                  //   .subscribe((res) => {
-                  //     for (const key in allContents) {
-                  //       if (itemAddOnContent === allContents[key]) {
-                  //         allContents.splice(Number(key), 1);
-                  //       }
-                  //     }
-                  //   });
+                  const butcheryBatchDto = new ButcheryBatchDto();
+                  butcheryBatchDto.butcheryBatchDetailItem = detailItem;
+
+                  this.butcheryBatchesService
+                    .deleteButcheryBatchDetailItem(butcheryBatchDto)
+                    .subscribe({
+                      next: (res) => {
+                        for (const key in detailItems) {
+                          if (detailItem === detailItems[key]) {
+                            detailItems.splice(Number(key), 1);
+                          }
+                        }
+                        this.messageBox(
+                          'Batch detail item has been deleted successfully.'
+                        );
+                      },
+                      error: () => {},
+                      complete: () => {},
+                    });
                 } else {
                   for (const key in detailItems) {
                     if (detailItem === detailItems[key]) {
@@ -391,28 +503,27 @@ export class ButcheryBatchPage implements OnInit {
         return;
       }
 
-      // this.butcheryBatch.butcheryBatchDetails = this.butcheryBatchDetails;
-
       const butcheryBatchDto = new ButcheryBatchDto();
 
-      this.butcheryBatch.createdBy = this.authenticationService.getUserFromLocalCache();
+      this.butcheryBatch.createdBy =
+        this.authenticationService.getUserFromLocalCache();
       butcheryBatchDto.butcheryBatch = this.butcheryBatch;
 
       if (this.butcheryBatch.butcheryBatchId === 0) {
         butcheryBatchDto.butcheryBatch.butcheryBatchDetails =
           this.butcheryBatchDetails;
-        // butcheryBatchDto.createdBy =
-        //   this.authenticationService.getUserFromLocalCache();
       }
 
       this.butcheryBatchesService
         .postButcheryBatch(butcheryBatchDto)
         .subscribe({
           next: (res) => {
-            this.butcheryBatch.butcheryBatchId = res.butcheryBatch.butcheryBatchId;
+            this.butcheryBatch.butcheryBatchId =
+              res.butcheryBatch.butcheryBatchId;
             this.butcheryBatch.batchStatus = res.butcheryBatch.batchStatus;
             this.butcheryBatch.hasInventory = res.butcheryBatch.hasInventory;
             this.butcheryBatch.isOpen = res.butcheryBatch.isOpen;
+            this.butcheryBatchDetails = res.butcheryBatch.butcheryBatchDetails;
           },
           error: (err) => {
             this.isUploading = false;
@@ -420,7 +531,7 @@ export class ButcheryBatchPage implements OnInit {
           complete: () => {
             this.isUploading = false;
             this.updateForm();
-            this.messageBox('Item information has been saved successfully.');
+            this.messageBox('Batch information has been saved successfully.');
           },
         });
     }

@@ -148,7 +148,7 @@
           <ion-row class="item-row" *ngFor="let detailItem of detail.butcheryBatchDetailItems">
             <div class="option-buttons">
               <ion-item lines="none">
-                <ion-button class="delete-item-button" (click)="onEditBatchDetailItem(detailItem)" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                <ion-button class="delete-item-button" (click)="onEditBatchDetailItem(detailItem, detail)" mode="ios" slot="end" fill="clear" color="medium" size="default">
                   <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
                 </ion-button>
                 <ion-button class="delete-item-button" (click)="onDeleteBatchDetailItem(detailItem, detail.butcheryBatchDetailItems)" mode="ios" slot="end" fill="clear" color="medium" size="default">
