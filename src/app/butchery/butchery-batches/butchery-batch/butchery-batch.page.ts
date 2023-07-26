@@ -396,6 +396,8 @@ export class ButcheryBatchPage implements OnInit {
                     this.messageBox(
                       'Batch detail information has been saved successfully.'
                     );
+                    detail.totalRequiredWeightKg = res.butcheryBatchDetail.totalRequiredWeightKg;
+                    detail.totalReceivedWeightKg = res.butcheryBatchDetail.totalReceivedWeightKg;
                   },
                   error: () => {
                     this.modalOpen = false;
