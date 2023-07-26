@@ -8,6 +8,8 @@ export class ButcheryBatchDetail {
     public butcheryBatch?: ButcheryBatch,
     public vendor?: Vendor,
     public referenceNo?: string,
+    public totalRequiredWeightKg?: number,
+    public totalReceivedWeightKg?: number,
     public butcheryBatchDetailItems?: ButcheryBatchDetailitem[]
   ){}
 }

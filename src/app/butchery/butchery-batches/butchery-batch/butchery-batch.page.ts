@@ -382,7 +382,11 @@ export class ButcheryBatchPage implements OnInit {
 
             if (detail.butcheryBatchDetailId > 0) {
               const butcheryBatchDto = new ButcheryBatchDto();
+              const batchDetail = new ButcheryBatchDetail();
 
+              batchDetail.butcheryBatchDetailId = detail.butcheryBatchDetailId;
+
+              butcheryBatchDto.butcheryBatchDetail = batchDetail;
               butcheryBatchDto.butcheryBatchDetailItem = detailItem;
 
               this.butcheryBatchesService

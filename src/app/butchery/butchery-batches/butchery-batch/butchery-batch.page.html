@@ -196,6 +196,30 @@
             </ion-col>
           </ion-row>
 
+          <ion-row class="item-ftr">
+            <ion-col size-xs="12" size-md="6" size-lg="9" class="total-lbl-col">
+              <ion-item lines="none">
+                <!-- <ion-label class="item-desc-lbl item-line-lbl item-qty-lbl">Total</ion-label> -->
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Total Doc. Weight(Kg)</h3>
+                  <h2>{{ 100000 | number:'1.2' }}</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-md="3" size-lg="1.5">
+              <ion-item lines="none">
+                <ion-label class="item-line-lbl item-qty-lbl">
+                  <h3>Total Act. Weight(Kg)</h3>
+                  <h2>{{ 100000 | number:'1.2' }}</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
           <ion-row>
             <ion-col>
               <ion-item class="insert-item" lines="none" button (click)="onShowBatchDetailItem(detail)">
@@ -205,6 +229,7 @@
               </ion-item>
             </ion-col>
           </ion-row>
+
         </ion-grid>
       </ion-card-content>
     </ion-card>

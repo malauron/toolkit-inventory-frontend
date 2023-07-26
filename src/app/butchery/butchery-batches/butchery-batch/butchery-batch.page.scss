@@ -120,10 +120,6 @@ ion-searchbar {
     margin-bottom: 1rem;
     border-bottom: 0.1rem solid rgba($color: #6c6c6c, $alpha: 0.5);
 
-    // &:nth-last-child(2) {
-    //   border-bottom: none;
-    // }
-
     &:hover {
       .option-buttons {
         visibility: visible;
@@ -132,6 +128,13 @@ ion-searchbar {
 
       border-bottom: none;
     }
+  }
+
+  .item-ftr {
+    position: relative;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    border-bottom: none;
   }
 
   .item-desc-lbl {
@@ -144,6 +147,11 @@ ion-searchbar {
 
   .item-line-lbl {
     margin: 0;
+  }
+
+  .total-lbl-col {
+    visibility: hidden;
+    display: none;
   }
 
   h3 {
@@ -227,6 +235,11 @@ ion-searchbar {
   .main-content {
     --padding-start: 1rem;
     --padding-end: 1rem;
+  }
+
+  .total-lbl-col {
+    visibility: visible !important;
+    display: block !important;
   }
 }
 
