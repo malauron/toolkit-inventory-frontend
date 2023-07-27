@@ -344,7 +344,7 @@ export class ButcheryBatchPage implements OnInit {
             } else {
               detail.butcheryBatchDetailItems =
                 detail.butcheryBatchDetailItems.concat(modal.data);
-
+              this.setTotalWeight(detail);
               this.modalOpen = false;
             }
           }
@@ -396,8 +396,10 @@ export class ButcheryBatchPage implements OnInit {
                     this.messageBox(
                       'Batch detail information has been saved successfully.'
                     );
-                    detail.totalRequiredWeightKg = res.butcheryBatchDetail.totalRequiredWeightKg;
-                    detail.totalReceivedWeightKg = res.butcheryBatchDetail.totalReceivedWeightKg;
+                    detail.totalRequiredWeightKg =
+                      res.butcheryBatchDetail.totalRequiredWeightKg;
+                    detail.totalReceivedWeightKg =
+                      res.butcheryBatchDetail.totalReceivedWeightKg;
                   },
                   error: () => {
                     this.modalOpen = false;
@@ -407,6 +409,7 @@ export class ButcheryBatchPage implements OnInit {
                   },
                 });
             } else {
+              this.setTotalWeight(detail);
               this.modalOpen = false;
             }
           } else {
@@ -418,7 +421,7 @@ export class ButcheryBatchPage implements OnInit {
 
   onDeleteBatchDetailItem(
     detailItem: ButcheryBatchDetailitem,
-    detailItems: ButcheryBatchDetailitem[]
+    detail: ButcheryBatchDetail
   ) {
     if (!this.modalOpen) {
       this.modalOpen = true;
@@ -441,9 +444,14 @@ export class ButcheryBatchPage implements OnInit {
                     .deleteButcheryBatchDetailItem(butcheryBatchDto)
                     .subscribe({
                       next: (res) => {
-                        for (const key in detailItems) {
-                          if (detailItem === detailItems[key]) {
-                            detailItems.splice(Number(key), 1);
+                        for (const key in detail.butcheryBatchDetailItems) {
+                          if (
+                            detailItem === detail.butcheryBatchDetailItems[key]
+                          ) {
+                            detail.butcheryBatchDetailItems.splice(
+                              Number(key),
+                              1
+                            );
                           }
                         }
                         this.messageBox(
@@ -454,11 +462,12 @@ export class ButcheryBatchPage implements OnInit {
                       complete: () => {},
                     });
                 } else {
-                  for (const key in detailItems) {
-                    if (detailItem === detailItems[key]) {
-                      detailItems.splice(Number(key), 1);
+                  for (const key in detail.butcheryBatchDetailItems) {
+                    if (detailItem === detail.butcheryBatchDetailItems[key]) {
+                      detail.butcheryBatchDetailItems.splice(Number(key), 1);
                     }
                   }
+                  this.setTotalWeight(detail);
                 }
               },
             },
@@ -472,6 +481,16 @@ export class ButcheryBatchPage implements OnInit {
           this.modalOpen = false;
         });
     }
+  }
+
+  setTotalWeight(detail: ButcheryBatchDetail) {
+    detail.totalRequiredWeightKg = 0;
+    detail.totalReceivedWeightKg = 0;
+
+    detail.butcheryBatchDetailItems.forEach((item) => {
+      detail.totalRequiredWeightKg += item.requiredWeightKg;
+      detail.totalReceivedWeightKg += item.receivedWeightKg;
+    });
   }
 
   onSaveButcheryBatch() {

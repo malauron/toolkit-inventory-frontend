@@ -151,7 +151,7 @@
                 <ion-button class="delete-item-button" (click)="onEditBatchDetailItem(detailItem, detail)" mode="ios" slot="end" fill="clear" color="medium" size="default">
                   <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
                 </ion-button>
-                <ion-button class="delete-item-button" (click)="onDeleteBatchDetailItem(detailItem, detail.butcheryBatchDetailItems)" mode="ios" slot="end" fill="clear" color="medium" size="default">
+                <ion-button class="delete-item-button" (click)="onDeleteBatchDetailItem(detailItem, detail)" mode="ios" slot="end" fill="clear" color="medium" size="default">
                   <ion-icon name="close-circle"></ion-icon>
                 </ion-button>
               </ion-item>
@@ -196,7 +196,7 @@
             </ion-col>
           </ion-row>
 
-          <ion-row class="item-ftr">
+          <ion-row class="item-ftr"  *ngIf="detail.butcheryBatchDetailItems.length>0">
             <ion-col size-xs="12" size-md="6" size-lg="9" class="total-lbl-col">
               <ion-item lines="none">
                 <!-- <ion-label class="item-desc-lbl item-line-lbl item-qty-lbl">Total</ion-label> -->
