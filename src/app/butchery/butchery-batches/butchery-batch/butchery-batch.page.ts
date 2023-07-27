@@ -333,6 +333,8 @@ export class ButcheryBatchPage implements OnInit {
                       detail.butcheryBatchDetailItems.concat(
                         res.butcheryBatchDetailItem
                       );
+                    detail.totalRequiredWeightKg = res.butcheryBatchDetail.totalRequiredWeightKg;
+                    detail.totalReceivedWeightKg = res.butcheryBatchDetail.totalReceivedWeightKg;
                   },
                   error: () => {
                     this.modalOpen = false;
@@ -438,8 +440,8 @@ export class ButcheryBatchPage implements OnInit {
               handler: () => {
                 if (detailItem.butcheryBatchDetailItemId > 0) {
                   const butcheryBatchDto = new ButcheryBatchDto();
+                  butcheryBatchDto.butcheryBatchDetail = detail;
                   butcheryBatchDto.butcheryBatchDetailItem = detailItem;
-
                   this.butcheryBatchesService
                     .deleteButcheryBatchDetailItem(butcheryBatchDto)
                     .subscribe({
@@ -454,6 +456,10 @@ export class ButcheryBatchPage implements OnInit {
                             );
                           }
                         }
+                        detail.totalRequiredWeightKg =
+                          res.butcheryBatchDetail.totalRequiredWeightKg;
+                        detail.totalReceivedWeightKg =
+                          res.butcheryBatchDetail.totalReceivedWeightKg;
                         this.messageBox(
                           'Batch detail item has been deleted successfully.'
                         );
