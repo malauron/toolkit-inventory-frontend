@@ -69,6 +69,7 @@ export class ButcheryBatchPage implements OnInit {
 
       this.butcheryBatch = new ButcheryBatch();
       this.butcheryBatch.butcheryBatchId = Number(paramMap.get('batchId'));
+      this.butcheryBatch.batchStatus = 'Unposted';
       this.butcheryBatch.vendorWarehouse = new VendorWarehouse();
 
       if (this.butcheryBatch.butcheryBatchId > 0) {
@@ -170,7 +171,7 @@ export class ButcheryBatchPage implements OnInit {
     ) {
       this.modalOpen = true;
       this.mdl
-        .create({ component: VendorWarehouseSearchComponent })
+        .create({ component: VendorWarehouseSearchComponent, cssClass: 'custom-modal-styles' })
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
