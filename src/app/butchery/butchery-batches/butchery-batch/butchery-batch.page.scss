@@ -86,7 +86,7 @@ ion-searchbar {
         backdrop-filter: none;
       }
 
-      border-bottom: none;
+      // border-bottom: none;
     }
   }
 
@@ -126,7 +126,7 @@ ion-searchbar {
         display: block;
       }
 
-      border-bottom: none;
+      // border-bottom: none;
     }
   }
 
@@ -157,6 +157,11 @@ ion-searchbar {
   h3 {
     font-size: 0.7rem;
     color: var(--ion-color-medium);
+  }
+
+  .qty-uom-lbl {
+    visibility: hidden;
+    display: none;
   }
 
   .insert-item {
@@ -261,5 +266,10 @@ ion-searchbar {
 
   .item-qty-lbl h3 {
     display: none;
+  }
+
+  .qty-uom-lbl {
+    visibility: unset !important;
+    display: unset !important;
   }
 }

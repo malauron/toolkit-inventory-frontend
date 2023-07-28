@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   AlertController,
+  IonPopover,
   ModalController,
   NavController,
   ToastController,
@@ -25,6 +26,9 @@ import { ButcheryBatchDetailitem } from '../../classes/butchery-batch-detail-ite
   styleUrls: ['./butchery-batch.page.scss'],
 })
 export class ButcheryBatchPage implements OnInit {
+  @ViewChild('statusPopover') statusPopover: IonPopover;
+  statusPopoverOpen = false;
+
   pageLabel = 'Batch';
 
   butcheryBatch: ButcheryBatch;
@@ -105,8 +109,39 @@ export class ButcheryBatchPage implements OnInit {
     }
   }
 
+  onShowPopOver(event: Event) {
+    if (this.butcheryBatch.batchStatus === 'Unposted') {
+      this.statusPopover.event = event;
+      this.statusPopoverOpen = true;
+    }
+  }
+
+  updateBatchStatus(status?: string) {
+    if (!this.isUploading) {
+      this.isUploading = true;
+
+      const butcherBatchDto = new ButcheryBatchDto();
+
+      butcherBatchDto.butcheryBatch = this.butcheryBatch;
+      butcherBatchDto.butcheryBatch.batchStatus = status;
+
+      this.butcheryBatchesService.putButcheryBatch(butcherBatchDto).subscribe({
+        next: (res) => {
+          this.butcheryBatch.batchStatus = res.butcheryBatch.batchStatus;
+          this.butcheryBatch.isOpen = res.butcheryBatch.isOpen;
+        },
+        error: () => {
+          this.isUploading = false;
+        },
+        complete: () => {
+          this.isUploading = false;
+        },
+      });
+    }
+  }
+
   showReceivedDatePicker() {
-    if (!this.modalOpen) {
+    if (!this.modalOpen && !this.isUploading) {
       this.modalOpen = true;
       this.mdl
         .create({
@@ -128,7 +163,11 @@ export class ButcheryBatchPage implements OnInit {
   }
 
   onVendorWarehouseSearch() {
-    if (!this.modalOpen) {
+    if (
+      !this.modalOpen &&
+      !this.isUploading &&
+      this.butcheryBatch.batchStatus === 'Unposted'
+    ) {
       this.modalOpen = true;
       this.mdl
         .create({ component: VendorWarehouseSearchComponent })
@@ -146,7 +185,7 @@ export class ButcheryBatchPage implements OnInit {
   }
 
   onShowBatchDetail() {
-    if (!this.modalOpen) {
+    if (!this.modalOpen && !this.isUploading) {
       this.modalOpen = true;
       this.mdl
         .create({
@@ -198,7 +237,7 @@ export class ButcheryBatchPage implements OnInit {
   }
 
   onEditBatchDetail(detail: ButcheryBatchDetail) {
-    if (!this.modalOpen) {
+    if (!this.modalOpen && !this.isUploading) {
       this.modalOpen = true;
       this.mdl
         .create({
@@ -248,7 +287,7 @@ export class ButcheryBatchPage implements OnInit {
   }
 
   onDeleteBatchDetail(detail: ButcheryBatchDetail) {
-    if (!this.modalOpen) {
+    if (!this.modalOpen && !this.isUploading) {
       this.modalOpen = true;
       this.alertCtrl
         .create({
@@ -303,7 +342,7 @@ export class ButcheryBatchPage implements OnInit {
   }
 
   onShowBatchDetailItem(detail: ButcheryBatchDetail) {
-    if (!this.modalOpen) {
+    if (!this.modalOpen && !this.isUploading) {
       this.modalOpen = true;
       this.mdl
         .create({
@@ -333,8 +372,10 @@ export class ButcheryBatchPage implements OnInit {
                       detail.butcheryBatchDetailItems.concat(
                         res.butcheryBatchDetailItem
                       );
-                    detail.totalRequiredWeightKg = res.butcheryBatchDetail.totalRequiredWeightKg;
-                    detail.totalReceivedWeightKg = res.butcheryBatchDetail.totalReceivedWeightKg;
+                    detail.totalRequiredWeightKg =
+                      res.butcheryBatchDetail.totalRequiredWeightKg;
+                    detail.totalReceivedWeightKg =
+                      res.butcheryBatchDetail.totalReceivedWeightKg;
                   },
                   error: () => {
                     this.modalOpen = false;
@@ -359,7 +400,7 @@ export class ButcheryBatchPage implements OnInit {
     detailItem: ButcheryBatchDetailitem,
     detail?: ButcheryBatchDetail
   ) {
-    if (!this.modalOpen) {
+    if (!this.modalOpen && !this.isUploading) {
       this.modalOpen = true;
       this.mdl
         .create({
@@ -425,7 +466,7 @@ export class ButcheryBatchPage implements OnInit {
     detailItem: ButcheryBatchDetailitem,
     detail: ButcheryBatchDetail
   ) {
-    if (!this.modalOpen) {
+    if (!this.modalOpen && !this.isUploading) {
       this.modalOpen = true;
       this.alertCtrl
         .create({

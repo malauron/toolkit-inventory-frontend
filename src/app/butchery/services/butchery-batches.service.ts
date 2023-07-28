@@ -60,6 +60,10 @@ export class ButcheryBatchesService {
     return this.http.post<ButcheryBatchDto>(this.urlV1ButcheryBatches, dto);
   }
 
+  putButcheryBatch(dto: ButcheryBatch): Observable<ButcheryBatchDto> {
+    return this.http.put<ButcheryBatchDto>(this.urlV1ButcheryBatches, dto);
+  }
+
   postButcheryBatchDetail(dto: ButcheryBatchDto): Observable<ButcheryBatchDto> {
     return this.http.post<ButcheryBatchDto>(
       this.urlV1ButcheryBatchDetails,
