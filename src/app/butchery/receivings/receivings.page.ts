@@ -4,7 +4,11 @@ import { Router } from '@angular/router';
 import { IonSearchbar, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { Warehouse } from 'src/app/classes/warehouse.model';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
+import { User } from 'src/app/Security/classes/user.model';
+import { AuthenticationService } from 'src/app/Security/services/authentication.service';
+import { WarehousesService } from 'src/app/services/warehouses.service';
 import { ButcheryReceiving } from '../classes/butchery-receiving.model';
 import { ButcheryReceivingsService } from '../services/butchery-receivings.service';
 
@@ -15,11 +19,14 @@ import { ButcheryReceivingsService } from '../services/butchery-receivings.servi
 })
 export class ReceivingsPage implements OnInit, OnDestroy {
   @ViewChild('infiniteScroll') infiniteScroll;
-  @ViewChild('receivingSearchBar', { static: true }) receivingSearchBar: IonSearchbar;
+  @ViewChild('receivingSearchBar', { static: true })
+  receivingSearchBar: IonSearchbar;
 
   receivingSearchSub: Subscription;
   receivingSub: Subscription;
 
+  warehouse: Warehouse;
+  user: User;
   receivings: ButcheryReceiving[] = [];
 
   searchValue = '';
@@ -31,53 +38,72 @@ export class ReceivingsPage implements OnInit, OnDestroy {
 
   constructor(
     private receivingsService: ButcheryReceivingsService,
+    private authenticationService: AuthenticationService,
+    private warehousesService: WarehousesService,
     private router: Router,
     private config: AppParamsConfig,
-    private toastController: ToastController,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {
+    this.warehouse = new Warehouse();
+    this.user = this.authenticationService.getUserFromLocalCache();
 
-    this.receivingSearchSub = this.receivingSearchBar.ionInput
-    .pipe(
-      map((event) => (event.target as HTMLInputElement).value),
-      debounceTime(this.config.waitTime),
-      distinctUntilChanged()
-    )
-    .subscribe((res) => {
-      this.searchValue = res.trim();
-      this.infiniteScroll.disabled = false;
-      this.receivings = [];
-      this.pageNumber = 0;
-      this.totalPages = 0;
-      if (this.searchValue) {
-        this.getReceivings(undefined, 0, this.config.pageSize, this.searchValue);
-      } else {
-        this.getReceivings(undefined, 0, this.config.pageSize);
-      }
-    });
+    this.warehousesService
+      .getWarehouseByUserId(this.user.userId)
+      .subscribe((resWarehouse) => {
+        this.warehouse.warehouseId = resWarehouse.warehouseId;
+        this.warehouse.warehouseName = resWarehouse.warehouseName;
 
-    // Retrieves a new set of data from the server
-    // after adding or updating
-    this.receivingSub = this.receivingsService.receivingsHaveChanged.subscribe((data) => {
-      this.receivingSearchBar.value = '';
-      this.searchValue = '';
-      this.infiniteScroll.disabled = false;
-      this.receivings = [];
-      this.pageNumber = 0;
-      this.totalPages = 0;
-      this.getReceivings(undefined, 0, this.config.pageSize);
-    });
+        this.receivingSearchSub = this.receivingSearchBar.ionInput
+          .pipe(
+            map((event) => (event.target as HTMLInputElement).value),
+            debounceTime(this.config.waitTime),
+            distinctUntilChanged()
+          )
+          .subscribe((res) => {
+            this.searchValue = res.trim();
+            this.infiniteScroll.disabled = false;
+            this.receivings = [];
+            this.pageNumber = 0;
+            this.totalPages = 0;
+            if (this.searchValue) {
+              this.getReceivings(
+                undefined,
+                0,
+                this.config.pageSize,
+                this.warehouse.warehouseId,
+                this.searchValue
+              );
+            } else {
+              this.getReceivings(undefined, 0, this.config.pageSize, this.warehouse.warehouseId);
+            }
+          });
 
-    // Retrieves a partial list from the server
-    // upon component initialization
-    this.getReceivings(undefined, 0, this.config.pageSize);
+        // Retrieves a new set of data from the server
+        // after adding or updating
+        this.receivingSub =
+          this.receivingsService.receivingsHaveChanged.subscribe((data) => {
+            this.receivingSearchBar.value = '';
+            this.searchValue = '';
+            this.infiniteScroll.disabled = false;
+            this.receivings = [];
+            this.pageNumber = 0;
+            this.totalPages = 0;
+            this.getReceivings(undefined, 0, this.config.pageSize, this.warehouse.warehouseId);
+          });
+
+        // Retrieves a partial list from the server
+        // upon component initialization
+        this.getReceivings(undefined, 0, this.config.pageSize, this.warehouse.warehouseId);
+      });
   }
 
   getReceivings(
     event?,
     pageNumber?: number,
     pageSize?: number,
+    warehouseId?: number,
     searchDesc?: string
   ) {
     this.isFetching = true;
@@ -86,7 +112,7 @@ export class ReceivingsPage implements OnInit, OnDestroy {
       searchDesc = '';
     }
     this.receivingsService
-      .getReceivings(pageNumber, pageSize, searchDesc)
+      .getReceivings(pageNumber, pageSize, warehouseId, searchDesc)
       .subscribe(this.processReceivingResult(event), (error) => {
         this.messageBox('Unable to communicate with the server.');
       });
@@ -94,7 +120,9 @@ export class ReceivingsPage implements OnInit, OnDestroy {
 
   processReceivingResult(event?) {
     return (data) => {
-      this.receivings = this.receivings.concat(data._embedded.butcheryReceivings);
+      this.receivings = this.receivings.concat(
+        data._embedded.butcheryReceivings
+      );
       this.totalPages = data.page.totalPages;
       this.isFetching = false;
       if (event) {
@@ -102,7 +130,6 @@ export class ReceivingsPage implements OnInit, OnDestroy {
       }
 
       this.infiniteScroll.disabled = false;
-
     };
   }
 
@@ -111,7 +138,13 @@ export class ReceivingsPage implements OnInit, OnDestroy {
   }
 
   onEditReceiving(receivingId: number) {
-    this.router.navigate(['/','tabs','receivings','receiving-detail', receivingId]);
+    this.router.navigate([
+      '/',
+      'tabs',
+      'receivings',
+      'receiving-detail',
+      receivingId,
+    ]);
   }
 
   getStatusColor(receivingStatus): string {
@@ -141,6 +174,7 @@ export class ReceivingsPage implements OnInit, OnDestroy {
         event,
         this.pageNumber,
         this.config.pageSize,
+        this.warehouse.warehouseId,
         this.searchValue
       );
     } else {
@@ -162,5 +196,4 @@ export class ReceivingsPage implements OnInit, OnDestroy {
     this.receivingSearchSub.unsubscribe();
     this.receivingSub.unsubscribe();
   }
-
 }

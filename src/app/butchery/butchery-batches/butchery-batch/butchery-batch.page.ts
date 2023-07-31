@@ -258,7 +258,12 @@ export class ButcheryBatchPage implements OnInit {
             detail.referenceNo = modal.data.referenceNo;
 
             if (this.butcheryBatch.butcheryBatchId > 0) {
+              const butcherBatch = new ButcheryBatch();
               const butcheryBatchDto = new ButcheryBatchDto();
+
+              butcherBatch.butcheryBatchId = this.butcheryBatch.butcheryBatchId;
+
+              butcheryBatchDto.butcheryBatch = butcherBatch;
 
               butcheryBatchDto.butcheryBatchDetail = detail;
 

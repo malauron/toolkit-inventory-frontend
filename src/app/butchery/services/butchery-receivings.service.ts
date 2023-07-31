@@ -7,6 +7,7 @@ import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ButcheryReceivingDto } from '../classes/butchery-receiving-dto.model';
 import { ButcheryReceivingItem } from '../classes/butchery-receiving-item.model';
 import { ButcheryReceiving } from '../classes/butchery-receiving.model';
+import { filterString } from '../utils/utils';
 
 interface ResponseReceivings {
   _emdbedded: {
@@ -47,32 +48,21 @@ export class ButcheryReceivingsService {
   getReceivings(
     pageNumber?: number,
     pageSize?: number,
+    warehouseId?: number,
     searchDesc?: any
   ): Observable<ResponseReceivings> {
     if (searchDesc === undefined) {
       searchDesc = '';
     }
 
-    let receivingId: string;
     const receivingStatus = ['Unposted','Posted','Cancelled'];
 
-    if (isNaN(searchDesc)) {
-      receivingId = '-';
-    } else {
-      receivingId = String(Number(searchDesc));
-    }
-
-    searchDesc = String(searchDesc).replace('%','');
-    searchDesc = String(searchDesc).replace('^','');
-    searchDesc = String(searchDesc).replace('[','');
-    searchDesc = String(searchDesc).replace(']','');
-    searchDesc = String(searchDesc).replace('|','');
-    searchDesc = String(searchDesc).replace('\\','');
+    filterString(searchDesc);
 
     this.apiUrl =
       `${this.config.urlButcheryReceivingsSearch}` +
-      `?butcheryReceivingId=${receivingId}&warehouseName=${searchDesc}&customerName=${searchDesc}` +
-      `&receivingStatus=${receivingStatus}&page=${pageNumber}&size=${pageSize}`;
+      `?butcheryReceivingId=${searchDesc}&vendorName=${searchDesc}` +
+      `&receivingStatus=${receivingStatus}&warehouseId=${warehouseId}&page=${pageNumber}&size=${pageSize}`;
     return this.http.get<ResponseReceivings>(this.apiUrl);
   }
 
@@ -90,7 +80,7 @@ export class ButcheryReceivingsService {
     searchDesc?: string
     ): Observable<ResponseReceivingItems> {
 
-    searchDesc = this.filterString(searchDesc);
+    searchDesc = filterString(searchDesc);
 
     this.apiUrl = `${this.config.urlButcheryReceivingItemsSearchByWarehouseId}` +
                   `${warehouseId}&itemName=${searchDesc}` +
@@ -129,22 +119,5 @@ export class ButcheryReceivingsService {
     };
     this.apiUrl = `${this.config.urlV1ButcheryReceivingItems}`;
     return this.http.delete<ButcheryReceivingDto>(this.apiUrl, options);
-  }
-
-  filterString(stringValue): string {
-
-    if (stringValue === undefined) {
-      stringValue = '';
-    }
-
-    stringValue = String(stringValue).replace('%','');
-    stringValue = String(stringValue).replace('^','');
-    stringValue = String(stringValue).replace('[','');
-    stringValue = String(stringValue).replace(']','');
-    stringValue = String(stringValue).replace('|','');
-    stringValue = String(stringValue).replace('\\','');
-
-    return stringValue;
-
   }
 }
