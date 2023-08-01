@@ -26,6 +26,7 @@ import { ReceivedItemService } from '../received-item/received-item.service';
 import { filterString } from '../../utils/utils';
 import { ButcheryProductionsService } from '../../services/butchery-productions.service';
 import { ButcheryProduction } from '../../classes/butchery-production.model';
+import { ButcheryBatchSearchComponent } from '../../butchery-batches/butchery-batch-search/butchery-batch-search.component';
 
 @Component({
   selector: 'app-receiving-detail',
@@ -305,43 +306,43 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     }
   }
 
-  onWarehouseSearch() {
+  onBatchSearch() {
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.modalSearch
-        .create({ component: WarehouseSearchComponent })
+        .create({ component: ButcheryBatchSearchComponent })
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
         })
         .then((resultData) => {
           if (resultData.role === 'warehouse') {
-            if (this.receiving.butcheryReceivingId) {
-              const receivingDto = new ButcheryReceivingDto();
-              receivingDto.butcheryReceivingId =
-                this.receiving.butcheryReceivingId;
-              receivingDto.warehouse = resultData.data;
-              this.dataHaveChanged = true;
+            // if (this.receiving.butcheryReceivingId) {
+            //   const receivingDto = new ButcheryReceivingDto();
+            //   receivingDto.butcheryReceivingId =
+            //     this.receiving.butcheryReceivingId;
+            //   receivingDto.warehouse = resultData.data;
+            //   this.dataHaveChanged = true;
 
-              this.receivingsService
-                .putReceiving(receivingDto)
-                .subscribe((res) => {
-                  this.receiving.receivingStatus = res.receivingStatus;
-                  if (this.receiving.receivingStatus === 'Unposted') {
-                    this.warehouse = resultData.data;
-                    this.messageBox(
-                      `Produced items will be stored to ${this.warehouse.warehouseName}.`
-                    );
-                  } else {
-                    this.messageBox(
-                      'Unable to update the receiving since its status has been tagged as ' +
-                        this.receiving.receivingStatus
-                    );
-                  }
-                });
-            } else {
-              this.warehouse = resultData.data;
-            }
+            //   this.receivingsService
+            //     .putReceiving(receivingDto)
+            //     .subscribe((res) => {
+            //       this.receiving.receivingStatus = res.receivingStatus;
+            //       if (this.receiving.receivingStatus === 'Unposted') {
+            //         this.warehouse = resultData.data;
+            //         this.messageBox(
+            //           `Produced items will be stored to ${this.warehouse.warehouseName}.`
+            //         );
+            //       } else {
+            //         this.messageBox(
+            //           'Unable to update the receiving since its status has been tagged as ' +
+            //             this.receiving.receivingStatus
+            //         );
+            //       }
+            //     });
+            // } else {
+            //   this.warehouse = resultData.data;
+            // }
           }
           this.modalOpen = false;
         });
