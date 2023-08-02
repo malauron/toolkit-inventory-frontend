@@ -132,10 +132,28 @@
                 >{{ warehouse.warehouseName }}</ion-card-title
               >
             </ion-label>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              src="../../assets/icons/layers.svg"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <span mode="md" *ngIf="butcheryBatch.butcheryBatchId === undefined"
+                >Batch</span>
+              <ion-card-title mode="md" *ngIf="butcheryBatch.butcheryBatchId !== undefined"
+                >{{ butcheryBatch.butcheryBatchId }} - {{
+                butcheryBatch.vendorWarehouse.vendorWarehouseName
+                }}</ion-card-title
+              >
+            </ion-label>
             <ion-button
               #statusButton
               *ngIf="production.productionStatus === 'Unposted' || production.productionStatus === undefined"
-              (click)="onWarehouseSearch()"
+              (click)="onBatchSearch()"
               fill="clear"
               size="small"
               mode="ios"
@@ -163,11 +181,6 @@
 
   <ion-card class="card-holder">
     <div class="card-top"></div>
-    <!-- <ion-card-header class="ion-no-padding">
-      <ion-item lines="none">
-        <ion-card-title class="font-large">Production Sources</ion-card-title>
-      </ion-item>
-    </ion-card-header> -->
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
         <ion-card-title class="font-large">Production Sources</ion-card-title>

@@ -131,6 +131,6 @@ export class ButcheryBatchSearchComponent
   }
 
   onSelectBatch(batch: ButcheryBatch) {
-    this.modalController.dismiss(batch, 'butcherybatch');
+    this.modalController.dismiss(batch, 'butcheryBatch');
   }
 }

@@ -9,6 +9,7 @@ import { ProductionDetailPageRoutingModule } from './production-detail-routing.m
 import { ProductionDetailPage } from './production-detail.page';
 import { ProductionSourceModule } from '../production-source/production-source.module';
 import { ReceivingItemSearchModule } from '../../receivings/receiving-item-search/receiving-item-search.module';
+import { ButcheryBatchSearchModule } from '../../butchery-batches/butchery-batch-search/butchery-batch-search.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { ReceivingItemSearchModule } from '../../receivings/receiving-item-searc
     IonicModule,
     ProductionDetailPageRoutingModule,
     ProductionSourceModule,
-    ReceivingItemSearchModule
+    ReceivingItemSearchModule,
+    ButcheryBatchSearchModule
   ],
   declarations: [ProductionDetailPage]
 })

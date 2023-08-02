@@ -10,8 +10,13 @@ import {
 } from '@ionic/angular';
 import { ItemDto } from 'src/app/classes/item-dto.model';
 import { Warehouse } from 'src/app/classes/warehouse.model';
+import { User } from 'src/app/Security/classes/user.model';
+import { AuthenticationService } from 'src/app/Security/services/authentication.service';
 import { ItemsService } from 'src/app/services/items.service';
+import { WarehousesService } from 'src/app/services/warehouses.service';
 import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
+import { ButcheryBatchSearchComponent } from '../../butchery-batches/butchery-batch-search/butchery-batch-search.component';
+import { ButcheryBatch } from '../../classes/butchery-batch.model';
 import { ButcheryProductionDto } from '../../classes/butchery-production-dto.model';
 import { ButcheryProductionItem } from '../../classes/butchery-production-item.model';
 import { ButcheryProductionSource } from '../../classes/butchery-production-source.model';
@@ -36,6 +41,8 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
   production: ButcheryProduction;
   warehouse: Warehouse;
+  butcheryBatch: ButcheryBatch;
+  user: User;
   productionItems: ButcheryProductionItem[] = [];
   productionSources: ButcheryProductionSource[] = [];
   productionDetailsConfig: ProductionDetailsConfig;
@@ -54,6 +61,8 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private productionsService: ButcheryProductionsService,
     private productionSourceService: ProductionSourceService,
+    private warehousesService: WarehousesService,
+    private authenticationService: AuthenticationService,
     private modalSearch: ModalController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController
@@ -63,9 +72,8 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     this.isFetching = true;
 
     this.production = new ButcheryProduction();
-
     this.warehouse = new Warehouse();
-
+    this.butcheryBatch = new ButcheryBatch();
     this.productionDetailsConfig = new ProductionDetailsConfig();
 
     this.route.paramMap.subscribe((paramMap) => {
@@ -93,6 +101,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
             this.productionDetailsConfig.setParams(resData.productionStatus);
             this.production.dateCreated = resData.dateCreated;
             this.warehouse = resData.warehouse;
+            this.butcheryBatch = resData.butcheryBatch;
             this.productionItems = resData.butcheryProductionItems;
             this.productionSources = resData.butcheryProductionSourceViews;
             this.totalAmount = this.production.totalAmount;
@@ -107,9 +116,67 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           }
         );
       } else {
-        this.isFetching = false;
+        this.user = this.authenticationService.getUserFromLocalCache();
+        this.warehousesService
+          .getWarehouseByUserId(this.user.userId)
+          .subscribe({
+            next: (res) => {
+              this.warehouse.warehouseId = res.warehouseId;
+              this.warehouse.warehouseName = res.warehouseName;
+              this.productionSourceService.warehouse.next(this.warehouse);
+            },
+            error: (err) => {
+              this.isFetching = false;
+            },
+            complete: () => {
+              this.isFetching = false;
+            },
+          });
       }
     });
+  }
+
+  onBatchSearch() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.modalSearch
+        .create({ component: ButcheryBatchSearchComponent })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'butcheryBatch') {
+            if (this.production.butcheryProductionId) {
+              const productionDto = new ButcheryProductionDto();
+              productionDto.butcheryProductionId =
+                this.production.butcheryProductionId;
+                productionDto.butcheryBatch = resultData.data;
+              this.dataHaveChanged = true;
+              this.productionsService
+                .putProduction(productionDto)
+                .subscribe((res) => {
+                  this.production.productionStatus = res.productionStatus;
+                  if (this.production.productionStatus === 'Unposted') {
+                    this.butcheryBatch = resultData.data;
+                    // this.productionSourceService.warehouse.next(this.warehouse);
+                    // this.messageBox(
+                    //   `Produced items will be stored to ${this.warehouse.warehouseName}.`
+                    // );
+                  } else {
+                    this.messageBox(
+                      'Unable to update the production since its status has been tagged as ' +
+                        this.production.productionStatus
+                    );
+                  }
+                });
+            } else {
+              this.butcheryBatch = resultData.data;
+            }
+          }
+          this.modalOpen = false;
+        });
+    }
   }
 
   onGetItemByItemCode(event) {
@@ -355,6 +422,11 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
       return;
     }
 
+    if (!this.butcheryBatch.butcheryBatchId) {
+      this.messageBox('Please specify batch.');
+      return;
+    }
+
     if (this.productionItems.length <= 0) {
       this.messageBox('Please add at least 1 production item.');
       return;
@@ -369,6 +441,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
     productionDto.totalAmount = this.totalAmount;
     productionDto.warehouse = this.warehouse;
+    productionDto.butcheryBatch = this.butcheryBatch;
     productionDto.butcheryProductionItems = this.productionItems;
     productionDto.butcheryProductionSources = this.productionSources;
 

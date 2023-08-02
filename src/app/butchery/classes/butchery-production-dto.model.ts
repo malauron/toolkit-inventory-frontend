@@ -1,4 +1,5 @@
 import { Warehouse } from 'src/app/classes/warehouse.model';
+import { ButcheryBatch } from './butchery-batch.model';
 import { ButcheryProductionItem } from './butchery-production-item.model';
 import { ButcheryProductionSource } from './butchery-production-source.model';
 import { ButcheryProduction } from './butchery-production.model';
@@ -8,6 +9,7 @@ export class ButcheryProductionDto {
     public butcheryProductionId?: number,
     public productionStatus?: string,
     public warehouse?: Warehouse,
+    public butcheryBatch?: ButcheryBatch,
     public butcheryProductionItems?: ButcheryProductionItem[],
     public butcheryProductionItem?: ButcheryProductionItem,
     public butcheryProductionSources?: ButcheryProductionSource[],

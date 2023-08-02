@@ -127,13 +127,31 @@
           <ion-item lines="none">
             <ion-icon
               class="contactIcon"
-              src="../../assets/icons/layers.svg"
+              src="../../assets/icons/warehouse02.svg"
               color="primary"
               slot="start"
             ></ion-icon>
             <ion-label class="ion-text-wrap">
               <ion-card-title mode="md"
                 >{{ warehouse.warehouseName }}</ion-card-title
+              >
+            </ion-label>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              src="../../assets/icons/layers.svg"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <span mode="md" *ngIf="butcheryBatch.butcheryBatchId === undefined"
+                >Batch</span>
+              <ion-card-title mode="md" *ngIf="butcheryBatch.butcheryBatchId !== undefined"
+                >{{ butcheryBatch.butcheryBatchId }} - {{
+                butcheryBatch.vendorWarehouse.vendorWarehouseName
+                }}</ion-card-title
               >
             </ion-label>
             <ion-button
