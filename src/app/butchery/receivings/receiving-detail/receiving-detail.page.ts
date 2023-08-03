@@ -223,7 +223,10 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
       this.modalOpen = true;
       this.receivedItemService.receivedItemDetail.next(receivingItem);
       this.modalSearch
-        .create({ component: ReceivedItemComponent })
+        .create({
+          component: ReceivedItemComponent,
+          cssClass: 'custom-modal-styles',
+        })
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
@@ -328,7 +331,10 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.modalSearch
-        .create({ component: ButcheryBatchSearchComponent })
+        .create({
+          component: ButcheryBatchSearchComponent,
+          cssClass: 'custom-modal-styles',
+        })
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
@@ -370,7 +376,10 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.modalSearch
-        .create({ component: VendorSearchComponent })
+        .create({
+          component: VendorSearchComponent,
+          cssClass: 'custom-modal-styles',
+        })
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
@@ -524,7 +533,10 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
       this.receivedItemService.receivedItemDetail.next(receivedItemDetail);
 
       this.modalSearch
-        .create({ component: ReceivedItemComponent })
+        .create({
+          component: ReceivedItemComponent,
+          cssClass: 'custom-modal-styles',
+        })
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
