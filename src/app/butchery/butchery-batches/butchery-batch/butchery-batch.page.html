@@ -126,6 +126,32 @@
             </ion-button>
           </ion-item>
         </ion-col>
+        <ion-col size-xs="12" size-lg="6" [pullLg]="pullLg">
+          <ion-item fill="outline">
+            <ion-icon
+              slot="start"
+              name="storefront-outline"
+              color="primary"
+            ></ion-icon>
+            <ion-input
+              (click)="onVendorSearch()"
+              readonly="true"
+              placeholder="Storage Provider"
+              [value]="butcheryBatch.vendor.vendorName"
+            ></ion-input>
+            <ion-button
+              *ngIf="butcheryBatch.batchStatus === 'Unposted'"
+              mode="ios"
+              class="search-button"
+              slot="end"
+              size="small"
+              fill="clear"
+              (click)="onVendorSearch()"
+            >
+              <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col>
         <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
             <ion-icon
@@ -218,21 +244,6 @@
                 </ion-button>
               </ion-item>
             </div>
-            <ion-col size-xs="12" size-lg="6">
-              <ion-item lines="none">
-                <ion-icon
-                  name="storefront-outline"
-                  color="primary"
-                  slot="start"
-                ></ion-icon>
-                <ion-input
-                  [value]="detail.vendor.vendorName"
-                  placeholder="Supplier"
-                  type="text"
-                  maxlength="20"
-                ></ion-input>
-              </ion-item>
-            </ion-col>
             <ion-col size-xs="12" size-lg="6">
               <ion-item lines="none">
                 <ion-icon
@@ -349,7 +360,7 @@
                     Doc. {{ detailItem.requiredUom.uomCode.toUpperCase() }}
                   </h3>
                   <h2>
-                    {{ detailItem.requiredQty | number:'1.0' }}
+                    {{ detailItem.documentedQty | number:'1.0' }}
                     <span class="qty-uom-lbl"
                       >{{ detailItem.requiredUom.uomCode.toUpperCase() }}</span
                     >
@@ -376,7 +387,7 @@
               <ion-item lines="none">
                 <ion-label class="item-line-lbl item-qty-lbl">
                   <h3>Doc. Weight(Kg)</h3>
-                  <h2>{{ detailItem.requiredWeightKg | number:'1.2' }}</h2>
+                  <h2>{{ detailItem.documentedWeightKg | number:'1.2' }}</h2>
                 </ion-label>
               </ion-item>
             </ion-col>
@@ -403,7 +414,7 @@
               <ion-item lines="none">
                 <ion-label class="item-line-lbl item-qty-lbl">
                   <h3>Total Doc. Weight(Kg)</h3>
-                  <h2>{{ detail.totalRequiredWeightKg| number:'1.2' }}</h2>
+                  <h2>{{ detail.totalDocumentedWeightKg| number:'1.2' }}</h2>
                 </ion-label>
               </ion-item>
             </ion-col>

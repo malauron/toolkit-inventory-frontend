@@ -10,9 +10,9 @@ export class ButcheryBatchDetailitem {
     public baseUom?: Uom,
     public baseQty?: number,
     public requiredUom?: Uom,
-    public requiredQty?: number,
+    public documentedQty?: number,
     public receivedQty?: number,
-    public requiredWeightKg?: number,
+    public documentedWeightKg?: number,
     public receivedWeightKg?: number,
   ){}
 }

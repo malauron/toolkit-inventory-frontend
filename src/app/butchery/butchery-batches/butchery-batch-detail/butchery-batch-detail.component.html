@@ -12,13 +12,6 @@
 <ion-content>
   <form [formGroup]="contentForm">
     <ion-item fill="outline">
-      <ion-icon slot="start" name="storefront-outline" color="primary"></ion-icon>
-      <ion-input [value]="contentForm.value.vendor.vendorName" (click)="onVendorSearch()" readonly="true" placeholder="Vendor"></ion-input>
-      <ion-button mode="ios" class="search-button" slot="end" size="small" fill="clear" (click)="onVendorSearch()">
-        <ion-icon name="search-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-item>
-    <ion-item fill="outline">
       <ion-icon slot="start" name="document-attach-outline" color="primary"></ion-icon>
       <ion-input formControlName="referenceNo" placeholder="Reference No." type="text" maxlength="20">
       </ion-input>

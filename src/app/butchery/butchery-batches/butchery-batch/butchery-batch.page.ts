@@ -19,6 +19,8 @@ import { ButcheryBatchDto } from '../../classes/butchery-batch-dto.model';
 import { AuthenticationService } from 'src/app/Security/services/authentication.service';
 import { ButcheryBatchDetail } from '../../classes/butchery-batch-detail.model';
 import { ButcheryBatchDetailitem } from '../../classes/butchery-batch-detail-item.model';
+import { VendorSearchComponent } from 'src/app/vendors/vendor-search/vendor-search.component';
+import { Vendor } from 'src/app/classes/vendor.model';
 
 @Component({
   selector: 'app-butchery-batch',
@@ -71,6 +73,7 @@ export class ButcheryBatchPage implements OnInit {
       this.butcheryBatch.butcheryBatchId = Number(paramMap.get('batchId'));
       this.butcheryBatch.batchStatus = 'Unposted';
       this.butcheryBatch.vendorWarehouse = new VendorWarehouse();
+      this.butcheryBatch.vendor = new Vendor();
 
       if (this.butcheryBatch.butcheryBatchId > 0) {
         this.butcheryBatchesService
@@ -185,6 +188,28 @@ export class ButcheryBatchPage implements OnInit {
     }
   }
 
+  onVendorSearch() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+
+      this.mdl
+        .create({
+          component: VendorSearchComponent,
+          cssClass: 'custom-modal-styles',
+        })
+        .then((mdl) => {
+          mdl.present();
+          return mdl.onDidDismiss();
+        })
+        .then((modal) => {
+          if (modal.role === 'vendor') {
+           this.butcheryBatch.vendor = modal.data;
+          }
+          this.modalOpen = false;
+        });
+    }
+  }
+
   onShowBatchDetail() {
     if (!this.modalOpen && !this.isUploading) {
       this.modalOpen = true;
@@ -254,7 +279,6 @@ export class ButcheryBatchPage implements OnInit {
         })
         .then((modal) => {
           if (modal.role === 'saveBatcherDetail') {
-            detail.vendor = modal.data.vendor;
             detail.referenceNo = modal.data.referenceNo;
 
             if (this.butcheryBatch.butcheryBatchId > 0) {
@@ -378,8 +402,8 @@ export class ButcheryBatchPage implements OnInit {
                       detail.butcheryBatchDetailItems.concat(
                         res.butcheryBatchDetailItem
                       );
-                    detail.totalRequiredWeightKg =
-                      res.butcheryBatchDetail.totalRequiredWeightKg;
+                    detail.totalDocumentedWeightKg =
+                      res.butcheryBatchDetail.totalDocumentedWeightKg;
                     detail.totalReceivedWeightKg =
                       res.butcheryBatchDetail.totalReceivedWeightKg;
                   },
@@ -424,9 +448,9 @@ export class ButcheryBatchPage implements OnInit {
           if (modal.role === 'saveDetailItem') {
             detailItem.item = modal.data.item;
             detailItem.requiredUom = modal.data.requiredUom;
-            detailItem.requiredQty = modal.data.requiredQty;
+            detailItem.documentedQty = modal.data.documentedQty;
             detailItem.receivedQty = modal.data.receivedQty;
-            detailItem.requiredWeightKg = modal.data.requiredWeightKg;
+            detailItem.documentedWeightKg = modal.data.documentedWeightKg;
             detailItem.receivedWeightKg = modal.data.receivedWeightKg;
 
             if (detail.butcheryBatchDetailId > 0) {
@@ -445,8 +469,8 @@ export class ButcheryBatchPage implements OnInit {
                     this.messageBox(
                       'Batch detail information has been saved successfully.'
                     );
-                    detail.totalRequiredWeightKg =
-                      res.butcheryBatchDetail.totalRequiredWeightKg;
+                    detail.totalDocumentedWeightKg =
+                      res.butcheryBatchDetail.totalDocumentedWeightKg;
                     detail.totalReceivedWeightKg =
                       res.butcheryBatchDetail.totalReceivedWeightKg;
                   },
@@ -503,8 +527,8 @@ export class ButcheryBatchPage implements OnInit {
                             );
                           }
                         }
-                        detail.totalRequiredWeightKg =
-                          res.butcheryBatchDetail.totalRequiredWeightKg;
+                        detail.totalDocumentedWeightKg =
+                          res.butcheryBatchDetail.totalDocumentedWeightKg;
                         detail.totalReceivedWeightKg =
                           res.butcheryBatchDetail.totalReceivedWeightKg;
                         this.messageBox(
@@ -537,11 +561,11 @@ export class ButcheryBatchPage implements OnInit {
   }
 
   setTotalWeight(detail: ButcheryBatchDetail) {
-    detail.totalRequiredWeightKg = 0;
+    detail.totalDocumentedWeightKg = 0;
     detail.totalReceivedWeightKg = 0;
 
     detail.butcheryBatchDetailItems.forEach((item) => {
-      detail.totalRequiredWeightKg += item.requiredWeightKg;
+      detail.totalDocumentedWeightKg += item.documentedWeightKg;
       detail.totalReceivedWeightKg += item.receivedWeightKg;
     });
   }
