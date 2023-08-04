@@ -174,7 +174,10 @@ export class ButcheryBatchPage implements OnInit {
     ) {
       this.modalOpen = true;
       this.mdl
-        .create({ component: VendorWarehouseSearchComponent, cssClass: 'custom-modal-styles' })
+        .create({
+          component: VendorWarehouseSearchComponent,
+          cssClass: 'custom-modal-styles',
+        })
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
@@ -189,7 +192,11 @@ export class ButcheryBatchPage implements OnInit {
   }
 
   onVendorSearch() {
-    if (!this.modalOpen) {
+    if (
+      !this.modalOpen &&
+      !this.isUploading &&
+      this.butcheryBatch.batchStatus === 'Unposted'
+    ) {
       this.modalOpen = true;
 
       this.mdl
@@ -203,7 +210,7 @@ export class ButcheryBatchPage implements OnInit {
         })
         .then((modal) => {
           if (modal.role === 'vendor') {
-           this.butcheryBatch.vendor = modal.data;
+            this.butcheryBatch.vendor = modal.data;
           }
           this.modalOpen = false;
         });

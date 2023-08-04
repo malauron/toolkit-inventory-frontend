@@ -11,6 +11,18 @@ ion-content {
     font-size: 1px;
   }
 
+  .ion-label-elem {
+    color: var(--ion-color-medium);
+  }
+
+  .ion-input-elem {
+    --padding-bottom: 0;
+  }
+
+  .end-button {
+    margin: 0.2rem;
+  }
+
   .save-button {
     margin: 1rem 0 1rem 0;
     height: 3.3rem;

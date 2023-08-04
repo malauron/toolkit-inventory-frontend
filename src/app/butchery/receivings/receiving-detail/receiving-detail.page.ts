@@ -209,16 +209,18 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
 
     receivedItemDetail.item = itemDto.item;
     receivedItemDetail.uom = itemDto.item.uom;
-    receivedItemDetail.receivedQty = 0;
-    receivedItemDetail.itemCost = 0;
     receivedItemDetail.documentedQty = 0;
+    receivedItemDetail.receivedQty = 0;
+    receivedItemDetail.documentedWeightKg = 0;
+    receivedItemDetail.receivedWeightKg = 0;
+    receivedItemDetail.itemCost = 0;
     receivedItemDetail.usedQty = 0;
     receivedItemDetail.remarks = '';
     receivedItemDetail.isAvailable = false;
     this.onManuallyAddReceivedItem(receivedItemDetail);
   }
 
-  onManuallyAddReceivedItem(receivingItem?: ButcheryReceivingItem) {
+  onManuallyAddReceivedItem(receivingItem?: ReceivedItemDetail) {
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.receivedItemService.receivedItemDetail.next(receivingItem);
@@ -241,13 +243,15 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             receivedItem.baseUom = item.item.uom;
             receivedItem.baseQty = 1;
             receivedItem.requiredUom = item.uom;
-            receivedItem.receivedQty = item.receivedQty;
-            receivedItem.itemCost = item.itemCost;
             receivedItem.documentedQty = item.documentedQty;
+            receivedItem.receivedQty = item.receivedQty;
+            receivedItem.documentedWeightKg = item.documentedWeightKg;
+            receivedItem.receivedWeightKg = item.receivedWeightKg;
+            receivedItem.itemCost = item.itemCost;
             receivedItem.usedQty = item.usedQty;
             receivedItem.remarks = item.remarks;
             receivedItem.isAvailable = item.isAvailable;
-            receivedItem.totalAmount = item.receivedQty * item.itemCost;
+            receivedItem.totalAmount = item.receivedWeightKg * item.itemCost;
 
             if (this.receiving.butcheryReceivingId) {
               receivedItem.butcheryReceiving = this.receiving;
@@ -352,7 +356,8 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
                 .subscribe((res) => {
                   this.receiving.receivingStatus = res.receivingStatus;
                   if (this.receiving.receivingStatus === 'Unposted') {
-                    this.warehouse = resultData.data;
+                    this.butcheryBatch = resultData.data;
+                    this.vendor = resultData.data.vendor;
                     this.messageBox(
                       `Produced items will be stored to ${this.warehouse.warehouseName}.`
                     );
@@ -523,9 +528,11 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
 
       receivedItemDetail.item = pItem.item;
       receivedItemDetail.uom = pItem.requiredUom;
-      receivedItemDetail.receivedQty = pItem.receivedQty;
-      receivedItemDetail.itemCost = pItem.itemCost;
       receivedItemDetail.documentedQty = pItem.documentedQty;
+      receivedItemDetail.receivedQty = pItem.receivedQty;
+      receivedItemDetail.documentedWeightKg = pItem.documentedWeightKg;
+      receivedItemDetail.receivedWeightKg = pItem.receivedWeightKg;
+      receivedItemDetail.itemCost = pItem.itemCost;
       receivedItemDetail.usedQty = pItem.usedQty;
       receivedItemDetail.remarks = pItem.remarks;
       receivedItemDetail.isAvailable = pItem.isAvailable;
@@ -549,9 +556,11 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             receivedItem.item = item.item;
             receivedItem.barcode = item.item.itemCode;
             receivedItem.requiredUom = item.uom;
-            receivedItem.receivedQty = item.receivedQty;
-            receivedItem.itemCost = item.itemCost;
             receivedItem.documentedQty = item.documentedQty;
+            receivedItem.receivedQty = item.receivedQty;
+            receivedItem.documentedWeightKg = item.documentedWeightKg;
+            receivedItem.receivedWeightKg = item.receivedWeightKg;
+            receivedItem.itemCost = item.itemCost;
             receivedItem.usedQty = item.usedQty;
             receivedItem.remarks = item.remarks;
             receivedItem.isAvailable = item.isAvailable;
@@ -596,9 +605,11 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
         this.receivingItems[key].item = receivingItem.item;
         this.receivingItems[key].barcode = receivingItem.barcode;
         this.receivingItems[key].requiredUom = receivingItem.requiredUom;
-        this.receivingItems[key].receivedQty = receivingItem.receivedQty;
-        this.receivingItems[key].itemCost = receivingItem.itemCost;
         this.receivingItems[key].documentedQty = receivingItem.documentedQty;
+        this.receivingItems[key].receivedQty = receivingItem.receivedQty;
+        this.receivingItems[key].documentedWeightKg = receivingItem.documentedWeightKg;
+        this.receivingItems[key].receivedWeightKg = receivingItem.receivedWeightKg;
+        this.receivingItems[key].itemCost = receivingItem.itemCost;
         this.receivingItems[key].usedQty = receivingItem.usedQty;
         this.receivingItems[key].remarks = receivingItem.remarks;
         this.receivingItems[key].isAvailable = receivingItem.isAvailable;

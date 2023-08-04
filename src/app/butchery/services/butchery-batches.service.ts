@@ -39,7 +39,9 @@ export class ButcheryBatchesService {
   getButcheryBatches(
     pageNumber?: number,
     pageSize?: number,
-    searchDesc?: string
+    searchDesc?: string,
+    batchStatuses?: any[],
+    isOpen?: boolean[],
   ): Observable<ResponseButcheryBatches> {
     if (searchDesc === undefined) {
       searchDesc = '';
@@ -47,11 +49,17 @@ export class ButcheryBatchesService {
       searchDesc = filterString(searchDesc);
     }
 
-    if (searchDesc === '') {
-      this.apiUrl = `${this.urlButcheryBatches}/search/findAllBatches?page=${pageNumber}&size=${pageSize}`;
-    } else {
-      this.apiUrl = `${this.urlButcheryBatches}/search/findByWarehouseRemarks?searchDesc=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+    if (batchStatuses === undefined) {
+      batchStatuses = ['Cancelled','Posted','Unposted'];
     }
+
+    if (isOpen === undefined) {
+      isOpen = [true, false];
+    }
+
+    this.apiUrl =
+      `${this.urlButcheryBatches}/search/findByCustomParams?searchDesc=${searchDesc}` +
+      `&batchStatuses=${batchStatuses}&isOpen=${isOpen}&page=${pageNumber}&size=${pageSize}`;
 
     return this.http.get<ResponseButcheryBatches>(this.apiUrl);
   }

@@ -19,7 +19,12 @@
           color="primary"
           slot="start"
         ></ion-icon>
-        <ion-card-subtitle>{{ batch.butcheryBatchId }} - {{ batch.vendorWarehouse.vendorWarehouseName }}</ion-card-subtitle>
+        <ion-label>
+          <h3>{{ batch.butcheryBatchId }}</h3>
+          <h2>{{ batch.vendor.vendorName }}</h2>
+          <h3>{{ batch.vendorWarehouse.vendorWarehouseName }}</h3>
+          <h3>{{ batch.remarks }}</h3>
+        </ion-label>
       </ion-item>
     </ion-card>
   </ion-grid>

@@ -230,6 +230,18 @@ ion-searchbar {
   }
 }
 
+.ion-label-elem {
+  color: var(--ion-color-medium);
+}
+
+.ion-input-elem {
+  --padding-bottom: 0;
+}
+
+.end-button {
+  margin: 0.2rem;
+}
+
 @media (min-width: 500px) {
   .save-button {
     width: 10rem;

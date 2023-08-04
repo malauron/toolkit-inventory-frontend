@@ -146,12 +146,16 @@
               slot="start"
             ></ion-icon>
             <ion-label class="ion-text-wrap">
-              <span mode="md" *ngIf="butcheryBatch.butcheryBatchId === undefined"
-                >Batch</span>
-              <ion-card-title mode="md" *ngIf="butcheryBatch.butcheryBatchId !== undefined"
-                >{{ butcheryBatch.butcheryBatchId }} - {{
-                butcheryBatch.vendorWarehouse.vendorWarehouseName
-                }}</ion-card-title
+              <span
+                mode="md"
+                *ngIf="butcheryBatch.butcheryBatchId === undefined"
+                >Batch</span
+              >
+              <ion-card-title
+                mode="md"
+                *ngIf="butcheryBatch.butcheryBatchId !== undefined"
+                >{{ butcheryBatch.vendorWarehouse.vendorWarehouseName
+                }} - {{ butcheryBatch.remarks }}</ion-card-title
               >
             </ion-label>
             <ion-button

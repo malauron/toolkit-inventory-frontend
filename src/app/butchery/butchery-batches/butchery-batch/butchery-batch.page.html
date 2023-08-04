@@ -30,15 +30,20 @@
               src="../../assets/icons/layers.svg"
               color="primary"
             ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Batch No.</ion-label
+            >
             <ion-input
+              class="ion-input-elem"
               [readonly]="true"
               [value]="butcheryBatch.butcheryBatchId"
-              placeholder="Batch ID"
               type="text"
               maxlength="20"
             ></ion-input>
             <ion-button
+              class="end-button"
               (click)="onShowPopOver($event)"
+              slot="end"
               size="small"
               mode="ios"
               fill="clear"
@@ -90,11 +95,14 @@
               name="calendar-outline"
               color="primary"
             ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Date Received</ion-label
+            >
             <ion-input
+              class="ion-input-elem"
               (click)="showReceivedDatePicker()"
               [value]="dateValue"
               [readonly]="true"
-              placeholder="Date Received"
               type="text"
               maxlength="20"
             ></ion-input>
@@ -107,16 +115,19 @@
               src="../../assets/icons/warehouse02.svg"
               color="primary"
             ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Storage Provider</ion-label
+            >
             <ion-input
+              class="ion-input-elem"
               (click)="onVendorWarehouseSearch()"
               readonly="true"
-              placeholder="Storage Provider"
               [value]="butcheryBatch.vendorWarehouse.vendorWarehouseName"
             ></ion-input>
             <ion-button
               *ngIf="butcheryBatch.batchStatus === 'Unposted'"
               mode="ios"
-              class="search-button"
+              class="end-button"
               slot="end"
               size="small"
               fill="clear"
@@ -133,16 +144,19 @@
               name="storefront-outline"
               color="primary"
             ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Vendor</ion-label
+            >
             <ion-input
+              class="ion-input-elem"
               (click)="onVendorSearch()"
               readonly="true"
-              placeholder="Storage Provider"
               [value]="butcheryBatch.vendor.vendorName"
             ></ion-input>
             <ion-button
               *ngIf="butcheryBatch.batchStatus === 'Unposted'"
               mode="ios"
-              class="search-button"
+              class="end-button"
               slot="end"
               size="small"
               fill="clear"
@@ -159,8 +173,11 @@
               src="../../assets/icons/info.svg"
               color="primary"
             ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Remarks</ion-label
+            >
             <ion-input
-              placeholder="Remarks"
+              class="ion-input-elem"
               [(ngModel)]="butcheryBatch.remarks"
               type="text"
               maxlength="20"
@@ -172,13 +189,16 @@
           size-lg="6"
           *ngIf="showElems && butcheryBatch.batchStatus === 'Posted'"
         >
-          <ion-item fill="outline" lines="none">
+          <ion-item fill="outline">
             <ion-icon
               slot="start"
               name="checkmark-circle-outline"
               color="primary"
             ></ion-icon>
-            <ion-label>Open</ion-label>
+            <ion-label class="ion-label-elem" position="floating"
+              >Status</ion-label
+            >
+            <ion-input class="ion-input-elem" [value]='"Available"' readonly="true"></ion-input>
             <ion-toggle
               [enableOnOffLabels]="true"
               slot="end"
@@ -446,7 +466,10 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-card class="new-detail-card" *ngIf="butcheryBatch.batchStatus === 'Unposted'">
+    <ion-card
+      class="new-detail-card"
+      *ngIf="butcheryBatch.batchStatus === 'Unposted'"
+    >
       <ion-card-content>
         <ion-item lines="none" button (click)="onShowBatchDetail()">
           <ion-label>

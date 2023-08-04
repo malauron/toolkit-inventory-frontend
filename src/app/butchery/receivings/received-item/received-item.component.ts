@@ -12,6 +12,7 @@ import { Item } from 'src/app/classes/item.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemSearchComponent } from 'src/app/items/item-search/item-search.component';
 import { ItemsService } from 'src/app/services/items.service';
+import { ButcheryBatch } from '../../classes/butchery-batch.model';
 import { ReceivedItemDetail } from './received-item.model';
 import { ReceivedItemService } from './received-item.service';
 
@@ -24,7 +25,8 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
   @ViewChild('uomSelect', { static: true }) uomSelect: IonSelect;
   @ViewChild('receivedQtyInput', { static: true }) receivedQtyInput: IonInput;
   @ViewChild('itemCostInput', { static: true }) itemCostInput: IonInput;
-  @ViewChild('documentedWeightInput', { static: true }) documentedWeightInput: IonInput;
+  @ViewChild('documentedWeightInput', { static: true })
+  documentedWeightInput: IonInput;
   @ViewChild('actualWeightInput', { static: true }) actualWeightInput: IonInput;
 
   receivedItemSub: Subscription;
@@ -33,6 +35,8 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
   itemCostInputSub: Subscription;
   documentedWeightInputSub: Subscription;
   actualWeightInputSub: Subscription;
+
+  batch: ButcheryBatch;
 
   itemForm: FormGroup;
 
@@ -68,7 +72,19 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required],
       }),
+      documentedQty: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(0)],
+      }),
       receivedQty: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(0.001)],
+      }),
+      documentedWeightKg: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(0)],
+      }),
+      receivedWeightKg: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.001)],
       }),
@@ -76,20 +92,25 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
-      documentedQty: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.min(0)],
-      }),
       remarks: new FormControl('', {
-        updateOn: 'blur'
+        updateOn: 'blur',
       }),
     });
 
     this.uomSelectSub = this.uomSelect.ionDismiss.subscribe(this.onQtyFocus());
-    this.receivedQtyInputSub = this.receivedQtyInput.ionFocus.subscribe(this.onQtyFocus());
-    this.itemCostInputSub = this.itemCostInput.ionFocus.subscribe(this.onCostFocus());
-    this.documentedWeightInputSub = this.documentedWeightInput.ionFocus.subscribe(this.onDocumentedWeightFocus());
-    this.actualWeightInputSub = this.actualWeightInput.ionFocus.subscribe(this.onActualWeightFocus());
+    this.receivedQtyInputSub = this.receivedQtyInput.ionFocus.subscribe(
+      this.onQtyFocus()
+    );
+    this.itemCostInputSub = this.itemCostInput.ionFocus.subscribe(
+      this.onCostFocus()
+    );
+    this.documentedWeightInputSub =
+      this.documentedWeightInput.ionFocus.subscribe(
+        this.onDocumentedWeightFocus()
+      );
+    this.actualWeightInputSub = this.actualWeightInput.ionFocus.subscribe(
+      this.onActualWeightFocus()
+    );
 
     this.receivedItemSub =
       this.receivedItemService.receivedItemDetail.subscribe((res) => {
@@ -120,19 +141,23 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
               item: itemData,
               itemName: itemData.itemName,
               uom: uomData,
-              receivedQty: res.receivedQty,
-              itemCost: res.itemCost,
               documentedQty: res.documentedQty,
-              remarks: res.remarks
+              receivedQty: res.receivedQty,
+              documentedWeightKg: res.documentedWeightKg,
+              receivedWeightKg: res.receivedWeightKg,
+              itemCost: res.itemCost,
+              remarks: res.remarks,
             });
           } else {
             this.itemForm.patchValue({
               item: itemData,
               itemName: itemData.itemName,
-              receivedQty: res.receivedQty,
-              itemCost: res.itemCost,
               documentedQty: res.documentedQty,
-              remarks: res.remarks
+              receivedQty: res.receivedQty,
+              documentedWeightKg: res.documentedWeightKg,
+              receivedWeightKg: res.receivedWeightKg,
+              itemCost: res.itemCost,
+              remarks: res.remarks,
             });
           }
 
@@ -173,46 +198,66 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
   onItemSearch() {
     if (!this.modalOpen) {
       this.modalOpen = true;
-      this.modalController
-        .create({ component: ItemSearchComponent })
-        .then((modalSearch) => {
-          modalSearch.present();
-          return modalSearch.onDidDismiss();
-        })
-        .then((resultData) => {
-          if (resultData.role === 'item') {
-            const itemData = new Item();
-            const uomData = new Uom();
-
-            itemData.itemId = resultData.data.itemId;
-            itemData.itemName = resultData.data.itemName;
-            itemData.itemCode = resultData.data.itemCode;
-            itemData.uom = resultData.data.uom;
-
-            uomData.uomId = resultData.data.uom.uomId;
-            uomData.uomName = resultData.data.uom.uomName;
-            uomData.uomCode = resultData.data.uom.uomCode;
-
-            // this.item = resultData.data;
-            this.uoms = [];
-            this.uoms = this.uoms.concat(uomData);
-            this.getItemUoms(itemData.itemId);
-            this.itemForm.patchValue({
-              item: itemData,
-              itemName: itemData.itemName,
-              uom: uomData,
-              receivedQty: 1.0,
-              itemCost: 0.00,
-              documentedQty: 0.00,
-              remarks: '',
-            });
-
-            const qtyElem = this.receivedQtyInput.getInputElement();
-            qtyElem.then((res) => res.focus());
-          }
-          this.modalOpen = false;
-        });
+      if (this.batch === undefined) {
+        this.modalController
+          .create({
+            component: ItemSearchComponent,
+            cssClass: 'custom-modal-styles',
+          })
+          .then((modalSearch) => {
+            modalSearch.present();
+            return modalSearch.onDidDismiss();
+          })
+          .then(this.processItemSearchResult());
+      } else {
+        this.modalController
+          .create({
+            component: ItemSearchComponent,
+            cssClass: 'custom-modal-styles',
+          })
+          .then((modalSearch) => {
+            modalSearch.present();
+            return modalSearch.onDidDismiss();
+          })
+          .then(this.processItemSearchResult());
+      }
     }
+  }
+
+  processItemSearchResult() {
+    return (resultData) => {
+      if (resultData.role === 'item') {
+        const itemData = new Item();
+        const uomData = new Uom();
+
+        itemData.itemId = resultData.data.itemId;
+        itemData.itemName = resultData.data.itemName;
+        itemData.itemCode = resultData.data.itemCode;
+        itemData.uom = resultData.data.uom;
+
+        uomData.uomId = resultData.data.uom.uomId;
+        uomData.uomName = resultData.data.uom.uomName;
+        uomData.uomCode = resultData.data.uom.uomCode;
+
+        // this.item = resultData.data;
+        this.uoms = [];
+        this.uoms = this.uoms.concat(uomData);
+        this.getItemUoms(itemData.itemId);
+        this.itemForm.patchValue({
+          item: itemData,
+          itemName: itemData.itemName,
+          uom: uomData,
+          receivedQty: 1.0,
+          itemCost: 0.0,
+          documentedQty: 0.0,
+          remarks: '',
+        });
+
+        const qtyElem = this.receivedQtyInput.getInputElement();
+        qtyElem.then((res) => res.focus());
+      }
+      this.modalOpen = false;
+    };
   }
 
   getItemUoms(itemId: number, selectedUom?: Uom) {
@@ -226,7 +271,6 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
       const itemUoms = [];
       for (const key in data.itemUoms) {
         if (data.itemUoms.hasOwnProperty(key)) {
-
           const newUom = new Uom();
 
           newUom.uomId = data.itemUoms[key].uom.uomId;
@@ -254,9 +298,14 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
       const receivedItemDetail = new ReceivedItemDetail();
       receivedItemDetail.item = this.itemForm.value.item;
       receivedItemDetail.uom = this.itemForm.value.uom;
-      receivedItemDetail.receivedQty = this.itemForm.value.receivedQty;
-      receivedItemDetail.itemCost = this.itemForm.value.itemCost;
       receivedItemDetail.documentedQty = this.itemForm.value.documentedQty;
+      receivedItemDetail.receivedQty = this.itemForm.value.receivedQty;
+      receivedItemDetail.documentedWeightKg =
+        this.itemForm.value.documentedWeightKg;
+      receivedItemDetail.receivedWeightKg =
+        this.itemForm.value.receivedWeightKg;
+
+      receivedItemDetail.itemCost = this.itemForm.value.itemCost;
       receivedItemDetail.remarks = this.itemForm.value.remarks;
 
       this.modalController.dismiss(receivedItemDetail, 'item');

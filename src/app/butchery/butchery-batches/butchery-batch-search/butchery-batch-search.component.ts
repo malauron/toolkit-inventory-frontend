@@ -76,7 +76,7 @@ export class ButcheryBatchSearchComponent
 
     if (warehouseName === undefined) {
       this.butcheryBatchService
-        .getButcheryBatches(pageNumber, pageSize)
+        .getButcheryBatches(pageNumber, pageSize, undefined, undefined, [true])
         .subscribe({
           next: this.procressResult(event),
           error: (error) => {
@@ -85,7 +85,7 @@ export class ButcheryBatchSearchComponent
         });
     } else {
       this.butcheryBatchService
-        .getButcheryBatches(pageNumber, pageSize, warehouseName)
+        .getButcheryBatches(pageNumber, pageSize, warehouseName, undefined, [true])
         .subscribe({
           next: this.procressResult(event),
           error: (error) => {
