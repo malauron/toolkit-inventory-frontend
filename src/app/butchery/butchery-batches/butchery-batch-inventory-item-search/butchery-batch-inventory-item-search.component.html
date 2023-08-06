@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar #batchSearchBar placeholder="Search batch"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="itemList.length > 0">
+    <ion-card class="favCard" *ngFor="let batch of itemList">
+      <ion-item lines="none" detail button (click)="onSelectBatch(batch)">
+        <ion-icon
+          class="warehouseIcon"
+          name="cube-outline"
+          color="primary"
+          slot="start"
+        ></ion-icon>
+        <ion-label>
+          <h3>{{ batch.butcheryBatchId }}</h3>
+          <h2>{{ batch.vendor.vendorName }}</h2>
+          <h3>{{ batch.vendorWarehouse.vendorWarehouseName }}</h3>
+          <h3>{{ batch.remarks }}</h3>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-grid>
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMore($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more warehouses..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
