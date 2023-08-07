@@ -159,10 +159,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
                   this.production.productionStatus = res.productionStatus;
                   if (this.production.productionStatus === 'Unposted') {
                     this.butcheryBatch = resultData.data;
-                    // this.productionSourceService.warehouse.next(this.warehouse);
-                    // this.messageBox(
-                    //   `Produced items will be stored to ${this.warehouse.warehouseName}.`
-                    // );
                   } else {
                     this.messageBox(
                       'Unable to update the production since its status has been tagged as ' +
