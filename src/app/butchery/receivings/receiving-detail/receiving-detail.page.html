@@ -24,8 +24,8 @@
     </ion-item>
     <ion-grid>
       <ion-row class="primary-info-row">
-        <ion-col>
-          <ion-item fill="outline" *ngIf="receiving.butcheryReceivingId">
+        <ion-col *ngIf="receiving.butcheryReceivingId">
+          <ion-item fill="outline">
             <ion-icon class="cartIcon" name="log-out-outline" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-label-elem" position="floating">Receiving No.</ion-label>
             <ion-input class="ion-input-elem" value="{{ receiving.butcheryReceivingId }}" readonly="true"></ion-input>
@@ -59,15 +59,15 @@
             <!-- **************************************** -->
 
             <!-- Badge that indicates the status of the receiving -->
-            <ion-badge #statusBadge [color]="receivingDetailsConfig.receivingStatusColor"
+            <ion-badge #statusBadge slot="end" [color]="receivingDetailsConfig.receivingStatusColor"
               *ngIf="receivingDetailsConfig.receivingStatusBadge">
               {{receiving.receivingStatus}}
             </ion-badge>
             <!-- *************************************** -->
           </ion-item>
         </ion-col>
-        <ion-col size-xs="12" size-lg="6">
-          <ion-item fill="outline" *ngIf="receiving.butcheryReceivingId">
+        <ion-col size-xs="12" size-lg="6" *ngIf="receiving.butcheryReceivingId">
+          <ion-item fill="outline">
             <ion-icon name="calendar-outline" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-label-elem" position="floating">Date Created</ion-label>
             <ion-input class="ion-input-elem" value="{{ receiving.dateCreated | date:'MMM dd, yyyy hh:mm a' }}"
@@ -87,7 +87,7 @@
             <ion-icon class="contactIcon" src="../../assets/icons/layers.svg" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-label-elem" position="floating">Batch</ion-label>
             <ion-input class="ion-input-elem" value="{{ butcheryBatch.vendorWarehouse.vendorWarehouseName
-            }} - {{ butcheryBatch.remarks }}" readonly="true"></ion-input>
+            }}-{{ butcheryBatch.remarks }}" readonly="true"></ion-input>
             <ion-button #statusButton slot="end"
               *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
               (click)="onBatchSearch()" fill="clear" size="small" mode="ios" id="click-trigger">
@@ -110,7 +110,7 @@
           <ion-item fill="outline">
             <ion-icon class="contactIcon" name="document-attach-outline" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-label-elem" position="floating">Reference No.</ion-label>
-            <ion-input maxlength="20"
+            <ion-input class="ion-input-elem" maxlength="20"
               [readonly]="receiving.receivingStatus !== 'Unposted' && receiving.receivingStatus !== undefined"
               #referenceCodeInput [value]="receiving.referenceCode"></ion-input>
             <ion-button #statusButton
@@ -133,29 +133,13 @@
 
   <ion-card class="card-holder" *ngIf="!isFetching">
     <div class="card-top"></div>
-    <!-- <ion-card-header class="ion-no-padding">
-      <ion-item lines="none"
-        *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined">
-        <ion-searchbar searchIcon="barcode-outline" placeholder="Barcode" (keypress)="onGetItemByItemCode($event)"
-          #itemSearchBar></ion-searchbar>
-        <ion-button class="ion-no-padding ion-no-margin" (click)="onManuallyAddReceivedItem()" slot="end" mode="ios"
-          fill="clear" size="large" color="success">
-          <ion-icon name="add"></ion-icon>
-        </ion-button>
-      </ion-item>
-      <ion-item lines="none" *ngIf="receiving.receivingStatus === 'Posted'">
-        <ion-label>Received Items</ion-label>
-      </ion-item>
-    </ion-card-header>
-    <div class="separator"></div> -->
-
     <ion-item lines="full">
       <ion-card-title>Items</ion-card-title>
     </ion-item>
 
     <ion-grid>
       <ion-row>
-        <ion-col size-xs="12" size-md="6" size-lg="4">
+        <ion-col size-xs="12" size-md="6" size-lg="4" *ngIf="receiving.receivingStatus === 'Unposted'">
           <ion-card class="card-item insert-item-card" button="true" (click)="onManuallyAddReceivedItem()">
             <ion-card-content class="insert-item">
               <ion-label>INSERT ITEM...</ion-label>
@@ -195,7 +179,7 @@
             </ion-item>
 
             <ion-item lines="none" class="card-footer">
-              <ion-card-title slot="end" mode="md" class="font-medium">{{ item.totalAmount| number:'1.2-2'
+              <ion-card-title slot="end" mode="md" class="font-medium">{{ item.totalAmount | number:'1.2-2'
                 }}</ion-card-title>
             </ion-item>
           </ion-card>

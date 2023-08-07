@@ -5,14 +5,14 @@
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-searchbar #batchSearchBar placeholder="Search batch"></ion-searchbar>
+    <ion-searchbar #itemSearchBar placeholder="Search batch item"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-grid *ngIf="itemList.length > 0">
-    <ion-card class="favCard" *ngFor="let batch of itemList">
-      <ion-item lines="none" detail button (click)="onSelectBatch(batch)">
+    <ion-card class="favCard" *ngFor="let item of itemList">
+      <ion-item lines="none" detail button (click)="onSelectBatch(item)">
         <ion-icon
           class="warehouseIcon"
           name="cube-outline"
@@ -20,10 +20,10 @@
           slot="start"
         ></ion-icon>
         <ion-label>
-          <h3>{{ batch.butcheryBatchId }}</h3>
-          <h2>{{ batch.vendor.vendorName }}</h2>
-          <h3>{{ batch.vendorWarehouse.vendorWarehouseName }}</h3>
-          <h3>{{ batch.remarks }}</h3>
+          <h3>{{ item.itemName }}</h3>
+          <!-- <h2>{{ item.vendor.vendorName }}</h2>
+          <h3>{{ item.vendorWarehouse.vendorWarehouseName }}</h3>
+          <h3>{{ item.remarks }}</h3> -->
         </ion-label>
       </ion-item>
     </ion-card>

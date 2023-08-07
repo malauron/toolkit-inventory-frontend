@@ -6,6 +6,7 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ButcheryBatchesService } from '../../services/butchery-batches.service';
 import { ButcheryBatch } from '../../classes/butchery-batch.model';
+import { Item } from 'src/app/classes/item.model';
 
 @Component({
   selector: 'app-butchery-batch-inventory-item-search',
@@ -18,10 +19,11 @@ export class ButcheryBatchInventoryItemSearchComponent implements OnInit, OnDest
 
   itemSearchBarSubscription: Subscription;
 
-  itemList: ButcheryBatch[] = [];
+  itemList: Item[] = [];
 
   searchValue = '';
 
+  batchId = 0;
   pageNumber = 0;
   totalPages = 0;
 
@@ -51,9 +53,9 @@ export class ButcheryBatchInventoryItemSearchComponent implements OnInit, OnDest
         this.pageNumber = 0;
         this.totalPages = 0;
         if (this.searchValue) {
-          this.getBatches(undefined, 0, this.config.pageSize, this.searchValue);
+          this.getBatchItems(undefined, 0, this.config.pageSize, this.searchValue);
         } else {
-          this.getBatches(undefined, 0, this.config.pageSize);
+          this.getBatchItems(undefined, 0, this.config.pageSize);
         }
       });
   }
@@ -64,17 +66,16 @@ export class ButcheryBatchInventoryItemSearchComponent implements OnInit, OnDest
     }, 5);
   }
 
-  getBatches(
+  getBatchItems(
     event?,
     pageNumber?: number,
     pageSize?: number,
-    warehouseName?: string
+    searchDesc?: string
   ) {
     this.isFetching = true;
-
-    if (warehouseName === undefined) {
+    if (searchDesc === undefined) {
       this.butcheryBatchService
-        .getButcheryBatches(pageNumber, pageSize, undefined, undefined, [true])
+        .getButcheryBatchInventoriesByBatchId(pageNumber, pageSize, this.batchId, undefined)
         .subscribe({
           next: this.procressResult(event),
           error: (error) => {
@@ -83,7 +84,7 @@ export class ButcheryBatchInventoryItemSearchComponent implements OnInit, OnDest
         });
     } else {
       this.butcheryBatchService
-        .getButcheryBatches(pageNumber, pageSize, warehouseName, undefined, [true])
+        .getButcheryBatchInventoriesByBatchId(pageNumber, pageSize, this.batchId, searchDesc)
         .subscribe({
           next: this.procressResult(event),
           error: (error) => {
@@ -95,7 +96,7 @@ export class ButcheryBatchInventoryItemSearchComponent implements OnInit, OnDest
 
   procressResult(event?) {
     return (data) => {
-      this.itemList = this.itemList.concat(data._embedded.butcheryBatches);
+      this.itemList = this.itemList.concat(data._embedded.items);
       this.totalPages = data.page.totalPages;
       this.isFetching = false;
       if (event) {
@@ -113,14 +114,14 @@ export class ButcheryBatchInventoryItemSearchComponent implements OnInit, OnDest
     this.pageNumber++;
 
     if (this.searchValue) {
-      this.getBatches(
+      this.getBatchItems(
         event,
         this.pageNumber,
         this.config.pageSize,
         this.searchValue
       );
     } else {
-      this.getBatches(event, this.pageNumber, this.config.pageSize);
+      this.getBatchItems(event, this.pageNumber, this.config.pageSize);
     }
   }
 
@@ -129,6 +130,6 @@ export class ButcheryBatchInventoryItemSearchComponent implements OnInit, OnDest
   }
 
   onSelectBatch(batch: ButcheryBatch) {
-    this.modalController.dismiss(batch, 'butcheryBatch');
+    this.modalController.dismiss(batch, 'item');
   }
 }

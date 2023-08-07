@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -12,6 +13,7 @@ import { Item } from 'src/app/classes/item.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { ItemSearchComponent } from 'src/app/items/item-search/item-search.component';
 import { ItemsService } from 'src/app/services/items.service';
+import { ButcheryBatchInventoryItemSearchComponent } from '../../butchery-batches/butchery-batch-inventory-item-search/butchery-batch-inventory-item-search.component';
 import { ButcheryBatch } from '../../classes/butchery-batch.model';
 import { ReceivedItemDetail } from './received-item.model';
 import { ReceivedItemService } from './received-item.service';
@@ -25,8 +27,7 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
   @ViewChild('uomSelect', { static: true }) uomSelect: IonSelect;
   @ViewChild('receivedQtyInput', { static: true }) receivedQtyInput: IonInput;
   @ViewChild('itemCostInput', { static: true }) itemCostInput: IonInput;
-  @ViewChild('documentedWeightInput', { static: true })
-  documentedWeightInput: IonInput;
+  @ViewChild('documentedWeightInput', { static: true }) documentedWeightInput: IonInput;
   @ViewChild('actualWeightInput', { static: true }) actualWeightInput: IonInput;
 
   receivedItemSub: Subscription;
@@ -202,7 +203,7 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
         this.modalController
           .create({
             component: ItemSearchComponent,
-            cssClass: 'custom-modal-styles',
+            cssClass: 'custom-modal-styles'
           })
           .then((modalSearch) => {
             modalSearch.present();
@@ -212,8 +213,9 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
       } else {
         this.modalController
           .create({
-            component: ItemSearchComponent,
+            component: ButcheryBatchInventoryItemSearchComponent,
             cssClass: 'custom-modal-styles',
+            componentProps: { batchId: this.batch.butcheryBatchId }
           })
           .then((modalSearch) => {
             modalSearch.present();

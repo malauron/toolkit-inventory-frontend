@@ -30,6 +30,7 @@ import { WarehousesService } from 'src/app/services/warehouses.service';
 import { User } from 'src/app/Security/classes/user.model';
 import { AuthenticationService } from 'src/app/Security/services/authentication.service';
 import { ButcheryBatch } from '../../classes/butchery-batch.model';
+import { VendorWarehouse } from 'src/app/classes/vendor-warehouse.model';
 
 @Component({
   selector: 'app-receiving-detail',
@@ -81,6 +82,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     this.receiving = new ButcheryReceiving();
     this.warehouse = new Warehouse();
     this.butcheryBatch = new ButcheryBatch();
+    this.butcheryBatch.vendorWarehouse = new VendorWarehouse();
     this.vendor = new Vendor();
     this.receivingDetailsConfig = new ReceivingDetailsConfig();
 
@@ -167,6 +169,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
           },
         });
       } else {
+        this.receiving.receivingStatus = 'Unposted';
         this.user = this.authenticationService.getUserFromLocalCache();
         this.warehousesService
           .getWarehouseByUserId(this.user.userId)
@@ -224,10 +227,12 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.receivedItemService.receivedItemDetail.next(receivingItem);
+
       this.modalSearch
         .create({
           component: ReceivedItemComponent,
           cssClass: 'custom-modal-styles',
+          componentProps: { batch: this.butcheryBatch }
         })
         .then((modalSearch) => {
           modalSearch.present();
@@ -370,6 +375,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
                 });
             } else {
               this.butcheryBatch = resultData.data;
+              this.vendor = resultData.data.vendor;
             }
           }
           this.modalOpen = false;
