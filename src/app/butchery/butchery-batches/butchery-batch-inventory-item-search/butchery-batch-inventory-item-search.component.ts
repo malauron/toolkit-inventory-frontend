@@ -129,7 +129,7 @@ export class ButcheryBatchInventoryItemSearchComponent implements OnInit, OnDest
     this.modalController.dismiss(null, 'dismissModal');
   }
 
-  onSelectBatch(batch: ButcheryBatch) {
-    this.modalController.dismiss(batch, 'item');
+  onSelectBatch(item: Item) {
+    this.modalController.dismiss(item, 'item');
   }
 }

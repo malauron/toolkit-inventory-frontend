@@ -23,6 +23,20 @@ ion-card {
   margin: 2rem 0;
 }
 
+.spinner {
+  z-index: 100;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  ion-spinner {
+    stroke: var(--ion-color-primary);
+    fill: var(--ion-color-primary);
+    transform: scale(3);
+  }
+}
+
 // ion-searchbar {
 //   --box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.19);
 //   --background: #f6f6f6;

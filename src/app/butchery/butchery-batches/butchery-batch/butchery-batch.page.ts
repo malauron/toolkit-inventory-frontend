@@ -38,6 +38,7 @@ export class ButcheryBatchPage implements OnInit {
 
   modalOpen = false;
   isUploading = false;
+  isFetching = false;
   showElems = true;
 
   dateValue;
@@ -56,6 +57,8 @@ export class ButcheryBatchPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.isFetching = true;
+
     this.route.paramMap.subscribe((paramMap) => {
       // Check whether paramMap is empty or not
       if (!paramMap.has('batchId')) {
@@ -111,6 +114,7 @@ export class ButcheryBatchPage implements OnInit {
       this.pullLg = 0;
       this.showElems = true;
     }
+    this.isFetching = false;
   }
 
   onShowPopOver(event: Event) {

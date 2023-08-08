@@ -140,7 +140,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     if (!this.modalOpen) {
       this.modalOpen = true;
       this.modalSearch
-        .create({ component: ButcheryBatchSearchComponent })
+        .create({ component: ButcheryBatchSearchComponent, cssClass: 'custom-modal-styles' })
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
@@ -151,7 +151,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
               const productionDto = new ButcheryProductionDto();
               productionDto.butcheryProductionId =
                 this.production.butcheryProductionId;
-                productionDto.butcheryBatch = resultData.data;
+              productionDto.butcheryBatch = resultData.data;
               this.dataHaveChanged = true;
               this.productionsService
                 .putProduction(productionDto)
@@ -262,7 +262,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
             .subscribe((res) => {
               if (res !== null) {
                 const pSource = new ButcheryProductionSource();
-                pSource.butcheryReceivingItem = res;
+                // pSource.butcheryReceivingItem = res;
                 pSource.requiredQty = requiredQty;
                 this.addProductionSource(pSource);
               } else {
@@ -314,14 +314,25 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
         return;
       }
 
+      if (!this.butcheryBatch.butcheryBatchId) {
+        this.messageBox('Please specify a batch.');
+        this.modalOpen = false;
+        return;
+      }
+
       this.modalSearch
-        .create({ component: ProductionSourceComponent })
+        .create({
+          component: ProductionSourceComponent,
+          cssClass: 'custom-modal-styles',
+          componentProps: { batch: this.butcheryBatch },
+        })
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
         })
         .then((resultData) => {
           if (resultData.role === 'item') {
+            console.log(resultData.data);
             this.addProductionSource(resultData.data);
           }
           this.modalOpen = false;
@@ -465,8 +476,8 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   ) {
     for (const key in this.productionItems) {
       if (pSource === this.productionItems[key]) {
-        this.productionSources[key].butcheryReceivingItem =
-          productionSource.butcheryReceivingItem;
+        // this.productionSources[key].butcheryReceivingItem =
+        //   productionSource.butcheryReceivingItem;
         this.productionSources[key].requiredQty = productionSource.requiredQty;
       }
     }

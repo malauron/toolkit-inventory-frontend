@@ -117,51 +117,51 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             this.receivingItems = resData.butcheryReceivingItems;
             this.totalAmount = this.receiving.totalAmount;
 
-            if (this.receiving.receivingStatus === 'Posted') {
-              this.productionsService
-                .getProductionSources(resData.butcheryReceivingId)
-                .subscribe((res) => {
-                  this.productions = [];
-                  for (const key in res.butcheryProductionSourceShortViews) {
-                    if (
-                      res.butcheryProductionSourceShortViews.hasOwnProperty(key)
-                    ) {
-                      this.productions = this.productions.concat(
-                        res.butcheryProductionSourceShortViews[key]
-                          .butcheryProduction
-                      );
-                    }
-                  }
+            // if (this.receiving.receivingStatus === 'Posted') {
+            //   this.productionsService
+            //     .getProductionSources(resData.butcheryReceivingId)
+            //     .subscribe((res) => {
+            //       this.productions = [];
+            //       for (const key in res.butcheryProductionSourceShortViews) {
+            //         if (
+            //           res.butcheryProductionSourceShortViews.hasOwnProperty(key)
+            //         ) {
+            //           this.productions = this.productions.concat(
+            //             res.butcheryProductionSourceShortViews[key]
+            //               .butcheryProduction
+            //           );
+            //         }
+            //       }
 
-                  for (const key in this.productions) {
-                    if (this.productions.hasOwnProperty(key)) {
-                      const prodSrcs =
-                        this.productions[key].butcheryProductionSources;
+            //       for (const key in this.productions) {
+            //         if (this.productions.hasOwnProperty(key)) {
+            //           const prodSrcs =
+            //             this.productions[key].butcheryProductionSources;
 
-                      for (const srcKey in prodSrcs) {
-                        if (prodSrcs.hasOwnProperty(srcKey)) {
-                          this.totalProductionSourceQty +=
-                            prodSrcs[srcKey].requiredQty;
-                        }
-                      }
+            //           for (const srcKey in prodSrcs) {
+            //             if (prodSrcs.hasOwnProperty(srcKey)) {
+            //               this.totalProductionSourceQty +=
+            //                 prodSrcs[srcKey].requiredQty;
+            //             }
+            //           }
 
-                      const prodItms =
-                        this.productions[key].butcheryProductionItems;
+            //           const prodItms =
+            //             this.productions[key].butcheryProductionItems;
 
-                      for (const itmKey in prodItms) {
-                        if (prodItms.hasOwnProperty(itmKey)) {
-                          this.totalProductionItemQty +=
-                            prodItms[itmKey].producedQty;
-                        }
-                      }
-                    }
-                  }
+            //           for (const itmKey in prodItms) {
+            //             if (prodItms.hasOwnProperty(itmKey)) {
+            //               this.totalProductionItemQty +=
+            //                 prodItms[itmKey].producedQty;
+            //             }
+            //           }
+            //         }
+            //       }
 
-                  this.isFetching = false;
-                });
-            } else {
+            //       this.isFetching = false;
+            //     });
+            // } else {
               this.isFetching = false;
-            }
+            // }
           },
           error: (err) => {
             this.navCtrl.navigateBack('/tabs/receivings');

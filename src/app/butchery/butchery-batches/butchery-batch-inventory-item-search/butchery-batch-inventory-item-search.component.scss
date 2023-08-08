@@ -21,3 +21,17 @@ ion-card {
 .icon {
   filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg) brightness(89%) contrast(108%);
 }
+
+.spinner {
+  z-index: 100;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+ion-spinner {
+  stroke: var(--ion-color-primary);
+  fill: var(--ion-color-primary);
+  transform: scale(3);
+}

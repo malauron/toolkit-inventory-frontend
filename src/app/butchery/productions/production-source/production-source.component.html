@@ -15,54 +15,78 @@
 </ion-header>
 
 <ion-content>
-  <ion-card class="card-holder">
-    <div class="card-top"></div>
-    <form [formGroup]="itemForm">
-      <ion-item fill="outline" lines="none">
-        <ion-label *ngIf="pSource.butcheryReceivingItem">
-          <p class="font-x-small">
-            {{ pSource.butcheryReceivingItem.butcheryReceiving.butcheryReceivingId.toString().padStart(8, "0") }} -
-            {{ pSource.butcheryReceivingItem.butcheryReceiving.dateCreated | date: "MMM dd, yyyy hh:mm a" }}
-          </p>
-          <h6>
-            {{ pSource.butcheryReceivingItem.butcheryReceivingItemId.toString().padStart(8, "0") }}
-          </h6>
-          <h3>{{ pSource.butcheryReceivingItem.item.itemName }}</h3>
-          <h5>
-            {{ pSource.butcheryReceivingItem.receivedQty | number: "1.0-2"
-            }}{{ pSource.butcheryReceivingItem.requiredUom.uomCode }}
-          </h5>
-          <p class="font-x-small">{{ pSource.butcheryReceivingItem.butcheryReceiving.warehouse.warehouseName }}</p>
-        </ion-label>
-        <ion-icon
-          class="receivedItemIcon"
-          slot="start"
-          color="primary"
-          name="log-in-outline"
-        ></ion-icon>
-        <ion-button
-          mode="ios"
-          class="search-button"
-          slot="end"
-          size="small"
-          fill="clear"
-          (click)="onReceivedItemSearch()"
-        >
-          <ion-icon name="search-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-      </ion-item>
+  <!-- <div class="card-top"></div> -->
+  <form [formGroup]="itemForm">
+    <ion-item fill="outline">
+      <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
+      <ion-label class="ion-label-elem" position="floating"
+        >Item Description</ion-label
+      >
+      <ion-input
+        class="ion-input-elem"
+        formControlName="item"
+        readonly="true"
+      ></ion-input>
+      <ion-button
+        mode="ios"
+        class="search-button"
+        slot="end"
+        size="small"
+        fill="clear"
+        (click)="onReceivedItemSearch()"
+      >
+        <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item fill="outline">
+      <ion-icon slot="start" src="../../assets/icons/measuring-tape.svg" color="primary"></ion-icon>
+      <ion-label class="ion-label-elem" position="floating">Unit of Measure</ion-label>
+      <ion-input
+        class="ion-input-elem"
+        formControlName="requiredUom"
+        readonly="true"
+      ></ion-input>
+      <ion-button
+        mode="ios"
+        class="search-button"
+        slot="end"
+        size="small"
+        fill="clear"
+        (click)="onReceivedItemSearch()"
+      >
+        <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
 
-      <ion-item fill="outline">
-        <ion-label position="floating">Pulled Out Qty.</ion-label>
-        <ion-input
-          #requiredQtyInput
-          formControlName="requiredQty"
-          type="number"
-          inputmode="decimal"
-          min="0"
-          value="0"
-        ></ion-input>
-      </ion-item>
-    </form>
-  </ion-card>
+    <ion-item fill="outline">
+      <ion-icon slot="start" src="../../assets/icons/boxes-icon.svg" color="primary"></ion-icon>
+      <ion-label class="ion-label-elem" position="floating"
+        >Pulled Out Qty.</ion-label
+      >
+      <ion-input
+        class="ion-input-elem qty-input"
+        #requiredQtyInput
+        formControlName="requiredQty"
+        type="number"
+        inputmode="decimal"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item fill="outline">
+      <ion-icon slot="start" src="../../assets/icons/kg-measure-weight-icon.svg" color="primary"></ion-icon>
+      <ion-label class="ion-label-elem" position="floating"
+        >Total Weight</ion-label
+      >
+      <ion-input
+        class="ion-input-elem qty-input"
+        #requiredWeightKgInput
+        formControlName="requiredWeightKg"
+        type="number"
+        inputmode="decimal"
+      ></ion-input>
+    </ion-item>
+  </form>
+  <ion-button class="save-button" expand="block" (click)="onSaveReceivedItem()"
+    >save</ion-button
+  >
 </ion-content>

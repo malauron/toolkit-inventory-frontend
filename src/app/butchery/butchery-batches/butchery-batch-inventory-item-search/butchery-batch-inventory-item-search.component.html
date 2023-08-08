@@ -10,6 +10,10 @@
 </ion-header>
 
 <ion-content>
+  <div class="spinner" *ngIf="isFetching">
+    <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
+  </div>
+
   <ion-grid *ngIf="itemList.length > 0">
     <ion-card class="favCard" *ngFor="let item of itemList">
       <ion-item lines="none" detail button (click)="onSelectBatch(item)">
