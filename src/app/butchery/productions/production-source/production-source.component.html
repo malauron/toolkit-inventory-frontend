@@ -6,11 +6,11 @@
       </ion-button>
     </ion-buttons>
     <ion-title>Production Source</ion-title>
-    <ion-buttons slot="primary">
+    <!-- <ion-buttons slot="primary">
       <ion-button (click)="onSaveReceivedItem()">
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
@@ -24,8 +24,8 @@
       >
       <ion-input
         class="ion-input-elem"
-        formControlName="item"
         readonly="true"
+        [value]="itemName"
       ></ion-input>
       <ion-button
         mode="ios"
@@ -43,7 +43,7 @@
       <ion-label class="ion-label-elem" position="floating">Unit of Measure</ion-label>
       <ion-input
         class="ion-input-elem"
-        formControlName="requiredUom"
+        [value]="uomName"
         readonly="true"
       ></ion-input>
       <ion-button
@@ -86,7 +86,7 @@
       ></ion-input>
     </ion-item>
   </form>
-  <ion-button class="save-button" expand="block" (click)="onSaveReceivedItem()"
+  <ion-button [disabled]="!itemForm.valid" class="save-button" expand="block" (click)="onSaveReceivedItem()"
     >save</ion-button
   >
 </ion-content>

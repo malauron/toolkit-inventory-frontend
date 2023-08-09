@@ -89,12 +89,13 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
       const butcheryProductionId = Number(paramMap.get('butcheryProductionId'));
       if (butcheryProductionId > 0) {
-        this.productionsService.getProduction(butcheryProductionId).subscribe(
-          (resData) => {
+        this.productionsService.getProduction(butcheryProductionId).subscribe({
+          next: (resData) => {
             if (!resData.butcheryProductionId) {
               this.navCtrl.navigateBack('/tabs/productions');
               return;
             }
+            console.log(resData);
             this.production.butcheryProductionId = resData.butcheryProductionId;
             this.production.totalAmount = resData.totalAmount;
             this.production.productionStatus = resData.productionStatus;
@@ -110,11 +111,11 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
             this.isFetching = false;
           },
-          (err) => {
+          error: (err) => {
             this.navCtrl.navigateBack('/tabs/productions');
             return;
           }
-        );
+        });
       } else {
         this.user = this.authenticationService.getUserFromLocalCache();
         this.warehousesService
@@ -210,6 +211,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     productionItem.baseQty = baseQty;
     productionItem.requiredUom = itemDto.item.uom;
     productionItem.producedQty = itemQty;
+    productionItem.producedWeightKg = itemQty;
     productionItem.productionCost = cost;
     productionItem.totalAmount = baseQty * itemQty * cost;
 
@@ -257,18 +259,18 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
             fullBarcode.substring(numSep + 1, fullBarcode.length)
           );
 
-          this.butcheryReceivingsService
-            .getReceivingItem(sourceId)
-            .subscribe((res) => {
-              if (res !== null) {
-                const pSource = new ButcheryProductionSource();
-                // pSource.butcheryReceivingItem = res;
-                pSource.requiredQty = requiredQty;
-                this.addProductionSource(pSource);
-              } else {
-                this.messageBox('Production source not found.');
-              }
-            });
+          // this.butcheryReceivingsService
+          //   .getReceivingItem(sourceId)
+          //   .subscribe((res) => {
+          //     if (res !== null) {
+          //       const pSource = new ButcheryProductionSource();
+          //       pSource.butcheryReceivingItem = res;
+          //       pSource.requiredQty = requiredQty;
+          //       this.addProductionSource(pSource);
+          //     } else {
+          //       this.messageBox('Production source not found.');
+          //     }
+          //   });
         }
       }
 
@@ -332,7 +334,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
         })
         .then((resultData) => {
           if (resultData.role === 'item') {
-            console.log(resultData.data);
             this.addProductionSource(resultData.data);
           }
           this.modalOpen = false;

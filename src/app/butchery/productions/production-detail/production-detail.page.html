@@ -253,6 +253,12 @@
                 }}</ion-card-title
               >
             </ion-item>
+
+            <ion-item lines="none" class="item-info">
+              <ion-card-subtitle>
+                {{ source.requiredQty| number:'1.0-2' }}{{ source.requiredUom.uomCode }} / {{ source.requiredWeightKg| number:'1.0-2' }}Kg
+              </ion-card-subtitle>
+            </ion-item>
             <!-- <ion-item lines="none" class="item-info">
               <ion-card-subtitle class="ion-no-padding ion-no-margin"
                 >{{ source.butcheryReceivingItem.butcheryReceiving.dateCreated |
@@ -273,13 +279,13 @@
               >
             </ion-item> -->
 
-            <ion-item lines="none" class="card-footer">
+            <!-- <ion-item lines="none" class="card-footer">
               <ion-card-title slot="end" mode="md" class="font-medium"
                 >Pulled out {{ source.requiredQty| number:'1.0-2' }}{{
                 source.requiredUom.uomCode
                 }}.</ion-card-title
               >
-            </ion-item>
+            </ion-item> -->
           </ion-card>
         </ion-col>
       </ion-row>

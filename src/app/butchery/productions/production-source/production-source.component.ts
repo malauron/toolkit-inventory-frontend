@@ -18,15 +18,18 @@ import { ButcheryProductionSource } from '../../classes/butchery-production-sour
 import { ReceivingItemSearchComponent } from '../../receivings/receiving-item-search/receiving-item-search.component';
 import { ReceivingItemSearchService } from '../../receivings/receiving-item-search/receiving-item-search.service';
 import { ProductionSourceService } from './production-source.service';
+import { hasItemIdValidator, hasUomIdValidator } from '../../utils/custom-Validators.directive';
 
 @Component({
   selector: 'app-production-source',
   templateUrl: './production-source.component.html',
   styleUrls: ['./production-source.component.scss'],
 })
+
 export class ProductionSourceComponent implements OnInit, OnDestroy {
   @ViewChild('requiredQtyInput', { static: true }) requiredQtyInput: IonInput;
-  @ViewChild('requiredWeightKgInput', { static: true }) requiredWeightKgInput: IonInput;
+  @ViewChild('requiredWeightKgInput', { static: true })
+  requiredWeightKgInput: IonInput;
 
   requiredQtySub: Subscription;
   requiredWeightKgSub: Subscription;
@@ -52,6 +55,14 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
     private toastCtrl: ToastController
   ) {}
 
+  get itemName() {
+    return this.itemForm.value.item.itemName;
+  }
+
+  get uomName() {
+    return this.itemForm.value.requiredUom.uomName;
+  }
+
   ngOnDestroy(): void {
     this.requiredQtySub.unsubscribe();
     this.requiredWeightKgSub.unsubscribe();
@@ -60,13 +71,13 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.itemForm = new FormGroup({
-      item: new FormControl({value: this.itemForm.value.item.itemName, disabled: false }, {
+      item: new FormControl(new Item(), {
         updateOn: 'blur',
-        validators: [Validators.required],
+        validators: [Validators.required, hasItemIdValidator()],
       }),
-      requiredUom: new FormControl(null, {
+      requiredUom: new FormControl(new Uom(), {
         updateOn: 'blur',
-        validators: [Validators.required],
+        validators: [Validators.required, hasUomIdValidator()],
       }),
       requiredQty: new FormControl(null, {
         updateOn: 'blur',
@@ -77,17 +88,6 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
         validators: [Validators.required, Validators.min(0)],
       }),
     });
-
-    // this.itemForm.patchValue({
-    //   item: new Item(),
-    //   requiredUom: new Uom(),
-    //   requiredQty: 0,
-    //   requiredWeightKg: 0,
-    // });
-
-    // this.itemForm.get('item').valueChanges.subscribe((res) => {
-    //   console.log(res);
-    // });
 
     this.requiredQtySub = this.requiredQtyInput.ionFocus.subscribe(
       this.onRequiredQtyInputFocus()
@@ -123,7 +123,6 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
       this.modalOpen = true;
       this.receivingItemSearchService.warehouse.next(this.warehouse);
       this.modalController
-        // .create({ component: ReceivingItemSearchComponent })
         .create({
           component: ButcheryBatchInventoryItemSearchComponent,
           cssClass: 'custom-modal-styles',
@@ -135,14 +134,10 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
         })
         .then((resultData) => {
           if (resultData.role === 'item') {
-
             this.itemForm.patchValue({
               item: resultData.data,
-              requiredUom: resultData.data.uom
+              requiredUom: resultData.data.uom,
             });
-
-            // this.itemForm.value.item = resultData.data;
-            // this.itemForm.value.requiredUom = resultData.data.uom;
             const qtyElem = this.requiredQtyInput.getInputElement();
             qtyElem.then((el) => el.focus());
           }
@@ -157,9 +152,6 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
     }
 
     this.isSaving = true;
-
-    console.log(this.itemForm);
-
     if (!this.pSource) {
       this.isSaving = false;
       return;
@@ -169,6 +161,8 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
       this.messageBox('Plrease provide a valid production source information.');
       this.isSaving = false;
     } else {
+      this.pSource.item = this.itemForm.value.item;
+      this.pSource.requiredUom = this.itemForm.value.requiredUom;
       this.pSource.requiredQty = this.itemForm.value.requiredQty;
       this.pSource.requiredWeightKg = this.itemForm.value.requiredWeightKg;
 
