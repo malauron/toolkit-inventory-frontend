@@ -24,6 +24,7 @@ import { ButcheryProduction } from '../../classes/butchery-production.model';
 import { ProductionDetailsConfig } from '../../config/production-details.config';
 import { ButcheryProductionsService } from '../../services/butchery-productions.service';
 import { ButcheryReceivingsService } from '../../services/butchery-receivings.service';
+import { ProductionItemComponent } from '../production-item/production-item.component';
 import { ProductionSourceComponent } from '../production-source/production-source.component';
 import { ProductionSourceService } from '../production-source/production-source.service';
 
@@ -95,7 +96,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
               this.navCtrl.navigateBack('/tabs/productions');
               return;
             }
-            console.log(resData);
             this.production.butcheryProductionId = resData.butcheryProductionId;
             this.production.totalAmount = resData.totalAmount;
             this.production.productionStatus = resData.productionStatus;
@@ -210,11 +210,10 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     productionItem.baseUom = itemDto.item.uom;
     productionItem.baseQty = baseQty;
     productionItem.requiredUom = itemDto.item.uom;
-    productionItem.producedQty = itemQty;
+    productionItem.producedQty = 1;
     productionItem.producedWeightKg = itemQty;
     productionItem.productionCost = cost;
     productionItem.totalAmount = baseQty * itemQty * cost;
-
     if (this.production.butcheryProductionId) {
       productionItem.butcheryProduction = this.production;
       this.productionsService
@@ -223,9 +222,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           this.dataHaveChanged = true;
           this.production.productionStatus = res.productionStatus;
           if (this.production.productionStatus === 'Unposted') {
-            // this.productionItems = this.productionItems.concat(
-            //   res.butcheryProductionItem
-            // );
             this.productionItems.unshift(res.butcheryProductionItem);
             this.getTotalAmt();
             this.messageBox('New production item has been added.');
@@ -237,9 +233,62 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           }
         });
     } else {
-      // this.productionItems = this.productionItems.concat(productionItem);
       this.productionItems.unshift(productionItem);
       this.getTotalAmt();
+    }
+  }
+
+  onManuallyAddProductionItem() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+
+      this.modalSearch
+        .create({
+          component: ProductionItemComponent,
+          cssClass: 'custom-modal-styles',
+          // componentProps: { batch: this.butcheryBatch },
+        })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'item') {
+            // this.addProductionSource(resultData.data);
+            const producedItem = new ButcheryProductionItem();
+            producedItem.item = resultData.data.item;
+            producedItem.barcode = resultData.data.item.itemCode;
+            producedItem.itemClass = resultData.data.item.itemClass;
+            producedItem.requiredUom = resultData.data.requiredUom;
+            producedItem.producedQty = resultData.data.producedQty;
+            producedItem.producedWeightKg = resultData.data.producedWeightKg;
+            producedItem.productionCost = resultData.data.item.price;
+            producedItem.totalAmount = resultData.data.item.price * resultData.data.producedWeightKg;
+            if (this.production.butcheryProductionId) {
+              producedItem.butcheryProduction = this.production;
+              this.productionsService
+                .putProductionItem(producedItem)
+                .subscribe((res) => {
+                  this.dataHaveChanged = true;
+                  this.production.productionStatus = res.productionStatus;
+                  if (this.production.productionStatus === 'Unposted') {
+                    this.productionItems.unshift(res.butcheryProductionItem);
+                    this.getTotalAmt();
+                    this.messageBox('New production item has been added.');
+                  } else {
+                    this.messageBox(
+                      'Unable to update the production since its status has been tagged as ' +
+                        this.production.productionStatus
+                    );
+                  }
+                });
+            } else {
+              this.productionItems.unshift(producedItem);
+              this.getTotalAmt();
+            }
+          }
+          this.modalOpen = false;
+        });
     }
   }
 
@@ -287,10 +336,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           this.dataHaveChanged = true;
           this.production.productionStatus = res.productionStatus;
           if (this.production.productionStatus === 'Unposted') {
-            // this.productionSources = this.productionSources.concat(
-            //   res.butcheryProductionSourceView
-            // );
-
             this.productionSources.unshift(res.butcheryProductionSourceView);
             this.messageBox('New production source has been added.');
           } else {
@@ -301,7 +346,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           }
         });
     } else {
-      // this.productionSources = this.productionSources.concat(productionSource);
       this.productionSources.unshift(productionSource);
     }
   }
@@ -477,8 +521,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   ) {
     for (const key in this.productionItems) {
       if (pSource === this.productionItems[key]) {
-        // this.productionSources[key].butcheryReceivingItem =
-        //   productionSource.butcheryReceivingItem;
         this.productionSources[key].requiredQty = productionSource.requiredQty;
       }
     }

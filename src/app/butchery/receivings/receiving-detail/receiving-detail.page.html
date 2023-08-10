@@ -171,8 +171,8 @@
               <ion-card-title mode="md" class="ion-no-padding ion-no-margin font-medium">{{ item.item.itemName
                 }}</ion-card-title></ion-item><ion-item lines="none" class="item-info">
               <ion-card-subtitle>{{ item.receivedQty | number:'1.0-2' }}{{
-                item.requiredUom.uomCode }}@{{ item.itemCost | number:'1.0-2'
-                }}/{{ item.requiredUom.uomCode }}</ion-card-subtitle>
+                item.requiredUom.uomCode }} / {{ item.receivedWeightKg | number:'1.0-2'
+                }}Kg</ion-card-subtitle>
             </ion-item>
             <ion-item lines="none" class="item-info">
               <ion-card-subtitle class="ion-no-padding ion-no-margin">{{ item.remarks }}</ion-card-subtitle>

@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Produced Item</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="itemForm">
+    <ion-item fill="outline">
+      <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
+      <ion-label class="ion-label-elem" position="floating"
+        >Item Description</ion-label
+      >
+      <ion-input
+        class="ion-input-elem"
+        readonly="true"
+        [value]="itemName"
+      ></ion-input>
+      <ion-button
+        mode="ios"
+        class="search-button"
+        slot="end"
+        size="small"
+        fill="clear"
+        (click)="onItemSearch()"
+      >
+        <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item fill="outline">
+      <ion-icon slot="start" src="../../assets/icons/measuring-tape.svg" color="primary"></ion-icon>
+      <ion-label class="ion-label-elem" position="floating">Unit of Measure</ion-label>
+      <ion-input
+        class="ion-input-elem"
+        [value]="uomName"
+        readonly="true"
+      ></ion-input>
+      <ion-button
+        mode="ios"
+        class="search-button"
+        slot="end"
+        size="small"
+        fill="clear"
+        (click)="onItemSearch()"
+      >
+        <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-item fill="outline">
+      <ion-icon slot="start" src="../../assets/icons/boxes-icon.svg" color="primary"></ion-icon>
+      <ion-label class="ion-label-elem" position="floating"
+        >Pulled Out Qty.</ion-label
+      >
+      <ion-input
+        class="ion-input-elem qty-input"
+        #producedQtyInput
+        formControlName="producedQty"
+        type="number"
+        inputmode="decimal"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item fill="outline">
+      <ion-icon slot="start" src="../../assets/icons/kg-measure-weight-icon.svg" color="primary"></ion-icon>
+      <ion-label class="ion-label-elem" position="floating"
+        >Total Weight</ion-label
+      >
+      <ion-input
+        class="ion-input-elem qty-input"
+        #producedWeightKgInput
+        formControlName="producedWeightKg"
+        type="number"
+        inputmode="decimal"
+      ></ion-input>
+    </ion-item>
+  </form>
+  <ion-button [disabled]="!itemForm.valid" class="save-button" expand="block" (click)="onSaveReceivedItem()"
+    >save</ion-button
+  >
+</ion-content>

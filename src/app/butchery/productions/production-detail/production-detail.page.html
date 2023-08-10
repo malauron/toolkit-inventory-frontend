@@ -195,7 +195,7 @@
           (keypress)="onGetSourceBySourceId($event)"
           #sourceSearchBar
         ></ion-searchbar>
-        <ion-button
+        <!-- <ion-button
           class="ion-no-padding ion-no-margin"
           (click)="onManuallyAddProductionSource()"
           slot="end"
@@ -205,13 +205,20 @@
           color="success"
         >
           <ion-icon name="add"></ion-icon>
-        </ion-button>
+        </ion-button> -->
       </ion-item>
     </ion-card-header>
     <div class="separator"></div>
 
     <ion-grid>
       <ion-row>
+        <ion-col size-xs="12" size-md="6" size-lg="4" *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined">
+          <ion-card class="card-item insert-item-card" button="true" (click)="onManuallyAddProductionSource()">
+            <ion-card-content class="insert-item">
+              <ion-label>INSERT ITEM...</ion-label>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
         <ion-col
           size-xs="12"
           size-md="6"
@@ -316,6 +323,13 @@
 
     <ion-grid>
       <ion-row>
+        <ion-col size-xs="12" size-md="6" size-lg="4" *ngIf="production.productionStatus === 'Unposted'  || production.productionStatus === undefined">
+          <ion-card class="card-item insert-item-card" button="true" (click)="onManuallyAddProductionItem()">
+            <ion-card-content class="insert-item">
+              <ion-label>INSERT ITEM...</ion-label>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
         <ion-col
           size-xs="12"
           size-md="6"
@@ -354,9 +368,8 @@
             </ion-item>
             <ion-item lines="none" class="item-info">
               <ion-card-subtitle class="ion-no-padding ion-no-margin"
-                >{{ item.producedQty }}{{item.requiredUom.uomCode }} @{{
-                item.productionCost | number:'1.2-2' }}/{{
-                item.requiredUom.uomCode }}</ion-card-subtitle
+                >{{ item.producedQty }}{{item.requiredUom.uomCode }} / {{
+                item.producedWeightKg | number:'1.2-2' }}Kg</ion-card-subtitle
               >
             </ion-item>
 

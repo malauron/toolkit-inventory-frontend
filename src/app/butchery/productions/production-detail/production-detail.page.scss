@@ -22,6 +22,26 @@ ion-searchbar {
   margin: 20px 20px 0 20px;
 }
 
+
+.insert-item-card {
+  border: 3px dashed rgba($color: #4e4d4d, $alpha: 0.5);
+}
+
+.insert-item {
+  height: 11rem;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  ion-label {
+    font-size: 1.1rem;
+    color: var(--ion-color-medium);
+  }
+}
+
 .card-top {
   border-top: 5px solid var(--ion-color-primary);
 }

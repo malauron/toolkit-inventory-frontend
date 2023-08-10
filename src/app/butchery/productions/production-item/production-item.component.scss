@@ -1,0 +1,55 @@
+ion-content {
+  --padding-start: 5%;
+  --padding-end: 5%;
+  --padding-top: 5%;
+
+  ion-item {
+    padding: 0.6rem 0.2rem;
+  }
+
+  icon-img {
+    font-size: 1px;
+  }
+
+  form {
+    margin: 0;
+    ion-grid {
+      padding: 0;
+
+      ion-col {
+        padding: 0;
+
+        ion-item {
+          margin-top: 0px;
+        }
+      }
+    }
+  }
+
+  .ion-label-elem {
+    color: var(--ion-color-medium);
+  }
+
+  .ion-input-elem {
+    --padding-bottom: 0;
+  }
+
+  .end-button {
+    margin: 0.2rem;
+  }
+
+  .qty-input {
+    ::ng-deep input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      margin: 0;
+    }
+  }
+
+  .save-button {
+    margin: 1rem 0 1rem 0;
+    height: 3.3rem;
+  }
+}
