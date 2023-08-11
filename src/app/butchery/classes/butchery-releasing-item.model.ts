@@ -14,6 +14,7 @@ export class ButcheryReleasingItem {
     public cost?: number,
     public requiredUom?: Uom,
     public releasedQty?: number,
+    public releasedWeightKg?: number,
     public itemPrice?: number,
     public totalAmount?: number,
   ){}

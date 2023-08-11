@@ -12,8 +12,13 @@ import { Customer } from 'src/app/classes/customer.model';
 import { ItemDto } from 'src/app/classes/item-dto.model';
 import { Warehouse } from 'src/app/classes/warehouse.model';
 import { CustomerSearchComponent } from 'src/app/customers/customer-search/customer-search.component';
+import { User } from 'src/app/Security/classes/user.model';
+import { AuthenticationService } from 'src/app/Security/services/authentication.service';
 import { ItemsService } from 'src/app/services/items.service';
+import { WarehousesService } from 'src/app/services/warehouses.service';
 import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
+import { ButcheryBatchSearchComponent } from '../../butchery-batches/butchery-batch-search/butchery-batch-search.component';
+import { ButcheryBatch } from '../../classes/butchery-batch.model';
 import { ButcheryReleasingDto } from '../../classes/butchery-releasing-dto.model';
 import { ButcheryReleasingItemPrint } from '../../classes/butchery-releasing-item-print.model';
 import { ButcheryReleasingItem } from '../../classes/butchery-releasing-item.model';
@@ -34,8 +39,10 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
 
   releasingId = '00000000';
 
+  user: User;
   releasing: ButcheryReleasing;
   warehouse: Warehouse;
+  butcheryBatch: ButcheryBatch;
   destinationWarehouse: Warehouse;
   customer: Customer;
   releasingItems: ButcheryReleasingItem[] = [];
@@ -48,12 +55,15 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
   modalOpen = false;
 
   totalAmount = 0;
+  totalWeightKg = 0;
 
   constructor(
     private itemsService: ItemsService,
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private releasingsService: ButcheryReleasingsService,
+    private warehousesService: WarehousesService,
+    private authenticationService: AuthenticationService,
     private modalSearch: ModalController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController
@@ -61,13 +71,10 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isFetching = true;
-
     this.releasing = new ButcheryReleasing();
-
+    this.butcheryBatch = new ButcheryBatch();
     this.warehouse = new Warehouse();
-
     this.destinationWarehouse = new Warehouse();
-
     this.releasingDetailsConfig = new ReleasingDetailsConfig();
 
     this.route.paramMap.subscribe((paramMap) => {
@@ -94,14 +101,17 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
             this.releasingId = resData.butcheryReleasingId.toString();
             this.releasing.butcheryReleasingId = resData.butcheryReleasingId;
             this.releasing.totalAmount = resData.totalAmount;
+            this.releasing.totalWeightKg = resData.totalWeightKg;
             this.releasing.releasingStatus = resData.releasingStatus;
             this.releasingDetailsConfig.setParams(resData.releasingStatus);
             this.releasing.dateCreated = resData.dateCreated;
             this.warehouse = resData.warehouse;
+            this.butcheryBatch = resData.butcheryBatch;
             this.destinationWarehouse = resData.destinationWarehouse;
             this.customer = resData.customer;
             this.releasingItems = resData.butcheryReleasingItems;
             this.totalAmount = this.releasing.totalAmount;
+            this.totalWeightKg = this.releasing.totalWeightKg;
             this.isFetching = false;
           },
           (err) => {
@@ -110,9 +120,63 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
           }
         );
       } else {
-        this.isFetching = false;
+        this.releasing.butcheryReleasingId = 0;
+        this.user = this.authenticationService.getUserFromLocalCache();
+        this.warehousesService
+          .getWarehouseByUserId(this.user.userId)
+          .subscribe({
+            next: (res) => {
+              this.warehouse.warehouseId = res.warehouseId;
+              this.warehouse.warehouseName = res.warehouseName;
+            },
+            error: (err) => {
+              this.isFetching = false;
+            },
+            complete: () => {
+              this.isFetching = false;
+            },
+          });
       }
     });
+  }
+
+  onBatchSearch() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.modalSearch
+        .create({ component: ButcheryBatchSearchComponent, cssClass: 'custom-modal-styles' })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'butcheryBatch') {
+            if (this.releasing.butcheryReleasingId) {
+              const releasingDto = new ButcheryReleasingDto();
+              releasingDto.butcheryReleasingId =
+                this.releasing.butcheryReleasingId;
+                releasingDto.butcheryBatch = resultData.data;
+              this.dataHaveChanged = true;
+              this.releasingsService
+                .putReleasing(releasingDto)
+                .subscribe((res) => {
+                  this.releasing.releasingStatus = res.releasingStatus;
+                  if (this.releasing.releasingStatus === 'Unposted') {
+                    this.butcheryBatch = resultData.data;
+                  } else {
+                    this.messageBox(
+                      'Unable to update the production since its status has been tagged as ' +
+                        this.releasing.releasingStatus
+                    );
+                  }
+                });
+            } else {
+              this.butcheryBatch = resultData.data;
+            }
+          }
+          this.modalOpen = false;
+        });
+    }
   }
 
   onGetItemByItemCode(event) {
@@ -150,9 +214,10 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
     releasingItem.baseQty = baseQty;
     releasingItem.cost = 0;
     releasingItem.requiredUom = itemDto.item.uom;
-    releasingItem.releasedQty = itemQty;
+    releasingItem.releasedQty = 1;
+    releasingItem.releasedWeightKg = itemQty;
     releasingItem.itemPrice = cost;
-    releasingItem.totalAmount = baseQty * itemQty * cost;
+    releasingItem.totalAmount = itemQty * cost;
 
     if (this.releasing.butcheryReleasingId) {
       releasingItem.butcheryReleasing = this.releasing;
@@ -331,36 +396,47 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
   }
 
   onSaveReleasing() {
-    if (this.isUploading) {
+
+    if (this.releasing.butcheryReleasingId > 0) {
       return;
     }
 
-    if (!this.warehouse.warehouseId) {
-      this.messageBox('Please choose a warehouse.');
-      return;
-    }
-
-    if (!this.warehouse.warehouseId) {
-      this.messageBox('Please choose a destination warehouse');
-      return;
-    }
-
-    // if (!this.customer.customerId) {
-    //   this.messageBox('Please choose a customer.');
-    //   return;
-    // }
-
-    if (this.releasingItems.length <= 0) {
-      this.messageBox('Please add at least 1 releasing item.');
+    if (this.isUploading || this.isFetching) {
       return;
     }
 
     this.isUploading = true;
 
+    if (!this.warehouse.warehouseId) {
+      this.messageBox('Please choose a warehouse.');
+      this.isUploading = false;
+      return;
+    }
+
+    if (!this.butcheryBatch.butcheryBatchId) {
+      this.messageBox('Please specify a batch.');
+      this.isUploading = false;
+      return;
+    }
+
+    if (!this.destinationWarehouse.warehouseId) {
+      this.messageBox('Please choose a destination warehouse');
+      this.isUploading = false;
+      return;
+    }
+
+    if (this.releasingItems.length <= 0) {
+      this.messageBox('Please add at least 1 releasing item.');
+      this.isUploading = false;
+      return;
+    }
+
     const releasingDto = new ButcheryReleasingDto();
 
     releasingDto.totalAmount = this.totalAmount;
+    releasingDto.totalWeightKg = this.totalWeightKg;
     releasingDto.warehouse = this.warehouse;
+    releasingDto.butcheryBatch = this.butcheryBatch;
     releasingDto.destinationWarehouse = this.destinationWarehouse;
     releasingDto.customer = this.customer;
     releasingDto.butcheryReleasingItems = this.releasingItems;
@@ -376,6 +452,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
       this.releasing.butcheryReleasingId = res.butcheryReleasingId;
       this.releasing.releasingStatus = res.releasingStatus;
       this.releasing.totalAmount = res.totalAmount;
+      this.releasing.totalWeightKg = res.totalWeightKg;
       this.releasingDetailsConfig.setParams(res.releasingStatus);
       this.releasing.dateCreated = res.dateCreated;
       this.releasingItems = res.butcheryReleasingItems;
@@ -384,58 +461,58 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
     };
   }
 
-  onUpdateReleasingItem(pItem?: ButcheryReleasingItem) {
-    // if (!this.modalOpen) {
-    //   this.modalOpen = true;
-    //   const purchaseItemDetail = new PurchaseItemDetail();
-    //   purchaseItemDetail.item = pItem.item;
-    //   purchaseItemDetail.uom = pItem.requiredUom;
-    //   purchaseItemDetail.quantity = pItem.releasedQty;
-    //   purchaseItemDetail.price = pItem.itemPrice;
-    //   this.purchaseItemService.purchaseItemDetail.next(purchaseItemDetail);
-    //   this.modalSearch
-    //     .create({ component: PurchasedItemComponent })
-    //     .then((modalSearch) => {
-    //       modalSearch.present();
-    //       return modalSearch.onDidDismiss();
-    //     })
-    //     .then((resultData) => {
-    //       if (resultData.role === 'item') {
-    //         const item: PurchaseItemDetail = resultData.data;
-    //         const releasingItem = new ButcheryReleasingItem();
-    //         releasingItem.item = item.item;
-    //         releasingItem.requiredUom = item.uom;
-    //         releasingItem.releasedQty = item.quantity;
-    //         releasingItem.itemPrice = item.price;
-    //         releasingItem.totalAmount = item.quantity * item.price;
-    //         if (this.releasing.butcheryReleasingId) {
-    //           releasingItem.butcheryReleasingItemId = pItem.butcheryReleasingItemId;
-    //           releasingItem.butcheryReleasing = this.releasing;
-    //           this.releasingsService
-    //             .putReleasingItem(releasingItem)
-    //             .subscribe((res) => {
-    //               this.dataHaveChanged = true;
-    //               this.releasing.releasingStatus = res.releasingStatus;
-    //               if (this.releasing.releasingStatus === 'Unposted') {
-    //                 this.updatePurchaseItemObj(pItem, releasingItem);
-    //                 this.getTotalAmt();
-    //                 this.messageBox('Purchased item has been updated.');
-    //               } else {
-    //                 this.messageBox(
-    //                   'Unable to update the releasing since its status has been tagged as ' +
-    //                     this.releasing.releasingStatus
-    //                 );
-    //               }
-    //             });
-    //         } else {
-    //           this.updatePurchaseItemObj(pItem, releasingItem);
-    //           this.getTotalAmt();
-    //         }
-    //       }
-    //       this.modalOpen = false;
-    //     });
-    // }
-  }
+  // onUpdateReleasingItem(pItem?: ButcheryReleasingItem) {
+  //   if (!this.modalOpen) {
+  //     this.modalOpen = true;
+  //     const purchaseItemDetail = new PurchaseItemDetail();
+  //     purchaseItemDetail.item = pItem.item;
+  //     purchaseItemDetail.uom = pItem.requiredUom;
+  //     purchaseItemDetail.quantity = pItem.releasedQty;
+  //     purchaseItemDetail.price = pItem.itemPrice;
+  //     this.purchaseItemService.purchaseItemDetail.next(purchaseItemDetail);
+  //     this.modalSearch
+  //       .create({ component: PurchasedItemComponent })
+  //       .then((modalSearch) => {
+  //         modalSearch.present();
+  //         return modalSearch.onDidDismiss();
+  //       })
+  //       .then((resultData) => {
+  //         if (resultData.role === 'item') {
+  //           const item: PurchaseItemDetail = resultData.data;
+  //           const releasingItem = new ButcheryReleasingItem();
+  //           releasingItem.item = item.item;
+  //           releasingItem.requiredUom = item.uom;
+  //           releasingItem.releasedQty = item.quantity;
+  //           releasingItem.itemPrice = item.price;
+  //           releasingItem.totalAmount = item.quantity * item.price;
+  //           if (this.releasing.butcheryReleasingId) {
+  //             releasingItem.butcheryReleasingItemId = pItem.butcheryReleasingItemId;
+  //             releasingItem.butcheryReleasing = this.releasing;
+  //             this.releasingsService
+  //               .putReleasingItem(releasingItem)
+  //               .subscribe((res) => {
+  //                 this.dataHaveChanged = true;
+  //                 this.releasing.releasingStatus = res.releasingStatus;
+  //                 if (this.releasing.releasingStatus === 'Unposted') {
+  //                   this.updatePurchaseItemObj(pItem, releasingItem);
+  //                   this.getTotalAmt();
+  //                   this.messageBox('Purchased item has been updated.');
+  //                 } else {
+  //                   this.messageBox(
+  //                     'Unable to update the releasing since its status has been tagged as ' +
+  //                       this.releasing.releasingStatus
+  //                   );
+  //                 }
+  //               });
+  //           } else {
+  //             this.updatePurchaseItemObj(pItem, releasingItem);
+  //             this.getTotalAmt();
+  //           }
+  //         }
+  //         this.modalOpen = false;
+  //       });
+  //   }
+  // }
 
   updateReleasingItemObj(
     pItem: ButcheryReleasingItem,
@@ -506,8 +583,10 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
 
   getTotalAmt() {
     this.totalAmount = 0;
+    this.totalWeightKg = 0;
     this.releasingItems.forEach((itm) => {
       this.totalAmount += itm.totalAmount;
+      this.totalWeightKg += itm.releasedWeightKg;
     });
   }
 
@@ -528,6 +607,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
         let prevUom = null;
         let prevItemId = 0;
         let runningItemQty = 0;
+        let runningWeightKg = 0;
         let itemCtr = 0;
         let i = 1;
 
@@ -545,10 +625,12 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
             subTtlQty.totalUom = prevUom;
             subTtlQty.runningEntries = itemCtr;
             subTtlQty.runningItemQty = runningItemQty;
+            subTtlQty.runningWeightKg = runningWeightKg;
             this.receiptReleasingItems =
               this.receiptReleasingItems.concat(subTtlQty);
 
             runningItemQty = 0;
+            runningWeightKg = 0;
             itemCtr = 0;
 
           }
@@ -562,6 +644,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
           relItem.cost = item.cost;
           relItem.requiredUom = item.requiredUom;
           relItem.releasedQty = item.releasedQty;
+          relItem.releasedWeightKg = item.releasedWeightKg;
           relItem.itemPrice = item.itemPrice;
           relItem.totalAmount = item.totalAmount;
           relItem.isSubTotal = false;
@@ -570,6 +653,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
 
           prevUom = item.requiredUom;
           runningItemQty = runningItemQty + item.releasedQty;
+          runningWeightKg = runningWeightKg + item.releasedWeightKg;
           itemCtr++;
 
           //Display subtotal after the last item
@@ -579,6 +663,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
             subTtlQty.totalUom = prevUom;
             subTtlQty.runningEntries = itemCtr;
             subTtlQty.runningItemQty = runningItemQty;
+            subTtlQty.runningWeightKg = runningWeightKg;
             this.receiptReleasingItems =
               this.receiptReleasingItems.concat(subTtlQty);
           }

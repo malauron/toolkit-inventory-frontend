@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ReleasingDetailPageRoutingModule } from './releasing-detail-routing.module';
 
 import { ReleasingDetailPage } from './releasing-detail.page';
+import { ButcheryBatchSearchModule } from '../../butchery-batches/butchery-batch-search/butchery-batch-search.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReleasingDetailPageRoutingModule
+    ReleasingDetailPageRoutingModule,
+    ButcheryBatchSearchModule
   ],
   declarations: [ReleasingDetailPage]
 })

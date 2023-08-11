@@ -144,9 +144,25 @@ ion-popover {
     .total {
       width: 240px;
       margin-top: 5px;
+      // margin-bottom: 50px;
+      display: grid;
+      grid-template-columns: 80px auto;
+
+      .total-desc {
+        text-align: left;
+      }
+
+      .total-amt {
+        text-align: right;
+      }
+    }
+
+    .total-kg {
+      width: 240px;
+      margin-top: 5px;
       margin-bottom: 50px;
       display: grid;
-      grid-template-columns: 40px auto;
+      grid-template-columns: 80px auto;
 
       .total-desc {
         text-align: left;

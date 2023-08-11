@@ -77,20 +77,49 @@
 
         <ion-col size-xs="12" size-xl="7" pull-xl="4">
           <ion-item lines="none">
-            <ion-icon class="contactIcon" name="business-outline" color="primary" slot="start"></ion-icon>
+            <ion-icon class="contactIcon" src="../../assets/icons/warehouse02.svg" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-text-wrap">
               <ion-card-subtitle *ngIf="!warehouse.warehouseId">Source Warehouse</ion-card-subtitle>
               <ion-card-title mode="md">{{ warehouse.warehouseName }}</ion-card-title>
             </ion-label>
-            <ion-button #statusButton
+            <!-- <ion-button #statusButton
               *ngIf="releasing.releasingStatus === 'Unposted' || releasing.releasingStatus === undefined"
               (click)="onWarehouseSearch()" fill="clear" size="small" mode="ios" id="click-trigger">
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button> -->
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon
+              class="contactIcon"
+              src="../../assets/icons/layers.svg"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <span mode="md" *ngIf="butcheryBatch.butcheryBatchId === undefined"
+                >Batch</span>
+              <ion-card-title mode="md" *ngIf="butcheryBatch.butcheryBatchId !== undefined"
+                >{{ butcheryBatch.butcheryBatchId }} - {{
+                butcheryBatch.vendorWarehouse.vendorWarehouseName
+                }}</ion-card-title
+              >
+            </ion-label>
+            <ion-button
+              #statusButton
+              *ngIf="releasing.releasingStatus === 'Unposted' || releasing.releasingStatus === undefined"
+              (click)="onBatchSearch()"
+              fill="clear"
+              size="small"
+              mode="ios"
+              id="click-trigger"
+            >
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-icon class="contactIcon" name="business-outline" color="primary" slot="start"></ion-icon>
+            <ion-icon class="contactIcon" src="../../assets/icons/moved_location.svg" name="business-outline" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-text-wrap">
               <ion-card-subtitle *ngIf="!destinationWarehouse.warehouseId">Destination Warehouse</ion-card-subtitle>
               <ion-card-title mode="md">{{ destinationWarehouse.warehouseName }}</ion-card-title>
@@ -125,7 +154,7 @@
     </ion-grid>
   </ion-card>
 
-  <ion-card class="card-holder">
+  <ion-card *ngIf="!isFetching" class="card-holder">
     <div class="card-top"></div>
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
@@ -163,9 +192,8 @@
             </ion-item>
             <ion-item lines="none" class="item-info">
               <ion-card-subtitle class="ion-no-padding ion-no-margin">{{ item.releasedQty }}{{item.requiredUom.uomCode
-                }} @{{
-                item.itemPrice| number:'1.2-2' }}/{{ item.requiredUom.uomCode
-                }}</ion-card-subtitle>
+                }} / {{ item.releasedWeightKg }}Kg @ {{
+                item.itemPrice| number:'1.2-2' }}</ion-card-subtitle>
             </ion-item>
 
             <ion-item lines="none" class="card-footer">
@@ -215,14 +243,13 @@
       <div class="price">{{ item.totalAmount| number:'1.2-2' }}</div>
       <div>
         <div>{{ item.item.itemName }}</div>
-        <div>{{ item.releasedQty }}{{item.requiredUom.uomCode }} @{{
-          item.itemPrice| number:'1.2-2' }}/{{ item.requiredUom.uomCode
-          }}</div>
+        <div>{{ item.releasedQty }}{{item.requiredUom.uomCode }} / {{ item.releasedWeightKg }}Kg @ {{
+          item.itemPrice| number:'1.2-2' }}/Kg</div>
       </div>
     </div>
     <div class="item-subTotal separator" *ngIf="item.isSubTotal && item.runningEntries > 1">
       <div class="barcode">{{ item.runningEntries }} items.</div>
-      <div class="price">{{ item.runningItemQty |  number:'1.0-3' }}{{ item.totalUom.uomCode }}</div>
+      <div class="price">{{ item.runningWeightKg |  number:'1.0-3' }}Kg</div>
     </div>
   </div>
 
@@ -231,10 +258,18 @@
   <div class="separator"></div>
   <div class="total">
     <div class="total-desc">
-      <ion-card-subtitle>Total</ion-card-subtitle>
+      <ion-card-subtitle>Total Amt.</ion-card-subtitle>
     </div>
     <div class="total-amt">
       <ion-card-subtitle>{{ totalAmount | number:'1.2-2' }}</ion-card-subtitle>
+    </div>
+  </div>
+  <div class="total-kg">
+    <div class="total-desc">
+      <ion-card-subtitle>Total Kg.</ion-card-subtitle>
+    </div>
+    <div class="total-amt">
+      <ion-card-subtitle>{{ totalWeightKg | number:'1.2-2' }}</ion-card-subtitle>
     </div>
   </div>
 

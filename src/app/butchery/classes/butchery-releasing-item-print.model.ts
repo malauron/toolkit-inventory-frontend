@@ -12,11 +12,14 @@ export class ButcheryReleasingItemPrint {
     public cost?: number,
     public requiredUom?: Uom,
     public releasedQty?: number,
+    public releasedWeightKg?: number,
     public itemPrice?: number,
     public totalAmount?: number,
+    public totalKg?: number,
     public isSubTotal?: boolean,
     public runningEntries?: number,
     public runningItemQty?: number,
+    public runningWeightKg?: number,
     public totalUom?: Uom,
   ){}
 }
