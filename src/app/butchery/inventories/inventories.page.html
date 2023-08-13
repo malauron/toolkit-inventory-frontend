@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button
-        icon="chevron-back-outline"
-        defaultHref="/tabs/options"
-      ></ion-back-button>
+      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/options"></ion-back-button>
     </ion-buttons>
     <ion-title>Inventory Report</ion-title>
     <ion-buttons slot="primary">
@@ -15,13 +12,18 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-segment value="storage_provider" (ionChange)="segmentChanged($event)">
+  <ion-segment-button value="storage_provider">
+    <ion-label>Storage Provider</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="warehouse">
+    <ion-label>Warehouse</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
 <ion-content class="ion-padding">
   <div class="spinner">
-    <ion-spinner
-      name="bubbles"
-      color="primary"
-      *ngIf="isFetching"
-    ></ion-spinner>
+    <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
   </div>
 
   <ion-card class="card-holder">
@@ -30,30 +32,17 @@
       <ion-row>
         <ion-col size-xs="12">
           <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="business-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
+            <ion-icon class="contactIcon" name="business-outline" color="primary" slot="start"></ion-icon>
             <ion-label class="ion-text-wrap">
-              <ion-card-title mode="md"
-                >{{ warehouse.warehouseName }}</ion-card-title
-              >
+              <ion-card-title mode="md">{{ warehouse.warehouseName }}</ion-card-title>
             </ion-label>
-            <ion-button
-              #statusButton
-              (click)="onWarehouseSearch()"
-              fill="clear"
-              size="small"
-              mode="ios"
-              id="click-trigger"
-            >
+            <ion-button #statusButton (click)="onWarehouseSearch()" fill="clear" size="small" mode="ios"
+              id="click-trigger">
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
           <ion-item lines="none">
-            <ion-searchbar #inventoryItemSearchBar placeholder="Search Inventory Item"></ion-searchbar>
+            <ion-searchbar #itemSearchBar placeholder="Search Inventory Item"></ion-searchbar>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -62,13 +51,7 @@
 
   <ion-grid class="inventory-items" *ngIf="itemCostsByPage.length>0">
     <ion-row>
-      <ion-col
-        size-xs="12"
-        size-sm="6"
-        size-lg="4"
-        size-xl="3"
-        *ngFor="let itemCost of itemCostsByPage"
-      >
+      <ion-col size-xs="12" size-sm="6" size-lg="4" size-xl="3" *ngFor="let itemCost of itemCostsByPage">
         <ion-card class="favCard">
           <div class="card-top"></div>
           <ion-item class="menuName">
@@ -78,43 +61,27 @@
             <ion-label>{{ itemCost.item.itemName }}</ion-label>
           </ion-item>
           <ion-item lines="none">
-            <ion-card-subtitle class="cost-details"
-              >{{ itemCost.qty | number:'1.0-3' }}{{ itemCost.item.uom.uomCode
-              }} @ {{ itemCost.cost | number:'1.2' }}</ion-card-subtitle
-            >
+            <ion-card-subtitle class="cost-details">{{ itemCost.qty | number:'1.0-3' }}{{ itemCost.item.uom.uomCode
+              }} @ {{ itemCost.cost | number:'1.2' }}</ion-card-subtitle>
           </ion-item>
           <ion-item lines="none" class="card-footer">
-            <ion-label class="cost-details" slot="end"
-              >{{ itemCost.qty * itemCost.cost | number:'1.2' }}</ion-label
-            >
+            <ion-label class="cost-details" slot="end">{{ itemCost.qty * itemCost.cost | number:'1.2' }}</ion-label>
           </ion-item>
         </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-infinite-scroll
-    #infiniteScroll
-    threshold="5%"
-    (ionInfinite)="loadMoreData($event)"
-  >
-    <ion-infinite-scroll-content
-      loadingSpinner="none"
-      loadingText="Loading more items..."
-    >
+  <ion-infinite-scroll #infiniteScroll threshold="5%" (ionInfinite)="loadMoreData($event)">
+    <ion-infinite-scroll-content loadingSpinner="none" loadingText="Loading more items...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
 </ion-content>
 
 <div id="printDiv" class="navbar">
-  <button
-    #printButton
-    styleSheetFile="assets/css/inventories-print-preview.component.css"
-    printSectionId="print"
-    ngxPrint
-    class="split"
-  >
+  <button #printButton styleSheetFile="assets/css/inventories-print-preview.component.css" printSectionId="print"
+    ngxPrint class="split">
     <img src="../../../assets/icons/printer.svg" />
   </button>
 </div>

@@ -191,9 +191,9 @@
               <ion-card-title mode="md" class="ion-no-padding ion-no-margin">{{ item.item.itemName }}</ion-card-title>
             </ion-item>
             <ion-item lines="none" class="item-info">
-              <ion-card-subtitle class="ion-no-padding ion-no-margin">{{ item.releasedQty }}{{item.requiredUom.uomCode
-                }} / {{ item.releasedWeightKg }}Kg @ {{
-                item.itemPrice| number:'1.2-2' }}</ion-card-subtitle>
+              <ion-card-subtitle class="ion-no-padding ion-no-margin">{{ item.releasedWeightKg }}Kg/{{ item.releasedQty }}{{item.requiredUom.uomCode
+                }} @ {{
+                item.itemPrice| number:'1.2-2' }}/Kg</ion-card-subtitle>
             </ion-item>
 
             <ion-item lines="none" class="card-footer">
@@ -243,7 +243,7 @@
       <div class="price">{{ item.totalAmount| number:'1.2-2' }}</div>
       <div>
         <div>{{ item.item.itemName }}</div>
-        <div>{{ item.releasedQty }}{{item.requiredUom.uomCode }} / {{ item.releasedWeightKg }}Kg @ {{
+        <div>{{ item.releasedWeightKg }}Kg/{{ item.releasedQty }}{{item.requiredUom.uomCode }} @ {{
           item.itemPrice| number:'1.2-2' }}/Kg</div>
       </div>
     </div>

@@ -8,6 +8,8 @@ import { InventoriesPageRoutingModule } from './inventories-routing.module';
 
 import { InventoriesPage } from './inventories.page';
 import { NgxPrintModule } from 'ngx-print';
+import { WarehouseSearchModule } from 'src/app/warehouses/warehouse-search/warehouse-search.module';
+import { VendorWarehouseSearchModule } from 'src/app/vendor-warehouses/vendor-warehouse-search/vendor-warehouse-search.module';
 
 @NgModule({
   imports: [
@@ -16,6 +18,8 @@ import { NgxPrintModule } from 'ngx-print';
     IonicModule,
     InventoriesPageRoutingModule,
     NgxPrintModule,
+    WarehouseSearchModule,
+    VendorWarehouseSearchModule
   ],
   declarations: [InventoriesPage]
 })

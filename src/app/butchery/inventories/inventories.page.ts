@@ -13,6 +13,7 @@ import { ItemCost } from 'src/app/classes/item-cost.model';
 import { Warehouse } from 'src/app/classes/warehouse.model';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ItemsService } from 'src/app/services/items.service';
+import { VendorWarehouseSearchComponent } from 'src/app/vendor-warehouses/vendor-warehouse-search/vendor-warehouse-search.component';
 import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
 
 @Component({
@@ -23,10 +24,10 @@ import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/wa
 export class InventoriesPage implements OnInit, OnDestroy {
   @ViewChild('printButton') printButton: ElementRef;
   @ViewChild('infiniteScroll') infiniteScroll;
-  @ViewChild('inventoryItemSearchBar', { static: true })
-  inventoryItemSearchBar: IonSearchbar;
+  @ViewChild('itemSearchBar', { static: true })
+  itemSearchBar: IonSearchbar;
 
-  inventoryItemSearchBarSub: Subscription;
+  itemSearchBarSub: Subscription;
 
   warehouse: Warehouse;
   totalAmt: number;
@@ -34,6 +35,7 @@ export class InventoriesPage implements OnInit, OnDestroy {
   itemCosts: ItemCost[] = [];
   itemCostsByPage: ItemCost[] = [];
 
+  currentSearch = 'storage_provider';
   searchValue = '';
 
   pageNumber = 0;
@@ -52,7 +54,7 @@ export class InventoriesPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.warehouse = new Warehouse();
 
-    this.inventoryItemSearchBarSub = this.inventoryItemSearchBar.ionInput
+    this.itemSearchBarSub = this.itemSearchBar.ionInput
       .pipe(
         map((event) => (event.target as HTMLInputElement).value),
         debounceTime(this.config.waitTime),
@@ -77,11 +79,25 @@ export class InventoriesPage implements OnInit, OnDestroy {
       });
   }
 
+  segmentChanged(event) {
+    this.currentSearch = event.detail.value;
+    console.log(this.currentSearch);
+  }
+
+  getComponentRef() {
+    if (this.currentSearch === 'warehouse') {
+      return { component: WarehouseSearchComponent };
+    } else {
+      return { component: VendorWarehouseSearchComponent };
+    }
+  }
+
   onWarehouseSearch() {
     if (!this.modalOpen) {
       this.modalOpen = true;
+
       this.modalSearch
-        .create({ component: WarehouseSearchComponent })
+        .create(this.getComponentRef())
         .then((modalSearch) => {
           modalSearch.present();
           return modalSearch.onDidDismiss();
@@ -191,6 +207,6 @@ export class InventoriesPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.inventoryItemSearchBarSub.unsubscribe();
+    this.itemSearchBarSub.unsubscribe();
   }
 }
