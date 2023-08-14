@@ -107,14 +107,14 @@
       <ion-col size-md="6" size-lg="7">
         <ion-item lines="none"><ion-label><h2>Item Description</h2></ion-label></ion-item>
       </ion-col>
-      <ion-col size-md="2" size-lg="1">
+      <!-- <ion-col size-md="2" size-lg="1">
         <ion-item lines="none"><ion-label><h2>UoM</h2></ion-label></ion-item>
+      </ion-col> -->
+      <ion-col size-md="3" size-lg="3">
+        <ion-item lines="none"><ion-label class="item-qty-lbl"><h2>Quantity</h2></ion-label></ion-item>
       </ion-col>
-      <ion-col size-md="2" size-lg="2">
-        <ion-item lines="none"><ion-label><h2>Quantity</h2></ion-label></ion-item>
-      </ion-col>
-      <ion-col size-md="2" size-lg="2">
-        <ion-item lines="none"><ion-label><h2>Weight(Kg)</h2></ion-label></ion-item>
+      <ion-col size-md="3" size-lg="2">
+        <ion-item lines="none"><ion-label class="item-qty-lbl"><h2>Weight(Kg)</h2></ion-label></ion-item>
       </ion-col>
     </ion-row>
     <ion-row class="batches-row" *ngFor="let itemCost of itemCostsByPage">
@@ -123,23 +123,23 @@
           ><ion-label><h3>Item Description</h3>  {{ itemCost.item.itemName }}</ion-label></ion-item
         >
       </ion-col>
-      <ion-col size-xs="3" size-sm="2" size-md="2" size-lg="1">
+      <!-- <ion-col size-xs="3" size-sm="2" size-md="2" size-lg="1">
         <ion-item lines="none"
           ><ion-label><h3>UoM</h3>
-            {{ itemCost.item.uom.uomCode + '' }}</ion-label
+            {{ itemCost.item.uom.uomCode.toUpperCase }}</ion-label
+          ></ion-item
+        >
+      </ion-col> -->
+      <ion-col size-xs="6" size-sm="6" size-md="3" size-lg="3">
+        <ion-item lines="none"
+          ><ion-label class="item-qty-lbl"><h3>Quantity</h3>
+            {{ itemCost.qty | number:'1.0-3' }} {{ itemCost.item.uom.uomCode.toUpperCase() }}</ion-label
           ></ion-item
         >
       </ion-col>
-      <ion-col size-xs="4.5" size-sm="5" size-md="2" size-lg="2">
+      <ion-col size-xs="6" size-sm="6" size-md="3" size-lg="2">
         <ion-item lines="none"
-          ><ion-label><h3>Quantity</h3>
-            {{ itemCost.qty | number:'1.0-3' }}</ion-label
-          ></ion-item
-        >
-      </ion-col>
-      <ion-col size-xs="4.5" size-sm="5" size-md="2" size-lg="2">
-        <ion-item lines="none"
-          ><ion-label><h3>Weight(Kg)</h3> {{ itemCost.weightKg | number:'1.0-3' }}</ion-label></ion-item
+          ><ion-label class="item-qty-lbl"><h3>Weight(Kg)</h3> {{ itemCost.weightKg | number:'1.0-3' }}</ion-label></ion-item
         >
       </ion-col>
     </ion-row>
@@ -150,14 +150,14 @@
       <ion-col size-md="6" size-lg="7">
         <ion-item lines="none"><ion-label><h2>Item Description</h2></ion-label></ion-item>
       </ion-col>
-      <ion-col size-md="2" size-lg="1">
+      <!-- <ion-col size-md="2" size-lg="1">
         <ion-item lines="none"><ion-label><h2>UoM</h2></ion-label></ion-item>
+      </ion-col> -->
+      <ion-col size-md="3" size-lg="3">
+        <ion-item lines="none"><ion-label class="item-qty-lbl"><h2>Quantity</h2></ion-label></ion-item>
       </ion-col>
-      <ion-col size-md="2" size-lg="2">
-        <ion-item lines="none"><ion-label><h2>Quantity</h2></ion-label></ion-item>
-      </ion-col>
-      <ion-col size-md="2" size-lg="2">
-        <ion-item lines="none"><ion-label><h2>Weight(Kg)</h2></ion-label></ion-item>
+      <ion-col size-md="3" size-lg="2">
+        <ion-item lines="none"><ion-label class="item-qty-lbl"><h2>Weight(Kg)</h2></ion-label></ion-item>
       </ion-col>
     </ion-row>
     <ion-row class="batches-row" *ngFor="let content of butcheryBatchInventories">
@@ -166,23 +166,23 @@
           ><ion-label><h3>Item Description</h3>  {{ content.item.itemName }}</ion-label></ion-item
         >
       </ion-col>
-      <ion-col size-xs="3" size-sm="2" size-md="2" size-lg="1">
+      <!-- <ion-col size-xs="3" size-sm="2" size-md="2" size-lg="1">
         <ion-item lines="none"
           ><ion-label><h3>UoM</h3>
             {{ content.item.uom.uomCode }}</ion-label
           ></ion-item
         >
-      </ion-col>
-      <ion-col size-xs="4.5" size-sm="5" size-md="2" size-lg="2">
+      </ion-col> -->
+      <ion-col size-xs="6" size-sm="6" size-md="3" size-lg="3">
         <ion-item lines="none"
-          ><ion-label><h3>Quantity</h3>
-            {{ content.remainingQty | number:'1.0-3' }}</ion-label
+          ><ion-label class="item-qty-lbl"><h3>Quantity</h3>
+            {{ content.remainingQty | number:'1.0-3' }} {{ content.item.uom.uomCode.toUpperCase() }}</ion-label
           ></ion-item
         >
       </ion-col>
-      <ion-col size-xs="4.5" size-sm="5" size-md="2" size-lg="2">
+      <ion-col size-xs="6" size-sm="6" size-md="3" size-lg="2">
         <ion-item lines="none"
-          ><ion-label><h3>Weight(Kg)</h3> {{ content.remainingWeightKg | number:'1.0-3' }}</ion-label></ion-item
+          ><ion-label class="item-qty-lbl"><h3>Weight(Kg)</h3> {{ content.remainingWeightKg | number:'1.0-3' }}</ion-label></ion-item
         >
       </ion-col>
     </ion-row>

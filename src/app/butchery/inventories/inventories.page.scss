@@ -140,11 +140,8 @@ ion-popover {
   --backdrop-opacity: 0;
 }
 
-#print,
-#printDiv {
-  /* hide the printing component from @media screen */
-  display: none;
-  visibility: hidden;
+.item-qty-lbl {
+  text-align: right;
 }
 
 .batches-hdr {
@@ -175,6 +172,13 @@ ion-popover {
       display: block;
     }
   }
+}
+
+#print,
+#printDiv {
+  /* hide the printing component from @media screen */
+  display: none;
+  visibility: hidden;
 }
 
 @media (min-width: 768px) {
