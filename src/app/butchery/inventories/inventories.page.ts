@@ -208,6 +208,7 @@ export class InventoriesPage implements OnInit, OnDestroy {
     this.itemsService
       .getItemCostsByPage(searchDesc, warehouseId, pageNumber, pageSize)
       .subscribe((res) => {
+        console.log(res);
         this.itemCostsByPage = this.itemCostsByPage.concat(
           res._embedded.itemCosts
         );

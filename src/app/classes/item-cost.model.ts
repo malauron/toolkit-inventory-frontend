@@ -6,6 +6,7 @@ export class ItemCost {
     public item?: Item,
     public warehouse?: Warehouse,
     public cost?: number,
-    public qty?: number
+    public qty?: number,
+    public weightKg?: number
   ) {}
 }
