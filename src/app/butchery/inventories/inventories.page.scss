@@ -6,6 +6,34 @@ ion-content {
   --ion-background-color: #f6f6f6;
 }
 
+ion-grid {
+  padding: 0 1.5rem;
+}
+
+ion-row {
+  ion-col {
+    padding: 0;
+  }
+
+  ion-label {
+    margin: 0;
+  }
+
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
+
+  h3 {
+    font-size: 0.8rem;
+    color: var(--ion-color-medium);
+  }
+
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  border-bottom: 0.1rem solid rgba($color: #6c6c6c, $alpha: 0.5);
+}
+
 ion-card {
   --ion-background-color: #ffffff;
 }
@@ -19,7 +47,7 @@ ion-searchbar {
 }
 
 .card-holder {
-  margin: 20px 20px 0 20px;
+  margin: 0.5rem 0;
 }
 
 .card-top {
@@ -84,8 +112,6 @@ ion-searchbar {
     // primary
     filter: invert(52%) sepia(68%) saturate(3904%) hue-rotate(322deg) brightness(89%) contrast(108%);
 
-    // secondary
-    // filter:  invert(97%) sepia(79%) saturate(2860%) hue-rotate(292deg) brightness(103%) contrast(91%);
   }
 }
 
@@ -119,4 +145,51 @@ ion-popover {
   /* hide the printing component from @media screen */
   display: none;
   visibility: hidden;
+}
+
+.batches-hdr {
+  background-color: #f6f6f6;
+
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: -0.7rem;
+  z-index: 1000;
+  display: none;
+  visibility: hidden;
+
+  padding-bottom: 0;
+  margin-bottom: 0;
+
+  h2 {
+    font-weight: 700;
+    color: var(--ion-color-medium);
+  }
+}
+
+.batches-row {
+  position: relative;
+
+  &:hover {
+    .option-buttons {
+      visibility: visible;
+      display: block;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .batches-hdr {
+    display: flex;
+    visibility: visible;
+  }
+
+  .batches-row {
+    h3 {
+      display: none;
+      visibility: hidden;
+    }
+
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }

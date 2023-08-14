@@ -1,3 +1,4 @@
+/* eslint-disable id-blacklist */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -5,6 +6,7 @@ import { Item } from 'src/app/classes/item.model';
 import { PageInfo } from 'src/app/classes/page-info.model';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ButcheryBatchDto } from '../classes/butchery-batch-dto.model';
+import { ButcheryBatchInventoryItem } from '../classes/butchery-batch-inventory-item.model';
 import { ButcheryBatch } from '../classes/butchery-batch.model';
 import { filterString } from '../utils/utils';
 
@@ -19,6 +21,14 @@ interface ResponseItems {
   _embedded: {
     items: Item[];
   };
+}
+
+interface ResponseInventorySummary {
+  content: ButcheryBatchInventoryItem[];
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  number: number;
 }
 
 @Injectable({
@@ -113,6 +123,42 @@ export class ButcheryBatchesService {
       this.urlV1ButcheryBatchDetailItems,
       dto
     );
+  }
+
+  getButcheryBatchInventoriesByVendorWarehouseId(
+    pageNumber?: number,
+    pageSize?: number,
+    vendorWarehouseId?: number,
+    searchDesc?: string
+  ): Observable<ResponseItems> {
+    if (searchDesc === undefined) {
+      searchDesc = '';
+    } else {
+      searchDesc = filterString(searchDesc);
+    }
+
+    this.apiUrl =
+      `${this.urlButcheryBatchInventories}/search/findByVendorWarehouseIdAndItemName?vendorWarehouseId=${vendorWarehouseId}` +
+      `&itemName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+    return this.http.get<ResponseItems>(this.apiUrl);
+  }
+
+  getButcheryBatchInventorySummaryByVendorWarehouseId(
+    pageNumber?: number,
+    pageSize?: number,
+    vendorWarehouseId?: number,
+    searchDesc?: string
+  ): Observable<ResponseInventorySummary> {
+    if (searchDesc === undefined) {
+      searchDesc = '';
+    } else {
+      searchDesc = filterString(searchDesc);
+    }
+
+    this.apiUrl =
+      `${this.urlV1ButcheryBatches}/inventorySummary?vendorWarehouseId=${vendorWarehouseId}` +
+      `&itemName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+    return this.http.get<ResponseInventorySummary>(this.apiUrl);
   }
 
   deleteButcheryBatchDetail(
