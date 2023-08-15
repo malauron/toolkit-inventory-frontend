@@ -21,6 +21,7 @@ import { ButcheryBatchDetail } from '../../classes/butchery-batch-detail.model';
 import { ButcheryBatchDetailitem } from '../../classes/butchery-batch-detail-item.model';
 import { VendorSearchComponent } from 'src/app/vendors/vendor-search/vendor-search.component';
 import { Vendor } from 'src/app/classes/vendor.model';
+import { ButcheryBatchConfig } from '../../config/butchery-batch.config';
 
 @Component({
   selector: 'app-butchery-batch',
@@ -35,6 +36,7 @@ export class ButcheryBatchPage implements OnInit {
 
   butcheryBatch: ButcheryBatch;
   butcheryBatchDetails: ButcheryBatchDetail[] = [];
+  elCtrl: ButcheryBatchConfig;
 
   modalOpen = false;
   isUploading = false;
@@ -53,11 +55,12 @@ export class ButcheryBatchPage implements OnInit {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private butcheryBatchesService: ButcheryBatchesService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
   ) {}
 
   ngOnInit() {
     this.isFetching = true;
+    this.elCtrl = new ButcheryBatchConfig();
 
     this.route.paramMap.subscribe((paramMap) => {
       // Check whether paramMap is empty or not
@@ -115,6 +118,7 @@ export class ButcheryBatchPage implements OnInit {
       this.showElems = true;
     }
     this.isFetching = false;
+    this.elCtrl.setParams(this.butcheryBatch.batchStatus);
   }
 
   onShowPopOver(event: Event) {
@@ -143,6 +147,7 @@ export class ButcheryBatchPage implements OnInit {
         },
         complete: () => {
           this.isUploading = false;
+          this.elCtrl.setParams(this.butcheryBatch.batchStatus);
         },
       });
     }
@@ -174,7 +179,7 @@ export class ButcheryBatchPage implements OnInit {
     if (
       !this.modalOpen &&
       !this.isUploading &&
-      this.butcheryBatch.batchStatus === 'Unposted'
+      this.elCtrl.canSelectVendorWarehouse
     ) {
       this.modalOpen = true;
       this.mdl
@@ -199,7 +204,7 @@ export class ButcheryBatchPage implements OnInit {
     if (
       !this.modalOpen &&
       !this.isUploading &&
-      this.butcheryBatch.batchStatus === 'Unposted'
+      this.elCtrl.canSelectVendor
     ) {
       this.modalOpen = true;
 

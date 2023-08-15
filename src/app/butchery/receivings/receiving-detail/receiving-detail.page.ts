@@ -116,7 +116,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             this.vendor = resData.vendor;
             this.receivingItems = resData.butcheryReceivingItems;
             this.totalAmount = this.receiving.totalAmount;
-
             // if (this.receiving.receivingStatus === 'Posted') {
             //   this.productionsService
             //     .getProductionSources(resData.butcheryReceivingId)

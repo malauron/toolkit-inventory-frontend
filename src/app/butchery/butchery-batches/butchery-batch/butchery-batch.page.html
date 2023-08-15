@@ -32,9 +32,9 @@
               maxlength="20"></ion-input>
             <ion-button class="end-button" (click)="onShowPopOver($event)" slot="end" size="small" mode="ios"
               fill="clear">
-              <ion-badge>{{ butcheryBatch.batchStatus }}</ion-badge>
+              <ion-badge  [color]="elCtrl.statusColor">{{ butcheryBatch.batchStatus }}</ion-badge>
             </ion-button>
-            <ion-popover #statusPopover *ngIf="1" triggerAction="click" dismissOnSelect="true"
+            <ion-popover #statusPopover *ngIf="elCtrl.showStatusPopover" triggerAction="click" dismissOnSelect="true"
               [isOpen]="statusPopoverOpen" (didDismiss)="statusPopoverOpen = false">
               <ng-template>
                 <ion-content>
@@ -67,7 +67,7 @@
             <ion-label class="ion-label-elem" position="floating">Storage Provider</ion-label>
             <ion-input class="ion-input-elem" (click)="onVendorWarehouseSearch()" readonly="true"
               [value]="butcheryBatch.vendorWarehouse.vendorWarehouseName"></ion-input>
-            <ion-button *ngIf="butcheryBatch.batchStatus === 'Unposted'" mode="ios" class="end-button" slot="end"
+            <ion-button *ngIf="elCtrl.canSelectVendorWarehouse" mode="ios" class="end-button" slot="end"
               size="small" fill="clear" (click)="onVendorWarehouseSearch()">
               <ion-icon name="search-outline" slot="icon-only"></ion-icon>
             </ion-button>
@@ -79,7 +79,7 @@
             <ion-label class="ion-label-elem" position="floating">Vendor</ion-label>
             <ion-input class="ion-input-elem" (click)="onVendorSearch()" readonly="true"
               [value]="butcheryBatch.vendor.vendorName"></ion-input>
-            <ion-button *ngIf="butcheryBatch.batchStatus === 'Unposted'" mode="ios" class="end-button" slot="end"
+            <ion-button *ngIf="elCtrl.canSelectVendor" mode="ios" class="end-button" slot="end"
               size="small" fill="clear" (click)="onVendorSearch()">
               <ion-icon name="search-outline" slot="icon-only"></ion-icon>
             </ion-button>
@@ -123,7 +123,7 @@
       <ion-card-header>
         <ion-grid>
           <ion-row class="details-row">
-            <div class="option-buttons" *ngIf="!isUploading && butcheryBatch.batchStatus === 'Unposted'">
+            <div class="option-buttons" *ngIf="!isUploading && elCtrl.showDetailOptionButtons">
               <ion-item lines="none">
                 <ion-button class="delete-item-button" (click)="onEditBatchDetail(detail)" mode="ios" slot="end"
                   fill="clear" color="medium" size="default">
@@ -184,7 +184,7 @@
           </ion-row>
 
           <ion-row class="item-row" *ngFor="let detailItem of detail.butcheryBatchDetailItems">
-            <div class="option-buttons" *ngIf="!isUploading && butcheryBatch.batchStatus === 'Unposted'">
+            <div class="option-buttons" *ngIf="!isUploading && elCtrl.showItemOptionButtons">
               <ion-item lines="none">
                 <ion-button class="delete-item-button" (click)="onEditBatchDetailItem(detailItem, detail)" mode="ios"
                   slot="end" fill="clear" color="medium" size="default">

@@ -106,6 +106,7 @@ export class AppParamsConfig {
   constructor() {
 
     // this.url = 'http://122.52.134.244:8443/api';
+    // this.url = 'http://192.168.0.4:8443/api';
     this.url = `${location.protocol}//${location.hostname}:8443/api`;
 
     this.urlItems = this.url + '/items';
