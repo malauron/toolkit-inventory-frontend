@@ -159,8 +159,7 @@
             >
             <ion-input
               class="ion-input-elem"
-              value="{{ butcheryBatch.vendorWarehouse.vendorWarehouseName
-            }}-{{ butcheryBatch.remarks }}"
+              value="{{ batchDesc }}"
               readonly="true"
             ></ion-input>
             <ion-button
@@ -177,7 +176,7 @@
             </ion-button>
           </ion-item>
         </ion-col>
-        <ion-col size-xs="12" size-lg="6">
+        <!-- <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
             <ion-icon
               class="contactIcon"
@@ -205,7 +204,7 @@
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
-        </ion-col>
+        </ion-col> -->
         <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
             <ion-icon
@@ -393,61 +392,6 @@
       </ion-row>
     </ion-grid>
     <div class="separator"></div>
-
-    <!-- <ion-grid class="production-history" *ngFor="let production of productions">
-      <ion-row class="ion-align-items-center row-header">
-        <ion-col size-xs="4" size-sm="6" size-md="8">
-          <ion-card-subtitle color="primary" class="">
-            {{ production.dateCreated | date:'MMM dd, yyyy hh:mm a' }}
-          </ion-card-subtitle>
-        </ion-col>
-      </ion-row>
-      <ion-row class="ion-align-items-center" *ngFor="let source of production.butcheryProductionSources">
-        <ion-col>
-          <ion-card-subtitle color="primary">{{ source.butcheryReceivingItem.item.itemName }} # {{
-            source.butcheryReceivingItem.butcheryReceivingItemId.toString().padStart(8,
-            "0") }}
-          </ion-card-subtitle>
-        </ion-col>
-        <ion-col size-xs="4" size-sm="3" size-md="2">
-          <ion-card-subtitle class="ion-text-end" color="primary">
-            {{ source.requiredQty | number:'1.0-2' }} {{
-            source.butcheryReceivingItem.item.uom.uomCode }}
-          </ion-card-subtitle>
-        </ion-col>
-      </ion-row>
-      <ion-row class="ion-align-items-center production-items" *ngFor="let item of production.butcheryProductionItems">
-        <ion-col size-xs="4" size-sm="6" size-md="8">
-          <ion-card-subtitle> {{ item.item.itemName }} </ion-card-subtitle>
-        </ion-col>
-        <ion-col size-xs="4" size-sm="3" size-md="2">
-          <ion-card-subtitle class="ion-text-end">
-            {{ item.producedQty | number:'1.0-2' }} {{ item.requiredUom.uomCode
-            }}
-          </ion-card-subtitle>
-        </ion-col>
-        <ion-col size-xs="4" size-sm="3" size-md="2"></ion-col>
-      </ion-row>
-    </ion-grid> -->
-
-    <!-- <div class="separator"></div>
-    <ion-grid class="production-history">
-      <ion-row class="ion-align-items-center production-total">
-        <ion-col size-xs="4" size-sm="6" size-md="8">
-          <ion-card-title> Total </ion-card-title>
-        </ion-col>
-        <ion-col size-xs="4" size-sm="3" size-md="2">
-          <ion-card-title class="ion-text-end">
-            {{ totalProductionItemQty | number:'1.0-2' }}
-          </ion-card-title>
-        </ion-col>
-        <ion-col size-xs="4" size-sm="3" size-md="2">
-          <ion-card-title class="ion-text-end">
-            {{ totalProductionSourceQty | number:'1.0-2' }}
-          </ion-card-title>
-        </ion-col>
-      </ion-row>
-    </ion-grid> -->
   </ion-card>
 </ion-content>
 
