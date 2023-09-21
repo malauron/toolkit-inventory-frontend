@@ -76,7 +76,12 @@ export class ReceivingsPage implements OnInit, OnDestroy {
                 this.searchValue
               );
             } else {
-              this.getReceivings(undefined, 0, this.config.pageSize, this.warehouse.warehouseId);
+              this.getReceivings(
+                undefined,
+                0,
+                this.config.pageSize,
+                this.warehouse.warehouseId
+              );
             }
           });
 
@@ -90,12 +95,22 @@ export class ReceivingsPage implements OnInit, OnDestroy {
             this.receivings = [];
             this.pageNumber = 0;
             this.totalPages = 0;
-            this.getReceivings(undefined, 0, this.config.pageSize, this.warehouse.warehouseId);
+            this.getReceivings(
+              undefined,
+              0,
+              this.config.pageSize,
+              this.warehouse.warehouseId
+            );
           });
 
         // Retrieves a partial list from the server
         // upon component initialization
-        this.getReceivings(undefined, 0, this.config.pageSize, this.warehouse.warehouseId);
+        this.getReceivings(
+          undefined,
+          0,
+          this.config.pageSize,
+          this.warehouse.warehouseId
+        );
       });
   }
 
@@ -178,7 +193,12 @@ export class ReceivingsPage implements OnInit, OnDestroy {
         this.searchValue
       );
     } else {
-      this.getReceivings(event, this.pageNumber, this.config.pageSize);
+      this.getReceivings(
+        event,
+        this.pageNumber,
+        this.config.pageSize,
+        this.warehouse.warehouseId
+      );
     }
   }
 
