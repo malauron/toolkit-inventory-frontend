@@ -1,7 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable id-blacklist */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Item } from 'src/app/classes/item.model';
 import { PageInfo } from 'src/app/classes/page-info.model';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
@@ -42,12 +43,18 @@ export class ButcheryBatchesService {
   private urlV1ButcheryBatchDetailItems: string;
   private urlButcheryBatchInventories: string;
 
+  private _batchesHaveChanged = new Subject<boolean>();
+
   constructor(private http: HttpClient, private config: AppParamsConfig) {
     this.urlButcheryBatches = `${this.config.url}/butcheryBatches`;
     this.urlV1ButcheryBatches = `${this.config.urlV1}/butcheryBatches`;
     this.urlV1ButcheryBatchDetails = `${this.config.urlV1}/butcheryBatchDetails`;
     this.urlV1ButcheryBatchDetailItems = `${this.config.urlV1}/butcheryBatchDetailItems`;
     this.urlButcheryBatchInventories = `${this.config.url}/butcheryBatchInventories`;
+  }
+
+  get batchesHaveChanged() {
+    return this._batchesHaveChanged;
   }
 
   getButcheryBatch(batchId: number): Observable<ButcheryBatchDto> {

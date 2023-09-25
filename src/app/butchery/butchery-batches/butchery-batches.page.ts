@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonSearchbar, ToastController } from '@ionic/angular';
 import { debounceTime, distinctUntilChanged, map, Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { ButcheryBatchesService } from '../services/butchery-batches.service';
   templateUrl: './butchery-batches.page.html',
   styleUrls: ['./butchery-batches.page.scss'],
 })
-export class ButcheryBatchesPage implements OnInit {
+export class ButcheryBatchesPage implements OnInit, OnDestroy {
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('searchBar', { static: true }) searchBar: IonSearchbar;
 
@@ -54,6 +54,16 @@ export class ButcheryBatchesPage implements OnInit {
           this.searchValue
         );
       });
+
+    this.batchSub = this.butcheryBatchersService.batchesHaveChanged.subscribe((data) => {
+      this.searchBar.value = '';
+      this.searchValue = '';
+      this.infiniteScroll.disabled = false;
+      this.batches = [];
+      this.pageNumber = 0;
+      this.totalPages = 0;
+      this.getBatches(undefined, 0, this.pageSize);
+    });
 
     this.getBatches(undefined, 0, this.pageSize);
 
@@ -111,6 +121,20 @@ export class ButcheryBatchesPage implements OnInit {
     ]);
   }
 
+  getStatusColor(releasingStatus): string {
+    let statusColor: string;
+    if (releasingStatus === 'Unposted') {
+      statusColor = 'warning';
+    }
+    if (releasingStatus === 'Posted') {
+      statusColor = 'success';
+    }
+    if (releasingStatus === 'Cancelled') {
+      statusColor = 'primary';
+    }
+    return statusColor;
+  }
+
   loadMoreItems(event) {
     if (this.pageNumber + 1 >= this.totalPages) {
       event.target.disabled = true;
@@ -140,5 +164,11 @@ export class ButcheryBatchesPage implements OnInit {
     });
 
     await toast.present();
+  }
+
+  ngOnDestroy(): void {
+      {
+        this.batchSub.unsubscribe();
+      }
   }
 }

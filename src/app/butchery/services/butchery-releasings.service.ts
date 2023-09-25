@@ -23,20 +23,11 @@ export class ButcheryReleasingsService {
 
   private _releasingsHaveChanged = new Subject<boolean>();
 
-  // private _releasingPrintPreview = new BehaviorSubject<ReleasingPrintPreviewDto>(
-  //   undefined
-  // );
-
   constructor(private http: HttpClient, private config: AppParamsConfig) {}
 
   get releasingsHaveChanged() {
     return this._releasingsHaveChanged;
   }
-
-  // get purchasePrintPreview() {
-  //   return this._releasingPrintPreview;
-  // }
-
   getReleasing(releasingId: number): Observable<ButcheryReleasingDto> {
 
     this.apiUrl = `${this.config.urlV1ButcheryReleasings}?butcheryReleasingId=${releasingId}`;
@@ -69,24 +60,12 @@ export class ButcheryReleasingsService {
     searchDesc = String(searchDesc).replace('|','');
     searchDesc = String(searchDesc).replace('\\','');
 
-    // this.apiUrl =
-    //   `${this.config.urlButcheryReleasingsSearch}` +
-    //   `?butcheryReleasingId=${releasingId}&warehouseName=${searchDesc}&customerName=${searchDesc}` +
-    //   `&releasingStatus=${releasingStatus}&page=${pageNumber}&size=${pageSize}`;
-
     this.apiUrl =
       `${this.config.urlButcheryReleasingsSearch}` +
       `?butcheryReleasingId=${releasingId}&warehouseName=${searchDesc}&destinationWhse=${searchDesc}` +
       `&releasingStatus=${releasingStatus}&page=${pageNumber}&size=${pageSize}`;
     return this.http.get<ResponseReleasings>(this.apiUrl);
   }
-
-  // getReleasingList(
-  //   orderIds: number[]
-  // ): Observable<OrderMenuIngredientSummaryDto> {
-  //   this.apiUrl = `${this.config.urlV1OrderMenuIngredientSummary}?orderIds=${orderIds}`;
-  //   return this.http.get<OrderMenuIngredientSummaryDto>(this.apiUrl);
-  // }
 
   postReleasing(releasingDto: ButcheryReleasingDto): Observable<ButcheryReleasing> {
     this.apiUrl = `${this.config.urlV1ButcheryReleasings}`;

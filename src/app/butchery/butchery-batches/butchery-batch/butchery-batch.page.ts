@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   AlertController,
   IonPopover,
@@ -28,7 +28,7 @@ import { ButcheryBatchConfig } from '../../config/butchery-batch.config';
   templateUrl: './butchery-batch.page.html',
   styleUrls: ['./butchery-batch.page.scss'],
 })
-export class ButcheryBatchPage implements OnInit {
+export class ButcheryBatchPage implements OnInit, OnDestroy {
   @ViewChild('statusPopover') statusPopover: IonPopover;
   statusPopoverOpen = false;
 
@@ -38,6 +38,7 @@ export class ButcheryBatchPage implements OnInit {
   butcheryBatchDetails: ButcheryBatchDetail[] = [];
   elCtrl: ButcheryBatchConfig;
 
+  dataHaveChanged = false;
   modalOpen = false;
   isUploading = false;
   isFetching = false;
@@ -141,6 +142,7 @@ export class ButcheryBatchPage implements OnInit {
         next: (res) => {
           this.butcheryBatch.batchStatus = res.butcheryBatch.batchStatus;
           this.butcheryBatch.isOpen = res.butcheryBatch.isOpen;
+          this.dataHaveChanged = true;
         },
         error: () => {
           this.isUploading = false;
@@ -249,6 +251,7 @@ export class ButcheryBatchPage implements OnInit {
               butcheryBatchDto.butcheryBatch = butcherBatch;
               butcheryBatchDto.butcheryBatchDetail = modal.data;
 
+              this.dataHaveChanged = true;
               this.butcheryBatchesService
                 .postButcheryBatchDetail(butcheryBatchDto)
                 .subscribe({
@@ -307,6 +310,7 @@ export class ButcheryBatchPage implements OnInit {
 
               butcheryBatchDto.butcheryBatchDetail = detail;
 
+              this.dataHaveChanged = true;
               this.butcheryBatchesService
                 .postButcheryBatchDetail(butcheryBatchDto)
                 .subscribe({
@@ -350,6 +354,7 @@ export class ButcheryBatchPage implements OnInit {
                   const butcheryBatchDto = new ButcheryBatchDto();
                   butcheryBatchDto.butcheryBatchDetail = detail;
 
+                  this.dataHaveChanged = true;
                   this.butcheryBatchesService
                     .deleteButcheryBatchDetail(butcheryBatchDto)
                     .subscribe({
@@ -407,6 +412,7 @@ export class ButcheryBatchPage implements OnInit {
               butcheryBatchDto.butcheryBatchDetail = detail;
               butcheryBatchDto.butcheryBatchDetailItem = modal.data;
 
+              this.dataHaveChanged = true;
               this.butcheryBatchesService
                 .postButcheryBatchDetailItem(butcheryBatchDto)
                 .subscribe({
@@ -478,6 +484,7 @@ export class ButcheryBatchPage implements OnInit {
               butcheryBatchDto.butcheryBatchDetail = batchDetail;
               butcheryBatchDto.butcheryBatchDetailItem = detailItem;
 
+              this.dataHaveChanged = true;
               this.butcheryBatchesService
                 .postButcheryBatchDetailItem(butcheryBatchDto)
                 .subscribe({
@@ -529,6 +536,8 @@ export class ButcheryBatchPage implements OnInit {
                   const butcheryBatchDto = new ButcheryBatchDto();
                   butcheryBatchDto.butcheryBatchDetail = detail;
                   butcheryBatchDto.butcheryBatchDetailItem = detailItem;
+
+                  this.dataHaveChanged = true;
                   this.butcheryBatchesService
                     .deleteButcheryBatchDetailItem(butcheryBatchDto)
                     .subscribe({
@@ -642,6 +651,7 @@ export class ButcheryBatchPage implements OnInit {
             this.butcheryBatch.hasInventory = res.butcheryBatch.hasInventory;
             this.butcheryBatch.isOpen = res.butcheryBatch.isOpen;
             this.butcheryBatchDetails = res.butcheryBatch.butcheryBatchDetails;
+            this.dataHaveChanged = true;
           },
           error: (err) => {
             this.isUploading = false;
@@ -664,5 +674,11 @@ export class ButcheryBatchPage implements OnInit {
     });
 
     await toast.present();
+  }
+
+  ngOnDestroy(): void {
+    if (this.dataHaveChanged) {
+      this.butcheryBatchesService.batchesHaveChanged.next(true);
+    }
   }
 }
