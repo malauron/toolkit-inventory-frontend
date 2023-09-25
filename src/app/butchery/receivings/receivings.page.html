@@ -19,81 +19,104 @@
     ></ion-spinner>
   </div>
 
-  <ion-grid *ngIf="receivings.length>0">
-    <ion-row>
-      <ion-col
-        size-xs="12"
-        size-sm="6"
-        size-lg="4"
-        size-xl="3"
-        *ngFor="let receiving of receivings"
-      >
-        <ion-card class="favCard">
-          <div class="card-top"></div>
-
-          <ion-item class="order-id">
-            <ion-icon
-              class="cartIcon"
-              name="log-in-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label
-              >{{ receiving.butcheryReceivingId.toString().padStart(8, "0") }}</ion-label
-            >
+  <ion-grid>
+    <ion-row class="data-hdr">
+      <ion-col size-lg="1">
+        <ion-item lines="none"
+          ><ion-label><h2>Receiving No.</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="4">
+        <ion-item lines="none"
+          ><ion-label><h2>Storage Provider</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <!-- <ion-col size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label><h2>Warehouse</h2></ion-label></ion-item
+        >
+      </ion-col> -->
+      <ion-col size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label><h2>Reference No.</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="1">
+        <ion-item lines="none"
+          ><ion-label><h2>Status</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="1.5">
+        <ion-item lines="none"
+          ><ion-label><h2>Created On</h2></ion-label></ion-item
+        >
+      </ion-col>
+    </ion-row>
+    <ion-row class="data-row" *ngFor="let receiving of receivings">
+      <div class="option-buttons">
+        <ion-item lines="none">
+          <ion-button
+            class="delete-item-button"
+            (click)="onEditReceiving(receiving.butcheryReceivingId)"
+            mode="ios"
+            slot="end"
+            fill="clear"
+            color="medium"
+            size="default"
+          >
+            <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="1">
+        <ion-item lines="none"
+          ><ion-label
+            ><h3>Receiving No.</h3>
+            {{ receiving.butcheryReceivingId }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="4">
+        <ion-item lines="none"
+          ><ion-label
+            ><h3>Storage Provider</h3>
+            {{ receiving.warehouse.warehouseName }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <!-- <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label
+            ><h3>Warehouse</h3>
+            {{ receiving.warehouse.warehouseName }}</ion-label
+          ></ion-item
+        >
+      </ion-col> -->
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label
+            ><h3>Reference No.</h3>
+            {{ receiving.referenceCode }} <span *ngIf="!receiving.referenceCode">-</span></ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="1">
+        <ion-item lines="none">
+          <ion-label
+            ><h3>Status</h3>
             <ion-badge [color]="getStatusColor(receiving.receivingStatus)"
               >{{ receiving.receivingStatus }}</ion-badge
-            >
-          </ion-item>
-
-          <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="person-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-              <p>{{ receiving.vendor.vendorName }}</p>
-          </ion-item>
-
-          <ion-item lines="none">
-            <ion-icon
-              class="contactIcon"
-              name="business-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-              <p>{{ receiving.warehouse.warehouseName }}</p>
-          </ion-item>
-
-          <div class="separator"></div>
-
-          <div class="action-buttons">
-            <ion-item lines="none">
-              <ion-icon
-                class="totalIcon"
-                name="calculator-outline"
-                color="primary"
-                slot="start"
-              ></ion-icon>
-              <ion-card-title>
-                {{ receiving.totalAmount | number:'1.2-2' }}
-              </ion-card-title>
-            </ion-item>
-            <div>
-              <ion-button
-                class="ion-no-padding ion-no-margin"
-                expand="full"
-                mode="ios"
-                color="secondary"
-                fill="clear"
-                (click)="onEditReceiving(receiving.butcheryReceivingId)"
-              >
-                <ion-icon name="chevron-forward-sharp"></ion-icon>
-              </ion-button>
-            </div>
-          </div>
-        </ion-card>
+            ></ion-label
+          >
+        </ion-item>
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="1.5">
+        <ion-item lines="none"
+          ><ion-label
+            ><h3>Created On</h3>
+            {{ receiving.dateCreated| date:'MMM dd, yyyy hh:mm a' }}</ion-label
+          ></ion-item
+        >
       </ion-col>
     </ion-row>
   </ion-grid>
