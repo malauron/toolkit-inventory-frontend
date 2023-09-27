@@ -42,7 +42,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
   user: User;
   releasing: ButcheryReleasing;
   warehouse: Warehouse;
-  butcheryBatch: ButcheryBatch;
+  // butcheryBatch: ButcheryBatch;
   destinationWarehouse: Warehouse;
   customer: Customer;
   releasingItems: ButcheryReleasingItem[] = [];
@@ -72,7 +72,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.isFetching = true;
     this.releasing = new ButcheryReleasing();
-    this.butcheryBatch = new ButcheryBatch();
+    // this.butcheryBatch = new ButcheryBatch();
     this.warehouse = new Warehouse();
     this.destinationWarehouse = new Warehouse();
     this.releasingDetailsConfig = new ReleasingDetailsConfig();
@@ -106,7 +106,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
             this.releasingDetailsConfig.setParams(resData.releasingStatus);
             this.releasing.dateCreated = resData.dateCreated;
             this.warehouse = resData.warehouse;
-            this.butcheryBatch = resData.butcheryBatch;
+            // this.butcheryBatch = resData.butcheryBatch;
             this.destinationWarehouse = resData.destinationWarehouse;
             this.customer = resData.customer;
             this.releasingItems = resData.butcheryReleasingItems;
@@ -140,44 +140,44 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
     });
   }
 
-  onBatchSearch() {
-    if (!this.modalOpen) {
-      this.modalOpen = true;
-      this.modalSearch
-        .create({ component: ButcheryBatchSearchComponent, cssClass: 'custom-modal-styles' })
-        .then((modalSearch) => {
-          modalSearch.present();
-          return modalSearch.onDidDismiss();
-        })
-        .then((resultData) => {
-          if (resultData.role === 'butcheryBatch') {
-            if (this.releasing.butcheryReleasingId) {
-              const releasingDto = new ButcheryReleasingDto();
-              releasingDto.butcheryReleasingId =
-                this.releasing.butcheryReleasingId;
-                releasingDto.butcheryBatch = resultData.data;
-              this.dataHaveChanged = true;
-              this.releasingsService
-                .putReleasing(releasingDto)
-                .subscribe((res) => {
-                  this.releasing.releasingStatus = res.releasingStatus;
-                  if (this.releasing.releasingStatus === 'Unposted') {
-                    this.butcheryBatch = resultData.data;
-                  } else {
-                    this.messageBox(
-                      'Unable to update the production since its status has been tagged as ' +
-                        this.releasing.releasingStatus
-                    );
-                  }
-                });
-            } else {
-              this.butcheryBatch = resultData.data;
-            }
-          }
-          this.modalOpen = false;
-        });
-    }
-  }
+  // onBatchSearch() {
+  //   if (!this.modalOpen) {
+  //     this.modalOpen = true;
+  //     this.modalSearch
+  //       .create({ component: ButcheryBatchSearchComponent, cssClass: 'custom-modal-styles' })
+  //       .then((modalSearch) => {
+  //         modalSearch.present();
+  //         return modalSearch.onDidDismiss();
+  //       })
+  //       .then((resultData) => {
+  //         if (resultData.role === 'butcheryBatch') {
+  //           if (this.releasing.butcheryReleasingId) {
+  //             const releasingDto = new ButcheryReleasingDto();
+  //             releasingDto.butcheryReleasingId =
+  //               this.releasing.butcheryReleasingId;
+  //               releasingDto.butcheryBatch = resultData.data;
+  //             this.dataHaveChanged = true;
+  //             this.releasingsService
+  //               .putReleasing(releasingDto)
+  //               .subscribe((res) => {
+  //                 this.releasing.releasingStatus = res.releasingStatus;
+  //                 if (this.releasing.releasingStatus === 'Unposted') {
+  //                   this.butcheryBatch = resultData.data;
+  //                 } else {
+  //                   this.messageBox(
+  //                     'Unable to update the production since its status has been tagged as ' +
+  //                       this.releasing.releasingStatus
+  //                   );
+  //                 }
+  //               });
+  //           } else {
+  //             this.butcheryBatch = resultData.data;
+  //           }
+  //         }
+  //         this.modalOpen = false;
+  //       });
+  //   }
+  // }
 
   onGetItemByItemCode(event) {
     if (event && event.key === 'Enter') {
@@ -413,11 +413,11 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.butcheryBatch.butcheryBatchId) {
-      this.messageBox('Please specify a batch.');
-      this.isUploading = false;
-      return;
-    }
+    // if (!this.butcheryBatch.butcheryBatchId) {
+    //   this.messageBox('Please specify a batch.');
+    //   this.isUploading = false;
+    //   return;
+    // }
 
     if (!this.destinationWarehouse.warehouseId) {
       this.messageBox('Please choose a destination warehouse');
@@ -436,7 +436,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
     releasingDto.totalAmount = this.totalAmount;
     releasingDto.totalWeightKg = this.totalWeightKg;
     releasingDto.warehouse = this.warehouse;
-    releasingDto.butcheryBatch = this.butcheryBatch;
+    // releasingDto.butcheryBatch = this.butcheryBatch;
     releasingDto.destinationWarehouse = this.destinationWarehouse;
     releasingDto.customer = this.customer;
     releasingDto.butcheryReleasingItems = this.releasingItems;
