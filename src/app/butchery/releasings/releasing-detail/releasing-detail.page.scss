@@ -6,8 +6,21 @@ ion-content {
   --ion-background-color: #f6f6f6;
 }
 
+ion-grid {
+  padding: 1rem 0.5rem 2rem 0.5rem;
+}
+
+ion-col {
+  padding: 0;
+}
+
+ion-item {
+  padding: 0.6rem 0;
+}
+
 ion-card {
   --ion-background-color: #ffffff;
+  margin: 2rem 0;
 }
 
 ion-searchbar {
@@ -16,14 +29,6 @@ ion-searchbar {
   --border-radius: 5px;
   padding-inline-start: 1px;
   padding-inline-end: 15px;
-}
-
-.card-holder {
-  margin: 20px 20px 0 20px;
-}
-
-.card-top {
-  border-top: 5px solid var(--ion-color-primary);
 }
 
 .spinner {
@@ -40,17 +45,54 @@ ion-searchbar {
   }
 }
 
+.card-top {
+  border-top: 5px solid var(--ion-color-primary);
+}
+
 .separator {
   border-top: 1px solid var(--ion-color-medium);
 }
 
+.card-holder {
+  ion-col {
+    padding: 0.2rem;
+  }
+}
+
+.insert-item-card {
+  border: 3px dashed rgba($color: #4e4d4d, $alpha: 0.5);
+}
+
+.insert-item {
+  height: 11rem;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  ion-label {
+    font-size: 1.1rem;
+    color: var(--ion-color-medium);
+  }
+}
+
 .card-item {
-  height: 165px;
+  height: 175px;
   margin: auto;
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.19);
 
+  ion-item {
+    padding: 0;
+  }
+
   h5 {
     text-align: left;
+  }
+
+  .item-ids {
+    max-height: 35px;
   }
 
   .icon {
@@ -83,6 +125,38 @@ ion-searchbar {
 
 ion-popover {
   --backdrop-opacity: 0;
+}
+
+.production-history {
+  padding: 0px 30px;
+
+  .production-total {
+    padding-bottom: 20px;
+  }
+
+  .row-header {
+    height: 15px;
+  }
+}
+
+.font-medium {
+  font-size: medium;
+}
+
+.font-small {
+  font-size: small;
+}
+
+.ion-label-elem {
+  color: var(--ion-color-medium);
+}
+
+.ion-input-elem {
+  --padding-bottom: 0;
+}
+
+.end-button {
+  margin: 0.2rem;
 }
 
 #print {
@@ -190,5 +264,49 @@ ion-popover {
   ion-content {
     visibility: hidden !important;
     display: none;
+  }
+}
+
+@media (min-width: 500px) {
+  .save-button {
+    width: 10rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+  }
+
+  .total-lbl-col {
+    visibility: visible !important;
+    display: block !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .primary-info-row {
+    ion-item {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+
+  .save-button {
+    padding-right: 0.5rem;
+  }
+
+  .item-hdr {
+    display: flex !important;
+  }
+
+  .item-qty-lbl h3 {
+    display: none;
+  }
+
+  .qty-uom-lbl {
+    visibility: unset !important;
+    display: unset !important;
   }
 }
