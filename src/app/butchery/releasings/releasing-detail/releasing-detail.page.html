@@ -20,7 +20,7 @@
     <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
   </div>
 
-  <ion-card *ngIf="!isFetching" class="card-holder">
+  <!-- <ion-card *ngIf="!isFetching" class="card-holder">
     <div class="card-top"></div>
     <ion-grid>
       <ion-row>
@@ -115,7 +115,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-  </ion-card>
+  </ion-card> -->
 
   <ion-card *ngIf="!isFetching">
     <div class="card-top"></div>
@@ -265,7 +265,7 @@
             </ion-button>
           </ion-item>
         </ion-col>
-        <!-- <ion-col size-xs="12" size-lg="6" >
+        <ion-col size-xs="12" size-lg="6" >
           <ion-item fill="outline">
             <ion-icon
               class="contactIcon"
@@ -278,7 +278,7 @@
             >
             <ion-input
               class="ion-input-elem"
-              value="{{ customer.customerName }}"
+              value="{{ customer?.customerName }}"
               readonly="true"
             ></ion-input>
             <ion-button
@@ -293,7 +293,7 @@
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-item>
-        </ion-col> -->
+        </ion-col>
         <!-- <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
             <ion-icon
