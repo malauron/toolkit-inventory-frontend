@@ -24,7 +24,7 @@
     ></ion-spinner>
   </div>
 
-  <ion-card *ngIf="!isFetching" class="card-holder">
+  <!-- <ion-card *ngIf="!isFetching" class="card-holder">
     <div class="card-top"></div>
     <ion-grid>
       <ion-row>
@@ -56,7 +56,6 @@
               }}</ion-label
             >
 
-            <!-- Button to change the status of the production -->
             <ion-button
               #statusButton
               *ngIf="productionDetailsConfig.productionStatusButton && !isUploading"
@@ -105,9 +104,7 @@
                 </ion-content>
               </ng-template>
             </ion-popover>
-            <!-- **************************************** -->
 
-            <!-- Badge that indicates the status of the production -->
             <ion-badge
               #statusBadge
               [color]="productionDetailsConfig.productionStatusColor"
@@ -115,7 +112,7 @@
             >
               {{production.productionStatus}}
             </ion-badge>
-            <!-- *************************************** -->
+
           </ion-item>
         </ion-col>
 
@@ -173,6 +170,240 @@
             <ion-card-title mode="md"
               >{{ totalAmount | number:'1.2-2' }}</ion-card-title
             >
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card> -->
+
+  <ion-card *ngIf="!isFetching">
+    <div class="card-top"></div>
+    <ion-item lines="full">
+      <ion-card-title>Primary Information</ion-card-title>
+    </ion-item>
+    <ion-grid>
+      <ion-row class="primary-info-row">
+        <ion-col *ngIf="production.butcheryProductionId">
+          <ion-item fill="outline">
+            <ion-icon
+              class="cartIcon"
+              name="log-out-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Production No.</ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+              value="{{ production.butcheryProductionId }}"
+              readonly="true"
+            ></ion-input>
+
+            <ion-button
+              #statusButton
+              *ngIf="productionDetailsConfig.productionStatusButton && !isUploading"
+              fill="clear"
+              size="small"
+              slot="end"
+              mode="ios"
+              (click)="onShowPopOver($event)"
+            >
+              <ion-badge [color]="productionDetailsConfig.productionStatusColor"
+                >{{production.productionStatus}}
+              </ion-badge>
+            </ion-button>
+
+            <ion-popover
+              #statusPopover
+              *ngIf="productionDetailsConfig.productionStatusPopover"
+              triggerAction="click"
+              dismissOnSelect="true"
+              [isOpen]="statusPopoverOpen"
+              (didDismiss)="statusPopoverOpen = false"
+            >
+              <ng-template>
+                <ion-content>
+                  <ion-list>
+                    <ion-item
+                      #postedStatus
+                      *ngIf="productionDetailsConfig.postedStatus"
+                      class="ion-text-center ion-no-padding ion-no-margin"
+                      lines="full"
+                      [button]="true"
+                      (click)="onUpdateStatus('Posted')"
+                    >
+                      <ion-label>Post</ion-label>
+                    </ion-item>
+                    <ion-item
+                      #cancelledStatus
+                      *ngIf="productionDetailsConfig.cancelledStatus"
+                      class="ion-text-center ion-no-padding ion-no-margin"
+                      lines="none"
+                      [button]="true"
+                      (click)="onUpdateStatus('Cancelled')"
+                    >
+                      <ion-label color="primary">Cancel</ion-label>
+                    </ion-item>
+                  </ion-list>
+                </ion-content>
+              </ng-template>
+            </ion-popover>
+            <ion-badge
+              #statusBadge
+              slot="end"
+              [color]="productionDetailsConfig.productionStatusColor"
+              *ngIf="productionDetailsConfig.productionStatusBadge"
+            >
+              {{production.productionStatus}}
+            </ion-badge>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12" size-lg="6" *ngIf="production.butcheryProductionId">
+          <ion-item fill="outline">
+            <ion-icon
+              name="calendar-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Date Created</ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+              value="{{ production.dateCreated | date:'MMM dd, yyyy hh:mm a' }}"
+              readonly="true"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              src="../../assets/icons/warehouse02.svg"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Warehouse</ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+              value="{{ warehouse.warehouseName }}"
+              readonly="true"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <!-- <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              src="../../assets/icons/layers.svg"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Batch</ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+              value="{{ batchDesc }}"
+              readonly="true"
+            ></ion-input>
+            <ion-button
+              #statusButton
+              slot="end"
+              *ngIf="production.productionStatus === 'Unposted' || production.productionStatus === undefined"
+              (click)="onBatchSearch()"
+              fill="clear"
+              size="small"
+              mode="ios"
+              id="click-trigger"
+            >
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col> -->
+        <!-- <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="storefront-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Vendor</ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+              value="{{ vendor.vendorName }}"
+              readonly="true"
+            ></ion-input>
+            <ion-button
+              *ngIf="production.productionStatus === 'Unposted' || production.productionStatus === undefined"
+              (click)="onVendorSearch()"
+              fill="clear"
+              size="small"
+              slot="end"
+              mode="ios"
+              id="click-trigger"
+            >
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col> -->
+        <!-- <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="document-attach-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Reference No.</ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+              maxlength="20"
+              [readonly]="production.productionStatus !== 'Unposted' && production.productionStatus !== undefined"
+              #referenceCodeInput
+              [value]="production.referenceCode"
+            ></ion-input>
+            <ion-button
+              #statusButton
+              *ngIf="production.productionStatus === 'Unposted' || production.productionStatus === undefined"
+              (click)="onUpdateRefCode()"
+              fill="clear"
+              size="small"
+              slot="end"
+              mode="ios"
+              id="click-trigger"
+            >
+              <ion-icon
+                name="checkmark-circle-outline"
+                *ngIf="production.productionStatus === 'Unposted'"
+              ></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col> -->
+        <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="calculator-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Total</ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+              value="{{ totalAmount | number:'1.2-2' }}"
+              readonly="true"
+            ></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -303,7 +534,7 @@
     <div class="card-top"></div>
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
-        <ion-card-title class="font-large">Production Items</ion-card-title>
+        <ion-card-title class="font-large">Produced Items</ion-card-title>
       </ion-item>
     </ion-card-header>
     <ion-card-header

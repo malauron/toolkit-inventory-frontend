@@ -12,7 +12,6 @@ import {
 import { Vendor } from 'src/app/classes/vendor.model';
 import { ItemDto } from 'src/app/classes/item-dto.model';
 import { Warehouse } from 'src/app/classes/warehouse.model';
-import { VendorSearchComponent } from 'src/app/vendors/vendor-search/vendor-search.component';
 import { ItemsService } from 'src/app/services/items.service';
 import { ButcheryReceivingDto } from '../../classes/butchery-receiving-dto.model';
 import { ButcheryReceivingItem } from '../../classes/butchery-receiving-item.model';
