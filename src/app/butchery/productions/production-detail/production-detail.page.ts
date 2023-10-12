@@ -360,11 +360,11 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
         return;
       }
 
-      if (!this.butcheryBatch.butcheryBatchId) {
-        this.messageBox('Please specify a batch.');
-        this.modalOpen = false;
-        return;
-      }
+      // if (!this.butcheryBatch.butcheryBatchId) {
+      //   this.messageBox('Please specify a batch.');
+      //   this.modalOpen = false;
+      //   return;
+      // }
 
       this.modalSearch
         .create({
