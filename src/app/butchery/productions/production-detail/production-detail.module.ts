@@ -11,8 +11,8 @@ import { ProductionDetailPage } from './production-detail.page';
 import { ProductionSourceModule } from '../production-source/production-source.module';
 import { ReceivingItemSearchModule } from '../../receivings/receiving-item-search/receiving-item-search.module';
 import { ButcheryBatchSearchModule } from '../../butchery-batches/butchery-batch-search/butchery-batch-search.module';
-import { ButcheryBatchInventoryItemSearchModule } from '../../butchery-batches/butchery-batch-inventory-item-search/butchery-batch-inventory-item-search.module';
 import { ProductionItemModule } from '../production-item/production-item.module';
+import { ItemCostSearchModule } from 'src/app/items/item-cost-search/item-cost-search.module';
 
 @NgModule({
   imports: [
@@ -23,8 +23,7 @@ import { ProductionItemModule } from '../production-item/production-item.module'
     ProductionSourceModule,
     ProductionItemModule,
     ReceivingItemSearchModule,
-    ButcheryBatchSearchModule,
-    ButcheryBatchInventoryItemSearchModule
+    ItemCostSearchModule
   ],
   declarations: [ProductionDetailPage]
 })

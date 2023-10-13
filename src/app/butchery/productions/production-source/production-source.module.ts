@@ -11,8 +11,7 @@ import { ProductionSourceComponent } from './production-source.component';
     CommonModule,
     FormsModule,
     IonicModule,
-    ReactiveFormsModule,
-    ItemSearchModule
+    ReactiveFormsModule
   ],
   declarations: [ProductionSourceComponent],
   providers: [ProductionSourceService]

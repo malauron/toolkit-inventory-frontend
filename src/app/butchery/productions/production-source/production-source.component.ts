@@ -12,13 +12,11 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { Item } from 'src/app/classes/item.model';
 import { Uom } from 'src/app/classes/uom.model';
 import { Warehouse } from 'src/app/classes/warehouse.model';
-import { ButcheryBatchInventoryItemSearchComponent } from '../../butchery-batches/butchery-batch-inventory-item-search/butchery-batch-inventory-item-search.component';
 import { ButcheryBatch } from '../../classes/butchery-batch.model';
 import { ButcheryProductionSource } from '../../classes/butchery-production-source.model';
-import { ReceivingItemSearchComponent } from '../../receivings/receiving-item-search/receiving-item-search.component';
-import { ReceivingItemSearchService } from '../../receivings/receiving-item-search/receiving-item-search.service';
 import { ProductionSourceService } from './production-source.service';
 import { hasItemIdValidator, hasUomIdValidator } from '../../utils/custom-Validators.directive';
+import { ItemCostSearchComponent } from 'src/app/items/item-cost-search/item-cost-search.component';
 
 @Component({
   selector: 'app-production-source',
@@ -49,7 +47,6 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
   isSaving = false;
 
   constructor(
-    private receivingItemSearchService: ReceivingItemSearchService,
     private productionSourceService: ProductionSourceService,
     private modalController: ModalController,
     private toastCtrl: ToastController
@@ -118,15 +115,14 @@ export class ProductionSourceComponent implements OnInit, OnDestroy {
     };
   }
 
-  onReceivedItemSearch() {
+  onItemCostSearch() {
     if (!this.modalOpen) {
       this.modalOpen = true;
-      this.receivingItemSearchService.warehouse.next(this.warehouse);
       this.modalController
         .create({
-          component: ButcheryBatchInventoryItemSearchComponent,
+          component: ItemCostSearchComponent,
           cssClass: 'custom-modal-styles',
-          componentProps: { batchId: this.batch.butcheryBatchId },
+          componentProps: { warehouse: this.warehouse },
         })
         .then((modalSearch) => {
           modalSearch.present();

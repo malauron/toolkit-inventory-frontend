@@ -256,8 +256,8 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
       receivingDto.referenceCode = this.receiving.referenceCode;
       receivingDto.receivingStatus = newStatus;
 
-      this.receivingsService.putReceivingSetStatus(receivingDto).subscribe(
-        (res) => {
+      this.receivingsService.putReceivingSetStatus(receivingDto).subscribe({
+        next: (res) => {
           if (res.errorDescription) {
             this.messageBox(res.errorDescription);
             this.isUploading = false;
@@ -280,14 +280,14 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
           }
           this.isUploading = false;
         },
-        (err) => {
+       error: (err) => {
           this.dataHaveChanged = true;
           this.messageBox(
             'An error occured while trying to update the receiving detail.'
           );
           this.isUploading = false;
         }
-      );
+      });
     }
   }
 

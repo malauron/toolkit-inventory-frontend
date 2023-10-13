@@ -393,8 +393,8 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
       productionDto.butcheryProductionId = this.production.butcheryProductionId;
       productionDto.productionStatus = newStatus;
 
-      this.productionsService.putProductionSetStatus(productionDto).subscribe(
-        (res) => {
+      this.productionsService.putProductionSetStatus(productionDto).subscribe({
+        next: (res) => {
           this.dataHaveChanged = true;
           if (res.productionStatus === 'Unposted') {
             this.production.productionStatus = newStatus;
@@ -412,14 +412,14 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           }
           this.isUploading = false;
         },
-        (err) => {
+        error: (err) => {
           this.dataHaveChanged = true;
           this.messageBox(
             'An error occured while trying to update the production detail.'
           );
           this.isUploading = false;
         }
-      );
+      });
     }
   }
 
