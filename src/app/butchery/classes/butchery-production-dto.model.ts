@@ -9,7 +9,6 @@ export class ButcheryProductionDto {
     public butcheryProductionId?: number,
     public productionStatus?: string,
     public warehouse?: Warehouse,
-    public butcheryBatch?: ButcheryBatch,
     public butcheryProductionItems?: ButcheryProductionItem[],
     public butcheryProductionItem?: ButcheryProductionItem,
     public butcheryProductionSources?: ButcheryProductionSource[],

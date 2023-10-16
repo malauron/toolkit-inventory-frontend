@@ -42,7 +42,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
   production: ButcheryProduction;
   warehouse: Warehouse;
-  butcheryBatch: ButcheryBatch;
   user: User;
   productionItems: ButcheryProductionItem[] = [];
   productionSources: ButcheryProductionSource[] = [];
@@ -74,7 +73,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
     this.production = new ButcheryProduction();
     this.warehouse = new Warehouse();
-    this.butcheryBatch = new ButcheryBatch();
     this.productionDetailsConfig = new ProductionDetailsConfig();
 
     this.route.paramMap.subscribe((paramMap) => {
@@ -102,7 +100,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
             this.productionDetailsConfig.setParams(resData.productionStatus);
             this.production.dateCreated = resData.dateCreated;
             this.warehouse = resData.warehouse;
-            this.butcheryBatch = resData.butcheryBatch;
             this.productionItems = resData.butcheryProductionItems;
             this.productionSources = resData.butcheryProductionSourceViews;
             this.totalAmount = this.production.totalAmount;
@@ -135,45 +132,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
           });
       }
     });
-  }
-
-  onBatchSearch() {
-    if (!this.modalOpen) {
-      this.modalOpen = true;
-      this.modalSearch
-        .create({ component: ButcheryBatchSearchComponent, cssClass: 'custom-modal-styles' })
-        .then((modalSearch) => {
-          modalSearch.present();
-          return modalSearch.onDidDismiss();
-        })
-        .then((resultData) => {
-          if (resultData.role === 'butcheryBatch') {
-            if (this.production.butcheryProductionId) {
-              const productionDto = new ButcheryProductionDto();
-              productionDto.butcheryProductionId =
-                this.production.butcheryProductionId;
-              productionDto.butcheryBatch = resultData.data;
-              this.dataHaveChanged = true;
-              this.productionsService
-                .putProduction(productionDto)
-                .subscribe((res) => {
-                  this.production.productionStatus = res.productionStatus;
-                  if (this.production.productionStatus === 'Unposted') {
-                    this.butcheryBatch = resultData.data;
-                  } else {
-                    this.messageBox(
-                      'Unable to update the production since its status has been tagged as ' +
-                        this.production.productionStatus
-                    );
-                  }
-                });
-            } else {
-              this.butcheryBatch = resultData.data;
-            }
-          }
-          this.modalOpen = false;
-        });
-    }
   }
 
   onGetItemByItemCode(event) {
@@ -360,17 +318,10 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
         return;
       }
 
-      // if (!this.butcheryBatch.butcheryBatchId) {
-      //   this.messageBox('Please specify a batch.');
-      //   this.modalOpen = false;
-      //   return;
-      // }
-
       this.modalSearch
         .create({
           component: ProductionSourceComponent,
           cssClass: 'custom-modal-styles',
-          componentProps: { batch: this.butcheryBatch },
         })
         .then((modalSearch) => {
           modalSearch.present();
@@ -474,10 +425,10 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.butcheryBatch.butcheryBatchId) {
-      this.messageBox('Please specify batch.');
-      return;
-    }
+    // if (!this.butcheryBatch.butcheryBatchId) {
+    //   this.messageBox('Please specify batch.');
+    //   return;
+    // }
 
     if (this.productionItems.length <= 0) {
       this.messageBox('Please add at least 1 production item.');
@@ -493,7 +444,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
     productionDto.totalAmount = this.totalAmount;
     productionDto.warehouse = this.warehouse;
-    productionDto.butcheryBatch = this.butcheryBatch;
     productionDto.butcheryProductionItems = this.productionItems;
     productionDto.butcheryProductionSources = this.productionSources;
 
