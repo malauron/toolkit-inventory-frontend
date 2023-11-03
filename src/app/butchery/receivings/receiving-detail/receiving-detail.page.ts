@@ -23,12 +23,9 @@ import { ReceivedItemDetail } from '../received-item/received-item.model';
 import { ReceivedItemService } from '../received-item/received-item.service';
 import { filterString } from '../../utils/utils';
 import { ButcheryProduction } from '../../classes/butchery-production.model';
-import { ButcheryBatchSearchComponent } from '../../butchery-batches/butchery-batch-search/butchery-batch-search.component';
 import { WarehousesService } from 'src/app/services/warehouses.service';
 import { User } from 'src/app/Security/classes/user.model';
 import { AuthenticationService } from 'src/app/Security/services/authentication.service';
-import { ButcheryBatch } from '../../classes/butchery-batch.model';
-import { VendorWarehouse } from 'src/app/classes/vendor-warehouse.model';
 
 @Component({
   selector: 'app-receiving-detail',
@@ -44,7 +41,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
 
   receiving: ButcheryReceiving;
   warehouse: Warehouse;
-  butcheryBatch: ButcheryBatch;
   vendor: Vendor;
   user: User;
   productions: ButcheryProduction[] = [];
@@ -55,8 +51,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
   dataHaveChanged = false;
   isFetching = false;
   modalOpen = false;
-
-  batchDesc = '';
 
   totalAmount = 0;
   totalProductionItemQty = 0;
@@ -80,8 +74,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
 
     this.receiving = new ButcheryReceiving();
     this.warehouse = new Warehouse();
-    this.butcheryBatch = new ButcheryBatch();
-    this.butcheryBatch.vendorWarehouse = new VendorWarehouse();
     this.vendor = new Vendor();
     this.receivingDetailsConfig = new ReceivingDetailsConfig();
 
@@ -111,11 +103,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             this.receivingDetailsConfig.setParams(resData.receivingStatus);
             this.receiving.dateCreated = resData.dateCreated;
             this.warehouse = resData.warehouse;
-            this.butcheryBatch = resData.butcheryBatch;
             this.vendor = resData.vendor;
             this.receivingItems = resData.butcheryReceivingItems;
             this.totalAmount = this.receiving.totalAmount;
-            this.batchDesc = `${this.butcheryBatch.vendorWarehouse.vendorWarehouseName} - ${this.butcheryBatch.remarks}`;
             this.isFetching = false;
           },
           error: (err) => {
@@ -187,7 +177,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
         .create({
           component: ReceivedItemComponent,
           cssClass: 'custom-modal-styles',
-          componentProps: { batch: this.butcheryBatch },
+          // componentProps: { batch: this.butcheryBatch },
         })
         .then((modalSearch) => {
           modalSearch.present();
@@ -221,9 +211,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
                   this.dataHaveChanged = true;
                   this.receiving.receivingStatus = res.receivingStatus;
                   if (this.receiving.receivingStatus === 'Unposted') {
-                    // this.receivingItems = this.receivingItems.concat(
-                    //   res.butcheryReceivingItem
-                    // );
                     this.receivingItems.unshift(res.butcheryReceivingItem);
 
                     this.getTotalAmt();
@@ -236,7 +223,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
                   }
                 });
             } else {
-              // this.receivingItems = this.receivingItems.concat(receivedItem);
               this.receivingItems.unshift(receivedItem);
 
               this.getTotalAmt();
@@ -291,101 +277,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     }
   }
 
-  onBatchSearch() {
-    if (!this.modalOpen) {
-      this.modalOpen = true;
-      this.modalSearch
-        .create({
-          component: ButcheryBatchSearchComponent,
-          cssClass: 'custom-modal-styles',
-        })
-        .then((modalSearch) => {
-          modalSearch.present();
-          return modalSearch.onDidDismiss();
-        })
-        .then((resultData) => {
-          if (resultData.role === 'butcheryBatch') {
-            if (this.receiving.butcheryReceivingId) {
-              const receivingDto = new ButcheryReceivingDto();
-              receivingDto.butcheryReceivingId =
-                this.receiving.butcheryReceivingId;
-              receivingDto.butcheryBatch = resultData.data;
-              this.dataHaveChanged = true;
-              this.receivingsService
-                .putReceiving(receivingDto)
-                .subscribe((res) => {
-                  this.receiving.receivingStatus = res.receivingStatus;
-                  if (this.receiving.receivingStatus === 'Unposted') {
-                    this.butcheryBatch = resultData.data;
-                    this.vendor = resultData.data.vendor;
-                    this.batchDesc = `${this.butcheryBatch.vendorWarehouse.vendorWarehouseName} - ${this.butcheryBatch.remarks}`;
-                    this.messageBox(
-                      `Produced items will be stored to ${this.warehouse.warehouseName}.`
-                    );
-                  } else {
-                    this.messageBox(
-                      'Unable to update the receiving since its status has been tagged as ' +
-                        this.receiving.receivingStatus
-                    );
-                  }
-                });
-            } else {
-              this.butcheryBatch = resultData.data;
-              this.vendor = resultData.data.vendor;
-              this.batchDesc = `${this.butcheryBatch.vendorWarehouse.vendorWarehouseName} - ${this.butcheryBatch.remarks}`;
-            }
-          }
-          this.modalOpen = false;
-        });
-    }
-  }
-
-  // onVendorSearch() {
-  //   if (!this.modalOpen) {
-  //     this.modalOpen = true;
-  //     this.modalSearch
-  //       .create({
-  //         component: VendorSearchComponent,
-  //         cssClass: 'custom-modal-styles',
-  //       })
-  //       .then((modalSearch) => {
-  //         modalSearch.present();
-  //         return modalSearch.onDidDismiss();
-  //       })
-  //       .then((resultData) => {
-  //         if (resultData.role === 'vendor') {
-  //           if (this.receiving.butcheryReceivingId) {
-  //             const receivingDto = new ButcheryReceivingDto();
-  //             receivingDto.butcheryReceivingId =
-  //               this.receiving.butcheryReceivingId;
-  //             receivingDto.vendor = resultData.data;
-  //             this.dataHaveChanged = true;
-
-  //             this.receivingsService
-  //               .putReceiving(receivingDto)
-  //               .subscribe((res) => {
-  //                 this.receiving.receivingStatus = res.receivingStatus;
-  //                 if (this.receiving.receivingStatus === 'Unposted') {
-  //                   this.vendor = resultData.data;
-  //                   this.messageBox(
-  //                     `Produced items will be delivered to ${this.vendor.vendorName}.`
-  //                   );
-  //                 } else {
-  //                   this.messageBox(
-  //                     'Unable to update the receiving since its status has been tagged as ' +
-  //                       this.receiving.receivingStatus
-  //                   );
-  //                 }
-  //               });
-  //           } else {
-  //             this.vendor = resultData.data;
-  //           }
-  //         }
-  //         this.modalOpen = false;
-  //       });
-  //   }
-  // }
-
   onUpdateRefCode() {
     if (this.isUploading) {
       return;
@@ -431,11 +322,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.butcheryBatch.butcheryBatchId) {
-      this.messageBox('Please specify the batch.');
-      return;
-    }
-
     if (!this.vendor.vendorId) {
       this.messageBox('Please choose a vendor.');
       return;
@@ -460,7 +346,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     receivingDto.referenceCode = refCode;
     receivingDto.totalAmount = this.totalAmount;
     receivingDto.warehouse = this.warehouse;
-    receivingDto.butcheryBatch = this.butcheryBatch;
     receivingDto.vendor = this.vendor;
     receivingDto.butcheryReceivingItems = this.receivingItems;
 

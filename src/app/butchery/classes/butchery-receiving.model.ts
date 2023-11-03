@@ -7,7 +7,6 @@ export class ButcheryReceiving {
   constructor(
     public butcheryReceivingId?: number,
     public warehouse?: Warehouse,
-    public butcheryBatch?: ButcheryBatch,
     public vendor?: Vendor,
     public referenceCode?: string,
     public receivingStatus?: string,

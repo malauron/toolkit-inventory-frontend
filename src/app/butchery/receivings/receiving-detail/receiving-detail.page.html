@@ -150,65 +150,6 @@
           <ion-item fill="outline">
             <ion-icon
               class="contactIcon"
-              src="../../assets/icons/layers.svg"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label class="ion-label-elem" position="floating"
-              >Batch</ion-label
-            >
-            <ion-input
-              class="ion-input-elem"
-              value="{{ batchDesc }}"
-              readonly="true"
-            ></ion-input>
-            <ion-button
-              #statusButton
-              slot="end"
-              *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
-              (click)="onBatchSearch()"
-              fill="clear"
-              size="small"
-              mode="ios"
-              id="click-trigger"
-            >
-              <ion-icon name="search-outline"></ion-icon>
-            </ion-button>
-          </ion-item>
-        </ion-col>
-        <!-- <ion-col size-xs="12" size-lg="6">
-          <ion-item fill="outline">
-            <ion-icon
-              class="contactIcon"
-              name="storefront-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label class="ion-label-elem" position="floating"
-              >Vendor</ion-label
-            >
-            <ion-input
-              class="ion-input-elem"
-              value="{{ vendor.vendorName }}"
-              readonly="true"
-            ></ion-input>
-            <ion-button
-              *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
-              (click)="onVendorSearch()"
-              fill="clear"
-              size="small"
-              slot="end"
-              mode="ios"
-              id="click-trigger"
-            >
-              <ion-icon name="search-outline"></ion-icon>
-            </ion-button>
-          </ion-item>
-        </ion-col> -->
-        <ion-col size-xs="12" size-lg="6">
-          <ion-item fill="outline">
-            <ion-icon
-              class="contactIcon"
               name="document-attach-outline"
               color="primary"
               slot="start"
