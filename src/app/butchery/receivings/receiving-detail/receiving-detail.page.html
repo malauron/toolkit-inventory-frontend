@@ -150,6 +150,35 @@
           <ion-item fill="outline">
             <ion-icon
               class="contactIcon"
+              src="../../assets/icons/warehouse02.svg"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Storage Provider </ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+              value="{{ vendorWarehouse.vendorWarehouseName }}"
+              readonly="true"
+            ></ion-input>
+            <ion-button
+              #statusButton
+              slot="end"
+              *ngIf="receiving.receivingStatus === 'Unposted' || receiving.receivingStatus === undefined"
+              fill="clear"
+              size="small"
+              mode="ios"
+              id="click-trigger"
+            >
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
               name="document-attach-outline"
               color="primary"
               slot="start"
@@ -354,7 +383,7 @@
 
   <div class="receipt-header">
     <div class="receipt-info">
-      <ion-card-subtitle>{{ vendor.vendorName }}</ion-card-subtitle>
+      <ion-card-subtitle>{{ vendorWarehouse.vendorWarehouseName }}</ion-card-subtitle>
     </div>
     <div class="receipt-info">Supplier</div>
   </div>

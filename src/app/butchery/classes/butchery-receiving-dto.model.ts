@@ -1,7 +1,5 @@
-import { Customer } from 'src/app/classes/customer.model';
-import { Vendor } from 'src/app/classes/vendor.model';
+import { VendorWarehouse } from 'src/app/classes/vendor-warehouse.model';
 import { Warehouse } from 'src/app/classes/warehouse.model';
-import { ButcheryBatch } from './butchery-batch.model';
 import { ButcheryReceivingItem } from './butchery-receiving-item.model';
 
 export class ButcheryReceivingDto {
@@ -9,7 +7,7 @@ export class ButcheryReceivingDto {
     public butcheryReceivingId?: number,
     public receivingStatus?: string,
     public warehouse?: Warehouse,
-    public vendor?: Vendor,
+    public vendorWarehouse?: VendorWarehouse,
     public referenceCode?: string,
     public butcheryReceivingItems?: ButcheryReceivingItem[],
     public butcheryReceivingItem?: ButcheryReceivingItem,

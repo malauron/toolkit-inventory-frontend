@@ -26,6 +26,7 @@ import { ButcheryProduction } from '../../classes/butchery-production.model';
 import { WarehousesService } from 'src/app/services/warehouses.service';
 import { User } from 'src/app/Security/classes/user.model';
 import { AuthenticationService } from 'src/app/Security/services/authentication.service';
+import { VendorWarehouse } from 'src/app/classes/vendor-warehouse.model';
 
 @Component({
   selector: 'app-receiving-detail',
@@ -41,7 +42,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
 
   receiving: ButcheryReceiving;
   warehouse: Warehouse;
-  vendor: Vendor;
+  vendorWarehouse: VendorWarehouse;
   user: User;
   productions: ButcheryProduction[] = [];
   receivingItems: ButcheryReceivingItem[] = [];
@@ -74,7 +75,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
 
     this.receiving = new ButcheryReceiving();
     this.warehouse = new Warehouse();
-    this.vendor = new Vendor();
+    this.vendorWarehouse = new VendorWarehouse();
     this.receivingDetailsConfig = new ReceivingDetailsConfig();
 
     this.route.paramMap.subscribe((paramMap) => {
@@ -103,7 +104,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             this.receivingDetailsConfig.setParams(resData.receivingStatus);
             this.receiving.dateCreated = resData.dateCreated;
             this.warehouse = resData.warehouse;
-            this.vendor = resData.vendor;
+            this.vendorWarehouse = resData.vendorWarehouse;
             this.receivingItems = resData.butcheryReceivingItems;
             this.totalAmount = this.receiving.totalAmount;
             this.isFetching = false;
@@ -322,7 +323,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.vendor.vendorId) {
+    if (!this.vendorWarehouse.vendorWarehouseId) {
       this.messageBox('Please choose a vendor.');
       return;
     }
@@ -346,7 +347,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     receivingDto.referenceCode = refCode;
     receivingDto.totalAmount = this.totalAmount;
     receivingDto.warehouse = this.warehouse;
-    receivingDto.vendor = this.vendor;
+    receivingDto.vendorWarehouse = this.vendorWarehouse;
     receivingDto.butcheryReceivingItems = this.receivingItems;
 
     this.receivingsService
