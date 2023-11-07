@@ -17,8 +17,6 @@ import { AuthenticationService } from 'src/app/Security/services/authentication.
 import { ItemsService } from 'src/app/services/items.service';
 import { WarehousesService } from 'src/app/services/warehouses.service';
 import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
-import { ButcheryBatchSearchComponent } from '../../butchery-batches/butchery-batch-search/butchery-batch-search.component';
-import { ButcheryBatch } from '../../classes/butchery-batch.model';
 import { ButcheryReleasingDto } from '../../classes/butchery-releasing-dto.model';
 import { ButcheryReleasingItemPrint } from '../../classes/butchery-releasing-item-print.model';
 import { ButcheryReleasingItem } from '../../classes/butchery-releasing-item.model';
@@ -42,7 +40,6 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
   user: User;
   releasing: ButcheryReleasing;
   warehouse: Warehouse;
-  // butcheryBatch: ButcheryBatch;
   destinationWarehouse: Warehouse;
   customer: Customer;
   releasingItems: ButcheryReleasingItem[] = [];
@@ -106,7 +103,6 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
             this.releasingDetailsConfig.setParams(resData.releasingStatus);
             this.releasing.dateCreated = resData.dateCreated;
             this.warehouse = resData.warehouse;
-            // this.butcheryBatch = resData.butcheryBatch;
             this.destinationWarehouse = resData.destinationWarehouse;
             this.customer = resData.customer;
             this.releasingItems = resData.butcheryReleasingItems;
@@ -139,45 +135,6 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
       }
     });
   }
-
-  // onBatchSearch() {
-  //   if (!this.modalOpen) {
-  //     this.modalOpen = true;
-  //     this.modalSearch
-  //       .create({ component: ButcheryBatchSearchComponent, cssClass: 'custom-modal-styles' })
-  //       .then((modalSearch) => {
-  //         modalSearch.present();
-  //         return modalSearch.onDidDismiss();
-  //       })
-  //       .then((resultData) => {
-  //         if (resultData.role === 'butcheryBatch') {
-  //           if (this.releasing.butcheryReleasingId) {
-  //             const releasingDto = new ButcheryReleasingDto();
-  //             releasingDto.butcheryReleasingId =
-  //               this.releasing.butcheryReleasingId;
-  //               releasingDto.butcheryBatch = resultData.data;
-  //             this.dataHaveChanged = true;
-  //             this.releasingsService
-  //               .putReleasing(releasingDto)
-  //               .subscribe((res) => {
-  //                 this.releasing.releasingStatus = res.releasingStatus;
-  //                 if (this.releasing.releasingStatus === 'Unposted') {
-  //                   this.butcheryBatch = resultData.data;
-  //                 } else {
-  //                   this.messageBox(
-  //                     'Unable to update the production since its status has been tagged as ' +
-  //                       this.releasing.releasingStatus
-  //                   );
-  //                 }
-  //               });
-  //           } else {
-  //             this.butcheryBatch = resultData.data;
-  //           }
-  //         }
-  //         this.modalOpen = false;
-  //       });
-  //   }
-  // }
 
   onGetItemByItemCode(event) {
     if (event && event.key === 'Enter') {

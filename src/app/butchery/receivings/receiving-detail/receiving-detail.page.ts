@@ -27,6 +27,7 @@ import { WarehousesService } from 'src/app/services/warehouses.service';
 import { User } from 'src/app/Security/classes/user.model';
 import { AuthenticationService } from 'src/app/Security/services/authentication.service';
 import { VendorWarehouse } from 'src/app/classes/vendor-warehouse.model';
+import { VendorWarehouseSearchComponent } from 'src/app/vendor-warehouses/vendor-warehouse-search/vendor-warehouse-search.component';
 
 @Component({
   selector: 'app-receiving-detail',
@@ -115,7 +116,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
           },
         });
       } else {
-        this.receiving.receivingStatus = 'Unposted';
+        // this.receiving.receivingStatus = 'Unposted';
         this.user = this.authenticationService.getUserFromLocalCache();
         this.warehousesService
           .getWarehouseByUserId(this.user.userId)
@@ -133,6 +134,30 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
           });
       }
     });
+  }
+
+  onVendorWarehouseSearch() {
+    if (
+      !this.modalOpen &&
+      !this.isUploading
+    ) {
+      this.modalOpen = true;
+      this.modalSearch
+        .create({
+          component: VendorWarehouseSearchComponent,
+          cssClass: 'custom-modal-styles',
+        })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'vendorWarehouse') {
+            this.vendorWarehouse = resultData.data;
+          }
+          this.modalOpen = false;
+        });
+    }
   }
 
   onGetItemByItemCode(event) {
@@ -324,7 +349,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     }
 
     if (!this.vendorWarehouse.vendorWarehouseId) {
-      this.messageBox('Please choose a vendor.');
+      this.messageBox('Please choose a storage provider.');
       return;
     }
 

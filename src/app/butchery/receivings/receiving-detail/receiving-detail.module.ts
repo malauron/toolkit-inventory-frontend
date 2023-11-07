@@ -12,6 +12,7 @@ import { ReceivedItemModule } from '../received-item/received-item.module';
 import { VendorSearchModule } from 'src/app/vendors/vendor-search/vendor-search.module';
 import { ButcheryBatchSearchModule } from '../../butchery-batches/butchery-batch-search/butchery-batch-search.module';
 import { ButcheryBatchInventoryItemSearchModule } from '../../butchery-batches/butchery-batch-inventory-item-search/butchery-batch-inventory-item-search.module';
+import { VendorWarehouseSearchModule } from 'src/app/vendor-warehouses/vendor-warehouse-search/vendor-warehouse-search.module';
 
 @NgModule({
   imports: [
@@ -20,7 +21,7 @@ import { ButcheryBatchInventoryItemSearchModule } from '../../butchery-batches/b
     IonicModule,
     ReceivingDetailPageRoutingModule,
     ReceivedItemModule,
-    VendorSearchModule,
+    VendorWarehouseSearchModule,
     ButcheryBatchSearchModule,
     ButcheryBatchInventoryItemSearchModule
   ],
