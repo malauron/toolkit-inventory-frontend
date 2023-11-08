@@ -54,7 +54,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
   isFetching = false;
   modalOpen = false;
 
-  totalAmount = 0;
+  totalKg = 0;
   totalProductionItemQty = 0;
   totalProductionSourceQty = 0;
 
@@ -100,14 +100,14 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             }
             this.receiving.butcheryReceivingId = resData.butcheryReceivingId;
             this.receiving.referenceCode = resData.referenceCode;
-            this.receiving.totalAmount = resData.totalAmount;
+            this.receiving.totalKg = resData.totalKg;
             this.receiving.receivingStatus = resData.receivingStatus;
             this.receivingDetailsConfig.setParams(resData.receivingStatus);
             this.receiving.dateCreated = resData.dateCreated;
             this.warehouse = resData.warehouse;
             this.vendorWarehouse = resData.vendorWarehouse;
             this.receivingItems = resData.butcheryReceivingItems;
-            this.totalAmount = this.receiving.totalAmount;
+            this.totalKg = this.receiving.totalKg;
             this.isFetching = false;
           },
           error: (err) => {
@@ -187,7 +187,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     receivedItemDetail.receivedQty = 0;
     receivedItemDetail.documentedWeightKg = 0;
     receivedItemDetail.receivedWeightKg = 0;
-    receivedItemDetail.itemCost = 0;
     receivedItemDetail.usedQty = 0;
     receivedItemDetail.remarks = '';
     receivedItemDetail.isAvailable = false;
@@ -223,11 +222,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             receivedItem.receivedQty = item.receivedQty;
             receivedItem.documentedWeightKg = item.documentedWeightKg;
             receivedItem.receivedWeightKg = item.receivedWeightKg;
-            receivedItem.itemCost = item.itemCost;
             receivedItem.usedQty = item.usedQty;
             receivedItem.remarks = item.remarks;
             receivedItem.isAvailable = item.isAvailable;
-            receivedItem.totalAmount = item.receivedWeightKg * item.itemCost;
 
             if (this.receiving.butcheryReceivingId) {
               receivedItem.butcheryReceiving = this.receiving;
@@ -370,7 +367,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
     const receivingDto = new ButcheryReceivingDto();
 
     receivingDto.referenceCode = refCode;
-    receivingDto.totalAmount = this.totalAmount;
+    receivingDto.totalKg = this.totalKg;
     receivingDto.warehouse = this.warehouse;
     receivingDto.vendorWarehouse = this.vendorWarehouse;
     receivingDto.butcheryReceivingItems = this.receivingItems;
@@ -385,7 +382,7 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
       this.receiving.butcheryReceivingId = res.butcheryReceivingId;
       this.receiving.receivingStatus = res.receivingStatus;
       this.receiving.referenceCode = res.referenceCode;
-      this.receiving.totalAmount = res.totalAmount;
+      this.receiving.totalKg = res.totalKg;
       this.receivingDetailsConfig.setParams(res.receivingStatus);
       this.receiving.dateCreated = res.dateCreated;
       this.receivingItems = res.butcheryReceivingItems;
@@ -406,7 +403,6 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
       receivedItemDetail.receivedQty = pItem.receivedQty;
       receivedItemDetail.documentedWeightKg = pItem.documentedWeightKg;
       receivedItemDetail.receivedWeightKg = pItem.receivedWeightKg;
-      receivedItemDetail.itemCost = pItem.itemCost;
       receivedItemDetail.usedQty = pItem.usedQty;
       receivedItemDetail.remarks = pItem.remarks;
       receivedItemDetail.isAvailable = pItem.isAvailable;
@@ -434,11 +430,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
             receivedItem.receivedQty = item.receivedQty;
             receivedItem.documentedWeightKg = item.documentedWeightKg;
             receivedItem.receivedWeightKg = item.receivedWeightKg;
-            receivedItem.itemCost = item.itemCost;
             receivedItem.usedQty = item.usedQty;
             receivedItem.remarks = item.remarks;
             receivedItem.isAvailable = item.isAvailable;
-            receivedItem.totalAmount = item.receivedQty * item.itemCost;
 
             if (this.receiving.butcheryReceivingId) {
               receivedItem.butcheryReceivingItemId =
@@ -485,11 +479,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
           receivingItem.documentedWeightKg;
         this.receivingItems[key].receivedWeightKg =
           receivingItem.receivedWeightKg;
-        this.receivingItems[key].itemCost = receivingItem.itemCost;
         this.receivingItems[key].usedQty = receivingItem.usedQty;
         this.receivingItems[key].remarks = receivingItem.remarks;
         this.receivingItems[key].isAvailable = receivingItem.isAvailable;
-        this.receivingItems[key].totalAmount = receivingItem.totalAmount;
       }
     }
   }
@@ -547,9 +539,9 @@ export class ReceivingDetailPage implements OnInit, OnDestroy {
   }
 
   getTotalAmt() {
-    this.totalAmount = 0;
+    this.totalKg = 0;
     this.receivingItems.forEach((itm) => {
-      this.totalAmount += itm.totalAmount;
+      this.totalKg += itm.receivedWeightKg;
     });
   }
 

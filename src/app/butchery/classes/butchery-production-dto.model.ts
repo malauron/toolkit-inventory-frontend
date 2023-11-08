@@ -16,7 +16,7 @@ export class ButcheryProductionDto {
     public butcheryProductionSourceViews?: ButcheryProductionSource[],
     public butcheryProductionSourceView?: ButcheryProductionSource,
     public butcheryProductionSourceShortViews?: ButcheryProductionSource[],
-    public totalAmount?: number,
+    public totalProducedWeightKg?: number,
     public dateCreated?: string,
   ) {}
 }

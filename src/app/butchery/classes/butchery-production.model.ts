@@ -10,7 +10,7 @@ export class ButcheryProduction {
     public butcheryProductionItems?: ButcheryProductionItem[],
     public butcheryProductionSources?: ButcheryProductionSource[],
     public butcheryProductionSourceViews?: ButcheryProductionSource[],
-    public totalAmount?: number,
+    public totalProducedWeightKg?: number,
     public dateCreated?: string,
   ) {}
 }

@@ -10,7 +10,7 @@ export class ButcheryReceiving {
     public referenceCode?: string,
     public receivingStatus?: string,
     public butcheryReceivingItems?: ButcheryReceivingItem[],
-    public totalAmount?: number,
+    public totalKg?: number,
     public dateCreated?: string,
   ) {}
 }

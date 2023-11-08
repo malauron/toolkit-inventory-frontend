@@ -31,9 +31,14 @@
           ><ion-label><h2>Storage Provider</h2></ion-label></ion-item
         >
       </ion-col>
-      <ion-col size-lg="2.5">
+      <ion-col size-lg="2">
         <ion-item lines="none"
           ><ion-label><h2>Reference No.</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label><h2>Total Kg.</h2></ion-label></ion-item
         >
       </ion-col>
       <ion-col size-lg="1">
@@ -75,15 +80,23 @@
         <ion-item lines="none"
           ><ion-label
             ><h3>Storage Provider</h3>
-            {{ receiving.warehouse.warehouseName }}</ion-label
+            {{ receiving.vendorWarehouse.vendorWarehouseName }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2">
+        <ion-item lines="none"
+          ><ion-label
+            ><h3>Reference No.</h3>
+            {{ receiving.referenceCode }} <span *ngIf="!receiving.referenceCode">-</span></ion-label
           ></ion-item
         >
       </ion-col>
       <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2.5">
         <ion-item lines="none"
           ><ion-label
-            ><h3>Reference No.</h3>
-            {{ receiving.referenceCode }} <span *ngIf="!receiving.referenceCode">-</span></ion-label
+            ><h3>Total Kg.</h3>
+            {{ receiving.totalKg | number:'1.2-2' }} <span *ngIf="!receiving.totalKg">-</span></ion-label
           ></ion-item
         >
       </ion-col>

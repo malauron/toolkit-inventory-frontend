@@ -10,7 +10,6 @@ export class ReceivedItemDetail{
     public receivedQty?: number,
     public documentedWeightKg?: number,
     public receivedWeightKg?: number,
-    public itemCost?: number,
     public usedQty?: number,
     public remarks?: string,
     public isAvailable?: boolean,

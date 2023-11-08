@@ -220,11 +220,11 @@
               slot="start"
             ></ion-icon>
             <ion-label class="ion-label-elem" position="floating"
-              >Total</ion-label
+              >Total Kg</ion-label
             >
             <ion-input
               class="ion-input-elem"
-              value="{{ totalAmount | number:'1.2-2' }}"
+              value="{{ totalKg | number:'1.2-2' }}"
               readonly="true"
             ></ion-input>
           </ion-item>
@@ -325,11 +325,11 @@
               >
             </ion-item>
 
-            <ion-item lines="none" class="card-footer">
+            <!-- <ion-item lines="none" class="card-footer">
               <ion-card-title slot="end" mode="md" class="font-medium"
                 >{{ item.totalAmount | number:'1.2-2' }}</ion-card-title
               >
-            </ion-item>
+            </ion-item> -->
           </ion-card>
         </ion-col>
       </ion-row>
@@ -397,13 +397,13 @@
   <div class="separator"></div>
   <div class="desc-one" *ngFor="let item of receivingItems">
     <div class="barcode">{{ item.barcode }}</div>
-    <div class="price">{{ item.totalAmount| number:'1.2-2' }}</div>
+    <!-- <div class="price">{{ item.totalAmount| number:'1.2-2' }}</div> -->
     <div>
       <div>{{ item.item.itemName }}</div>
-      <div>
+      <!-- <div>
         {{ item.receivedQty }}{{item.requiredUom.uomCode }} @{{ item.itemCost|
         number:'1.2-2' }}/{{ item.requiredUom.uomCode }}
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -415,7 +415,7 @@
       <ion-card-subtitle>Total</ion-card-subtitle>
     </div>
     <div class="total-amt">
-      <ion-card-subtitle>{{ totalAmount | number:'1.2-2' }}</ion-card-subtitle>
+      <!-- <ion-card-subtitle>{{ totalAmount | number:'1.2-2' }}</ion-card-subtitle> -->
     </div>
   </div>
   <div class="company-name">A subsidiary of Eight2Eight Inc.</div>

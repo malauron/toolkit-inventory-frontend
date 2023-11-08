@@ -151,11 +151,11 @@
               slot="start"
             ></ion-icon>
             <ion-label class="ion-label-elem" position="floating"
-              >Total</ion-label
+              >Total Produced Kg.</ion-label
             >
             <ion-input
               class="ion-input-elem"
-              value="{{ totalAmount | number:'1.2-2' }}"
+              value="{{ totalProducedWeightKg | number:'1.2-2' }}"
               readonly="true"
             ></ion-input>
           </ion-item>
@@ -315,11 +315,11 @@
               >
             </ion-item>
 
-            <ion-item lines="none" class="card-footer">
+            <!-- <ion-item lines="none" class="card-footer">
               <ion-card-title slot="end" mode="md" class="font-medium"
-                >Cost: {{ item.totalAmount| number:'1.2-2' }}</ion-card-title
+                >Cost: {{ item.totalAmount | number:'1.2-2' }}</ion-card-title
               >
-            </ion-item>
+            </ion-item> -->
           </ion-card>
         </ion-col>
       </ion-row>

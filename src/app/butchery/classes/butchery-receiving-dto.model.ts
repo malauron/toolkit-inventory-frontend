@@ -11,7 +11,7 @@ export class ButcheryReceivingDto {
     public referenceCode?: string,
     public butcheryReceivingItems?: ButcheryReceivingItem[],
     public butcheryReceivingItem?: ButcheryReceivingItem,
-    public totalAmount?: number,
+    public totalKg?: number,
     public dateCreated?: string,
     public errorDescription?: string,
   ) {}

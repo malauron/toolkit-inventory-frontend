@@ -26,14 +26,12 @@ import { ReceivedItemService } from './received-item.service';
 export class ReceivedItemComponent implements OnInit, OnDestroy {
   @ViewChild('uomSelect', { static: true }) uomSelect: IonSelect;
   @ViewChild('receivedQtyInput', { static: true }) receivedQtyInput: IonInput;
-  @ViewChild('itemCostInput', { static: true }) itemCostInput: IonInput;
   @ViewChild('documentedWeightInput', { static: true }) documentedWeightInput: IonInput;
   @ViewChild('actualWeightInput', { static: true }) actualWeightInput: IonInput;
 
   receivedItemSub: Subscription;
   uomSelectSub: Subscription;
   receivedQtyInputSub: Subscription;
-  itemCostInputSub: Subscription;
   documentedWeightInputSub: Subscription;
   actualWeightInputSub: Subscription;
 
@@ -56,7 +54,6 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
     this.receivedItemSub.unsubscribe();
     this.uomSelectSub.unsubscribe();
     this.receivedQtyInputSub.unsubscribe();
-    this.itemCostInputSub.unsubscribe();
     this.documentedWeightInputSub.unsubscribe();
     this.actualWeightInputSub.unsubscribe();
   }
@@ -89,10 +86,6 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0.001)],
       }),
-      itemCost: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.min(0)],
-      }),
       remarks: new FormControl('', {
         updateOn: 'blur',
       }),
@@ -101,9 +94,6 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
     this.uomSelectSub = this.uomSelect.ionDismiss.subscribe(this.onQtyFocus());
     this.receivedQtyInputSub = this.receivedQtyInput.ionFocus.subscribe(
       this.onQtyFocus()
-    );
-    this.itemCostInputSub = this.itemCostInput.ionFocus.subscribe(
-      this.onCostFocus()
     );
     this.documentedWeightInputSub =
       this.documentedWeightInput.ionFocus.subscribe(
@@ -146,7 +136,6 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
               receivedQty: res.receivedQty,
               documentedWeightKg: res.documentedWeightKg,
               receivedWeightKg: res.receivedWeightKg,
-              itemCost: res.itemCost,
               remarks: res.remarks,
             });
           } else {
@@ -157,7 +146,6 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
               receivedQty: res.receivedQty,
               documentedWeightKg: res.documentedWeightKg,
               receivedWeightKg: res.receivedWeightKg,
-              itemCost: res.itemCost,
               remarks: res.remarks,
             });
           }
@@ -171,13 +159,6 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
   onQtyFocus() {
     return (res) => {
       const qtyElem = this.receivedQtyInput.getInputElement();
-      qtyElem.then((rst) => rst.select());
-    };
-  }
-
-  onCostFocus() {
-    return (res) => {
-      const qtyElem = this.itemCostInput.getInputElement();
       qtyElem.then((rst) => rst.select());
     };
   }
@@ -307,7 +288,6 @@ export class ReceivedItemComponent implements OnInit, OnDestroy {
       receivedItemDetail.receivedWeightKg =
         this.itemForm.value.receivedWeightKg;
 
-      receivedItemDetail.itemCost = this.itemForm.value.itemCost;
       receivedItemDetail.remarks = this.itemForm.value.remarks;
 
       this.modalController.dismiss(receivedItemDetail, 'item');

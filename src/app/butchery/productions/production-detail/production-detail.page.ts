@@ -15,8 +15,6 @@ import { AuthenticationService } from 'src/app/Security/services/authentication.
 import { ItemsService } from 'src/app/services/items.service';
 import { WarehousesService } from 'src/app/services/warehouses.service';
 import { WarehouseSearchComponent } from 'src/app/warehouses/warehouse-search/warehouse-search.component';
-import { ButcheryBatchSearchComponent } from '../../butchery-batches/butchery-batch-search/butchery-batch-search.component';
-import { ButcheryBatch } from '../../classes/butchery-batch.model';
 import { ButcheryProductionDto } from '../../classes/butchery-production-dto.model';
 import { ButcheryProductionItem } from '../../classes/butchery-production-item.model';
 import { ButcheryProductionSource } from '../../classes/butchery-production-source.model';
@@ -52,7 +50,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   isFetching = false;
   modalOpen = false;
 
-  totalAmount = 0;
+  totalProducedWeightKg = 0;
 
   constructor(
     private itemsService: ItemsService,
@@ -95,14 +93,14 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
               return;
             }
             this.production.butcheryProductionId = resData.butcheryProductionId;
-            this.production.totalAmount = resData.totalAmount;
+            this.production.totalProducedWeightKg = resData.totalProducedWeightKg;
             this.production.productionStatus = resData.productionStatus;
             this.productionDetailsConfig.setParams(resData.productionStatus);
             this.production.dateCreated = resData.dateCreated;
             this.warehouse = resData.warehouse;
             this.productionItems = resData.butcheryProductionItems;
             this.productionSources = resData.butcheryProductionSourceViews;
-            this.totalAmount = this.production.totalAmount;
+            this.totalProducedWeightKg = this.production.totalProducedWeightKg;
 
             this.productionSourceService.warehouse.next(this.warehouse);
 
@@ -170,8 +168,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     productionItem.requiredUom = itemDto.item.uom;
     productionItem.producedQty = 1;
     productionItem.producedWeightKg = itemQty;
-    productionItem.productionCost = cost;
-    productionItem.totalAmount = baseQty * itemQty * cost;
     if (this.production.butcheryProductionId) {
       productionItem.butcheryProduction = this.production;
       this.productionsService
@@ -220,8 +216,6 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
             producedItem.requiredUom = resultData.data.requiredUom;
             producedItem.producedQty = resultData.data.producedQty;
             producedItem.producedWeightKg = resultData.data.producedWeightKg;
-            producedItem.productionCost = resultData.data.item.price;
-            producedItem.totalAmount = resultData.data.item.price * resultData.data.producedWeightKg;
             if (this.production.butcheryProductionId) {
               producedItem.butcheryProduction = this.production;
               this.productionsService
@@ -442,7 +436,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
 
     const productionDto = new ButcheryProductionDto();
 
-    productionDto.totalAmount = this.totalAmount;
+    productionDto.totalProducedWeightKg = this.totalProducedWeightKg;
     productionDto.warehouse = this.warehouse;
     productionDto.butcheryProductionItems = this.productionItems;
     productionDto.butcheryProductionSources = this.productionSources;
@@ -456,7 +450,7 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
     return (res: ButcheryProduction) => {
       this.production.butcheryProductionId = res.butcheryProductionId;
       this.production.productionStatus = res.productionStatus;
-      this.production.totalAmount = res.totalAmount;
+      this.production.totalProducedWeightKg = res.totalProducedWeightKg;
       this.productionDetailsConfig.setParams(res.productionStatus);
       this.production.dateCreated = res.dateCreated;
       this.productionItems = res.butcheryProductionItems;
@@ -580,9 +574,9 @@ export class ProductionDetailPage implements OnInit, OnDestroy {
   }
 
   getTotalAmt() {
-    this.totalAmount = 0;
+    this.totalProducedWeightKg = 0;
     this.productionItems.forEach((itm) => {
-      this.totalAmount += itm.totalAmount;
+      this.totalProducedWeightKg += itm.producedWeightKg;
     });
   }
 
