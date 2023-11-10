@@ -107,6 +107,11 @@
           ><ion-label><h2>Production No.</h2></ion-label></ion-item
         >
       </ion-col>
+      <ion-col size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label><h2>Total Produced Kg.</h2></ion-label></ion-item
+        >
+      </ion-col>
       <ion-col size-lg="1">
         <ion-item lines="none"
           ><ion-label><h2>Status</h2></ion-label></ion-item
@@ -139,6 +144,14 @@
           ><ion-label
             ><h3>Produciton No.</h3>
             {{ production.butcheryProductionId }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label
+            ><h3>Total Produced Kg.</h3>
+            {{ production.totalProducedWeightKg | number:'1.2-2' }}</ion-label
           ></ion-item
         >
       </ion-col>
