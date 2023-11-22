@@ -71,9 +71,9 @@ export class ButcheryReleasingsService {
     return this.http.get<ResponseReleasings>(this.apiUrl);
   }
 
-  getReleasingSummary(warehouseId: number): Observable<ButcheryReleasingSummaryDto> {
+  getReleasingSummary(warehouseId: number): Observable<ButcheryReleasingSummaryDto[]> {
     this.apiUrl = `${this.config.urlV1ButcheryReleasings}/summary?warehouseId=${warehouseId}`;
-    return this.http.get<ButcheryReleasingSummaryDto>(this.apiUrl);
+    return this.http.get<ButcheryReleasingSummaryDto[]>(this.apiUrl);
   }
 
   postReleasing(releasingDto: ButcheryReleasingDto): Observable<ButcheryReleasing> {
