@@ -1,12 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { PageInfo } from 'src/app/classes/page-info.model';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ButcheryReleasingDto } from '../classes/butchery-releasing-dto.model';
 import { ButcheryReleasingItem } from '../classes/butchery-releasing-item.model';
+import { ButcheryReleasingSummaryDto } from '../classes/butchery-releasing-summary-dto.model';
 import { ButcheryReleasing } from '../classes/butchery-releasing.model';
+import { filterString } from '../utils/utils';
 
 interface ResponseReleasings {
   _emdbedded: {
@@ -19,6 +21,7 @@ interface ResponseReleasings {
   providedIn: 'root',
 })
 export class ButcheryReleasingsService {
+
   private apiUrl: string;
 
   private _releasingsHaveChanged = new Subject<boolean>();
@@ -53,18 +56,24 @@ export class ButcheryReleasingsService {
       releasingId = String(Number(searchDesc));
     }
 
-    searchDesc = String(searchDesc).replace('%','');
-    searchDesc = String(searchDesc).replace('^','');
-    searchDesc = String(searchDesc).replace('[','');
-    searchDesc = String(searchDesc).replace(']','');
-    searchDesc = String(searchDesc).replace('|','');
-    searchDesc = String(searchDesc).replace('\\','');
+    // searchDesc = String(searchDesc).replace('%','');
+    // searchDesc = String(searchDesc).replace('^','');
+    // searchDesc = String(searchDesc).replace('[','');
+    // searchDesc = String(searchDesc).replace(']','');
+    // searchDesc = String(searchDesc).replace('|','');
+    // searchDesc = String(searchDesc).replace('\\','');
+    filterString(searchDesc);
 
     this.apiUrl =
       `${this.config.urlButcheryReleasingsSearch}` +
       `?butcheryReleasingId=${releasingId}&warehouseName=${searchDesc}&destinationWhse=${searchDesc}` +
       `&releasingStatus=${releasingStatus}&page=${pageNumber}&size=${pageSize}`;
     return this.http.get<ResponseReleasings>(this.apiUrl);
+  }
+
+  getReleasingSummary(warehouseId: number): Observable<ButcheryReleasingSummaryDto> {
+    this.apiUrl = `${this.config.urlV1ButcheryReleasings}/summary?warehouseId=${warehouseId}`;
+    return this.http.get<ButcheryReleasingSummaryDto>(this.apiUrl);
   }
 
   postReleasing(releasingDto: ButcheryReleasingDto): Observable<ButcheryReleasing> {
