@@ -93,6 +93,7 @@ export class OptionsPage implements OnInit {
     }
 
     return [year, month, day].join('-');
+
   }
 
   generateDates(releasingSummary: ButcheryReleasingSummaryDto[]) {
@@ -214,6 +215,7 @@ export class OptionsPage implements OnInit {
 
     xAxisGroup
       .selectAll('text')
+      .text(d => d.slice(5))
       .attr('font-size', '15px')
       .attr('transform', `translate(-10,0)rotate(-45)`)
       .style('text-anchor', 'end');
