@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButcheryReleasingsService } from '../butchery/services/butchery-releasings.service';
@@ -38,7 +39,23 @@ export class OptionsPage implements OnInit {
           .getReleasingSummary(this.warehouse.warehouseId)
           .subscribe((resReleasingSummary) => {
             const newReleasing = this.generateDates(resReleasingSummary);
-            this.drawChart(newReleasing);
+
+            this.drawChart(newReleasing, 'totalWeightKg');
+
+            const metrics = ['totalAmount', 'totalWeightKg'];
+
+            // let ctr = 0;
+            // setInterval(() => {
+            //   if (ctr >= metrics.length) {
+            //     ctr = 0;
+            //   }
+            // console.log(metrics[ctr]);
+
+
+            //   this.drawChart(newReleasing, metrics[ctr]);
+
+            //   ctr++;
+            // }, 5000);
           });
       });
   }
@@ -93,7 +110,6 @@ export class OptionsPage implements OnInit {
     }
 
     return [year, month, day].join('-');
-
   }
 
   generateDates(releasingSummary: ButcheryReleasingSummaryDto[]) {
@@ -130,10 +146,11 @@ export class OptionsPage implements OnInit {
     return duumyDates;
   }
 
-  drawChart(releasingSummary: ButcheryReleasingSummaryDto[]) {
+  drawChart(releasingSummary: ButcheryReleasingSummaryDto[], metric: string) {
+
     const dimensions = {
       width: 2000,
-      height: 700,
+      height: 500,
       margins: 50,
       ctrWidth: 0,
       ctrHeight: 0,
@@ -158,7 +175,7 @@ export class OptionsPage implements OnInit {
     // Define Scales
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(releasingSummary, (rs) => rs.totalWeightKg + 150)])
+      .domain([0, d3.max(releasingSummary, (rs) => rs[metric] + 150)])
       .rangeRound([dimensions.ctrHeight, dimensions.margins]);
 
     const xScale = d3
@@ -194,15 +211,15 @@ export class OptionsPage implements OnInit {
       .transition()
       .duration(2000)
       .attr('x', (d) => xScale(d.dateCreated))
-      .attr('y', (d) => yScale(d.totalWeightKg))
+      .attr('y', (d) => yScale(d[metric]))
       .attr('width', xScale.bandwidth())
-      .attr('height', (d) => yScale(0) - yScale(d.totalWeightKg));
+      .attr('height', (d) => yScale(0) - yScale(d[metric]));
 
-    barChart
-      .append('title')
-      .text((d) =>
-        d.totalWeightKg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-      );
+    // barChart
+    //   .append('title')
+    //   .text((d) =>
+    //     d[metric].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    //   );
 
     // Draw Axes
     const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
@@ -215,7 +232,7 @@ export class OptionsPage implements OnInit {
 
     xAxisGroup
       .selectAll('text')
-      .text(d => d.slice(5))
+      .text((d) => d.slice(5))
       .attr('font-size', '15px')
       .attr('transform', `translate(-10,0)rotate(-45)`)
       .style('text-anchor', 'end');
@@ -240,7 +257,7 @@ export class OptionsPage implements OnInit {
     yAxisGroup
       .append('text')
       .attr('x', (dimensions.ctrWidth + dimensions.margins * 4) / 2)
-      .attr('y', 50)
+      .attr('y', 30)
       .attr('fill', 'var(--ion-color-medium)')
       .text('Butchery releasing summary for the past 30 days.')
       .attr('font-size', '20px')
@@ -249,7 +266,7 @@ export class OptionsPage implements OnInit {
     yAxisGroup
       .append('text')
       .attr('x', -dimensions.margins)
-      .attr('y', 50)
+      .attr('y', 30)
       .attr('fill', 'var(--ion-color-medium)')
       .attr('text-anchor', 'start')
       .text('↑ Weight in Kilograms')
