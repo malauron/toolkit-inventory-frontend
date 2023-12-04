@@ -40,9 +40,9 @@ export class OptionsPage implements OnInit {
           .subscribe((resReleasingSummary) => {
             const newReleasing = this.generateDates(resReleasingSummary);
 
-            this.drawChart(newReleasing, 'totalWeightKg');
+            this.drawChart(newReleasing, 'dateCreated', 'totalWeightKg');
 
-            const metrics = ['totalAmount', 'totalWeightKg'];
+            // const metrics = ['totalAmount', 'totalWeightKg'];
 
             // let ctr = 0;
             // setInterval(() => {
@@ -50,7 +50,6 @@ export class OptionsPage implements OnInit {
             //     ctr = 0;
             //   }
             // console.log(metrics[ctr]);
-
 
             //   this.drawChart(newReleasing, metrics[ctr]);
 
@@ -146,8 +145,11 @@ export class OptionsPage implements OnInit {
     return duumyDates;
   }
 
-  drawChart(releasingSummary: ButcheryReleasingSummaryDto[], metric: string) {
-
+  drawChart(
+    releasingSummary: ButcheryReleasingSummaryDto[],
+    xMetric,
+    yMetric: string
+  ) {
     const dimensions = {
       width: 2000,
       height: 500,
@@ -165,6 +167,7 @@ export class OptionsPage implements OnInit {
       .append('svg')
       .attr('viewBox', [0, 0, dimensions.width, dimensions.height]);
 
+    // Container/Bounds Element
     const ctr = svg
       .append('g')
       .attr(
@@ -172,104 +175,154 @@ export class OptionsPage implements OnInit {
         `translate(${dimensions.margins}, ${dimensions.margins - 50})`
       );
 
-    // Define Scales
-    const yScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(releasingSummary, (rs) => rs[metric] + 150)])
-      .rangeRound([dimensions.ctrHeight, dimensions.margins]);
+    // Draw the mean line
+    const meanLine = ctr
+      .append('line')
+      .attr('x1', dimensions.margins)
+      .attr('x2', dimensions.ctrWidth)
+      .attr('y1', dimensions.ctrHeight)
+      .attr('y2', dimensions.ctrHeight);
 
-    const xScale = d3
-      .scaleBand()
-      .domain(releasingSummary.map((d) => d.dateCreated))
-      .range([dimensions.margins, dimensions.ctrWidth])
-      .padding(0.1);
+    const xScale = d3.scaleBand();
+    const yScale = d3 .scaleLinear();
 
-    // Draw Bar Chart
-    const barChart = ctr
-      .append('g')
-      .attr('fill', 'steelblue')
-      .selectAll('rect')
-      .data(releasingSummary)
-      .join((enter) =>
-        enter
-          .append('rect')
-          .attr('x', (d) => xScale(d.dateCreated))
-          .attr('y', dimensions.ctrHeight)
-          .attr('width', xScale.bandwidth())
-          .attr('height', 0)
+    const drawImg = () => {
 
-          // Mouse hover effects
-          .on('mouseenter', function(d, i) {
-            d3.select(this).transition().duration('50').attr('opacity', '0.6');
-          })
-          .on('mouseout', function(d, i) {
-            d3.select(this).transition().duration('50').attr('opacity', '1');
-          })
-      );
+      // Accessor function
+      const xAccessor = (d) => d[xMetric];
+      const yAccessor = (d) => d[yMetric];
 
-    barChart
-      .transition()
-      .duration(2000)
-      .attr('x', (d) => xScale(d.dateCreated))
-      .attr('y', (d) => yScale(d[metric]))
-      .attr('width', xScale.bandwidth())
-      .attr('height', (d) => yScale(0) - yScale(d[metric]));
+      // Define Scales
+      yScale
+        .domain([0, d3.max(releasingSummary, yAccessor) + 200])
+        .rangeRound([dimensions.ctrHeight, dimensions.margins]);
 
-    // barChart
-    //   .append('title')
-    //   .text((d) =>
-    //     d[metric].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    //   );
+      xScale
+        .domain(releasingSummary.map(xAccessor))
+        .range([dimensions.margins, dimensions.ctrWidth])
+        .padding(0.1);
 
-    // Draw Axes
-    const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
-    const yAxis = d3.axisLeft(yScale);
+      // Draw Bar Chart
+      const barChart = ctr.append('g')
+        .attr('fill', 'steelblue')
+        .selectAll('rect')
+        .data(releasingSummary)
+        .join((enter) =>
+          enter
+            .append('rect')
+            .attr('x', (d) => xScale(xAccessor(d)))
+            .attr('y', dimensions.ctrHeight)
+            .attr('width', xScale.bandwidth())
+            .attr('height', 0)
 
-    const xAxisGroup = ctr
-      .append('g')
-      .call(xAxis)
-      .style('transform', `translateY(${dimensions.ctrHeight}px)`);
+            // Mouse hover effects
+            .on('mouseenter', function(d, i) {
+              d3.select(this)
+                .transition()
+                .duration('50')
+                .attr('opacity', '0.6');
+            })
+            .on('mouseout', function(d, i) {
+              d3.select(this).transition().duration('50').attr('opacity', '1');
+            })
+        );
 
-    xAxisGroup
-      .selectAll('text')
-      .text((d) => d.slice(5))
-      .attr('font-size', '15px')
-      .attr('transform', `translate(-10,0)rotate(-45)`)
-      .style('text-anchor', 'end');
+      barChart
+        .transition()
+        .duration(2000)
+        .attr('x', (d) => xScale(xAccessor(d)))
+        .attr('y', (d) => yScale(yAccessor(d)))
+        .attr('width', xScale.bandwidth())
+        .attr('height', (d) => yScale(0) - yScale(yAccessor(d)));
 
-    // xAxisGroup.append('text')
-    //     .attr('x', dimensions.ctrWidth / 2)
-    //     .attr('y', -dimensions.ctrHeight + 45)
-    //     .attr('fill', 'var(--ion-color-medium)')
-    //     .text('Butchery releasing summary for the past 30 days.')
-    //     .attr('font-size', '20px')
-    //     .attr('font-weight', 'bold');
+      barChart
+        .append('title')
+        .text((d) =>
+          d[yMetric].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        );
 
-    const yAxisGroup = ctr
-      .append('g')
-      .attr('transform', `translate(${dimensions.margins}, 0)`)
-      .call(yAxis);
+      // Draw Axes
+      const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
+      const yAxis = d3.axisLeft(yScale);
 
-    yAxisGroup.select('.domain').remove();
+      const xAxisGroup = ctr
+        .append('g')
+        .call(xAxis)
+        .style('transform', `translateY(${dimensions.ctrHeight}px)`);
 
-    yAxisGroup.selectAll('text').attr('font-size', '15px');
+      xAxisGroup
+        .selectAll('text')
+        .text((d) => d.slice(5))
+        .attr('font-size', '15px')
+        .attr('transform', `translate(-10,0)rotate(-45)`)
+        .style('text-anchor', 'end');
 
-    yAxisGroup
-      .append('text')
-      .attr('x', (dimensions.ctrWidth + dimensions.margins * 4) / 2)
-      .attr('y', 30)
-      .attr('fill', 'var(--ion-color-medium)')
-      .text('Butchery releasing summary for the past 30 days.')
-      .attr('font-size', '20px')
-      .attr('font-weight', 'bold');
+      // xAxisGroup.append('text')
+      //     .attr('x', dimensions.ctrWidth / 2)
+      //     .attr('y', -dimensions.ctrHeight + 45)
+      //     .attr('fill', 'var(--ion-color-medium)')
+      //     .text('Butchery releasing summary for the past 30 days.')
+      //     .attr('font-size', '20px')
+      //     .attr('font-weight', 'bold');
 
-    yAxisGroup
-      .append('text')
-      .attr('x', -dimensions.margins)
-      .attr('y', 30)
-      .attr('fill', 'var(--ion-color-medium)')
-      .attr('text-anchor', 'start')
-      .text('↑ Weight in Kilograms')
-      .attr('font-size', '15px');
+      const yAxisGroup = ctr
+        .append('g')
+        .attr('transform', `translate(${dimensions.margins}, 0)`)
+        .call(yAxis);
+
+      yAxisGroup.select('.domain').remove();
+
+      yAxisGroup.selectAll('text').attr('font-size', '15px');
+
+      // Graph Title
+      yAxisGroup
+        .append('text')
+        .attr('x', (dimensions.ctrWidth + dimensions.margins * 4) / 2)
+        .attr('y', 30)
+        .attr('fill', 'var(--ion-color-medium)')
+        .text('Butchery releasing summary for the past 30 days.')
+        .attr('font-size', '20px')
+        .attr('font-weight', 'bold');
+
+      // Y-Axis label
+      yAxisGroup
+        .append('text')
+        .attr('x', -dimensions.margins)
+        .attr('y', 30)
+        .attr('fill', 'var(--ion-color-medium)')
+        .attr('text-anchor', 'start')
+        .text('↑ Weight in Kilograms')
+        .attr('font-size', '15px');
+
+      // Mean/Average
+      const mean = d3.mean(releasingSummary, yAccessor);
+
+      meanLine
+        .transition()
+        .duration(1000)
+        .attr('y1', yScale(mean))
+        .attr('y2', yScale(mean))
+        .attr('stroke', 'var(--ion-color-medium)')
+        .style('stroke-dasharray', '6px 8px');
+
+    };
+
+    drawImg();
+
+    // const metrics = ['totalAmount', 'totalWeightKg'];
+
+    // let row = 0;
+
+    // setInterval(() => {
+    //   if (row >= metrics.length) {
+    //     row = 0;
+    //   }
+    // yMetric = metrics[row];
+    // console.log(metrics[row]);
+
+    //   drawImg();
+
+    //   row++;
+    // }, 5000);
   }
 }
