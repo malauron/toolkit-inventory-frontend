@@ -173,7 +173,7 @@ export class OptionsPage implements OnInit {
         'maxBuffer': 1.2
       }];
 
-    let currentMetric = metrics[0];
+    let currentMetric = metrics[1];
 
     // Draw Image
     const svg = d3
@@ -330,8 +330,8 @@ export class OptionsPage implements OnInit {
 
       const xAxisGroup = ctr
         .select('.x-axis')
-        .call(xAxis)
-        .transition();
+        .transition()
+        .call(xAxis);
 
       xAxisGroup
         .selectAll('text')
