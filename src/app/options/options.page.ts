@@ -355,9 +355,13 @@ export class OptionsPage implements OnInit {
 
       const yAxisGroup = ctr
         .select('.y-axis')
+        .transition()
+        .duration(2000)
         .call(yAxis);
 
-      yAxisGroup.select('.domain').remove();
+      // yAxisGroup.select('.domain').remove();
+      yAxisGroup.select('.domain')
+        .attr('opacity','0');
 
       const yAxisLabel = ctr.select('.y-axis-label')
             .text(currentMetric.yAxisLabel);
