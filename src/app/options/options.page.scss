@@ -39,26 +39,10 @@ ion-card {
   }
 }
 
-svg g path {
-
-  fill: white !important;
-  stroke: none !important;
-  stroke-opacity: 0 !important;
-  outline: none !important;
-  stroke: none !important;
+releasingChart .bars {
+  fill: black;
 }
 
-.domain {
-  fill: white !important;
-  stroke: none !important;
-  stroke-opacity: 0 !important;
-  outline: none !important;
-}
-
-.y-axis path {
-  fill: white !important;
-  stroke: none !important;
-  stroke-opacity: 0 !important;
-  outline: none !important;
-  stroke: none !important;
+.bar-rect:hover {
+  fill: purple;
 }
