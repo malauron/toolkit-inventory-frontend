@@ -274,7 +274,7 @@ export class OptionsPage implements OnInit {
 
     // Define Axes
     const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
-    const yAxis = d3.axisLeft(yScale);
+    const yAxis = d3.axisLeft(yScale).ticks(5);
 
     const drawImg = () => {
 
