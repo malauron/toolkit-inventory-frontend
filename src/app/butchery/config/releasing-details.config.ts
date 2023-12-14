@@ -5,6 +5,7 @@ export class ReleasingDetailsConfig {
     public releasingStatusButton?: boolean,
     public releasingStatusBadge?: boolean,
     public releasingStatusPopover?: boolean,
+    public showItemOptionButtons?: boolean,
     public deleteIngredientButton?: boolean,
     public updateIngredientButton?: boolean,
     public unpostedStatus?: boolean,
@@ -20,6 +21,7 @@ export class ReleasingDetailsConfig {
     this.releasingStatusButton = false;
     this.releasingStatusBadge = false;
     this.releasingStatusPopover = false;
+    this.showItemOptionButtons = false;
     this.deleteIngredientButton = false;
     this.updateIngredientButton = false;
     this.unpostedStatus = false;
@@ -31,6 +33,7 @@ export class ReleasingDetailsConfig {
       this.releasingStatusButton = true;
       this.releasingStatusBadge = false;
       this.releasingStatusPopover = true;
+      this.showItemOptionButtons = true;
       this.deleteIngredientButton = true;
       this.updateIngredientButton = true;
       this.unpostedStatus = false;
@@ -43,6 +46,7 @@ export class ReleasingDetailsConfig {
       this.releasingStatusButton = false;
       this.releasingStatusBadge = true;
       this.releasingStatusPopover = false;
+      this.showItemOptionButtons = false;
       this.deleteIngredientButton = false;
       this.updateIngredientButton = false;
       this.unpostedStatus = false;
@@ -55,6 +59,7 @@ export class ReleasingDetailsConfig {
       this.releasingStatusButton = false;
       this.releasingStatusBadge = true;
       this.releasingStatusPopover = false;
+      this.showItemOptionButtons = false;
       this.deleteIngredientButton = false;
       this.updateIngredientButton = false;
       this.unpostedStatus = false;

@@ -90,8 +90,12 @@ const routes: Routes = [
         loadChildren: () => import('../vendor-warehouses/vendor-warehouses.module').then( m => m.VendorWarehousesPageModule)
       },
       {
+        path: 'users',
+        loadChildren: () => import('../Security/users/users.module').then( m => m.UsersPageModule)
+      },
+      {
         path: '',
-        redirectTo: 'orders',
+        redirectTo: 'options',
         pathMatch: 'full'
       },
       {

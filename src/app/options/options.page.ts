@@ -188,7 +188,7 @@ export class OptionsPage implements OnInit {
     // Barchart Title
     ctr.append('g')
         .append('text')
-        .text('Butcery releasings for the past 30 days.')
+        .text('Butchery releasings for the past 30 days.')
         .attr('x', dimensions.ctrWidth/2)
         .attr('y', 30)
         .attr('text-anchor', 'middle')
@@ -213,10 +213,10 @@ export class OptionsPage implements OnInit {
       // Y-Axis label
       .append('text')
       .attr('class', 'y-axis-label')
-      .attr('x', 0)
-      .attr('y', 30)
+      .attr('x', -10)
+      .attr('y', dimensions.margins)
       .attr('fill', 'var(--ion-color-medium)')
-      .attr('text-anchor', 'middle')
+      .attr('text-anchor', 'start')
       .attr('font-size', '15px');
 
     // Mean group

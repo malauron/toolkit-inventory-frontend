@@ -219,7 +219,7 @@
     </ion-grid>
   </ion-card>
 
-  <ion-card *ngIf="!isFetching" class="card-holder">
+  <ion-card *ngIf="!isFetching" class="details-card">
     <div class="card-top"></div>
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
@@ -233,7 +233,7 @@
     </ion-card-header>
     <div class="separator"></div>
 
-    <ion-grid>
+    <!-- <ion-grid>
       <ion-row>
         <ion-col size-xs="12" size-md="6" size-lg="4" *ngFor="let item of releasingItems">
           <ion-card class="card-item">
@@ -262,6 +262,145 @@
           </ion-card>
         </ion-col>
       </ion-row>
+    </ion-grid> -->
+
+    <ion-grid>
+      <!-- <ion-row class="item-hdr" *ngIf="releasingItems.length>0">
+        <ion-col size-xs="12" size-lg="6">
+          <ion-item lines="none">
+            <ion-label class="item-desc-hdr-lbl">Item</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="6" size-md="3" size-lg="1.5">
+          <ion-item lines="none">
+            <ion-label class="item-qty-hdr-lbl">
+              <h2>Doc. Qty.</h2>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="6" size-md="3" size-lg="1.5">
+          <ion-item lines="none">
+            <ion-label class="item-qty-hdr-lbl">
+              <h2>Act. Qty.</h2>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="6" size-md="3" size-lg="1.5">
+          <ion-item lines="none">
+            <ion-label class="item-qty-hdr-lbl">
+              <h2>Doc. Weight(Kg)</h2>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="6" size-md="3" size-lg="1.5">
+          <ion-item lines="none">
+            <ion-label class="item-qty-hdr-lbl">
+              <h2>Act. Weight(Kg)</h2>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row> -->
+
+      <ion-row class="item-row" *ngFor="let item of releasingItems">
+        <div class="option-buttons" *ngIf="!isUploading && releasingDetailsConfig.showItemOptionButtons">
+          <ion-item lines="none">
+            <!-- <ion-button class="delete-item-button" (click)="onEditBatchDetailItem(detailItem, detail)" mode="ios"
+              slot="end" fill="clear" color="medium" size="default">
+              <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+            </ion-button> -->
+            <ion-button class="delete-item-button" (click)="onDeleteReleasingItem(item)" mode="ios"
+              slot="end" fill="clear" color="medium" size="default">
+              <ion-icon name="close-circle"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </div>
+        <ion-col size-xs="6" size-lg="4">
+          <ion-item lines="none">
+            <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
+            <ion-label class="item-desc-lbl item-line-lbl">{{ item.item.itemName }}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="6" size-lg="2">
+          <ion-item lines="none">
+            <!-- <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon> -->
+            <ion-label class="item-desc-lbl item-line-lbl">{{ item.barcode }}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="6" size-md="4" size-lg="2">
+          <ion-item lines="none">
+            <ion-label class="item-line-lbl item-qty-lbl">
+              <h3>
+                Wt./{{ item.requiredUom.uomCode.toUpperCase() }}
+              </h3>
+              <h2>
+                {{ item.releasedWeightKg}}
+                <span class="qty-uom-lbl">Kg/{{ item.releasedQty }}{{ item.requiredUom.uomCode.toUpperCase() }}</span>
+              </h2>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+        <!-- <ion-col size-xs="6" size-md="3" size-lg="1.5">
+          <ion-item lines="none">
+            <ion-label class="item-line-lbl item-qty-lbl">
+              <h3>
+                Act. {{ detailItem.requiredUom.uomCode.toUpperCase() }}
+              </h3>
+              <h2>
+                {{ detailItem.receivedQty | number:'1.0' }}
+                <span class="qty-uom-lbl">{{ detailItem.requiredUom.uomCode.toUpperCase() }}</span>
+              </h2>
+            </ion-label>
+          </ion-item>
+        </ion-col> -->
+        <ion-col size-xs="6" size-md="4" size-lg="2">
+          <ion-item lines="none">
+            <ion-label class="item-line-lbl item-qty-lbl">
+              <h3>Price</h3>
+              <h2>{{ item.itemPrice| number:'1.2-2' }}/Kg</h2>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12" size-md="4" size-lg="2">
+          <ion-item lines="none">
+            <ion-label class="item-line-lbl item-qty-lbl">
+              <h3>Total</h3>
+              <h2>{{ item.totalAmount| number:'1.2-2' }}</h2>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <!-- <ion-row class="item-ftr" *ngIf="releasingItems.length>0">
+        <ion-col size-xs="12" size-md="6" size-lg="9" class="total-lbl-col">
+        </ion-col>
+        <ion-col size-xs="6" size-md="3" size-lg="1.5">
+          <ion-item lines="none">
+            <ion-label class="item-line-lbl item-qty-lbl">
+              <h3>Total</h3>
+              <h2>{{ totalAmount | number:'1.2' }}</h2>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="6" size-md="3" size-lg="1.5">
+          <ion-item lines="none">
+            <ion-label class="item-line-lbl item-qty-lbl">
+              <h3>Total Act. Weight(Kg)</h3>
+              <h2>{{ detail.totalReceivedWeightKg| number:'1.2' }}</h2>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row> -->
+
+      <!-- <ion-row *ngIf="butcheryBatch.batchStatus === 'Unposted'">
+        <ion-col>
+          <ion-item class="insert-item" lines="none" button (click)="onShowBatchDetailItem(detail)">
+            <ion-label>
+              <h3>INSERT ITEM...</h3>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row> -->
+
     </ion-grid>
   </ion-card>
 </ion-content>
