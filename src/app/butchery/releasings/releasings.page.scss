@@ -115,15 +115,6 @@ ion-grid {
     color: var(--ion-color-medium);
   }
 
-  // .num-row-lbl {
-  //   padding-right: 1rem;
-  //   text-align: end;
-  // }
-
-  // .status-row-lbl {
-  //   padding-right: 1rem;
-  //   text-align: center;
-  // }
 }
 
 .data-row:nth-of-type(even) {
@@ -188,6 +179,10 @@ ion-grid {
     h3 {
       display: none;
       visibility: hidden;
+    }
+
+    .id-row-lbl {
+      padding-left: 1rem;
     }
 
     .status-row-lbl {
