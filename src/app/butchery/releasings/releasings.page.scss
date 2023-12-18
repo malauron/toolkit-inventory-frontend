@@ -115,15 +115,15 @@ ion-grid {
     color: var(--ion-color-medium);
   }
 
-  .num-row-lbl {
-    padding-right: 1rem;
-    text-align: end;
-  }
+  // .num-row-lbl {
+  //   padding-right: 1rem;
+  //   text-align: end;
+  // }
 
-  .status-row-lbl {
-    padding-right: 1rem;
-    text-align: center;
-  }
+  // .status-row-lbl {
+  //   padding-right: 1rem;
+  //   text-align: center;
+  // }
 }
 
 .data-row:nth-of-type(even) {
@@ -169,6 +169,14 @@ ion-grid {
   }
 }
 
+@media (min-width: 768px) {
+
+  .num-row-lbl {
+    padding-right: 1rem;
+    text-align: end;
+  }
+
+}
 
 @media (min-width: 992px) {
   .data-hdr {
@@ -180,6 +188,11 @@ ion-grid {
     h3 {
       display: none;
       visibility: hidden;
+    }
+
+    .status-row-lbl {
+      padding-right: 1rem;
+      text-align: center;
     }
   }
 }

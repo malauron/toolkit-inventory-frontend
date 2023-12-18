@@ -243,6 +243,7 @@ ion-popover {
 
   .item-code-lbl {
     text-align: end;
+    visibility: hidden;
   }
 
   .item-qty-lbl {
@@ -456,8 +457,13 @@ ion-popover {
     display: flex !important;
   }
 
+  .item-desc-lbl h3 {
+    display: none;
+  }
+
   .item-code-lbl {
     text-align: start !important;
+    visibility: visible !important;
   }
 
   .item-qty-lbl h3 {

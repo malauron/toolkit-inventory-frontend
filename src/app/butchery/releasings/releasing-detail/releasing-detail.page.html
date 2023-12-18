@@ -276,13 +276,17 @@
             </ion-button>
           </ion-item>
         </div>
-        <ion-col size-xs="6" size-lg="4">
+        <ion-col size-xs="12" size-lg="4">
           <ion-item lines="none">
             <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
-            <ion-label class="item-desc-lbl item-line-lbl">{{ item.item.itemName }}</ion-label>
+            <ion-label class="item-desc-lbl item-line-lbl">
+              <h3>
+                {{ item.barcode }}
+              </h3>
+              {{ item.item.itemName }}</ion-label>
           </ion-item>
         </ion-col>
-        <ion-col size-xs="6" size-lg="2">
+        <ion-col size-xs="0" size-lg="2">
           <ion-item lines="none">
             <ion-label class="item-code-lbl item-line-lbl">{{ item.barcode }}</ion-label>
           </ion-item>
