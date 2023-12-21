@@ -1,14 +1,24 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button icon="chevron-back-outline" defaultHref="/tabs/releasings"></ion-back-button>
+      <ion-back-button
+        icon="chevron-back-outline"
+        defaultHref="/tabs/releasings"
+      ></ion-back-button>
     </ion-buttons>
     <ion-title>Releasing Details</ion-title>
     <ion-buttons slot="primary" *ngIf="!isFetching && !isUploading">
-      <ion-button (click)="onSaveReleasing()" *ngIf="!releasing.butcheryReleasingId" [disabled]="isUploading">
+      <ion-button
+        (click)="onSaveReleasing()"
+        *ngIf="!releasing.butcheryReleasingId"
+        [disabled]="isUploading"
+      >
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-button (click)="printPage()" *ngIf="releasing.releasingStatus === 'Posted' && !isFetching">
+      <ion-button
+        (click)="printPage()"
+        *ngIf="releasing.releasingStatus === 'Posted' && !isFetching"
+      >
         <ion-icon name="print-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -17,7 +27,11 @@
 
 <ion-content class="ion-padding">
   <div class="spinner">
-    <ion-spinner name="bubbles" color="primary" *ngIf="isFetching"></ion-spinner>
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
   </div>
 
   <ion-card *ngIf="!isFetching">
@@ -147,8 +161,8 @@
               slot="start"
             ></ion-icon>
             <ion-label class="ion-label-elem" position="floating"
-              >Destination </ion-label
-            >
+              >Destination
+            </ion-label>
             <ion-input
               class="ion-input-elem"
               value="{{ destinationWarehouse.warehouseName }}"
@@ -168,7 +182,7 @@
             </ion-button>
           </ion-item>
         </ion-col>
-        <ion-col size-xs="12" size-lg="6" >
+        <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
             <ion-icon
               class="contactIcon"
@@ -225,10 +239,16 @@
       <ion-item lines="none">
         <ion-card-title class="font-large">Released Items</ion-card-title>
       </ion-item>
-      <ion-item lines="none"
-        *ngIf="releasing.releasingStatus === 'Unposted'  || releasing.releasingStatus === undefined">
-        <ion-searchbar searchIcon="barcode-outline" placeholder="Barcode" (keypress)="onGetItemByItemCode($event)"
-          #itemSearchBar></ion-searchbar>
+      <ion-item
+        lines="none"
+        *ngIf="releasing.releasingStatus === 'Unposted'  || releasing.releasingStatus === undefined"
+      >
+        <ion-searchbar
+          searchIcon="barcode-outline"
+          placeholder="Barcode"
+          (keypress)="onGetItemByItemCode($event)"
+          #itemSearchBar
+        ></ion-searchbar>
       </ion-item>
     </ion-card-header>
     <div class="separator"></div>
@@ -268,38 +288,53 @@
       </ion-row>
 
       <ion-row class="item-row" *ngFor="let item of releasingItems">
-        <div class="option-buttons" *ngIf="!isUploading && releasingDetailsConfig.showItemOptionButtons">
+        <!-- <div
+          class="option-buttons"
+          *ngIf="!isUploading && releasingDetailsConfig.showItemOptionButtons"
+        >
           <ion-item lines="none">
-            <ion-button class="delete-item-button" (click)="onDeleteReleasingItem(item)" mode="ios"
-              slot="end" fill="clear" color="medium" size="default">
+            <ion-button
+              class="delete-item-button"
+              (click)="onDeleteReleasingItem(item)"
+              mode="ios"
+              slot="end"
+              fill="clear"
+              color="medium"
+              size="default"
+            >
               <ion-icon name="close-circle"></ion-icon>
             </ion-button>
           </ion-item>
-        </div>
+        </div> -->
         <ion-col size-xs="12" size-lg="4">
           <ion-item lines="none">
-            <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
+            <ion-icon
+              slot="start"
+              name="cube-outline"
+              color="primary"
+            ></ion-icon>
             <ion-label class="item-desc-lbl item-line-lbl">
-              <h3>
-                {{ item.barcode }}
-              </h3>
-              {{ item.item.itemName }}</ion-label>
+              <h3>{{ item.barcode }}</h3>
+              {{ item.item.itemName }}</ion-label
+            >
           </ion-item>
         </ion-col>
         <ion-col size-xs="0" size-lg="2">
           <ion-item lines="none">
-            <ion-label class="item-code-lbl item-line-lbl">{{ item.barcode }}</ion-label>
+            <ion-label class="item-code-lbl item-line-lbl"
+              >{{ item.barcode }}</ion-label
+            >
           </ion-item>
         </ion-col>
         <ion-col size-xs="6" size-sm="4" size-md="4" size-lg="2">
           <ion-item lines="none">
             <ion-label class="item-line-lbl item-qty-lbl">
-              <h3>
-                Wt./{{ item.requiredUom.uomCode.toUpperCase() }}
-              </h3>
+              <h3>Wt./{{ item.requiredUom.uomCode.toUpperCase() }}</h3>
               <h2>
-                {{ item.releasedWeightKg}}
-                <span class="qty-uom-lbl">Kg/{{ item.releasedQty }}{{ item.requiredUom.uomCode.toUpperCase() }}</span>
+                {{ item.releasedWeightKg }}<span class="qty-uom-lbl"
+                  >Kg/{{ item.releasedQty }}{{
+                  item.requiredUom.uomCode.toUpperCase() }}</span
+                >
               </h2>
             </ion-label>
           </ion-item>
@@ -320,15 +355,27 @@
             </ion-label>
           </ion-item>
         </ion-col>
+        <ion-col class="opt-col" *ngIf="!isUploading && releasingDetailsConfig.showItemOptionButtons">
+          <ion-item lines="none">
+            <ion-button
+              class="delete-item-button"
+              (click)="onDeleteReleasingItem(item)"
+              mode="ios"
+              slot="end"
+              fill="clear"
+              color="medium"
+              size="default"
+            >
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col>
       </ion-row>
-
     </ion-grid>
   </ion-card>
 </ion-content>
 
-
 <div id="print">
-
   <div class="receipt-header">
     <div class="receipt-info">
       <ion-card-subtitle>{{ warehouse.warehouseName }}</ion-card-subtitle>
@@ -338,7 +385,9 @@
 
   <div class="receipt-header">
     <div class="receipt-info">
-      <ion-card-subtitle>{{ destinationWarehouse.warehouseName }}</ion-card-subtitle>
+      <ion-card-subtitle
+        >{{ destinationWarehouse.warehouseName }}</ion-card-subtitle
+      >
     </div>
     <div class="receipt-info">Destination Warehouse</div>
   </div>
@@ -351,29 +400,36 @@
   </div>
 
   <div class="receipt-header">
-    <div class="receipt-date">{{ releasing.dateCreated | date:'MMM dd, yyyy hh:mm a' }}</div>
+    <div class="receipt-date">
+      {{ releasing.dateCreated | date:'MMM dd, yyyy hh:mm a' }}
+    </div>
     <div class="receipt-no">{{ releasingId.toString().padStart(8, "0") }}</div>
   </div>
 
   <div class="separator"></div>
   <div class="desc-one" *ngFor="let item of receiptReleasingItems">
-
     <div class="item-detail" *ngIf="!item.isSubTotal">
       <div class="barcode">{{ item.barcode }}</div>
       <div class="price">{{ item.totalAmount| number:'1.2-2' }}</div>
       <div>
         <div>{{ item.item.itemName }}</div>
-        <div>{{ item.releasedWeightKg }}Kg/{{ item.releasedQty }}{{item.requiredUom.uomCode }} @ {{
-          item.itemPrice| number:'1.2-2' }}/Kg</div>
+        <div>
+          {{ item.releasedWeightKg }}Kg/{{ item.releasedQty
+          }}{{item.requiredUom.uomCode }} @ {{ item.itemPrice| number:'1.2-2'
+          }}/Kg
+        </div>
       </div>
     </div>
-    <div class="item-subTotal separator" *ngIf="item.isSubTotal && item.runningEntries > 1">
+    <div
+      class="item-subTotal separator"
+      *ngIf="item.isSubTotal && item.runningEntries > 1"
+    >
       <div class="barcode">{{ item.runningEntries }} items.</div>
-      <div class="price">{{ item.runningWeightKg |  number:'1.0-3' }}Kg</div>
+      <div class="price">{{ item.runningWeightKg | number:'1.0-3' }}Kg</div>
     </div>
   </div>
 
-  <br>
+  <br />
   <div class="separator"></div>
   <div class="separator"></div>
   <div class="total">
@@ -389,7 +445,9 @@
       <ion-card-subtitle>Total Kg.</ion-card-subtitle>
     </div>
     <div class="total-amt">
-      <ion-card-subtitle>{{ totalWeightKg | number:'1.2-2' }}</ion-card-subtitle>
+      <ion-card-subtitle
+        >{{ totalWeightKg | number:'1.2-2' }}</ion-card-subtitle
+      >
     </div>
   </div>
 
@@ -406,5 +464,4 @@
   </div>
 
   <div class="company-name">A subsidiary of Eight2Eight Inc.</div>
-
 </div>

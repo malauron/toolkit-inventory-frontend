@@ -134,6 +134,7 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
           });
       }
     });
+
   }
 
   onGetItemByItemCode(event) {

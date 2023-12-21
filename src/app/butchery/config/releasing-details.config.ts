@@ -21,7 +21,7 @@ export class ReleasingDetailsConfig {
     this.releasingStatusButton = false;
     this.releasingStatusBadge = false;
     this.releasingStatusPopover = false;
-    this.showItemOptionButtons = false;
+    this.showItemOptionButtons = true;
     this.deleteIngredientButton = false;
     this.updateIngredientButton = false;
     this.unpostedStatus = false;

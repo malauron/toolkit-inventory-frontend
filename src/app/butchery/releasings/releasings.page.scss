@@ -26,9 +26,15 @@ ion-spinner {
 
 ion-grid {
   padding: 0 1rem;
+
+  ion-row {
+    padding-left: 1rem;
+  }
 }
 
 .data-hdr {
+  margin-bottom: 0;
+  padding: 1rem 0 0.8rem 0;
   background-color: white;
   border-bottom: 0.1rem solid rgba($color: #6c6c6c, $alpha: 0.5);
 
@@ -52,13 +58,10 @@ ion-grid {
   position: -webkit-sticky;
   /* Safari */
   position: sticky;
-  top: -0.7rem;
+  top: -0.2rem;
   z-index: 1000;
   display: none;
   visibility: hidden;
-
-  padding-bottom: 0;
-  margin-bottom: 0;
 
   h2 {
     font-weight: 700;
