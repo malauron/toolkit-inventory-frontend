@@ -13,6 +13,7 @@ import { ButcheryReleasingsService } from '../services/butchery-releasings.servi
   templateUrl: './releasings.page.html',
   styleUrls: ['./releasings.page.scss'],
 })
+
 export class ReleasingsPage implements OnInit, OnDestroy {
   @ViewChild('infiniteScroll') infiniteScroll;
   @ViewChild('releasingSearchBar', { static: true }) releasingSearchBar: IonSearchbar;

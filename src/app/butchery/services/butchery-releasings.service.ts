@@ -56,12 +56,6 @@ export class ButcheryReleasingsService {
       releasingId = String(Number(searchDesc));
     }
 
-    // searchDesc = String(searchDesc).replace('%','');
-    // searchDesc = String(searchDesc).replace('^','');
-    // searchDesc = String(searchDesc).replace('[','');
-    // searchDesc = String(searchDesc).replace(']','');
-    // searchDesc = String(searchDesc).replace('|','');
-    // searchDesc = String(searchDesc).replace('\\','');
     filterString(searchDesc);
 
     this.apiUrl =

@@ -1,9 +1,124 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>users</ion-title>
+  <ion-toolbar color="primary">
+    <ion-searchbar #searchBar placeholder="Search Users"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
+    <!-- <ion-fab-button color="success" (click)="onAddReleasing()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button> -->
+  </ion-fab>
 
+  <div class="spinner">
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
+  </div>
+
+  <ion-grid>
+    <ion-row class="data-hdr">
+      <ion-col size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label class="id-col-lbl"><h2>ID No.</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="3">
+        <ion-item lines="none"
+          ><ion-label><h2>Username</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <!-- <ion-col size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label class="num-col-lbl"><h2>Total Amount</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="1.5">
+        <ion-item lines="none"
+          ><ion-label class="status-col-lbl"><h2>Status</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label><h2>Created On</h2></ion-label></ion-item
+        >
+      </ion-col> -->
+    </ion-row>
+    <ion-row class="data-row" *ngFor="let user of users">
+      <div class="option-buttons">
+        <ion-item lines="none">
+          <!-- <ion-button
+            class="delete-item-button"
+            (click)="onEditReleasing(releasing.butcheryReleasingId)"
+            mode="ios"
+            slot="end"
+            fill="clear"
+            color="medium"
+            size="default"
+          >
+            <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+          </ion-button> -->
+        </ion-item>
+      </div>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label class="id-row-lbl"
+            ><h3>ID No.</h3>
+            {{ user.userId }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3">
+        <ion-item lines="none"
+          ><ion-label
+            ><h3>Username</h3>
+            {{ user.username }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <!-- <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label class="num-row-lbl"
+            ><h3>Total Amount</h3>
+            {{ releasing.totalAmount | number:'1.2-2' }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="1.5">
+        <ion-item lines="none">
+          <ion-label class="status-row-lbl"
+            ><h3>Status</h3>
+            <ion-badge [color]="getStatusColor(releasing.releasingStatus)"
+              >{{ releasing.releasingStatus }}</ion-badge
+            ></ion-label
+          >
+        </ion-item>
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label
+            ><h3>Created On</h3>
+            {{ releasing.dateCreated| date:'MMM dd, yyyy hh:mm a' }}</ion-label
+          ></ion-item
+        >
+      </ion-col> -->
+    </ion-row>
+  </ion-grid>
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreReleasings($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <div class="empty-space"></div>
 </ion-content>
