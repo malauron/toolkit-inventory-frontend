@@ -90,6 +90,14 @@ const routes: Routes = [
         loadChildren: () => import('../vendor-warehouses/vendor-warehouses.module').then( m => m.VendorWarehousesPageModule)
       },
       {
+        path: 'projects',
+        loadChildren: () => import('../project-management/projects/projects.module').then( m => m.ProjectsPageModule)
+      },
+      {
+        path: 'project-units',
+        loadChildren: () => import('../project-management/project-units/project-units.module').then( m => m.ProjectUnitsPageModule)
+      },
+      {
         path: 'users',
         loadChildren: () => import('../Security/users/users.module').then( m => m.UsersPageModule)
       },

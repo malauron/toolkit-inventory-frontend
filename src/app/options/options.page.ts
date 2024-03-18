@@ -83,6 +83,10 @@ export class OptionsPage implements OnInit {
     this.router.navigate(['/', 'tabs', 'item-prices']);
   }
 
+  onProjectUnits() {
+    this.router.navigate(['/', 'tabs', 'project-units']);
+  }
+
   formatDate(date) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
