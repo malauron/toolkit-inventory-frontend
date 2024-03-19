@@ -49,6 +49,8 @@ export class AppParamsConfig {
   urlPosSalesSearch: any;
   urlPosItemPrice: any;
   urlPosItemPriceSearch: any;
+  urlProjectUnits: any;
+  urlProjectUnitsSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -155,6 +157,8 @@ export class AppParamsConfig {
     this.urlPosSalesSearch = `${this.urlPosSales}/search/findByCustomParam`;
     this.urlPosItemPrice = `${this.url}/posItemPrices`;
     this.urlPosItemPriceSearch = `${this.urlPosItemPrice}/search/findByWarehouseIdAndItemId`;
+    this.urlProjectUnits = `${this.url}/projectUnits`;
+    this.urlProjectUnitsSearch = `${this.urlProjectUnits}/search/findByCustomParams`;
 
     this.urlV1 = `${this.url}/v1`;
 
