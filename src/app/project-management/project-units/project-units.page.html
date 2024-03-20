@@ -1,9 +1,137 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>project-units</ion-title>
+  <ion-toolbar color="primary">
+    <ion-searchbar #unitSearchBar placeholder="Units"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!isFetching">
+    <ion-fab-button color="success" (click)="onAddUnit()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
+  <div class="spinner">
+    <ion-spinner
+      name="bubbles"
+      color="primary"
+      *ngIf="isFetching"
+    ></ion-spinner>
+  </div>
+
+  <ion-grid>
+    <ion-row class="data-hdr">
+      <ion-col size-lg="1">
+        <ion-item lines="none"
+          ><ion-label class="id-col-lbl"><h2>Unit No.</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label><h2>Description</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="1.5">
+        <ion-item lines="none"
+          ><ion-label class="num-col-lbl"><h2>Price</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="1.5">
+        <ion-item lines="none"
+          ><ion-label class="status-col-lbl"><h2>Status</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label><h2>Client</h2></ion-label></ion-item
+        >
+      </ion-col>
+      <ion-col size-lg="1.5">
+        <ion-item lines="none"
+          ><ion-label class="num-col-lbl"><h2>Equity Balance</h2></ion-label></ion-item
+        >
+      </ion-col>
+    </ion-row>
+    <ion-row class="data-row" *ngFor="let unit of units">
+      <div class="option-buttons">
+        <ion-item lines="none">
+          <ion-button
+            class="delete-item-button"
+            (click)="onEditUnit(unit.unitId)"
+            mode="ios"
+            slot="end"
+            fill="clear"
+            color="medium"
+            size="default"
+          >
+            <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="1">
+        <ion-item lines="none"
+          ><ion-label class="id-row-lbl"
+            ><h3>Unit No.</h3>
+            {{ unit.unitCode }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label
+            ><h3>Description</h3>
+            {{ unit.unitDescription }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="1.5">
+        <ion-item lines="none"
+          ><ion-label class="num-row-lbl"
+            ><h3>Price</h3>
+            {{ unit.unitPrice | number:'1.2-2' }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="1.5">
+        <ion-item lines="none">
+          <ion-label class="status-row-lbl"
+            ><h3>Status</h3>
+            <ion-badge [color]="getStatusColor(unit.unitStatus)"
+              >{{ unit.unitStatus }}</ion-badge
+            ></ion-label
+          >
+        </ion-item>
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2.5">
+        <ion-item lines="none"
+          ><ion-label
+            ><h3>Client</h3>
+            {{ unit.currentContract?.client.clientName }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="1.5">
+        <ion-item lines="none"
+          ><ion-label class="num-row-lbl"
+            ><h3>Equity Balance</h3>
+            {{ unit.currentContract?.equityBalance | number:'1.2-2' }}</ion-label
+          ></ion-item
+        >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreUnits($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <div class="empty-space"></div>
 </ion-content>

@@ -1,4 +1,4 @@
-export class ProjectClients {
+export class ProjectClient {
   constructor(
     public clientId?: number,
     public clientName?: string,

@@ -1,5 +1,5 @@
 export enum UnitClass {
-  condoUnit = 'CONDO UNIT',
-  parkingSpace = 'PARKING SPACE',
-  storageUnit = 'STORAGE UNIT'
+  CONDO_UNIT = 'CONDO UNIT',
+  PARKING_SPACE = 'PARKING SPACE',
+  STORAGE_UNIT = 'STORAGE UNIT'
 }
