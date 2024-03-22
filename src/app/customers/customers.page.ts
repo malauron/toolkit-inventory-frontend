@@ -113,7 +113,7 @@ export class CustomersPage implements OnInit, OnDestroy {
               'data:' + data._embedded.customers[key].customerPicture.type +
               ';base64,' + data._embedded.customers[key].customerPicture.file;
           } else {
-            newCustomer.convertedPicture = '../../assets/icons/personv06.svg';
+            newCustomer.convertedPicture = 'assets/icons/personv06.svg';
           }
           this.customers.push(newCustomer);
         }

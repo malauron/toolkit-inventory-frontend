@@ -102,6 +102,10 @@ const routes: Routes = [
         loadChildren: () => import('../Security/users/users.module').then( m => m.UsersPageModule)
       },
       {
+        path: 'project-payments',
+        loadChildren: () => import('../project-management/project-payments/project-payments.module').then( m => m.ProjectPaymentsPageModule)
+      },
+      {
         path: '',
         redirectTo: 'options',
         pathMatch: 'full'

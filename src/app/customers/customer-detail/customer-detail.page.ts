@@ -55,8 +55,8 @@ export class CustomerDetailPage implements OnInit, OnDestroy {
       }
 
       this.selectedSegment = 'picture';
-      this.displayPicture = '../../assets/icons/personv06.svg';
-      this.displaySignature = '../../assets/icons/signaturev04.svg';
+      this.displayPicture = 'assets/icons/personv06.svg';
+      this.displaySignature = 'assets/icons/signaturev04.svg';
       this.displayImg = this.displayPicture;
       this.customerForm = new FormGroup({
         customerCode: new FormControl(null, {

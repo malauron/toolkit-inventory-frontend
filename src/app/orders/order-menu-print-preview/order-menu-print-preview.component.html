@@ -3,7 +3,7 @@
     <button (click)="dismissModal()">&#8249;</button>
     <button styleSheetFile="assets/css/order-menu-print-preview.component.css" printSectionId="print-section" ngxPrint
       class="split">
-      <img src="../../../assets/icons/printer.svg" />
+      <img src="assets/icons/printer.svg" />
     </button>
   </div>
 
@@ -12,27 +12,27 @@
     <div class="card">
       <div class="order-header">
         <div class="order-detail">
-          <img src="../../../assets/icons/calendar.svg" />
+          <img src="assets/icons/calendar.svg" />
           {{ orderMenuDto.dateCreated | date:'MMM dd, yyyy hh:mm a' }}
         </div>
         <div class="order-detail">
-          <img src="../../../assets/icons/cart.svg" />
+          <img src="assets/icons/cart.svg" />
           {{ orderMenuDto.orderId.toString().padStart(8, "0") }}
         </div>
         <div class="order-detail">
-          <img src="../../../assets/icons/person.svg" />
+          <img src="assets/icons/person.svg" />
           {{ orderMenuDto.customerName }}
         </div>
         <div class="order-detail">
-          <img src="../../../assets/icons/telephone.svg" />
+          <img src="assets/icons/telephone.svg" />
           {{ orderMenuDto.contactNo }}
         </div>
         <div class="order-detail">
-          <img src="../../../assets/icons/map.svg" />
+          <img src="assets/icons/map.svg" />
           {{ orderMenuDto.address }}
         </div>
         <div class="order-detail">
-          <img src="../../../assets/icons/warehouse.svg" />
+          <img src="assets/icons/warehouse.svg" />
           {{ orderMenuDto.warehouseName }}
         </div>
       </div>
@@ -40,7 +40,7 @@
       <div class="menu-header">
         <p>{{ orderMenuDto.orderMenu.menu.menuName }}</p>
         <p class="menuId">
-          <img src="../../../assets/icons/spoonfork.svg" />
+          <img src="assets/icons/spoonfork.svg" />
           {{ orderMenuDto.orderMenu.orderMenuId.toString().padStart(8, "0") }}
         </p>
         <p class="remarks">
