@@ -23,7 +23,11 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'tabs',
     pathMatch: 'full'
+  },  {
+    path: 'project-contracts',
+    loadChildren: () => import('./project-management/project-contracts/project-contracts.module').then( m => m.ProjectContractsPageModule)
   },
+
 ];
 
 @NgModule({
