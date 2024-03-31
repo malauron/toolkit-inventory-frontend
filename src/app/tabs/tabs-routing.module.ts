@@ -98,12 +98,12 @@ const routes: Routes = [
         loadChildren: () => import('../project-management/project-units/project-units.module').then( m => m.ProjectUnitsPageModule)
       },
       {
-        path: 'users',
-        loadChildren: () => import('../Security/users/users.module').then( m => m.UsersPageModule)
-      },
-      {
         path: 'project-payments',
         loadChildren: () => import('../project-management/project-payments/project-payments.module').then( m => m.ProjectPaymentsPageModule)
+      },
+      {
+        path: 'users',
+        loadChildren: () => import('../Security/users/users.module').then( m => m.UsersPageModule)
       },
       {
         path: '',
