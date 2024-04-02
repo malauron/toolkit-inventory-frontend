@@ -107,11 +107,11 @@ export class ProjectUnitsPage implements OnInit, OnDestroy {
   }
 
   onAddUnit() {
-    this.router.navigate(['/', 'tabs', 'project-units', 'unit-detail', 0]);
+    this.router.navigate(['/', 'tabs', 'project-units', 'project-unit-detail', 0]);
   }
 
   onEditUnit(unitId: number) {
-    this.router.navigate(['/','tabs','project-units','unit-detail', unitId]);
+    this.router.navigate(['/','tabs','project-units','project-unit-detail', unitId]);
   }
 
   getStatusColor(unitStatus): string {

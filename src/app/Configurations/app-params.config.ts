@@ -99,6 +99,7 @@ export class AppParamsConfig {
   urlV1PosSaleItems: any;
   urlV1PosItemPrices: any;
   urlV1Users: any;
+  urlV1ProjectUnits: any;
 
   waitTime: number;
   pageSize: number;
@@ -204,6 +205,7 @@ export class AppParamsConfig {
     this.urlV1PosSaleItems = `${this.urlV1}/posSaleItems`;
     this.urlV1PosSalesSetStatus = `${this.urlV1PosSales}/saleStatus`;
     this.urlV1PosItemPrices = `${this.urlV1}/posItemPrices`;
+    this.urlV1ProjectUnits = `${this.urlV1}/projectUnits`
     this.urlV1Users = `${this.urlV1}/users`;
 
     this.waitTime = 500;

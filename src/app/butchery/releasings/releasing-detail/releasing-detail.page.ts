@@ -69,7 +69,6 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.isFetching = true;
     this.releasing = new ButcheryReleasing();
-    // this.butcheryBatch = new ButcheryBatch();
     this.warehouse = new Warehouse();
     this.destinationWarehouse = new Warehouse();
     this.releasingDetailsConfig = new ReleasingDetailsConfig();
@@ -371,12 +370,6 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
       return;
     }
 
-    // if (!this.butcheryBatch.butcheryBatchId) {
-    //   this.messageBox('Please specify a batch.');
-    //   this.isUploading = false;
-    //   return;
-    // }
-
     if (!this.destinationWarehouse.warehouseId) {
       this.messageBox('Please choose a destination warehouse');
       this.isUploading = false;
@@ -394,7 +387,6 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
     releasingDto.totalAmount = this.totalAmount;
     releasingDto.totalWeightKg = this.totalWeightKg;
     releasingDto.warehouse = this.warehouse;
-    // releasingDto.butcheryBatch = this.butcheryBatch;
     releasingDto.destinationWarehouse = this.destinationWarehouse;
     releasingDto.customer = this.customer;
     releasingDto.butcheryReleasingItems = this.releasingItems;
@@ -418,59 +410,6 @@ export class ReleasingDetailPage implements OnInit, OnDestroy {
       this.isUploading = false;
     };
   }
-
-  // onUpdateReleasingItem(pItem?: ButcheryReleasingItem) {
-  //   if (!this.modalOpen) {
-  //     this.modalOpen = true;
-  //     const purchaseItemDetail = new PurchaseItemDetail();
-  //     purchaseItemDetail.item = pItem.item;
-  //     purchaseItemDetail.uom = pItem.requiredUom;
-  //     purchaseItemDetail.quantity = pItem.releasedQty;
-  //     purchaseItemDetail.price = pItem.itemPrice;
-  //     this.purchaseItemService.purchaseItemDetail.next(purchaseItemDetail);
-  //     this.modalSearch
-  //       .create({ component: PurchasedItemComponent })
-  //       .then((modalSearch) => {
-  //         modalSearch.present();
-  //         return modalSearch.onDidDismiss();
-  //       })
-  //       .then((resultData) => {
-  //         if (resultData.role === 'item') {
-  //           const item: PurchaseItemDetail = resultData.data;
-  //           const releasingItem = new ButcheryReleasingItem();
-  //           releasingItem.item = item.item;
-  //           releasingItem.requiredUom = item.uom;
-  //           releasingItem.releasedQty = item.quantity;
-  //           releasingItem.itemPrice = item.price;
-  //           releasingItem.totalAmount = item.quantity * item.price;
-  //           if (this.releasing.butcheryReleasingId) {
-  //             releasingItem.butcheryReleasingItemId = pItem.butcheryReleasingItemId;
-  //             releasingItem.butcheryReleasing = this.releasing;
-  //             this.releasingsService
-  //               .putReleasingItem(releasingItem)
-  //               .subscribe((res) => {
-  //                 this.dataHaveChanged = true;
-  //                 this.releasing.releasingStatus = res.releasingStatus;
-  //                 if (this.releasing.releasingStatus === 'Unposted') {
-  //                   this.updatePurchaseItemObj(pItem, releasingItem);
-  //                   this.getTotalAmt();
-  //                   this.messageBox('Purchased item has been updated.');
-  //                 } else {
-  //                   this.messageBox(
-  //                     'Unable to update the releasing since its status has been tagged as ' +
-  //                       this.releasing.releasingStatus
-  //                   );
-  //                 }
-  //               });
-  //           } else {
-  //             this.updatePurchaseItemObj(pItem, releasingItem);
-  //             this.getTotalAmt();
-  //           }
-  //         }
-  //         this.modalOpen = false;
-  //       });
-  //   }
-  // }
 
   updateReleasingItemObj(
     pItem: ButcheryReleasingItem,

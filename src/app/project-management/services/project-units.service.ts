@@ -4,6 +4,7 @@ import { Observable, Subject } from "rxjs";
 import { PageInfo } from "src/app/classes/page-info.model";
 import { AppParamsConfig } from "src/app/Configurations/app-params.config";
 import { filterString } from "src/app/utils/utils";
+import { ProjectUnitDto } from "../classes/project-unit-dto.model";
 import { ProjectUnit } from "../classes/project-unit.model"
 
 interface ResponseProjectUnits {
@@ -32,6 +33,13 @@ export class ProjectUnitsService {
     return this._unitsHaveChanged;
   }
 
+  getUnit(unitId: number): Observable<ProjectUnitDto> {
+
+    this.apiUrl = `${this.config.urlV1ProjectUnits}?unitId=${unitId}`;
+    return this.http.get<ProjectUnitDto>(this.apiUrl);
+
+  }
+
   getUnits(
     pageNumber?: number,
     pageSize?: number,
@@ -49,5 +57,10 @@ export class ProjectUnitsService {
       `?searchDesc=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
 
     return this.http.get<ResponseProjectUnits>(this.apiUrl);
+  }
+
+  postUnit(unitDto: ProjectUnitDto): Observable<ProjectUnit> {
+    this.apiUrl = `${this.config.urlV1ProjectUnits}`;
+    return this.http.post<ProjectUnit>(this.apiUrl, unitDto);
   }
 }
