@@ -4,6 +4,7 @@ import { IonSearchbar, ToastController } from '@ionic/angular';
 import { debounceTime, distinctUntilChanged, map, Subscription } from 'rxjs';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ProjectUnit } from '../classes/project-unit.model';
+import { UnitStatus } from '../classes/unit-status.model';
 import { ProjectUnitsService } from '../services/project-units.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class ProjectUnitsPage implements OnInit, OnDestroy {
 
   unitSearchSub: Subscription;
   unitSub: Subscription;
+  unitStatus = UnitStatus;
 
   units: ProjectUnit[] = [];
 

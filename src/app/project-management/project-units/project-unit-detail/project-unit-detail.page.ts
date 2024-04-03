@@ -65,12 +65,14 @@ export class ProjectUnitDetailPage implements OnInit {
           },
           error: () => {
             this.navCtrl.navigateBack('/tabs/project-units');
+            this.isFetching = false;
             return;
           }
         });
       } else {
         this.unit.unitId = 0;
         this.user = this.authenticationService.getUserFromLocalCache();
+        this.isFetching = false;
       }
     });
   }

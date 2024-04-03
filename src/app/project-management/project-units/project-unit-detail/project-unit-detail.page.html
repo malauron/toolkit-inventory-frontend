@@ -41,21 +41,19 @@
     </ion-item>
     <ion-grid>
       <ion-row class="primary-info-row">
-        <ion-col *ngIf="unit.unitId">
+        <ion-col>
           <ion-item fill="outline">
             <ion-icon
               class="cartIcon"
-              name="log-out-outline"
+              src="assets/icons/pound_key.svg"
               color="primary"
               slot="start"
             ></ion-icon>
             <ion-label class="ion-label-elem" position="floating"
-              >Releasing No.</ion-label
+              >Unit Code</ion-label
             >
             <ion-input
               class="ion-input-elem"
-              value="{{ unit.unitId }}"
-              readonly="true"
             ></ion-input>
 
             <!-- <ion-button
@@ -118,7 +116,59 @@
             </ion-badge> -->
           </ion-item>
         </ion-col>
-        <ion-col size-xs="12" size-lg="6" *ngIf="unit.unitId">
+        <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              src="assets/icons/info.svg"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Description</ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="pricetag-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Selling Price</ion-label
+            >
+            <ion-input
+              class="ion-input-elem qty-input"
+              type="number"
+              maxlength="20"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="cash-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Reservation Fee</ion-label
+            >
+            <ion-input
+              class="ion-input-elem qty-input"
+              type="number"
+              maxlength="20"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <!-- <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
             <ion-icon
               name="calendar-outline"
@@ -134,26 +184,8 @@
               readonly="true"
             ></ion-input>
           </ion-item>
-        </ion-col>
-        <ion-col size-xs="12" size-lg="6">
-          <ion-item fill="outline">
-            <ion-icon
-              class="contactIcon"
-              src="assets/icons/warehouse02.svg"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label class="ion-label-elem" position="floating"
-              >Warehouse</ion-label
-            >
-            <!-- <ion-input
-              class="ion-input-elem"
-              value="{{ warehouse.warehouseName }}"
-              readonly="true"
-            ></ion-input> -->
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="12" size-lg="6">
+        </ion-col> -->
+        <!-- <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
             <ion-icon
               class="contactIcon"
@@ -164,12 +196,12 @@
             <ion-label class="ion-label-elem" position="floating"
               >Destination
             </ion-label>
-            <!-- <ion-input
+            <ion-input
               class="ion-input-elem"
               value="{{ destinationWarehouse.warehouseName }}"
               readonly="true"
-            ></ion-input> -->
-            <!-- <ion-button
+            ></ion-input>
+            <ion-button
               #statusButton
               slot="end"
               *ngIf="unit.unitStatus === 'Unposted' || unit.unitStatus === undefined"
@@ -180,10 +212,10 @@
               id="click-trigger"
             >
               <ion-icon name="search-outline"></ion-icon>
-            </ion-button> -->
+            </ion-button>
           </ion-item>
-        </ion-col>
-        <ion-col size-xs="12" size-lg="6">
+        </ion-col> -->
+        <!-- <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
             <ion-icon
               class="contactIcon"
@@ -194,12 +226,12 @@
             <ion-label class="ion-label-elem" position="floating"
               >Customer</ion-label
             >
-            <!-- <ion-input
+            <ion-input
               class="ion-input-elem"
               value="{{ customer?.customerName }}"
               readonly="true"
-            ></ion-input> -->
-            <!-- <ion-button
+            ></ion-input>
+            <ion-button
               *ngIf="unit.unitStatus === 'Unposted' || unit.unitStatus === undefined"
               (click)="onCustomerSearch()"
               fill="clear"
@@ -209,9 +241,9 @@
               id="click-trigger"
             >
               <ion-icon name="search-outline"></ion-icon>
-            </ion-button> -->
+            </ion-button>
           </ion-item>
-        </ion-col>
+        </ion-col> -->
         <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
             <ion-icon
@@ -223,11 +255,11 @@
             <ion-label class="ion-label-elem" position="floating"
               >Total</ion-label
             >
-            <!-- <ion-input
-              class="ion-input-elem"
-              value="{{ totalAmount | number:'1.2-2' }}"
-              readonly="true"
-            ></ion-input> -->
+            <ion-input
+              class="ion-input-elem qty-input"
+              type="number"
+              maxlength="20"
+            ></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>

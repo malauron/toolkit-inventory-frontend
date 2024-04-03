@@ -97,7 +97,7 @@
           <ion-label class="status-row-lbl"
             ><h3>Status</h3>
             <ion-badge [color]="getStatusColor(unit.unitStatus)"
-              >{{ unit.unitStatus }}</ion-badge
+              >{{ unitStatus[unit.unitStatus].toString() }}</ion-badge
             ></ion-label
           >
         </ion-item>

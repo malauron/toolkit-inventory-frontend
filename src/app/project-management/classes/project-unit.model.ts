@@ -9,6 +9,7 @@ export class ProjectUnit {
     public unitCode?: string,
     public unitDescription?: string,
     public unitPrice?: number,
+    public reservationAmt?: number,
     public project?: Project,
     public unitClass?: UnitClass,
     public unitStatus?: UnitStatus,
