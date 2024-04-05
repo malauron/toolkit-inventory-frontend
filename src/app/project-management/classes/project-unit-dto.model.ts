@@ -10,8 +10,9 @@ export class ProjectUnitDto {
     public unitDescription?: string,
     public unitPrice?: number,
     public reservationAmt?: number,
-    public unitClass?: UnitClass,
+    public unitClass?: String,
     public unitStatus?: UnitStatus,
     public currentContract?: ProjectContract,
+    public project?: Project,
   ){}
 }

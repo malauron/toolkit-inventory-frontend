@@ -29,6 +29,12 @@ ion-searchbar {
   --border-radius: 5px;
 }
 
+
+//Removes the arrow icon.
+ion-select::part(icon) {
+  display: none !important;
+}
+
 .spinner {
   z-index: 100;
   position: fixed;

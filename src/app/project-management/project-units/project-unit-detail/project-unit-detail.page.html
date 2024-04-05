@@ -54,66 +54,8 @@
             >
             <ion-input
               class="ion-input-elem"
+              value="{{ unit.unitCode }}"
             ></ion-input>
-
-            <!-- <ion-button
-              #statusButton
-              *ngIf="releasingDetailsConfig.unitStatusButton && !isUploading"
-              fill="clear"
-              size="small"
-              slot="end"
-              mode="ios"
-              (click)="onShowPopOver($event)"
-            >
-              <ion-badge [color]="releasingDetailsConfig.unitStatusColor"
-                >{{ unit.unitStatus }}
-              </ion-badge>
-            </ion-button> -->
-
-            <!-- <ion-popover
-              #statusPopover
-              *ngIf="releasingDetailsConfig.unitStatusPopover"
-              triggerAction="click"
-              dismissOnSelect="true"
-              [isOpen]="statusPopoverOpen"
-              (didDismiss)="statusPopoverOpen = false"
-            >
-              <ng-template>
-                <ion-content>
-                  <ion-list>
-                    <ion-item
-                      #postedStatus
-                      *ngIf="releasingDetailsConfig.postedStatus"
-                      class="ion-text-center ion-no-padding ion-no-margin"
-                      lines="full"
-                      [button]="true"
-                      (click)="onUpdateStatus('Posted')"
-                    >
-                      <ion-label>Post</ion-label>
-                    </ion-item>
-                    <ion-item
-                      #cancelledStatus
-                      *ngIf="releasingDetailsConfig.cancelledStatus"
-                      class="ion-text-center ion-no-padding ion-no-margin"
-                      lines="none"
-                      [button]="true"
-                      (click)="onUpdateStatus('Cancelled')"
-                    >
-                      <ion-label color="primary">Cancel</ion-label>
-                    </ion-item>
-                  </ion-list>
-                </ion-content>
-              </ng-template>
-            </ion-popover> -->
-
-            <!-- <ion-badge
-              #statusBadge
-              slot="end"
-              [color]="releasingDetailsConfig.unitStatusColor"
-              *ngIf="releasingDetailsConfig.unitStatusBadge"
-            >
-              {{ unit.unitStatus }}
-            </ion-badge> -->
           </ion-item>
         </ion-col>
         <ion-col size-xs="12" size-lg="6">
@@ -129,6 +71,7 @@
             >
             <ion-input
               class="ion-input-elem"
+              value="{{ unit.unitDescription }}"
             ></ion-input>
           </ion-item>
         </ion-col>
@@ -145,6 +88,7 @@
             >
             <ion-input
               class="ion-input-elem qty-input"
+              value="{{ unit.unitPrice }}"
               type="number"
               maxlength="20"
             ></ion-input>
@@ -163,103 +107,29 @@
             >
             <ion-input
               class="ion-input-elem qty-input"
+              value="{{ unit.reservationAmt }}"
               type="number"
               maxlength="20"
             ></ion-input>
           </ion-item>
         </ion-col>
-        <!-- <ion-col size-xs="12" size-lg="6">
-          <ion-item fill="outline">
-            <ion-icon
-              name="calendar-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label class="ion-label-elem" position="floating"
-              >Date Created</ion-label
-            >
-            <ion-input
-              class="ion-input-elem"
-              value="{{ unit.dateCreated | date:'MMM dd, yyyy hh:mm a' }}"
-              readonly="true"
-            ></ion-input>
-          </ion-item>
-        </ion-col> -->
-        <!-- <ion-col size-xs="12" size-lg="6">
-          <ion-item fill="outline">
-            <ion-icon
-              class="contactIcon"
-              src="assets/icons/moved_location.svg"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label class="ion-label-elem" position="floating"
-              >Destination
-            </ion-label>
-            <ion-input
-              class="ion-input-elem"
-              value="{{ destinationWarehouse.warehouseName }}"
-              readonly="true"
-            ></ion-input>
-            <ion-button
-              #statusButton
-              slot="end"
-              *ngIf="unit.unitStatus === 'Unposted' || unit.unitStatus === undefined"
-              (click)="onWarehouseSearch(true)"
-              fill="clear"
-              size="small"
-              mode="ios"
-              id="click-trigger"
-            >
-              <ion-icon name="search-outline"></ion-icon>
-            </ion-button>
-          </ion-item>
-        </ion-col> -->
-        <!-- <ion-col size-xs="12" size-lg="6">
-          <ion-item fill="outline">
-            <ion-icon
-              class="contactIcon"
-              name="person-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label class="ion-label-elem" position="floating"
-              >Customer</ion-label
-            >
-            <ion-input
-              class="ion-input-elem"
-              value="{{ customer?.customerName }}"
-              readonly="true"
-            ></ion-input>
-            <ion-button
-              *ngIf="unit.unitStatus === 'Unposted' || unit.unitStatus === undefined"
-              (click)="onCustomerSearch()"
-              fill="clear"
-              size="small"
-              slot="end"
-              mode="ios"
-              id="click-trigger"
-            >
-              <ion-icon name="search-outline"></ion-icon>
-            </ion-button>
-          </ion-item>
-        </ion-col> -->
         <ion-col size-xs="12" size-lg="6">
           <ion-item fill="outline">
             <ion-icon
-              class="contactIcon"
-              name="calculator-outline"
-              color="primary"
               slot="start"
+              src="assets/icons/style.svg"
+              color="primary"
             ></ion-icon>
             <ion-label class="ion-label-elem" position="floating"
-              >Total</ion-label
+              >Classification</ion-label
             >
-            <ion-input
-              class="ion-input-elem qty-input"
-              type="number"
-              maxlength="20"
-            ></ion-input>
+            <ion-select
+              value="{{ unit.unitClass }}"
+            >
+              <ion-select-option *ngFor="let unitCls of unitClass | keyvalue" [value]="unitCls.key"
+                >{{ unitCls.value }}
+              </ion-select-option>
+            </ion-select>
           </ion-item>
         </ion-col>
       </ion-row>

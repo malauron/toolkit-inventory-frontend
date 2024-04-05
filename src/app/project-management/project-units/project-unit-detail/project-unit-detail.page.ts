@@ -5,6 +5,8 @@ import { User } from 'src/app/Security/classes/user.model';
 import { AuthenticationService } from 'src/app/Security/services/authentication.service';
 import { ProjectUnitDto } from '../../classes/project-unit-dto.model';
 import { ProjectUnit } from '../../classes/project-unit.model';
+import { Project } from '../../classes/project.model';
+import { UnitClass } from '../../classes/unit-class.model';
 import { ProjectUnitsService } from '../../services/project-units.service';
 
 @Component({
@@ -15,7 +17,10 @@ import { ProjectUnitsService } from '../../services/project-units.service';
 export class ProjectUnitDetailPage implements OnInit {
 
   user: User;
+  project: Project;
   unit: ProjectUnit;
+
+  unitClass = UnitClass;
 
   isUploading = false;
   dataHaveChanged = false;
@@ -34,6 +39,9 @@ export class ProjectUnitDetailPage implements OnInit {
   ngOnInit() {
     this.isFetching = true;
     this.unit = new ProjectUnit();
+    this.project = new Project(1, "TAGBALAI HEIGHTS TOWER 01");
+
+    this.unit.unitClass = "CONDO_UNIT"
 
     this.route.paramMap.subscribe((paramMap) => {
       if (!paramMap.has('unitId')) {
@@ -58,9 +66,11 @@ export class ProjectUnitDetailPage implements OnInit {
             this.unit.unitCode = resData.unitCode;
             this.unit.unitDescription = resData.unitDescription;
             this.unit.unitPrice = resData.unitPrice;
+            this.unit.reservationAmt = resData.reservationAmt;
             this.unit.unitClass = resData.unitClass;
             this.unit.unitStatus = resData.unitStatus;
             this.unit.currentContract = resData.currentContract;
+            this.unit.project = this.project;
             this.isFetching = false;
           },
           error: () => {
@@ -91,13 +101,15 @@ export class ProjectUnitDetailPage implements OnInit {
 
     const unitDto = new ProjectUnitDto();
 
-    unitDto.unitId = this.unit.unitId;
     unitDto.unitCode = this.unit.unitCode;
     unitDto.unitDescription = this.unit.unitDescription;
     unitDto.unitPrice = this.unit.unitPrice;
+    unitDto.reservationAmt = this.unit.reservationAmt;
     unitDto.unitClass = this.unit.unitClass;
     unitDto.unitStatus = this.unit.unitStatus;
-    unitDto.currentContract = this.unit.currentContract;
+    unitDto.project = this.project;
+
+    console.log(unitDto);
 
     this.unitsService
       .postUnit(unitDto)

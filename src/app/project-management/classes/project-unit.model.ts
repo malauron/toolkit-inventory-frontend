@@ -11,7 +11,7 @@ export class ProjectUnit {
     public unitPrice?: number,
     public reservationAmt?: number,
     public project?: Project,
-    public unitClass?: UnitClass,
+    public unitClass?: String,
     public unitStatus?: UnitStatus,
     public currentContract?: ProjectContract,
     public dateCreated?: string,
