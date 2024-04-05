@@ -59,8 +59,8 @@ export class ProjectUnitsService {
     return this.http.get<ResponseProjectUnits>(this.apiUrl);
   }
 
-  postUnit(unitDto: ProjectUnitDto): Observable<ProjectUnit> {
+  postUnit(unitDto: ProjectUnitDto): Observable<ProjectUnitDto> {
     this.apiUrl = `${this.config.urlV1ProjectUnits}`;
-    return this.http.post<ProjectUnit>(this.apiUrl, unitDto);
+    return this.http.post<ProjectUnitDto>(this.apiUrl, unitDto);
   }
 }

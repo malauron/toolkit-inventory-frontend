@@ -40,99 +40,108 @@
       <ion-card-title>Primary Information</ion-card-title>
     </ion-item>
     <ion-grid>
-      <ion-row class="primary-info-row">
-        <ion-col>
-          <ion-item fill="outline">
-            <ion-icon
-              class="cartIcon"
-              src="assets/icons/pound_key.svg"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label class="ion-label-elem" position="floating"
-              >Unit Code</ion-label
-            >
-            <ion-input
-              class="ion-input-elem"
-              value="{{ unit.unitCode }}"
-            ></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="12" size-lg="6">
-          <ion-item fill="outline">
-            <ion-icon
-              class="contactIcon"
-              src="assets/icons/info.svg"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label class="ion-label-elem" position="floating"
-              >Description</ion-label
-            >
-            <ion-input
-              class="ion-input-elem"
-              value="{{ unit.unitDescription }}"
-            ></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="12" size-lg="6">
-          <ion-item fill="outline">
-            <ion-icon
-              class="contactIcon"
-              name="pricetag-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label class="ion-label-elem" position="floating"
-              >Selling Price</ion-label
-            >
-            <ion-input
-              class="ion-input-elem qty-input"
-              value="{{ unit.unitPrice }}"
-              type="number"
-              maxlength="20"
-            ></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="12" size-lg="6">
-          <ion-item fill="outline">
-            <ion-icon
-              class="contactIcon"
-              name="cash-outline"
-              color="primary"
-              slot="start"
-            ></ion-icon>
-            <ion-label class="ion-label-elem" position="floating"
-              >Reservation Fee</ion-label
-            >
-            <ion-input
-              class="ion-input-elem qty-input"
-              value="{{ unit.reservationAmt }}"
-              type="number"
-              maxlength="20"
-            ></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="12" size-lg="6">
-          <ion-item fill="outline">
-            <ion-icon
-              slot="start"
-              src="assets/icons/style.svg"
-              color="primary"
-            ></ion-icon>
-            <ion-label class="ion-label-elem" position="floating"
-              >Classification</ion-label
-            >
-            <ion-select
-              value="{{ unit.unitClass }}"
-            >
-              <ion-select-option *ngFor="let unitCls of unitClass | keyvalue" [value]="unitCls.key"
-                >{{ unitCls.value }}
-              </ion-select-option>
-            </ion-select>
-          </ion-item>
-        </ion-col>
-      </ion-row>
+      <form [formGroup]="unitForm">
+        <ion-row class="primary-info-row">
+          <ion-col>
+            <ion-item fill="outline">
+              <ion-icon
+                class="cartIcon"
+                src="assets/icons/pound_key.svg"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Unit Code</ion-label
+              >
+              <ion-input
+                class="ion-input-elem"
+                formControlName="unitCode"
+                value="{{ unit.unitCode }}"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="6">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                src="assets/icons/info.svg"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Description</ion-label
+              >
+              <ion-input
+                class="ion-input-elem"
+                formControlName="unitDescription"
+                value="{{ unit.unitDescription }}"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="6">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="pricetag-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Selling Price</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                formControlName="unitPrice"
+                value="{{ unit.unitPrice }}"
+                type="number"
+                maxlength="20"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="6">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="cash-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Reservation Fee</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                formControlName="reservationAmt"
+                value="{{ unit.reservationAmt }}"
+                type="number"
+                maxlength="20"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="6">
+            <ion-item fill="outline">
+              <ion-icon
+                slot="start"
+                src="assets/icons/style.svg"
+                color="primary"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Classification</ion-label
+              >
+              <ion-select
+                formControlName="unitClass"
+                value="{{ unit.unitClass }}"
+              >
+                <ion-select-option
+                  *ngFor="let unitCls of unitClass | keyvalue"
+                  [value]="unitCls.key"
+                  >{{ unitCls.value }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </form>
     </ion-grid>
   </ion-card>
 

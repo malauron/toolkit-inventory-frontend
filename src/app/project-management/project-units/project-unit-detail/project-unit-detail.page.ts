@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { User } from 'src/app/Security/classes/user.model';
@@ -19,6 +20,7 @@ export class ProjectUnitDetailPage implements OnInit {
   user: User;
   project: Project;
   unit: ProjectUnit;
+  unitForm: FormGroup;
 
   unitClass = UnitClass;
 
@@ -37,10 +39,36 @@ export class ProjectUnitDetailPage implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.unitForm = new FormGroup({
+      unitCode: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(10)],
+      }),
+      unitDescription: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(100)],
+      }),
+      unitPrice: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(0)],
+      }),
+      reservationAmt: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(0)],
+      }),
+      unitClass: new FormControl("CONDO_UNIT", {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+    });
+
     this.isFetching = true;
     this.unit = new ProjectUnit();
     this.project = new Project(1, "TAGBALAI HEIGHTS TOWER 01");
 
+    this.unit.unitPrice = 0;
+    this.unit.reservationAmt = 0;
     this.unit.unitClass = "CONDO_UNIT"
 
     this.route.paramMap.subscribe((paramMap) => {
@@ -71,6 +99,15 @@ export class ProjectUnitDetailPage implements OnInit {
             this.unit.unitStatus = resData.unitStatus;
             this.unit.currentContract = resData.currentContract;
             this.unit.project = this.project;
+
+            this.unitForm.patchValue({
+              unitCode: resData.unitCode,
+              unitDescription: resData.unitDescription,
+              unitPrice: resData.unitPrice,
+              reservationAmt: resData.reservationAmt,
+              unitClass: resData.unitClass,
+            });
+
             this.isFetching = false;
           },
           error: () => {
@@ -101,19 +138,27 @@ export class ProjectUnitDetailPage implements OnInit {
 
     const unitDto = new ProjectUnitDto();
 
-    unitDto.unitCode = this.unit.unitCode;
-    unitDto.unitDescription = this.unit.unitDescription;
-    unitDto.unitPrice = this.unit.unitPrice;
-    unitDto.reservationAmt = this.unit.reservationAmt;
-    unitDto.unitClass = this.unit.unitClass;
-    unitDto.unitStatus = this.unit.unitStatus;
+    unitDto.unitCode = this.unitForm.value.unitCode;
+    unitDto.unitDescription = this.unitForm.value.unitDescription;
+    unitDto.unitPrice = this.unitForm.value.unitPrice;
+    unitDto.reservationAmt = this.unitForm.value.reservationAmt;
+    unitDto.unitClass = this.unitForm.value.unitClass;
     unitDto.project = this.project;
 
     console.log(unitDto);
 
     this.unitsService
       .postUnit(unitDto)
-      .subscribe();
+      .subscribe({
+        next: (resData) => {
+          this.unit.unitId = resData.unitId;
+          this.unit.unitStatus = resData.unitStatus;
+          this.unit.project = resData.project;
+
+          this.isUploading = false;
+          console.log(resData);
+        }
+      });
   }
 
 }
