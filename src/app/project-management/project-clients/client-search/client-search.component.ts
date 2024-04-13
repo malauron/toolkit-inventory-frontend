@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSearchbar, ModalController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, Subscription } from 'rxjs';
 import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
 import { ProjectClient } from '../../classes/project-client.model';
 import { ProjectClientsService } from '../../services/project-clients.service';
@@ -12,7 +12,7 @@ import { ProjectClientsService } from '../../services/project-clients.service';
 })
 export class ClientSearchComponent implements OnInit, OnDestroy {
   @ViewChild('infiniteScroll') infiniteScroll;
-  @ViewChild('clientSearchBar', { static: true }) clientSearchBar: IonSearchbar;
+  @ViewChild('searchBar', { static: true }) searchBar: IonSearchbar;
 
   searchBarSub: Subscription;
 
@@ -31,7 +31,27 @@ export class ClientSearchComponent implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.searchBarSub = this.searchBar.ionInput
+      .pipe(
+        map((event) => (event.target as HTMLInputElement).value),
+        debounceTime(this.config.waitTime),
+        distinctUntilChanged()
+      ).subscribe({
+        next: (res) => {
+          this.searchValue = res.trim();
+          this.infiniteScroll.disabled = false;
+          this.clientList = [];
+          this.pageNumber = 0;
+          this.totalPages = 0;
+          if (this.searchValue) {
+
+          } else {
+
+          }
+        },
+      });
+  }
 
   ngOnDestroy(): void {
     this.searchBarSub.unsubscribe();
