@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { User } from 'src/app/Security/classes/user.model';
 import { AuthenticationService } from 'src/app/Security/services/authentication.service';
+import { ProjectClient } from '../../classes/project-client.model';
+import { ProjectContract } from '../../classes/project-contract.model';
 import { ProjectUnitDto } from '../../classes/project-unit-dto.model';
 import { ProjectUnit } from '../../classes/project-unit.model';
 import { Project } from '../../classes/project.model';
@@ -20,7 +22,9 @@ export class ProjectUnitDetailPage implements OnInit {
   user: User;
   project: Project;
   unit: ProjectUnit;
+  contract: ProjectContract;
   unitForm: FormGroup;
+  contractForm: FormGroup;
 
   unitClass = UnitClass;
 
@@ -28,6 +32,7 @@ export class ProjectUnitDetailPage implements OnInit {
   dataHaveChanged = false;
   isFetching = false;
   modalOpen = false;
+  showCurrentContract = false;
 
   constructor(
     private unitsService: ProjectUnitsService,
@@ -63,8 +68,16 @@ export class ProjectUnitDetailPage implements OnInit {
       }),
     });
 
+    this.contractForm = new FormGroup({
+      remarks: new FormControl('', {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+    });
+
     this.isFetching = true;
     this.unit = new ProjectUnit();
+    this.contract = new ProjectContract();
     this.project = new Project(1, "TAGBALAI HEIGHTS TOWER 01");
 
     this.unit.unitPrice = 0;
@@ -160,5 +173,9 @@ export class ProjectUnitDetailPage implements OnInit {
         }
       });
   }
+
+  onSaveContract() {}
+
+  onClientSearch() {}
 
 }

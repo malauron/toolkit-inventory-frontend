@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { VendorSearchComponent } from './vendor-search.component';
+import { BrokerSearchComponent } from './broker-search.component';
 
-describe('VendorSearchComponent', () => {
-  let component: VendorSearchComponent;
-  let fixture: ComponentFixture<VendorSearchComponent>;
+describe('BrokerSearchComponent', () => {
+  let component: BrokerSearchComponent;
+  let fixture: ComponentFixture<BrokerSearchComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ VendorSearchComponent ],
+      declarations: [ BrokerSearchComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(VendorSearchComponent);
+    fixture = TestBed.createComponent(BrokerSearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -15,12 +15,6 @@
       >
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
       </ion-button>
-      <!-- <ion-button
-        (click)="printPage()"
-        *ngIf="unit.unitStatus === 'Posted' && !isFetching"
-      >
-        <ion-icon name="print-outline" slot="icon-only"></ion-icon>
-      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -42,7 +36,7 @@
     <ion-grid>
       <form [formGroup]="unitForm">
         <ion-row class="primary-info-row">
-          <ion-col>
+          <ion-col size-xs="12" size-lg="6">
             <ion-item fill="outline">
               <ion-icon
                 class="cartIcon"
@@ -64,7 +58,7 @@
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
-                src="assets/icons/info.svg"
+                src="assets/icons/topic.svg"
                 color="primary"
                 slot="start"
               ></ion-icon>
@@ -141,221 +135,91 @@
             </ion-item>
           </ion-col>
         </ion-row>
+        <ion-row *ngIf="unit?.unitId>0">
+          <ion-col class="buttons">
+            <ion-button color="success" (click)="onSaveUnit()" [disabled]="isUploading" size="default"
+              class="save-button">
+              <ion-icon name="checkmark-outline" slot="start"></ion-icon>Save
+            </ion-button>
+          </ion-col>
+        </ion-row>
       </form>
     </ion-grid>
   </ion-card>
 
-  <!-- <ion-card *ngIf="!isFetching" class="details-card">
+  <ion-card *ngIf="!isFetching && unit?.unitId>0">
     <div class="card-top"></div>
-    <ion-card-header class="ion-no-padding">
-      <ion-item lines="none">
-        <ion-card-title class="font-large">Released Items</ion-card-title>
-      </ion-item>
-      <ion-item
-        lines="none"
-        *ngIf="unit.unitStatus === 'Unposted'  || unit.unitStatus === undefined"
-      >
-        <ion-searchbar
-          searchIcon="barcode-outline"
-          placeholder="Barcode"
-          (keypress)="onGetItemByItemCode($event)"
-          #itemSearchBar
-        ></ion-searchbar>
-      </ion-item>
-    </ion-card-header>
-    <div class="separator"></div>
-    <ion-grid class="released-items-grid">
-      <ion-row class="item-hdr" *ngIf="releasingItems.length>0">
-        <ion-col size-xs="12" size-lg="4">
-          <ion-item lines="none">
-            <ion-label class="item-desc-hdr-lbl">Item</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="12" size-lg="2">
-          <ion-item lines="none">
-            <ion-label class="item-code-hdr-lbl">Barcode</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="6" size-md="3" size-lg="2">
-          <ion-item lines="none">
-            <ion-label class="item-qty-hdr-lbl">
-              <h2>Wt./Uom</h2>
-            </ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="6" size-md="3" size-lg="2">
-          <ion-item lines="none">
-            <ion-label class="item-qty-hdr-lbl">
-              <h2>Price</h2>
-            </ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="6" size-md="3" size-lg="2">
-          <ion-item lines="none">
-            <ion-label class="item-qty-hdr-lbl">
-              <h2>Total</h2>
-            </ion-label>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-
-      <ion-row class="item-row" *ngFor="let item of releasingItems">
-        <ion-col size-xs="12" size-lg="4">
-          <ion-item lines="none">
-            <ion-icon
-              slot="start"
-              name="cube-outline"
-              color="primary"
-            ></ion-icon>
-            <ion-label class="item-desc-lbl item-line-lbl">
-              <h3>{{ item.barcode }}</h3>
-              {{ item.item.itemName }}</ion-label
-            >
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="0" size-lg="2">
-          <ion-item lines="none">
-            <ion-label class="item-code-lbl item-line-lbl"
-              >{{ item.barcode }}</ion-label
-            >
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="6" size-sm="4" size-md="4" size-lg="2">
-          <ion-item lines="none">
-            <ion-label class="item-line-lbl item-qty-lbl">
-              <h3>Wt./{{ item.requiredUom.uomCode.toUpperCase() }}</h3>
-              <h2>
-                {{ item.releasedWeightKg }}<span class="qty-uom-lbl"
-                  >Kg/{{ item.releasedQty }}{{
-                  item.requiredUom.uomCode.toUpperCase() }}</span
-                >
-              </h2>
-            </ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="6" size-sm="4" size-md="4" size-lg="2">
-          <ion-item lines="none">
-            <ion-label class="item-line-lbl item-qty-lbl">
-              <h3>Price</h3>
-              <h2>{{ item.itemPrice| number:'1.2-2' }}/Kg</h2>
-            </ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size-xs="12" size-sm="4" size-md="4" size-lg="2">
-          <ion-item lines="none">
-            <ion-label class="item-line-lbl item-qty-lbl">
-              <h3>Total</h3>
-              <h2>{{ item.totalAmount| number:'1.2-2' }}</h2>
-            </ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col class="opt-col" *ngIf="!isUploading && releasingDetailsConfig.showItemOptionButtons">
-          <ion-item lines="none">
-            <ion-button
-              class="delete-item-button"
-              (click)="onDeleteReleasingItem(item)"
-              mode="ios"
-              slot="end"
-              fill="clear"
-              color="medium"
-              size="default"
-            >
-              <ion-icon name="trash-outline"></ion-icon>
+    <ion-item lines="full">
+      <ion-card-title>Contract</ion-card-title>
+    </ion-item>
+    <ion-grid>
+      <form [formGroup]="contractForm">
+        <ion-row class="primary-info-row">
+          <ion-col size-xs="12" size-lg="6">
+            <ion-item fill="outline">
+              <ion-icon slot="start" name="person-outline" color="primary"></ion-icon>
+              <ion-label class="ion-label-elem" position="floating">Client</ion-label>
+              <ion-input class="ion-input-elem" (click)="onClientSearch()" readonly="true"
+                [value]="contract.client?.clientName"></ion-input>
+              <ion-button mode="ios" class="end-button" slot="end"
+                size="small" fill="clear" (click)="onClientSearch()">
+                <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="6">
+            <ion-item fill="outline">
+              <ion-icon slot="start" src="assets/icons/agent.svg" color="primary"></ion-icon>
+              <ion-label class="ion-label-elem" position="floating">Broker</ion-label>
+              <ion-input class="ion-input-elem" (click)="onClientSearch()" readonly="true"
+                [value]="contract.client?.clientName"></ion-input>
+              <ion-button mode="ios" class="end-button" slot="end"
+                size="small" fill="clear" (click)="onClientSearch()">
+                <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="6">
+            <ion-item fill="outline">
+              <ion-icon slot="start" src="assets/icons/brokerage.svg" color="primary"></ion-icon>
+              <ion-label class="ion-label-elem" position="floating">Brokerage</ion-label>
+              <ion-input class="ion-input-elem" (click)="onClientSearch()" readonly="true"
+                [value]="contract.client?.clientName"></ion-input>
+              <ion-button mode="ios" class="end-button" slot="end"
+                size="small" fill="clear" (click)="onClientSearch()">
+                <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="6">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                src="assets/icons/info.svg"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Remarks</ion-label
+              >
+              <ion-input
+                class="ion-input-elem"
+                formControlName="remarks"
+                value="{{ unit.unitDescription }}"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="buttons">
+            <ion-button color="success" (click)="onSaveUnit()" [disabled]="isUploading" size="default"
+              class="save-button">
+              <ion-icon name="checkmark-outline" slot="start"></ion-icon>Save
             </ion-button>
-          </ion-item>
-        </ion-col>
-      </ion-row>
+          </ion-col>
+        </ion-row>
+      </form>
     </ion-grid>
-  </ion-card> -->
+  </ion-card>
+
 </ion-content>
-
-<!-- <div id="print">
-  <div class="receipt-header">
-    <div class="receipt-info">
-      <ion-card-subtitle>{{ warehouse.warehouseName }}</ion-card-subtitle>
-    </div>
-    <div class="receipt-info">Source Warehouse</div>
-  </div>
-
-  <div class="receipt-header">
-    <div class="receipt-info">
-      <ion-card-subtitle
-        >{{ destinationWarehouse.warehouseName }}</ion-card-subtitle
-      >
-    </div>
-    <div class="receipt-info">Destination Warehouse</div>
-  </div>
-
-  <div class="receipt-header" *ngIf="customer">
-    <div class="receipt-info">
-      <ion-card-subtitle>{{ customer.customerName }}</ion-card-subtitle>
-    </div>
-    <div class="receipt-info">Customer</div>
-  </div>
-
-  <div class="receipt-header">
-    <div class="receipt-date">
-      {{ unit.dateCreated | date:'MMM dd, yyyy hh:mm a' }}
-    </div>
-    <div class="receipt-no">{{ releasingId.toString().padStart(8, "0") }}</div>
-  </div>
-
-  <div class="separator"></div>
-  <div class="desc-one" *ngFor="let item of receiptReleasingItems">
-    <div class="item-detail" *ngIf="!item.isSubTotal">
-      <div class="barcode">{{ item.barcode }}</div>
-      <div class="price">{{ item.totalAmount| number:'1.2-2' }}</div>
-      <div>
-        <div>{{ item.item.itemName }}</div>
-        <div>
-          {{ item.releasedWeightKg }}Kg/{{ item.releasedQty
-          }}{{item.requiredUom.uomCode }} @ {{ item.itemPrice| number:'1.2-2'
-          }}/Kg
-        </div>
-      </div>
-    </div>
-    <div
-      class="item-subTotal separator"
-      *ngIf="item.isSubTotal && item.runningEntries > 1"
-    >
-      <div class="barcode">{{ item.runningEntries }} items.</div>
-      <div class="price">{{ item.runningWeightKg | number:'1.0-3' }}Kg</div>
-    </div>
-  </div>
-
-  <br />
-  <div class="separator"></div>
-  <div class="separator"></div>
-  <div class="total">
-    <div class="total-desc">
-      <ion-card-subtitle>Total Amt.</ion-card-subtitle>
-    </div>
-    <div class="total-amt">
-      <ion-card-subtitle>{{ totalAmount | number:'1.2-2' }}</ion-card-subtitle>
-    </div>
-  </div>
-  <div class="total-kg">
-    <div class="total-desc">
-      <ion-card-subtitle>Total Kg.</ion-card-subtitle>
-    </div>
-    <div class="total-amt">
-      <ion-card-subtitle
-        >{{ totalWeightKg | number:'1.2-2' }}</ion-card-subtitle
-      >
-    </div>
-  </div>
-
-  <div class="received-by">
-    <ion-card-subtitle>Prepared By:</ion-card-subtitle>
-  </div>
-
-  <div class="received-by">
-    <ion-card-subtitle>Checked By:</ion-card-subtitle>
-  </div>
-
-  <div class="received-by">
-    <ion-card-subtitle>Received By:</ion-card-subtitle>
-  </div>
-
-  <div class="company-name">A subsidiary of Eight2Eight Inc.</div>
-</div> -->

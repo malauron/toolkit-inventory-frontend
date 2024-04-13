@@ -51,6 +51,12 @@ export class AppParamsConfig {
   urlPosItemPriceSearch: any;
   urlProjectUnits: any;
   urlProjectUnitsSearch: any;
+  urlProjectClients: any;
+  urlProjectClientsSearch: any;
+  urlProjectBrokers: any;
+  urlProjectBrokersSearch: any;
+  urlProjectBrokerages: any;
+  urlProjectBrokeragesSearch: any;
 
   urlV1: any;
   urlV1Items: any;
@@ -160,6 +166,12 @@ export class AppParamsConfig {
     this.urlPosItemPriceSearch = `${this.urlPosItemPrice}/search/findByWarehouseIdAndItemId`;
     this.urlProjectUnits = `${this.url}/projectUnits`;
     this.urlProjectUnitsSearch = `${this.urlProjectUnits}/search/findByCustomParams`;
+    this.urlProjectClients = `${this.url}/projectClients`;
+    this.urlProjectClientsSearch = `${this.urlProjectClients}/search/findByClientNameContainingOrderByClientName`;
+    this.urlProjectBrokers = `${this.url}/projectBrokers`;
+    this.urlProjectBrokersSearch = `${this.urlProjectBrokers}/search/findByBrokerNameContainingOrderByBrokerName`;
+    this.urlProjectBrokerages = `${this.url}/projectBrokerages`;
+    this.urlProjectBrokeragesSearch = `${this.urlProjectBrokerages}/search/findByBrokerageNameContainingOrderByBrokerageName`;
 
     this.urlV1 = `${this.url}/v1`;
 
