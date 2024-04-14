@@ -1,11 +1,12 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable, Subject } from "rxjs";
-import { PageInfo } from "src/app/classes/page-info.model";
-import { AppParamsConfig } from "src/app/Configurations/app-params.config";
-import { filterString } from "src/app/utils/utils";
-import { ProjectUnitDto } from "../classes/project-unit-dto.model";
-import { ProjectUnit } from "../classes/project-unit.model"
+/* eslint-disable no-underscore-dangle */
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { PageInfo } from 'src/app/classes/page-info.model';
+import { AppParamsConfig } from 'src/app/Configurations/app-params.config';
+import { filterString } from 'src/app/utils/utils';
+import { ProjectUnitDto } from '../classes/project-unit-dto.model';
+import { ProjectUnit } from '../classes/project-unit.model';
 
 interface ResponseProjectUnits {
   _embedded: {
@@ -53,8 +54,8 @@ export class ProjectUnitsService {
     filterString(searchDesc);
 
     this.apiUrl =
-      `${this.config.urlProjectUnitsSearch}/` +
-      `?searchDesc=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+      `${this.config.urlProjectUnitsSearch}?projection=projectUnitListView` +
+      `&searchDesc=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
 
     return this.http.get<ResponseProjectUnits>(this.apiUrl);
   }
