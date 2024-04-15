@@ -3,11 +3,11 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { AppParamsConfig } from "src/app/Configurations/app-params.config";
 import { filterString } from "src/app/utils/utils";
-import { ProjectClient } from "../classes/project-client.model";
+import { ProjectBrokerage } from "../classes/project-brokerage.model";
 
-interface ResponseProjectClients {
+interface ResponseProjectBrokerages {
   _embedded: {
-    projectClients: ProjectClient[];
+    projectBrokerages: ProjectBrokerage[];
   };
   page: {
     size: number;
@@ -21,7 +21,7 @@ interface ResponseProjectClients {
   providedIn: 'root',
 })
 
-export class ProjectClientsService {
+export class ProjectBrokeragesService {
   private apiUrl: string;
 
   constructor(
@@ -29,20 +29,20 @@ export class ProjectClientsService {
     private config: AppParamsConfig,
   ){}
 
-  getClients(
+  getBrokerages(
     pageNumber?: number,
     pageSize?: number,
     searchDesc?: string,
-  ): Observable<ResponseProjectClients> {
+  ): Observable<ResponseProjectBrokerages> {
     if (searchDesc === undefined) {
       searchDesc = '';
     }
 
     filterString(searchDesc);
 
-    this.apiUrl = `${this.config.urlProjectClientsSearch}` +
-                  `?clientName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
+    this.apiUrl = `${this.config.urlProjectBrokeragesSearch}` +
+                  `?brokerageName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
 
-    return this.http.get<ResponseProjectClients>(this.apiUrl);
+    return this.http.get<ResponseProjectBrokerages>(this.apiUrl);
   }
 }

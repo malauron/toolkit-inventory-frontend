@@ -1,3 +1,38 @@
-<p>
-  brokerage-search works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar #searchBar placeholder="Search brokerage"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="brokerageList.length > 0">
+    <ion-card class="favCard" *ngFor="let brokerage of brokerageList">
+      <ion-item lines="none" detail button (click)="onSelect(brokerage)">
+        <ion-icon
+          class="customerIcon"
+          name="person-circle-outline"
+          color="primary"
+          slot="start"
+        ></ion-icon>
+        <ion-card-subtitle>{{ brokerage.brokerageName }}</ion-card-subtitle>
+      </ion-item>
+    </ion-card>
+  </ion-grid>
+
+  <ion-infinite-scroll
+    #infiniteScroll
+    threshold="5%"
+    (ionInfinite)="loadMoreCata($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

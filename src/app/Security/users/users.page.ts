@@ -38,9 +38,7 @@ export class UsersPage implements OnInit {
 
   ngOnInit() {
     this.usersService.getUsers(this.pageNumber,this.config.pageSize).subscribe(
-      (res) => {
-        console.log(res);
-      }
+      (res) => {}
     );
   }
 

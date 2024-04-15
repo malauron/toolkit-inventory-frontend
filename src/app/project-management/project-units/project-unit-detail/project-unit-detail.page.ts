@@ -1,15 +1,20 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, NavController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { User } from 'src/app/Security/classes/user.model';
 import { AuthenticationService } from 'src/app/Security/services/authentication.service';
+import { ProjectBroker } from '../../classes/project-broker.model';
+import { ProjectBrokerage } from '../../classes/project-brokerage.model';
 import { ProjectClient } from '../../classes/project-client.model';
 import { ProjectContract } from '../../classes/project-contract.model';
 import { ProjectUnitDto } from '../../classes/project-unit-dto.model';
 import { ProjectUnit } from '../../classes/project-unit.model';
 import { Project } from '../../classes/project.model';
 import { UnitClass } from '../../classes/unit-class.model';
+import { BrokerageSearchComponent } from '../../project-brokerages/brokerage-search/brokerage-search.component';
+import { BrokerSearchComponent } from '../../project-brokers/broker-search/broker-search.component';
+import { ClientSearchComponent } from '../../project-clients/client-search/client-search.component';
 import { ProjectUnitsService } from '../../services/project-units.service';
 
 @Component({
@@ -17,12 +22,11 @@ import { ProjectUnitsService } from '../../services/project-units.service';
   templateUrl: './project-unit-detail.page.html',
   styleUrls: ['./project-unit-detail.page.scss'],
 })
-export class ProjectUnitDetailPage implements OnInit {
+export class ProjectUnitDetailPage implements OnInit, OnDestroy {
 
   user: User;
   project: Project;
   unit: ProjectUnit;
-  contract: ProjectContract;
   unitForm: FormGroup;
   contractForm: FormGroup;
 
@@ -39,6 +43,7 @@ export class ProjectUnitDetailPage implements OnInit {
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
     private navCtrl: NavController,
+    private modalSearch: ModalController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
   ) { }
@@ -77,7 +82,10 @@ export class ProjectUnitDetailPage implements OnInit {
 
     this.isFetching = true;
     this.unit = new ProjectUnit();
-    this.contract = new ProjectContract();
+    this.unit.currentContract = new ProjectContract();
+    this.unit.currentContract.client = new ProjectClient();
+    this.unit.currentContract.broker = new ProjectBroker();
+    this.unit.currentContract.brokerage = new ProjectBrokerage();
     this.project = new Project(1, "TAGBALAI HEIGHTS TOWER 01");
 
     this.unit.unitPrice = 0;
@@ -110,7 +118,10 @@ export class ProjectUnitDetailPage implements OnInit {
             this.unit.reservationAmt = resData.reservationAmt;
             this.unit.unitClass = resData.unitClass;
             this.unit.unitStatus = resData.unitStatus;
-            this.unit.currentContract = resData.currentContract;
+            if (resData.currentContract != null) {
+              console.log(resData.currentContract);
+              this.unit.currentContract = resData.currentContract;
+            }
             this.unit.project = this.project;
 
             this.unitForm.patchValue({
@@ -158,8 +169,6 @@ export class ProjectUnitDetailPage implements OnInit {
     unitDto.unitClass = this.unitForm.value.unitClass;
     unitDto.project = this.project;
 
-    console.log(unitDto);
-
     this.unitsService
       .postUnit(unitDto)
       .subscribe({
@@ -167,15 +176,96 @@ export class ProjectUnitDetailPage implements OnInit {
           this.unit.unitId = resData.unitId;
           this.unit.unitStatus = resData.unitStatus;
           this.unit.project = resData.project;
-
+          this.dataHaveChanged = true;
+        },
+        error: (err) => {this.isUploading = false},
+        complete: () => {
           this.isUploading = false;
-          console.log(resData);
+          this.messageBox('Unit information has been saved successfully.');
         }
       });
   }
 
   onSaveContract() {}
 
-  onClientSearch() {}
+  onClientSearch() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.modalSearch
+        .create({
+          component: ClientSearchComponent,
+          cssClass: 'custom-modal-styles',
+        })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'client') {
+            this.unit.currentContract.client = resultData.data;
+          }
+          this.modalOpen = false;
+        });
+    }
+  }
+
+  onBrokerSearch() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.modalSearch
+        .create({
+          component: BrokerSearchComponent,
+          cssClass: 'custom-modal-styles',
+        })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'broker') {
+            this.unit.currentContract.broker = resultData.data;
+          }
+          this.modalOpen = false;
+        });
+    }
+  }
+
+  onBrokerageSearch() {
+    if (!this.modalOpen) {
+      this.modalOpen = true;
+      this.modalSearch
+        .create({
+          component: BrokerageSearchComponent,
+          cssClass: 'custom-modal-styles',
+        })
+        .then((modalSearch) => {
+          modalSearch.present();
+          return modalSearch.onDidDismiss();
+        })
+        .then((resultData) => {
+          if (resultData.role === 'brokerage') {
+            this.unit.currentContract.brokerage = resultData.data;
+          }
+          this.modalOpen = false;
+        });
+    }
+  }
+
+  async messageBox(msg: string) {
+    const toast = await this.toastCtrl.create({
+      color: 'dark',
+      duration: 2000,
+      position: 'top',
+      message: msg,
+    });
+
+    await toast.present();
+  }
+
+  ngOnDestroy(): void {
+    if (this.dataHaveChanged) {
+      this.unitsService.unitsHaveChanged.next(true);
+    }
+  }
 
 }

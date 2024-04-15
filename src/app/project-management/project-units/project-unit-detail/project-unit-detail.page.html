@@ -72,7 +72,7 @@
               ></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="6">
+          <ion-col size-xs="12" size-lg="6" *ngIf="unit.currentContract?.contractId === undefined">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -92,7 +92,7 @@
               ></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="6">
+          <ion-col size-xs="12" size-lg="6" *ngIf="unit.currentContract?.contractId === undefined">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -157,10 +157,28 @@
         <ion-row class="primary-info-row">
           <ion-col size-xs="12" size-lg="6">
             <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="pricetag-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Selling Price</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                value="{{ unit.currentContract?.unitPrice | number:'1.2-2' }}"
+                readonly="true"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="6">
+            <ion-item fill="outline">
               <ion-icon slot="start" name="person-outline" color="primary"></ion-icon>
               <ion-label class="ion-label-elem" position="floating">Client</ion-label>
               <ion-input class="ion-input-elem" (click)="onClientSearch()" readonly="true"
-                [value]="contract.client?.clientName"></ion-input>
+                [value]="unit.currentContract?.client?.clientName"></ion-input>
               <ion-button mode="ios" class="end-button" slot="end"
                 size="small" fill="clear" (click)="onClientSearch()">
                 <ion-icon name="search-outline" slot="icon-only"></ion-icon>
@@ -171,10 +189,10 @@
             <ion-item fill="outline">
               <ion-icon slot="start" src="assets/icons/agent.svg" color="primary"></ion-icon>
               <ion-label class="ion-label-elem" position="floating">Broker</ion-label>
-              <ion-input class="ion-input-elem" (click)="onClientSearch()" readonly="true"
-                [value]="contract.client?.clientName"></ion-input>
+              <ion-input class="ion-input-elem" (click)="onBrokerSearch()" readonly="true"
+                [value]="unit.currentContract?.broker?.brokerName"></ion-input>
               <ion-button mode="ios" class="end-button" slot="end"
-                size="small" fill="clear" (click)="onClientSearch()">
+                size="small" fill="clear" (click)="onBrokerSearch()">
                 <ion-icon name="search-outline" slot="icon-only"></ion-icon>
               </ion-button>
             </ion-item>
@@ -183,15 +201,15 @@
             <ion-item fill="outline">
               <ion-icon slot="start" src="assets/icons/brokerage.svg" color="primary"></ion-icon>
               <ion-label class="ion-label-elem" position="floating">Brokerage</ion-label>
-              <ion-input class="ion-input-elem" (click)="onClientSearch()" readonly="true"
-                [value]="contract.client?.clientName"></ion-input>
+              <ion-input class="ion-input-elem" (click)="onBrokerageSearch()" readonly="true"
+                [value]="unit.currentContract?.brokerage?.brokerageName"></ion-input>
               <ion-button mode="ios" class="end-button" slot="end"
-                size="small" fill="clear" (click)="onClientSearch()">
+                size="small" fill="clear" (click)="onBrokerageSearch()">
                 <ion-icon name="search-outline" slot="icon-only"></ion-icon>
               </ion-button>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="6">
+          <ion-col size-xs="12">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -206,6 +224,168 @@
                 class="ion-input-elem"
                 formControlName="remarks"
                 value="{{ unit.unitDescription }}"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="4">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="pricetag-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Reservation</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                value="{{ unit.currentContract?.reservationAmt| number:'1.2-2' }}"
+                readonly="true"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="4">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="pricetag-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Reservation Payment</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                value="{{ unit.currentContract?.ttlReservationPaid | number:'1.2-2' }}"
+                readonly="true"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="4">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="pricetag-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Reservation Balance</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                value="{{ unit.currentContract?.reservationBalance | number:'1.2-2' }}"
+                readonly="true"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="4">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="pricetag-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Equity</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                value="{{ unit.currentContract?.equityAmt | number:'1.2-2' }}"
+                readonly="true"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="4">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="pricetag-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Equity Payment</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                value="{{ unit.currentContract?.ttlEquityPaid | number:'1.2-2' }}"
+                readonly="true"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="4">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="pricetag-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Equity Balance</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                value="{{ unit.currentContract?.equityBalance | number:'1.2-2' }}"
+                readonly="true"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="4">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="pricetag-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Financing</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                value="{{ unit.currentContract?.financingAmt | number:'1.2-2' }}"
+                readonly="true"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="4">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="pricetag-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Financing Payment</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                value="{{ unit.currentContract?.ttlFinancingPaid | number:'1.2-2' }}"
+                readonly="true"
+              ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-lg="4">
+            <ion-item fill="outline">
+              <ion-icon
+                class="contactIcon"
+                name="pricetag-outline"
+                color="primary"
+                slot="start"
+              ></ion-icon>
+              <ion-label class="ion-label-elem" position="floating"
+                >Financing Balance</ion-label
+              >
+              <ion-input
+                class="ion-input-elem qty-input"
+                value="{{ unit.currentContract?.financingBalance | number:'1.2-2' }}"
+                readonly="true"
               ></ion-input>
             </ion-item>
           </ion-col>

@@ -45,12 +45,82 @@ export class ClientSearchComponent implements OnInit, OnDestroy {
           this.pageNumber = 0;
           this.totalPages = 0;
           if (this.searchValue) {
-
+            this.getData(undefined, 0, this.config.pageSize, this.searchValue);
           } else {
-
+            this.getData(undefined, 0, this.config.pageSize);
           }
         },
       });
+  }
+
+  ionViewDidEnter(): void {
+      setTimeout(() => {
+        this.searchBar.setFocus();
+      }, 5);
+  }
+
+  getData(
+    event?,
+    pageNumber?: number,
+    pageSize?: number,
+    searchDesc?: string,
+  ) {
+    this.isFetching = true;
+
+    if (searchDesc === undefined) {
+      this.clientsService
+        .getClients(pageNumber, pageSize)
+        .subscribe({
+          next: this.processResult(event),
+          error: () => { this.isFetching = false}
+        });
+    } else {
+      this.clientsService
+        .getClients(pageNumber, pageSize, searchDesc)
+        .subscribe({
+          next: this.processResult(event),
+          error: () => { this.isFetching = false }
+        });
+    }
+  }
+
+  processResult(event) {
+    return(data) => {
+      this.clientList = this.clientList.concat(data._embedded.projectClients);
+      this.totalPages = data.page.totalPages;
+      this.isFetching = false;
+      if (event) {
+        event.target.complete();
+      }
+    };
+  }
+
+  loadMoreCata(event) {
+    if (this.pageNumber + 1 >= this.totalPages) {
+      event.target.disabled = true;
+      return;
+    }
+
+    this.pageNumber++;
+
+    if (this.searchValue) {
+      this.getData(
+        event,
+        this.pageNumber,
+        this.config.pageSize,
+        this.searchValue
+      );
+    } else {
+      this.getData(event, this.pageNumber, this.config.pageSize);
+    }
+  }
+
+  onSelectClient(client: ProjectClient) {
+    this.modalCtrl.dismiss(client, 'client');
+  }
+
+  dismissModal() {
+    this.modalCtrl.dismiss(null, 'dismissModal');
   }
 
   ngOnDestroy(): void {

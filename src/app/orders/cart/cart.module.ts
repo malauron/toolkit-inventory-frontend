@@ -7,8 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { CartPageRoutingModule } from './cart-routing.module';
 
 import { CartPage } from './cart.page';
-import { CustomerSearchModule } from 'src/app/customers/customer-search/customer-search.module';
-import { WarehouseSearchModule } from 'src/app/warehouses/warehouse-search/warehouse-search.module';
 
 @NgModule({
   imports: [
@@ -16,8 +14,6 @@ import { WarehouseSearchModule } from 'src/app/warehouses/warehouse-search/wareh
     FormsModule,
     IonicModule,
     CartPageRoutingModule,
-    // CustomerSearchModule,
-    // WarehouseSearchModule
   ],
   declarations: [CartPage]
 })
