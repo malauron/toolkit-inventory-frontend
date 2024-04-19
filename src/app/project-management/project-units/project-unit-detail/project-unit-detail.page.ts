@@ -119,7 +119,6 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
             this.unit.unitClass = resData.unitClass;
             this.unit.unitStatus = resData.unitStatus;
             if (resData.currentContract != null) {
-              console.log(resData.currentContract);
               this.unit.currentContract = resData.currentContract;
             }
             this.unit.project = this.project;
@@ -150,9 +149,9 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
 
   onSaveUnit() {
 
-    if (this.unit.unitId > 0) {
-      return;
-    }
+    // if (this.unit.unitId > 0) {
+    //   return;
+    // }
 
     if (this.isUploading || this.isFetching) {
       return;
@@ -162,6 +161,7 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
 
     const unitDto = new ProjectUnitDto();
 
+    unitDto.unitId = this.unit.unitId;
     unitDto.unitCode = this.unitForm.value.unitCode;
     unitDto.unitDescription = this.unitForm.value.unitDescription;
     unitDto.unitPrice = this.unitForm.value.unitPrice;
@@ -178,7 +178,9 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
           this.unit.project = resData.project;
           this.dataHaveChanged = true;
         },
-        error: (err) => {this.isUploading = false},
+        error: (err) => {
+          this.isUploading = false
+        },
         complete: () => {
           this.isUploading = false;
           this.messageBox('Unit information has been saved successfully.');
