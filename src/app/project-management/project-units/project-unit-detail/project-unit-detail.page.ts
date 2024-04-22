@@ -1,7 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+  ToastController,
+} from '@ionic/angular';
 import { User } from 'src/app/Security/classes/user.model';
 import { AuthenticationService } from 'src/app/Security/services/authentication.service';
 import { ProjectBroker } from '../../classes/project-broker.model';
@@ -16,6 +21,8 @@ import { BrokerageSearchComponent } from '../../project-brokerages/brokerage-sea
 import { BrokerSearchComponent } from '../../project-brokers/broker-search/broker-search.component';
 import { ClientSearchComponent } from '../../project-clients/client-search/client-search.component';
 import { ProjectUnitsService } from '../../services/project-units.service';
+import { ProjectContractDto } from '../../classes/project-contract-dto.model';
+import { ProjectContractsService } from '../../services/project-contract.service';
 
 @Component({
   selector: 'app-project-unit-detail',
@@ -23,7 +30,6 @@ import { ProjectUnitsService } from '../../services/project-units.service';
   styleUrls: ['./project-unit-detail.page.scss'],
 })
 export class ProjectUnitDetailPage implements OnInit, OnDestroy {
-
   user: User;
   project: Project;
   unit: ProjectUnit;
@@ -40,16 +46,16 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
 
   constructor(
     private unitsService: ProjectUnitsService,
+    private contractsService: ProjectContractsService,
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
     private navCtrl: NavController,
     private modalSearch: ModalController,
     private toastCtrl: ToastController,
-    private alertCtrl: AlertController,
-  ) { }
+    private alertCtrl: AlertController
+  ) {}
 
   ngOnInit() {
-
     this.unitForm = new FormGroup({
       unitCode: new FormControl(null, {
         updateOn: 'blur',
@@ -67,16 +73,16 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(0)],
       }),
-      unitClass: new FormControl("CONDO_UNIT", {
+      unitClass: new FormControl('CONDO_UNIT', {
         updateOn: 'blur',
-        validators: [Validators.required]
+        validators: [Validators.required],
       }),
     });
 
     this.contractForm = new FormGroup({
       remarks: new FormControl('', {
         updateOn: 'blur',
-        validators: [Validators.required]
+        validators: [Validators.required],
       }),
     });
 
@@ -86,11 +92,11 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
     this.unit.currentContract.client = new ProjectClient();
     this.unit.currentContract.broker = new ProjectBroker();
     this.unit.currentContract.brokerage = new ProjectBrokerage();
-    this.project = new Project(1, "TAGBALAI HEIGHTS TOWER 01");
+    this.project = new Project(1, 'TAGBALAI HEIGHTS TOWER 01');
 
     this.unit.unitPrice = 0;
     this.unit.reservationAmt = 0;
-    this.unit.unitClass = "CONDO_UNIT"
+    this.unit.unitClass = 'CONDO_UNIT';
 
     this.route.paramMap.subscribe((paramMap) => {
       if (!paramMap.has('unitId')) {
@@ -111,6 +117,7 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
               this.navCtrl.navigateBack('/tabs/project-units');
               return;
             }
+            console.log(resData);
             this.unit.unitId = resData.unitId;
             this.unit.unitCode = resData.unitCode;
             this.unit.unitDescription = resData.unitDescription;
@@ -118,6 +125,7 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
             this.unit.reservationAmt = resData.reservationAmt;
             this.unit.unitClass = resData.unitClass;
             this.unit.unitStatus = resData.unitStatus;
+            this.unit.version = resData.version;
             if (resData.currentContract != null) {
               this.unit.currentContract = resData.currentContract;
             }
@@ -137,7 +145,7 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
             this.navCtrl.navigateBack('/tabs/project-units');
             this.isFetching = false;
             return;
-          }
+          },
         });
       } else {
         this.unit.unitId = 0;
@@ -148,11 +156,6 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
   }
 
   onSaveUnit() {
-
-    // if (this.unit.unitId > 0) {
-    //   return;
-    // }
-
     if (this.isUploading || this.isFetching) {
       return;
     }
@@ -169,26 +172,78 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
     unitDto.unitClass = this.unitForm.value.unitClass;
     unitDto.project = this.project;
 
-    this.unitsService
-      .postUnit(unitDto)
-      .subscribe({
-        next: (resData) => {
-          this.unit.unitId = resData.unitId;
-          this.unit.unitStatus = resData.unitStatus;
-          this.unit.project = resData.project;
-          this.dataHaveChanged = true;
-        },
-        error: (err) => {
-          this.isUploading = false
-        },
-        complete: () => {
-          this.isUploading = false;
-          this.messageBox('Unit information has been saved successfully.');
-        }
-      });
+    this.unitsService.postUnit(unitDto).subscribe({
+      next: (resData) => {
+        this.unit.unitId = resData.unitId;
+        this.unit.unitStatus = resData.unitStatus;
+        this.unit.project = resData.project;
+        this.dataHaveChanged = true;
+      },
+      error: (err) => {
+        this.isUploading = false;
+      },
+      complete: () => {
+        this.isUploading = false;
+        this.messageBox('Unit information has been saved successfully.');
+      },
+    });
   }
 
-  onSaveContract() {}
+  onSaveContract() {
+    if (this.isUploading || this.isFetching) {
+      return;
+    }
+
+    this.isUploading = true;
+
+    if (
+      this.unit.currentContract?.client.clientId === undefined ||
+      this.unit.currentContract.client.clientId === 0
+    ) {
+      this.messageBox('Please select a client.');
+      this.isUploading = false;
+      return;
+    }
+
+    const contractDto = new ProjectContractDto();
+
+    contractDto.unit = this.unit;
+    contractDto.client = this.unit.currentContract.client;
+    contractDto.broker = this.unit.currentContract.broker;
+    contractDto.brokerage = this.unit.currentContract.brokerage;
+    contractDto.remarks = this.contractForm.value.remarks;
+
+    this.contractsService.postContract(contractDto).subscribe({
+      next: (res) => {
+        this.unit.currentContract.contractId = res.contractId;
+        this.unit.currentContract.unitPrice = res.unitPrice;
+        this.unit.currentContract.client = res.client;
+        this.unit.currentContract.broker = res.broker;
+        this.unit.currentContract.brokerage = res.brokerage;
+        this.unit.currentContract.reservationAmt = res.reservationAmt;
+        this.unit.currentContract.ttlReservationPaid = res.ttlReservationPaid;
+        this.unit.currentContract.reservationBalance = res.reservationBalance;
+        this.unit.currentContract.equityAmt = res.equityAmt;
+        this.unit.currentContract.ttlEquityPaid = res.ttlEquityPaid;
+        this.unit.currentContract.equityBalance = res.equityBalance;
+        this.unit.currentContract.financingAmt = res.financingAmt;
+        this.unit.currentContract.ttlFinancingPaid = res.ttlFinancingPaid;
+        this.unit.currentContract.financingBalance = res.financingBalance;
+        this.unit.currentContract.ttlPayment = res.ttlPayment;
+        this.unit.currentContract.ttlBalance = res.ttlBalance;
+        this.unit.currentContract.remarks = res.remarks;
+        console.log(res);
+      },
+      error: (err) => {
+        this.messageBox(err);
+        this.isUploading = false;
+      },
+      complete: () => {
+        this.messageBox('Contract information has been saved successfully.');
+        this.isUploading = false;
+      }
+    });
+  }
 
   onClientSearch() {
     if (!this.modalOpen) {
@@ -269,5 +324,4 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
       this.unitsService.unitsHaveChanged.next(true);
     }
   }
-
 }

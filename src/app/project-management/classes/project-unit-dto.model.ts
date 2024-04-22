@@ -1,7 +1,6 @@
-import { ProjectContract } from "./project-contract.model";
-import { Project } from "./project.model";
-import { UnitClass } from "./unit-class.model";
-import { UnitStatus } from "./unit-status.model";
+import { ProjectContract } from './project-contract.model';
+import { Project } from './project.model';
+import { UnitStatus } from './unit-status.model';
 
 export class ProjectUnitDto {
   constructor(
@@ -14,7 +13,8 @@ export class ProjectUnitDto {
     public unitStatus?: UnitStatus,
     public currentContract?: ProjectContract,
     public project?: Project,
+    public version?: number,
     public errorCode?: string,
-    public errorDescriptoin?: string,
-  ){}
+    public errorDescriptoin?: string
+  ) {}
 }

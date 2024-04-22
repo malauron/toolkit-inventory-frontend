@@ -1,7 +1,7 @@
-import { ProjectBroker } from "./project-broker.model";
-import { ProjectBrokerage } from "./project-brokerage.model";
-import { ProjectClient } from "./project-client.model";
-import { ProjectUnit } from "./project-unit.model";
+import { ProjectBroker } from './project-broker.model';
+import { ProjectBrokerage } from './project-brokerage.model';
+import { ProjectClient } from './project-client.model';
+import { ProjectUnit } from './project-unit.model';
 
 export class ProjectContract {
   constructor(
@@ -29,5 +29,5 @@ export class ProjectContract {
     public dateCreated?: number,
     public dateUpdated?: number,
     public version?: number
-  ){}
+  ) {}
 }

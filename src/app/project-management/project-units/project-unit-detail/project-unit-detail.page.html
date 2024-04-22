@@ -155,7 +155,7 @@
     <ion-grid>
       <form [formGroup]="contractForm">
         <ion-row class="primary-info-row">
-          <ion-col size-xs="12" size-lg="6">
+          <ion-col size-xs="12" size-lg="6" *ngIf="unit.currentContract?.contractId>0">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -227,7 +227,7 @@
               ></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="4">
+          <ion-col size-xs="12" size-lg="4" *ngIf="unit.currentContract?.contractId>0">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -245,7 +245,7 @@
               ></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="4">
+          <ion-col size-xs="12" size-lg="4" *ngIf="unit.currentContract?.contractId>0">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -263,7 +263,7 @@
               ></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="4">
+          <ion-col size-xs="12" size-lg="4" *ngIf="unit.currentContract?.contractId>0">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -281,7 +281,7 @@
               ></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="4">
+          <ion-col size-xs="12" size-lg="4" *ngIf="unit.currentContract?.contractId>0">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -299,7 +299,7 @@
               ></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="4">
+          <ion-col size-xs="12" size-lg="4" *ngIf="unit.currentContract?.contractId>0">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -317,7 +317,7 @@
               ></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="4">
+          <ion-col size-xs="12" size-lg="4" *ngIf="unit.currentContract?.contractId>0">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -335,7 +335,7 @@
               ></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="4">
+          <ion-col size-xs="12" size-lg="4" *ngIf="unit.currentContract?.contractId>0">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -353,7 +353,7 @@
               ></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="4">
+          <ion-col size-xs="12" size-lg="4" *ngIf="unit.currentContract?.contractId>0">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -371,7 +371,7 @@
               ></ion-input>
             </ion-item>
           </ion-col>
-          <ion-col size-xs="12" size-lg="4">
+          <ion-col size-xs="12" size-lg="4" *ngIf="unit.currentContract?.contractId>0">
             <ion-item fill="outline">
               <ion-icon
                 class="contactIcon"
@@ -392,7 +392,7 @@
         </ion-row>
         <ion-row>
           <ion-col class="buttons">
-            <ion-button color="success" (click)="onSaveUnit()" [disabled]="isUploading" size="default"
+            <ion-button color="success" (click)="onSaveContract()" [disabled]="isUploading" size="default"
               class="save-button">
               <ion-icon name="checkmark-outline" slot="start"></ion-icon>Save
             </ion-button>

@@ -382,7 +382,7 @@ export class ItemDetailPage implements OnInit, OnDestroy, AfterViewInit {
     };
   }
 
-  onSave() {
+                  onSave() {
     if (!this.isUploading) {
       this.isUploading = true;
       if (this.itemForm.valid) {
