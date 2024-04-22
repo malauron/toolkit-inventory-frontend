@@ -117,7 +117,6 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
               this.navCtrl.navigateBack('/tabs/project-units');
               return;
             }
-            console.log(resData);
             this.unit.unitId = resData.unitId;
             this.unit.unitCode = resData.unitCode;
             this.unit.unitDescription = resData.unitDescription;
@@ -232,7 +231,7 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
         this.unit.currentContract.ttlPayment = res.ttlPayment;
         this.unit.currentContract.ttlBalance = res.ttlBalance;
         this.unit.currentContract.remarks = res.remarks;
-        console.log(res);
+        this.dataHaveChanged = true;
       },
       error: (err) => {
         this.messageBox(err);
