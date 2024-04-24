@@ -206,31 +206,41 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
 
     const contractDto = new ProjectContractDto();
 
-    contractDto.unit = this.unit;
-    contractDto.client = this.unit.currentContract.client;
-    contractDto.broker = this.unit.currentContract.broker;
-    contractDto.brokerage = this.unit.currentContract.brokerage;
+    if (
+      this.unit.currentContract.contractId == undefined ||
+      this.unit.currentContract.contractId == 0 ||
+      this.unit.currentContract.contractId == null
+    ) {
+      contractDto.unit = this.unit;
+      contractDto.client = this.unit.currentContract.client;
+      contractDto.broker = this.unit.currentContract.broker;
+      contractDto.brokerage = this.unit.currentContract.brokerage;
+    } else {
+      contractDto.contractId = this.unit.currentContract.contractId;
+    }
     contractDto.remarks = this.contractForm.value.remarks;
 
     this.contractsService.postContract(contractDto).subscribe({
       next: (res) => {
-        this.unit.currentContract.contractId = res.contractId;
-        this.unit.currentContract.unitPrice = res.unitPrice;
-        this.unit.currentContract.client = res.client;
-        this.unit.currentContract.broker = res.broker;
-        this.unit.currentContract.brokerage = res.brokerage;
-        this.unit.currentContract.reservationAmt = res.reservationAmt;
-        this.unit.currentContract.ttlReservationPaid = res.ttlReservationPaid;
-        this.unit.currentContract.reservationBalance = res.reservationBalance;
-        this.unit.currentContract.equityAmt = res.equityAmt;
-        this.unit.currentContract.ttlEquityPaid = res.ttlEquityPaid;
-        this.unit.currentContract.equityBalance = res.equityBalance;
-        this.unit.currentContract.financingAmt = res.financingAmt;
-        this.unit.currentContract.ttlFinancingPaid = res.ttlFinancingPaid;
-        this.unit.currentContract.financingBalance = res.financingBalance;
-        this.unit.currentContract.ttlPayment = res.ttlPayment;
-        this.unit.currentContract.ttlBalance = res.ttlBalance;
-        this.unit.currentContract.remarks = res.remarks;
+        if (
+          this.unit.currentContract.contractId == undefined ||
+          this.unit.currentContract.contractId == 0 ||
+          this.unit.currentContract.contractId == null
+        ) {
+          this.unit.currentContract.contractId = res.contractId;
+          this.unit.currentContract.unitPrice = res.unitPrice;
+          this.unit.currentContract.reservationAmt = res.reservationAmt;
+          this.unit.currentContract.ttlReservationPaid = res.ttlReservationPaid;
+          this.unit.currentContract.reservationBalance = res.reservationBalance;
+          this.unit.currentContract.equityAmt = res.equityAmt;
+          this.unit.currentContract.ttlEquityPaid = res.ttlEquityPaid;
+          this.unit.currentContract.equityBalance = res.equityBalance;
+          this.unit.currentContract.financingAmt = res.financingAmt;
+          this.unit.currentContract.ttlFinancingPaid = res.ttlFinancingPaid;
+          this.unit.currentContract.financingBalance = res.financingBalance;
+          this.unit.currentContract.ttlPayment = res.ttlPayment;
+          this.unit.currentContract.ttlBalance = res.ttlBalance;
+        }
         this.dataHaveChanged = true;
       },
       error: (err) => {
@@ -240,7 +250,7 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
       complete: () => {
         this.messageBox('Contract information has been saved successfully.');
         this.isUploading = false;
-      }
+      },
     });
   }
 
