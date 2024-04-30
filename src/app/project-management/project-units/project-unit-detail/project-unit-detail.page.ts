@@ -23,6 +23,7 @@ import { ClientSearchComponent } from '../../project-clients/client-search/clien
 import { ProjectUnitsService } from '../../services/project-units.service';
 import { ProjectContractDto } from '../../classes/project-contract-dto.model';
 import { ProjectContractsService } from '../../services/project-contract.service';
+import { ProjectContractEquitySchedule } from '../../classes/project-contract-equity-schedule.model';
 
 @Component({
   selector: 'app-project-unit-detail',
@@ -33,6 +34,7 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
   user: User;
   project: Project;
   unit: ProjectUnit;
+  equitySchedules: ProjectContractEquitySchedule[];
   unitForm: FormGroup;
   contractForm: FormGroup;
 
@@ -128,6 +130,7 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
             if (resData.currentContract != null) {
               this.unit.currentContract = resData.currentContract;
             }
+            this.equitySchedules = resData.equitySchedules;
             this.unit.project = this.project;
 
             this.unitForm.patchValue({
@@ -138,6 +141,9 @@ export class ProjectUnitDetailPage implements OnInit, OnDestroy {
               unitClass: resData.unitClass,
             });
 
+            this.contractForm.patchValue({
+              remarks: resData.currentContract?.remarks
+            });
             this.isFetching = false;
           },
           error: () => {

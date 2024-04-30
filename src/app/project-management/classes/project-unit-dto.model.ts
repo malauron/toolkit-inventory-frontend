@@ -1,3 +1,4 @@
+import { ProjectContractEquitySchedule } from './project-contract-equity-schedule.model';
 import { ProjectContract } from './project-contract.model';
 import { Project } from './project.model';
 import { UnitStatus } from './unit-status.model';
@@ -12,6 +13,7 @@ export class ProjectUnitDto {
     public unitClass?: string,
     public unitStatus?: UnitStatus,
     public currentContract?: ProjectContract,
+    public equitySchedules?: ProjectContractEquitySchedule[],
     public project?: Project,
     public version?: number,
     public errorCode?: string,
