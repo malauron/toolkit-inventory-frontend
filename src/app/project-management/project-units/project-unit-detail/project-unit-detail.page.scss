@@ -53,6 +53,10 @@ ion-select::part(icon) {
   border-top: 5px solid var(--ion-color-primary);
 }
 
+.separator {
+  border-top: 1px solid var(--ion-color-medium);
+}
+
 .ion-label-elem {
   color: var(--ion-color-medium);
 }
@@ -85,8 +89,7 @@ ion-select::part(icon) {
 }
 
 .schedule-grid {
-  // padding-left: 3rem;
-  // padding-right: 3rem;
+  padding: 0;
 
   ion-row {
     ion-col {
@@ -104,14 +107,26 @@ ion-select::part(icon) {
   }
 }
 
-.schedule-hdr {
-  top: -0.7rem;
-  display: none;
-  visibility: hidden;
+.str-col-lbl {
+  padding-left: 2.5rem;
+}
 
-  ion-item {
-    padding: 0 2.5rem;
+.schedule-hdr {
+  display: none;
+  vertical-align: bottom;
+  background-color: var(--ion-color-medium-shade);
+
+  ion-label {
+    color: var(--ion-color-light);
   }
+
+  ion-item::part(native) {
+    background-color: transparent;
+  }
+}
+
+.num-col-lbl {
+  padding-left: 2.5rem;
 }
 
 .schedule-row {
@@ -119,9 +134,21 @@ ion-select::part(icon) {
     font-size: 0.8rem;
     color: var(--ion-color-medium);
   }
+}
+
+.schedule-row:nth-of-type(even) {
+  background: #F8F5F5;
 
   ion-item {
-    padding: 0 2.5rem;
+    --background: #F8F5F5;
+  }
+}
+
+.schedule-row:nth-of-type(odd) {
+  background: #fcfcfc;
+
+  ion-item {
+    --background: #fcfcfc;
   }
 }
 
@@ -145,6 +172,15 @@ ion-select::part(icon) {
 
     padding-top: 0;
     padding-bottom: 0;
+  }
+
+  ion-item {
+    --min-height: 2rem;
+  }
+
+  .num-col-lbl {
+    padding-right: 2.5rem;
+    text-align: right;
   }
 }
 

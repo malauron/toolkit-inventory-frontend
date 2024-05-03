@@ -22,7 +22,7 @@ import { BrokerSearchComponent } from '../../project-brokers/broker-search/broke
 import { ClientSearchComponent } from '../../project-clients/client-search/client-search.component';
 import { ProjectUnitsService } from '../../services/project-units.service';
 import { ProjectContractDto } from '../../classes/project-contract-dto.model';
-import { ProjectContractsService } from '../../services/project-contract.service';
+import { ProjectContractsService } from '../../services/project-contracts.service';
 import { ProjectContractEquitySchedule } from '../../classes/project-contract-equity-schedule.model';
 
 @Component({

@@ -166,7 +166,8 @@ ion-popover {
   }
 
   ion-card-header {
-    padding: 0.5rem;  }
+    padding: 0.5rem;
+  }
 
   ion-grid {
     padding: 0;
@@ -202,6 +203,7 @@ ion-popover {
   }
 
   .item-hdr {
+    display: none;
     padding-right: 1rem;
     vertical-align: bottom;
     background-color: var(--ion-color-medium-shade);
@@ -209,8 +211,6 @@ ion-popover {
     ion-item::part(native) {
       background-color: transparent;
     }
-
-    display: none;
   }
 
   .item-row {
@@ -225,9 +225,11 @@ ion-popover {
         visibility: visible;
         display: block;
       }
+
       .opt-col {
         visibility: visible;
         display: block;
+
         ion-item {
           height: 100%;
         }
@@ -329,11 +331,14 @@ ion-popover {
 .opt-col {
   display: none;
   visibility: hidden;
+
   ion-item {
     height: 0;
+
     ion-button {
       margin: 0;
       padding: 0;
+
       &::part(native) {
         padding: 0;
       }

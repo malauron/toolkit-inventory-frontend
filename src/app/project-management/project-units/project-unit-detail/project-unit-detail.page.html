@@ -509,22 +509,24 @@
 
   <ion-card *ngIf="!isFetching">
     <div class="card-top"></div>
-    <ion-item lines="full">
-      <ion-card-title>Equity Schedule</ion-card-title>
-    </ion-item>
-
+    <ion-card-header class="ion-no-padding">
+      <ion-item lines="none">
+        <ion-card-title>Equity Schedule</ion-card-title>
+      </ion-item>
+    </ion-card-header>
+    <div class="separator"></div>
     <ion-grid class="schedule-grid">
       <ion-row class="schedule-hdr">
         <ion-col size-md="2">
           <ion-item lines="none"
-            ><ion-label class="id-col-lbl"
+            ><ion-label class="str-col-lbl"
               ><h2>Month</h2></ion-label
             ></ion-item
           >
         </ion-col>
-        <ion-col size-md="3">
+        <ion-col size-md="4">
           <ion-item lines="none"
-            ><ion-label><h2>Due Date</h2></ion-label></ion-item
+            ><ion-label class="str-col-lbl"><h2>Due Date</h2></ion-label></ion-item
           >
         </ion-col>
         <ion-col size-md="3">
@@ -536,7 +538,7 @@
         </ion-col>
         <ion-col size-md="3">
           <ion-item lines="none"
-            ><ion-label class="status-col-lbl"
+            ><ion-label class="num-col-lbl"
               ><h2>Amount Paid</h2></ion-label
             ></ion-item
           >
@@ -545,15 +547,15 @@
       <ion-row class="schedule-row" *ngFor="let schedule of equitySchedules">
         <ion-col size-xs="12" size-sm="6" size-md="2">
           <ion-item lines="none"
-            ><ion-label class="id-row-lbl"
-              ><h3>Month No.</h3>
+            ><ion-label class="str-col-lbl"
+              ><h3>Month</h3>
               {{ schedule.scheduleId }}</ion-label
             ></ion-item
           >
         </ion-col>
-        <ion-col size-xs="12" size-sm="6" size-md="3">
+        <ion-col size-xs="12" size-sm="6" size-md="4">
           <ion-item lines="none"
-            ><ion-label class="id-row-lbl"
+            ><ion-label class="str-col-lbl"
               ><h3>Due Date</h3>
               {{ schedule.dueDate | date:'MMM dd, yyyy' }}</ion-label
             ></ion-item
@@ -561,7 +563,7 @@
         </ion-col>
         <ion-col size-xs="12" size-sm="6" size-md="3">
           <ion-item lines="none"
-            ><ion-label class="id-row-lbl"
+            ><ion-label class="num-col-lbl"
               ><h3>Amount Due</h3>
               {{ schedule.payableEquity | number:'1.2-2' }}</ion-label
             ></ion-item
@@ -569,7 +571,7 @@
         </ion-col>
         <ion-col size-xs="12" size-sm="6" size-md="3">
           <ion-item lines="none"
-            ><ion-label class="id-row-lbl"
+            ><ion-label class="num-col-lbl"
               ><h3>Amount Paid</h3>
               {{ schedule.equityPaid | number:'1.2-2' }}</ion-label
             ></ion-item
