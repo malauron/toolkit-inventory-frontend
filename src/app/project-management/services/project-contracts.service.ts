@@ -37,6 +37,13 @@ export class ProjectContractsService {
     return this.http.get<ProjectContractDto>(this.apiUrl);
   }
 
+  getActiveContracts(id: number): Observable<ResponseProjectContracts> {
+
+    this.apiUrl = `${this.config.urlProjectContractsSearch}` +
+                  `getActiveContractsByClientId?clientId=${id}`;
+    return this.http.get<ResponseProjectContracts>(this.apiUrl);
+  }
+
   postContract(contractDto: ProjectContractDto): Observable<ProjectContractDto>{
     this.apiUrl = `${this.config.urlV1ProjectContracts}`;
     return this.http.post<ProjectContractDto>(this.apiUrl, contractDto);

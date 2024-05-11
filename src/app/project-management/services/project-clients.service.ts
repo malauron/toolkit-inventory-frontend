@@ -38,7 +38,7 @@ export class ProjectClientsService {
       searchDesc = '';
     }
 
-    filterString(searchDesc);
+    searchDesc = filterString(searchDesc);
 
     this.apiUrl = `${this.config.urlProjectClientsSearch}` +
                   `?clientName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;

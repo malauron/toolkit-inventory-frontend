@@ -57,7 +57,7 @@ export class ButcheryReceivingsService {
 
     const receivingStatus = ['Unposted','Posted','Cancelled'];
 
-    filterString(searchDesc);
+    searchDesc = filterString(searchDesc);
 
     this.apiUrl =
       `${this.config.urlButcheryReceivingsSearch}` +

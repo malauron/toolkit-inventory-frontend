@@ -88,7 +88,7 @@ ion-select::part(icon) {
 
 }
 
-.schedule-grid {
+.payment-grid {
   padding: 0;
 
   ion-row {
@@ -101,8 +101,14 @@ ion-select::part(icon) {
     }
 
     ion-item {
-      --padding-start: 0;
+      // --padding-start: 0;
       --inner-padding-end: 0;
+      margin-left: 2.5rem;
+    }
+
+    ion-input {
+      --padding-top: 0;
+      // --padding-start: 2.5rem;
     }
   }
 }
@@ -111,7 +117,7 @@ ion-select::part(icon) {
   padding-left: 2.5rem;
 }
 
-.schedule-hdr {
+.payment-hdr {
   display: none;
   vertical-align: bottom;
   background-color: var(--ion-color-medium-shade);
@@ -129,14 +135,14 @@ ion-select::part(icon) {
   padding-left: 2.5rem;
 }
 
-.schedule-row {
+.payment-row {
   h3 {
     font-size: 0.8rem;
     color: var(--ion-color-medium);
   }
 }
 
-.schedule-row:nth-of-type(even) {
+.payment-row:nth-of-type(even) {
   background: #F8F5F5;
 
   ion-item {
@@ -144,7 +150,7 @@ ion-select::part(icon) {
   }
 }
 
-.schedule-row:nth-of-type(odd) {
+.payment-row:nth-of-type(odd) {
   background: #fcfcfc;
 
   ion-item {
@@ -159,12 +165,12 @@ ion-select::part(icon) {
 }
 
 @media (min-width: 768px) {
-  .schedule-hdr {
+  .payment-hdr {
     display: flex;
     visibility: visible;
   }
 
-  .schedule-row {
+  .payment-row {
     h3 {
       display: none;
       visibility: hidden;
@@ -174,7 +180,7 @@ ion-select::part(icon) {
     padding-bottom: 0;
 
     ion-item {
-      --min-height: 1.5rem;
+      --min-height: 2rem;
     }
   }
 

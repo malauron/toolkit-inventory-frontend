@@ -3,14 +3,14 @@
     <ion-buttons slot="start">
       <ion-back-button
         icon="chevron-back-outline"
-        defaultHref="/tabs/project-units"
+        defaultHref="/tabs/project-payment"
       ></ion-back-button>
     </ion-buttons>
-    <ion-title>Unit Details</ion-title>
+    <ion-title>Payment Details</ion-title>
     <ion-buttons slot="primary" *ngIf="!isFetching && !isUploading">
       <ion-button
-        (click)="onSaveUnit()"
-        *ngIf="!unit.unitId"
+        (click)="onSavePayment()"
+        *ngIf="!payment?.paymentId"
         [disabled]="isUploading"
       >
         <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
@@ -34,133 +34,145 @@
       <ion-card-title>Primary Information</ion-card-title>
     </ion-item>
     <ion-grid>
-      <form [formGroup]="unitForm">
-        <ion-row class="primary-info-row">
-          <ion-col size-xs="12" size-lg="6">
-            <ion-item fill="outline">
-              <ion-icon
-                class="cartIcon"
-                src="assets/icons/pound_key.svg"
-                color="primary"
-                slot="start"
-              ></ion-icon>
-              <ion-label class="ion-label-elem" position="floating"
-                >Unit Code</ion-label
-              >
-              <ion-input
-                class="ion-input-elem"
-                formControlName="unitCode"
-                value="{{ unit.unitCode }}"
-              ></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col size-xs="12" size-lg="6">
-            <ion-item fill="outline">
-              <ion-icon
-                class="contactIcon"
-                src="assets/icons/topic.svg"
-                color="primary"
-                slot="start"
-              ></ion-icon>
-              <ion-label class="ion-label-elem" position="floating"
-                >Description</ion-label
-              >
-              <ion-input
-                class="ion-input-elem"
-                formControlName="unitDescription"
-                value="{{ unit.unitDescription }}"
-              ></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col
-            size-xs="12"
-            size-lg="6"
-            *ngIf="unit.currentContract?.contractId === undefined"
-          >
-            <ion-item fill="outline">
-              <ion-icon
-                class="contactIcon"
-                name="pricetag-outline"
-                color="primary"
-                slot="start"
-              ></ion-icon>
-              <ion-label class="ion-label-elem" position="floating"
-                >Selling Price</ion-label
-              >
-              <ion-input
-                class="ion-input-elem qty-input"
-                formControlName="unitPrice"
-                value="{{ unit.unitPrice }}"
-                type="number"
-                maxlength="20"
-              ></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col
-            size-xs="12"
-            size-lg="6"
-            *ngIf="unit.currentContract?.contractId === undefined"
-          >
-            <ion-item fill="outline">
-              <ion-icon
-                class="contactIcon"
-                name="cash-outline"
-                color="primary"
-                slot="start"
-              ></ion-icon>
-              <ion-label class="ion-label-elem" position="floating"
-                >Reservation Fee</ion-label
-              >
-              <ion-input
-                class="ion-input-elem qty-input"
-                formControlName="reservationAmt"
-                value="{{ unit.reservationAmt }}"
-                type="number"
-                maxlength="20"
-              ></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col size-xs="12" size-lg="6">
-            <ion-item fill="outline">
-              <ion-icon
-                slot="start"
-                src="assets/icons/style.svg"
-                color="primary"
-              ></ion-icon>
-              <ion-label class="ion-label-elem" position="floating"
-                >Classification</ion-label
-              >
-              <ion-select
-                formControlName="unitClass"
-                value="{{ unit.unitClass }}"
-              >
-                <ion-select-option
-                  *ngFor="let unitCls of unitClass | keyvalue"
-                  [value]="unitCls.key"
-                  >{{ unitCls.value }}
-                </ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="unit?.unitId>0">
-          <ion-col class="buttons">
-            <ion-button
-              color="success"
-              (click)="onSaveUnit()"
-              [disabled]="isUploading"
-              size="default"
-              class="save-button"
+      <ion-row class="primary-info-row">
+        <ion-col size-xs="12" size-lg="6" *ngIf="payment?.paymentId">
+          <ion-item fill="outline">
+            <ion-icon
+              class="cartIcon"
+              src="assets/icons/pound_key.svg"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Transaction No.</ion-label
             >
-              <ion-icon name="checkmark-outline" slot="start"></ion-icon>Save
+            <ion-input
+              class="ion-input-elem"
+              value="{{ payment.paymentId }}"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="person-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Client</ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+              value="{{ payment.client?.clientName }}"
+              readonly="true"
+            ></ion-input>
+            <ion-button
+              (click)="onClientSearch()"
+              fill="clear"
+              size="small"
+              slot="end"
+              mode="ios"
+              id="click-trigger"
+            >
+              <ion-icon name="search-outline" slot="icon-only"></ion-icon>
             </ion-button>
-          </ion-col>
-        </ion-row>
-      </form>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              src="assets/icons/topic.svg"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Reference No.</ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+              [(ngModel)]="payment.referenceNo"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="calendar-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Date Received</ion-label
+            >
+            <ion-input
+              class="ion-input-elem qty-input"
+              (click)="showReceivedDatePicker()"
+              value="{{ dateValue }}"
+              readonly="true"
+              type="text"
+              maxlength="20"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12" size-lg="6">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              name="pricetag-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Total Paid</ion-label
+            >
+            <ion-input
+              class="ion-input-elem qty-input"
+              [(ngModel)]="payment.ttlAmtPaid"
+              type="number"
+              readonly="true"
+              maxlength="20"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-xs="12">
+          <ion-item fill="outline">
+            <ion-icon
+              class="contactIcon"
+              src="assets/icons/info.svg"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label class="ion-label-elem" position="floating"
+              >Remarks</ion-label
+            >
+            <ion-input
+              class="ion-input-elem"
+              [(ngModel)]="payment.remarks"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="payment?.paymentId>0">
+        <ion-col class="buttons">
+          <ion-button
+            color="success"
+            (click)="onSavePayment()"
+            [disabled]="isUploading"
+            size="default"
+            class="save-button"
+          >
+            <ion-icon name="checkmark-outline" slot="start"></ion-icon>Save
+          </ion-button>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </ion-card>
 
-  <ion-card *ngIf="!isFetching && unit?.unitId>0">
+  <!-- <ion-card *ngIf="!isFetching && unit?.unitId>0">
     <div class="card-top"></div>
     <ion-item lines="full">
       <ion-card-title>Contract</ion-card-title>
@@ -505,9 +517,9 @@
         </ion-row>
       </form>
     </ion-grid>
-  </ion-card>
+  </ion-card> -->
 
-  <ion-card *ngIf="!isFetching">
+  <ion-card *ngFor="let paymentDetail of paymentDetails">
     <div class="card-top"></div>
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
@@ -515,24 +527,19 @@
       </ion-item>
     </ion-card-header>
     <div class="separator"></div>
-    <ion-grid class="schedule-grid">
-      <ion-row class="schedule-hdr">
-        <ion-col size-md="2">
-          <ion-item lines="none"
-            ><ion-label class="str-col-lbl"><h2>Month</h2></ion-label></ion-item
-          >
-        </ion-col>
+    <ion-grid class="payment-grid">
+      <ion-row class="payment-hdr">
         <ion-col size-md="4">
           <ion-item lines="none"
             ><ion-label class="str-col-lbl"
-              ><h2>Due Date</h2></ion-label
+              ><h2>Description</h2></ion-label
             ></ion-item
           >
         </ion-col>
         <ion-col size-md="3">
           <ion-item lines="none"
             ><ion-label class="num-col-lbl"
-              ><h2>Amount Due</h2></ion-label
+              ><h2>Balance</h2></ion-label
             ></ion-item
           >
         </ion-col>
@@ -544,28 +551,50 @@
           >
         </ion-col>
       </ion-row>
-      <ion-row class="schedule-row" *ngFor="let schedule of equitySchedules">
-        <ion-col size-xs="12" size-sm="6" size-md="2">
-          <ion-item lines="none"
-            ><ion-label class="str-col-lbl"
-              ><h3>Month</h3>
-              {{ schedule.scheduleId }}</ion-label
-            ></ion-item
-          >
-        </ion-col>
+      <ion-row class="payment-row">
         <ion-col size-xs="12" size-sm="6" size-md="4">
           <ion-item lines="none"
             ><ion-label class="str-col-lbl"
-              ><h3>Due Date</h3>
-              {{ schedule.dueDate | date:'MMM dd, yyyy' }}</ion-label
+              ><h3>Description</h3>
+              Reservation</ion-label
             ></ion-item
           >
         </ion-col>
         <ion-col size-xs="12" size-sm="6" size-md="3">
           <ion-item lines="none"
             ><ion-label class="num-col-lbl"
-              ><h3>Amount Due</h3>
-              {{ schedule.payableEquity | number:'1.2-2' }}</ion-label
+              ><h3>Balance</h3>
+              {{ paymentDetail.contract?.reservationBalance | number:'1.2-2'
+              }}</ion-label
+            ></ion-item
+          >
+        </ion-col>
+        <ion-col size-xs="12" size-sm="6" size-md="3">
+          <ion-item lines="none" fill="outline">
+            <ion-input
+              class="ion-input-elem qty-input ion-text-right"
+              [(ngModel)]="paymentDetail.reservationPaid"
+              type="number"
+              maxlength="20"
+            ></ion-input
+          ></ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row class="payment-row">
+        <ion-col size-xs="12" size-sm="6" size-md="4">
+          <ion-item lines="none"
+            ><ion-label class="str-col-lbl"
+              ><h3>Description</h3>
+              Equity</ion-label
+            ></ion-item
+          >
+        </ion-col>
+        <ion-col size-xs="12" size-sm="6" size-md="3">
+          <ion-item lines="none"
+            ><ion-label class="num-col-lbl"
+              ><h3>Balance</h3>
+              {{ paymentDetail.contract?.equityBalance | number:'1.2-2'
+              }}</ion-label
             ></ion-item
           >
         </ion-col>
@@ -573,7 +602,34 @@
           <ion-item lines="none"
             ><ion-label class="num-col-lbl"
               ><h3>Amount Paid</h3>
-              {{ schedule.equityPaid | number:'1.2-2' }}</ion-label
+              {{ 0 | number:'1.2-2' }}</ion-label
+            ></ion-item
+          >
+        </ion-col>
+      </ion-row>
+      <ion-row class="payment-row">
+        <ion-col size-xs="12" size-sm="6" size-md="4">
+          <ion-item lines="none"
+            ><ion-label class="str-col-lbl"
+              ><h3>Description</h3>
+              Bank Financing</ion-label
+            ></ion-item
+          >
+        </ion-col>
+        <ion-col size-xs="12" size-sm="6" size-md="3">
+          <ion-item lines="none"
+            ><ion-label class="num-col-lbl"
+              ><h3>Balance</h3>
+              {{ paymentDetail.contract?.financingBalance | number:'1.2-2'
+              }}</ion-label
+            ></ion-item
+          >
+        </ion-col>
+        <ion-col size-xs="12" size-sm="6" size-md="3">
+          <ion-item lines="none"
+            ><ion-label class="num-col-lbl"
+              ><h3>Amount Paid</h3>
+              {{ 0 | number:'1.2-2' }}</ion-label
             ></ion-item
           >
         </ion-col>

@@ -56,7 +56,7 @@ export class ButcheryReleasingsService {
       releasingId = String(Number(searchDesc));
     }
 
-    filterString(searchDesc);
+    searchDesc = filterString(searchDesc);
 
     this.apiUrl =
       `${this.config.urlButcheryReleasingsSearch}` +

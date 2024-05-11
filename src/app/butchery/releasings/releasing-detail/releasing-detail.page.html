@@ -178,7 +178,7 @@
               mode="ios"
               id="click-trigger"
             >
-              <ion-icon name="search-outline"></ion-icon>
+              <ion-icon name="search-outline" slot="icon-only"></ion-icon>
             </ion-button>
           </ion-item>
         </ion-col>
@@ -207,7 +207,7 @@
               mode="ios"
               id="click-trigger"
             >
-              <ion-icon name="search-outline"></ion-icon>
+              <ion-icon name="search-outline" slot="icon-only"></ion-icon>
             </ion-button>
           </ion-item>
         </ion-col>
@@ -288,24 +288,6 @@
       </ion-row>
 
       <ion-row class="item-row" *ngFor="let item of releasingItems">
-        <!-- <div
-          class="option-buttons"
-          *ngIf="!isUploading && releasingDetailsConfig.showItemOptionButtons"
-        >
-          <ion-item lines="none">
-            <ion-button
-              class="delete-item-button"
-              (click)="onDeleteReleasingItem(item)"
-              mode="ios"
-              slot="end"
-              fill="clear"
-              color="medium"
-              size="default"
-            >
-              <ion-icon name="close-circle"></ion-icon>
-            </ion-button>
-          </ion-item>
-        </div> -->
         <ion-col size-xs="12" size-lg="4">
           <ion-item lines="none">
             <ion-icon

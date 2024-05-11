@@ -36,9 +36,11 @@ export class ProjectPaymentsService {
       searchDesc = '';
     }
 
-    filterString(searchDesc);
+    searchDesc = filterString(searchDesc);
 
-    this.apiUrl = ``;
+    this.apiUrl =
+      `${this.config.urlProjectPaymentsSearch}` +
+      `?searchDesc=${searchDesc}&page=${pageNumber}&size=${pageSize}`;
 
     return this.http.get<ResponsePayments>(this.apiUrl);
   }

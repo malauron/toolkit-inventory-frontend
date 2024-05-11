@@ -38,7 +38,7 @@ export class ProjectBrokersService {
       searchDesc = '';
     }
 
-    filterString(searchDesc);
+    searchDesc = filterString(searchDesc);
 
     this.apiUrl = `${this.config.urlProjectBrokersSearch}` +
                   `?brokerName=${searchDesc}&page=${pageNumber}&size=${pageSize}`;

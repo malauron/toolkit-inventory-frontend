@@ -59,6 +59,8 @@ export class AppParamsConfig {
   urlProjectBrokeragesSearch: any;
   urlProjectPayments: any;
   urlProjectPaymentsSearch: any;
+  urlProjectContracts: any;
+  urlProjectContractsSearch: any;
 
 
   urlV1: any;
@@ -178,6 +180,8 @@ export class AppParamsConfig {
     this.urlProjectBrokeragesSearch = `${this.urlProjectBrokerages}/search/findByBrokerageNameContainingOrderByBrokerageName`;
     this.urlProjectPayments = `${this.url}/projectPayments`;
     this.urlProjectPaymentsSearch = `${this.urlProjectPayments}/search/findByCustomParam`;
+    this.urlProjectContracts = `${this.url}/projectContracts`;
+    this.urlProjectContractsSearch = `${this.urlProjectContracts}/search/`;
 
     this.urlV1 = `${this.url}/v1`;
 

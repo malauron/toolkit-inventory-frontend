@@ -51,7 +51,7 @@ export class ProjectUnitsService {
       searchDesc = '';
     }
 
-    filterString(searchDesc);
+    searchDesc = filterString(searchDesc);
 
     this.apiUrl =
       `${this.config.urlProjectUnitsSearch}?projection=projectUnitListView` +

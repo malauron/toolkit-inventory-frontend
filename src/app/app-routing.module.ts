@@ -23,21 +23,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'tabs',
     pathMatch: 'full'
-  },  {
-    path: 'project-contracts',
-    loadChildren: () => import('./project-management/project-contracts/project-contracts.module').then( m => m.ProjectContractsPageModule)
-  },
-  {
-    path: 'project-clients',
-    loadChildren: () => import('./project-management/project-clients/project-clients.module').then( m => m.ProjectClientsPageModule)
-  },
-  {
-    path: 'project-brokers',
-    loadChildren: () => import('./project-management/project-brokers/project-brokers.module').then( m => m.ProjectBrokersPageModule)
-  },
-  {
-    path: 'project-brokerages',
-    loadChildren: () => import('./project-management/project-brokerages/project-brokerages.module').then( m => m.ProjectBrokeragesPageModule)
   },
 
 ];

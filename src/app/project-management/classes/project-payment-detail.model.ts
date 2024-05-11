@@ -6,9 +6,9 @@ export class ProjectPaymentDetail {
     public paymentDetailId?: number,
     public payment?: ProjectPayment,
     public contract?: ProjectContract,
-    public reservation?: number,
-    public equity?: number,
-    public financing?: number,
+    public reservationPaid?: number,
+    public equityPaid?: number,
+    public financingPaid?: number,
     public others?: number,
     public ttlAmtPaid?: number,
   ){}
