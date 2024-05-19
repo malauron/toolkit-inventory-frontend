@@ -128,17 +128,48 @@ ion-select::part(icon) {
 
   ion-item::part(native) {
     background-color: transparent;
+    padding: 0;
   }
+
+
 }
 
 .num-col-lbl {
-  padding-left: 2.5rem;
+  // padding-left: 2.5rem;
 }
 
 .payment-row {
   h3 {
     font-size: 0.8rem;
     color: var(--ion-color-medium);
+  }
+
+  ion-item::part(native) {
+    padding: 0;
+  }
+
+  ion-input {
+    text-align: left;
+  }
+
+  .pay-item {
+    padding: 0.6rem 0.6rem 0.6rem 0;
+
+    &::part(native) {
+      padding: 0 16px;
+    }
+
+    // ion-label {
+    //   background-color: #F8F5F5;
+
+    //   &::before {
+    //     background-color: #F8F5F5;
+    //   }
+
+    //   &::after {
+    //     background-color: #F8F5F5;
+    //   }
+    // }
   }
 }
 
@@ -148,6 +179,20 @@ ion-select::part(icon) {
   ion-item {
     --background: #F8F5F5;
   }
+
+  .pay-item {
+    ion-label {
+      background-color: #F8F5F5;
+
+      &::before {
+        background-color: #F8F5F5;
+      }
+
+      &::after {
+        background-color: #F8F5F5;
+      }
+    }
+  }
 }
 
 .payment-row:nth-of-type(odd) {
@@ -155,6 +200,20 @@ ion-select::part(icon) {
 
   ion-item {
     --background: #fcfcfc;
+  }
+
+  .pay-item {
+    ion-label {
+      background-color: #fcfcfc;
+
+      &::before {
+        background-color: #fcfcfc;
+      }
+
+      &::after {
+        background-color: #fcfcfc;
+      }
+    }
   }
 }
 
@@ -182,10 +241,32 @@ ion-select::part(icon) {
     ion-item {
       --min-height: 2rem;
     }
+
+    ion-input {
+      text-align: right;
+    }
+
+    .pay-item {
+      padding: 0.5rem 0 0.3rem 0;
+
+      &::part(native) {
+        height: 2.3rem;
+      }
+
+
+      ion-label {
+        display: none;
+        visibility: hidden;
+      }
+
+      ion-input {
+        --padding-top: 1.2rem;
+      }
+    }
   }
 
   .num-col-lbl {
-    padding-right: 2.5rem;
+    // padding-right: 2.5rem;
     text-align: right;
   }
 }

@@ -15,7 +15,7 @@ import { AuthenticationInterceptorService } from './Security/services/authentica
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({ mode: 'md'}),
     AppRoutingModule,
   ],
   providers: [

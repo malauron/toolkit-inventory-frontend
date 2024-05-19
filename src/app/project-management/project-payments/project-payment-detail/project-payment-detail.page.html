@@ -523,7 +523,7 @@
     <div class="card-top"></div>
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
-        <ion-card-title>Equity Schedule</ion-card-title>
+        <ion-card-title>{{ paymentDetail.contract?.unit?.unitDescription }}</ion-card-title>
       </ion-item>
     </ion-card-header>
     <div class="separator"></div>
@@ -531,9 +531,7 @@
       <ion-row class="payment-hdr">
         <ion-col size-md="4">
           <ion-item lines="none"
-            ><ion-label class="str-col-lbl"
-              ><h2>Description</h2></ion-label
-            ></ion-item
+            ><ion-label><h2>Description</h2></ion-label></ion-item
           >
         </ion-col>
         <ion-col size-md="3">
@@ -554,7 +552,7 @@
       <ion-row class="payment-row">
         <ion-col size-xs="12" size-sm="6" size-md="4">
           <ion-item lines="none"
-            ><ion-label class="str-col-lbl"
+            ><ion-label
               ><h3>Description</h3>
               Reservation</ion-label
             ></ion-item
@@ -570,9 +568,12 @@
           >
         </ion-col>
         <ion-col size-xs="12" size-sm="6" size-md="3">
-          <ion-item lines="none" fill="outline">
+          <ion-item class="pay-item" fill="outline" mode="md">
+            <ion-label class="ion-label-elem" position="floating"
+              >Amount Paid</ion-label
+            >
             <ion-input
-              class="ion-input-elem qty-input ion-text-right"
+              class="ion-input-elem qty-input"
               [(ngModel)]="paymentDetail.reservationPaid"
               type="number"
               maxlength="20"
@@ -583,7 +584,7 @@
       <ion-row class="payment-row">
         <ion-col size-xs="12" size-sm="6" size-md="4">
           <ion-item lines="none"
-            ><ion-label class="str-col-lbl"
+            ><ion-label
               ><h3>Description</h3>
               Equity</ion-label
             ></ion-item
@@ -599,18 +600,23 @@
           >
         </ion-col>
         <ion-col size-xs="12" size-sm="6" size-md="3">
-          <ion-item lines="none"
-            ><ion-label class="num-col-lbl"
-              ><h3>Amount Paid</h3>
-              {{ 0 | number:'1.2-2' }}</ion-label
-            ></ion-item
-          >
+          <ion-item class="pay-item" fill="outline" mode="md">
+            <ion-label class="ion-label-elem" position="floating"
+              >Amount Paid</ion-label
+            >
+            <ion-input
+              class="ion-input-elem qty-input"
+              [(ngModel)]="paymentDetail.equityPaid"
+              type="number"
+              maxlength="20"
+            ></ion-input
+          ></ion-item>
         </ion-col>
       </ion-row>
       <ion-row class="payment-row">
         <ion-col size-xs="12" size-sm="6" size-md="4">
           <ion-item lines="none"
-            ><ion-label class="str-col-lbl"
+            ><ion-label
               ><h3>Description</h3>
               Bank Financing</ion-label
             ></ion-item
@@ -626,12 +632,17 @@
           >
         </ion-col>
         <ion-col size-xs="12" size-sm="6" size-md="3">
-          <ion-item lines="none"
-            ><ion-label class="num-col-lbl"
-              ><h3>Amount Paid</h3>
-              {{ 0 | number:'1.2-2' }}</ion-label
-            ></ion-item
-          >
+          <ion-item class="pay-item" fill="outline" mode="md">
+            <ion-label class="ion-label-elem" position="floating"
+              >Amount Paid</ion-label
+            >
+            <ion-input
+              class="ion-input-elem qty-input"
+              [(ngModel)]="paymentDetail.financingPaid"
+              type="number"
+              maxlength="20"
+            ></ion-input
+          ></ion-item>
         </ion-col>
       </ion-row>
     </ion-grid>

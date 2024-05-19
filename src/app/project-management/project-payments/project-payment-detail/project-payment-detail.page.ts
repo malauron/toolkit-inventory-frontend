@@ -46,8 +46,6 @@ export class ProjectPaymentDetailPage implements OnInit {
     this.payment.ttlAmtPaid = 0;
   }
 
-  onSavePayment() {}
-
   onClientSearch() {
     if (!this.modalOpen) {
       this.modalOpen = true;
@@ -80,7 +78,6 @@ export class ProjectPaymentDetailPage implements OnInit {
                     tmpDetails.ttlAmtPaid = 0;
                     this.paymentDetails.push(tmpDetails);
                   });
-
                 },
                 error: () => {},
                 complete: () => {
@@ -114,5 +111,9 @@ export class ProjectPaymentDetailPage implements OnInit {
           this.modalOpen = false;
         });
     }
+  }
+
+  onSavePayment() {
+    console.log(this.paymentDetails);
   }
 }
