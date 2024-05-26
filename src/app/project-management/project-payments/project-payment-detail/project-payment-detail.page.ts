@@ -65,7 +65,7 @@ export class ProjectPaymentDetailPage implements OnInit {
               .getActiveContracts(this.payment.client.clientId)
               .subscribe({
                 next: (res) => {
-
+                  console.log(res);
                   this.paymentDetails = [];
 
                   res._embedded.projectContracts.forEach((resContract) => {
